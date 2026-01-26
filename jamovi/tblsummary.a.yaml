@@ -1,0 +1,80 @@
+---
+name: tblSummary
+title: Table Summary
+menuGroup: Tables
+version: "1.0.0"
+jas: "1.2"
+
+options:
+  - name: data
+    type: Data
+
+  - name: include
+    title: Variables
+    type: Variables
+
+  - name: by
+    title: Group by
+    type: Variable
+    suggested:
+      - nominal
+      - ordinal
+      - id
+
+  - name: statistic
+    title: Statistic Type
+    type: List
+    options:
+      - title: Auto
+        name: auto
+      - title: Mean (SD)
+        name: mean_sd
+      - title: Median (IQR)
+        name: median_iqr
+      - title: n (%)
+        name: n_percent
+    default: auto
+
+  - name: missing
+    title: Missing Values
+    type: List
+    options:
+      - title: If any
+        name: ifany
+      - title: No
+        name: no
+      - title: Always
+        name: always
+    default: ifany
+
+  - name: missingText
+    title: Missing Text
+    type: String
+    default: Unknown
+
+  - name: sort
+    title: Sort By
+    type: List
+    options:
+      - title: Alphanumeric
+        name: alphameric
+      - title: Frequency
+        name: frequency
+    default: alphameric
+
+  - name: percent
+    title: Percent Type
+    type: List
+    options:
+      - title: Column
+        name: column
+      - title: Row
+        name: row
+      - title: Cell
+        name: cell
+    default: column
+
+  - name: p_value
+    title: Add p-value
+    type: Bool
+    default: false

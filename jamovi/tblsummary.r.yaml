@@ -1,0 +1,9 @@
+---
+name: tblSummary
+title: Table Summary
+jrs: "1.1"
+
+items:
+  - name: tbl
+    title: Table Summary
+    type: Html
