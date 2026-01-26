@@ -1,6 +1,6 @@
 ---
 title: What the Package Does (Title Case)
-name: Tables
+name: SummaryTables
 version: 0.0.0
 jms: '1.0'
 authors:
@@ -14,9 +14,9 @@ description: >-
 analyses:
   - title: Table Summary
     name: tblSummary
-    ns: Tables
+    ns: SummaryTables
     category: analyses
-    menuGroup: Tables
+    menuGroup: Summary Tables
     menuTitle: Table Summary
 usesNative: true
 minApp: 1.0.8

@@ -16,7 +16,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             p_value = FALSE, ...) {
 
             super$initialize(
-                package="Tables",
+                package="SummaryTables",
                 name="tblSummary",
                 requiresData=TRUE,
                 ...)
@@ -124,7 +124,7 @@ tblSummaryBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     public = list(
         initialize = function(options, data=NULL, datasetId="", analysisId="", revision=0) {
             super$initialize(
-                package = "Tables",
+                package = "SummaryTables",
                 name = "tblSummary",
                 version = c(1,0,0),
                 options = options,

@@ -1,7 +1,7 @@
 ---
 name: tblSummary
 title: Table Summary
-menuGroup: Tables
+menuGroup: Summary Tables
 version: "1.0.0"
 jas: "1.2"
 

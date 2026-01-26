@@ -1,5 +1,5 @@
 Type: Package
-Package: Tables
+Package: SummaryTables
 Title: What the Package Does (Title Case)
 Version: 0.0.0
 Authors@R: 
@@ -8,8 +8,8 @@ Authors@R:
 Description: More about what it does (maybe more than one line) Use four
     spaces when indenting paragraphs within the Description.
 License: What license is it under?
-URL: https://github.com/NourEdinDarwish/Tables
-BugReports: https://github.com/NourEdinDarwish/Tables/issues
+URL: https://github.com/NourEdinDarwish/SummaryTables
+BugReports: https://github.com/NourEdinDarwish/SummaryTables/issues
 Imports: 
     cardx,
     gtsummary,
