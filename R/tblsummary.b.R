@@ -1,161 +1,194 @@
-tblSummaryClass <- if (requireNamespace('jmvcore', quietly = TRUE)) {
-  R6::R6Class(
-    "tblSummaryClass",
-    inherit = tblSummaryBase,
-    private = list(
-      .run = function() {
-        # ------------------------------------------------------------------
-        # 1. Validation & Setup
-        # ------------------------------------------------------------------
-        if (length(self$options$include) == 0) {
-          return()
+tblSummaryClass <- R6::R6Class(
+  "tblSummaryClass",
+  inherit = tblSummaryBase,
+  active = list(
+    table = function() {
+      if (is.null(private$.table)) {
+        private$.table <- private$.computeTable()
+      }
+      private$.table
+    }
+  ),
+  private = list(
+    .table = NULL,
+    .message_msgs = character(),
+    .warning_msgs = character(),
+
+    .add_message = function(msg) {
+      private$.message_msgs <- c(private$.message_msgs, msg)
+    },
+
+    .add_warning = function(msg) {
+      if (!grepl("C:/Rtools/home/builder", msg, fixed = TRUE)) {
+        private$.warning_msgs <- c(private$.warning_msgs, msg)
+      }
+    },
+
+    .run_safe = function(expr) {
+      withCallingHandlers(
+        expr,
+        warning = function(w) {
+          private$.add_warning(w$message)
+          invokeRestart("muffleWarning")
+        },
+        message = function(m) {
+          private$.add_message(m$message)
+          invokeRestart("muffleMessage")
         }
+      )
+    },
 
-        # Debugging: Print structure of data to console
-        # print("DEBUG: Data Structure")
-        # print(str(self$data))
+    .computeTable = function() {
+      # 1. Validation & Setup
+      # Check if any variables are selected
+      if (length(self$options$vars) == 0) {
+        return(NULL)
+      }
 
-        # Helper: Ensure numeric types if needed (basic check)
-        # Jamovi usually handles this, but we force numeric for continuous
-        # logic if we were to implement advanced type handling.
-        # For now, we rely on gtsummary's robust type detection.
+      # Explicitly select data to ensure clean environment
+      data <- self$data
 
-        # ------------------------------------------------------------------
-        # 2. Argument Mapping & Data Preparation
-        # ------------------------------------------------------------------
+      # 2. Argument Mapping & Data Preparation
+      # Get User Inputs (Unified List)
+      vars_settings <- self$options$vars
+      
+      # Extract variable names and construction 'type' mapping
+      all_vars <- vars_settings
+      typeArguments <- list()
+      
+      # For now, we let gtsummary/data types decide. 
+      # If specific logic is needed for ordinal vs continuous (e.g. Likert), 
+      # it can be inferred from data class or handled in future updates.
 
-        # Explicitly select data to ensure clean environment
-        data <- self$data
+      # Map 'statistic' option
+      statOption <- self$options$statistic
+      statisticArguments <- NULL # Defaults to auto
 
-        # ------------------------------------------------------------------
-        # 2. Argument Mapping & Data Preparation
-        # ------------------------------------------------------------------
-
-        # Helper: Force numeric type for variables that are numeric in R
-        # This overrides gtsummary's heuristic which treats <10 unique values as
-        # categorical
-
-        vars_numeric <- names(data)[sapply(data, is.numeric)]
-        vars_categorical <- names(data)[sapply(data, function(x) {
-          is.factor(x) || is.character(x)
-        })]
-
-        # Use named list for 'type' (safest for gtsummary)
-        type_arg <- list()
-        if (length(vars_numeric) > 0) {
-          l_num <- as.list(rep("continuous", length(vars_numeric)))
-          names(l_num) <- vars_numeric
-          type_arg <- c(type_arg, l_num)
-        }
-        if (length(vars_categorical) > 0) {
-          l_cat <- as.list(rep("categorical", length(vars_categorical)))
-          names(l_cat) <- vars_categorical
-          type_arg <- c(type_arg, l_cat)
-        }
-
-        # Map 'statistic' option
-        stat_opt <- self$options$statistic
-        statistic_arg <- NULL # Defaults to auto
-
-        if (stat_opt == "mean_sd") {
-          statistic_arg <- list(
-            gtsummary::all_continuous() ~ "{mean} ({sd})",
-            gtsummary::all_categorical() ~ "{n} ({p}%)"
-          )
-        } else if (stat_opt == "median_iqr") {
-          statistic_arg <- list(
-            gtsummary::all_continuous() ~ "{median} ({p25}, {p75})",
-            gtsummary::all_categorical() ~ "{n} ({p}%)"
-          )
-        } else if (stat_opt == "n_percent") {
-          statistic_arg <- list(
-            # Unusual for continuous but possible
-            gtsummary::all_continuous() ~ "{n} ({p}%)",
-            gtsummary::all_categorical() ~ "{n} ({p}%)"
-          )
-        }
-
-        # Map 'sort' option
-        sort_arg <- NULL
-        if (self$options$sort == "frequency") {
-          sort_arg <- list(gtsummary::all_categorical() ~ "frequency")
-        }
-
-        # Map 'by' option
-        by_var <- self$options$by
-        if (is.null(by_var)) {
-          by_var <- NULL
-        } # Ensure NULL if empty
-
-        # ------------------------------------------------------------------
-        # 3. Execution (gtsummary)
-        # ------------------------------------------------------------------
-
-        # We use tryCatch to handle potential errors gracefully in Jamovi
-        t1 <- tryCatch(
-          {
-            gtsummary::tbl_summary(
-              data = data,
-              include = self$options$include,
-              by = by_var,
-              type = type_arg,
-              statistic = statistic_arg,
-              missing = self$options$missing,
-              missing_text = self$options$missingText,
-              sort = sort_arg,
-              percent = self$options$percent
-            )
-          },
-          error = function(e) {
-            stop(paste("Error in tbl_summary:", e$message))
-          }
+      if (statOption == "mean_sd") {
+        statisticArguments <- list(
+          gtsummary::all_continuous() ~ "{mean} ({sd})",
+          gtsummary::all_categorical() ~ "{n} ({p}%)"
         )
+      } else if (statOption == "median_iqr") {
+        statisticArguments <- list(
+          gtsummary::all_continuous() ~ "{median} ({p25}, {p75})",
+          gtsummary::all_categorical() ~ "{n} ({p}%)"
+        )
+      } else if (statOption == "n_percent") {
+        statisticArguments <- list(
+          gtsummary::all_continuous() ~ "{n} ({p}%)",
+          gtsummary::all_categorical() ~ "{n} ({p}%)"
+        )
+      }
 
-        # Add p-values if requested AND grouping variable is present
-        if (self$options$p_value && !is.null(by_var)) {
-          # With 'broom' and 'cardx' now in DESCRIPTION, specific test selectors
-          # should work.
-          # We use formula syntax for robustness.
 
-          test_arg <- list()
+      # Map 'by' option
+      byVariable <- self$options$by
+      if (is.null(byVariable)) {
+        byVariable <- NULL
+      }
 
-          if (length(vars_numeric) > 0) {
-            for (v in vars_numeric) {
-              if (v != by_var) {
-                test_arg <- c(
-                  test_arg,
-                  list(as.formula(paste(v, "~ 'wilcox.test'")))
-                )
-              }
-            }
-          }
-          if (length(vars_categorical) > 0) {
-            for (v in vars_categorical) {
-              if (v != by_var) {
-                test_arg <- c(
-                  test_arg,
-                  list(as.formula(paste(v, "~ 'chisq.test'")))
-                )
-              }
-            }
-          }
+      # 3. Execution (gtsummary)
 
-          t1 <- t1 |> gtsummary::add_p(test = test_arg)
-        }
+      # Core analysis
+      table <- private$.run_safe({
+        gtsummary::tbl_summary(
+          data = data,
+          include = all_vars,
+          by = byVariable,
+          type = typeArguments,
+          statistic = statisticArguments,
+          missing = self$options$missing,
+          missing_text = self$options$missingText,
+          percent = self$options$percent
+        )
+      })
 
-        # ------------------------------------------------------------------
-        # 4. Rendering
-        # ------------------------------------------------------------------
+      # Add p-values if requested AND grouping variable is present
+      if (!is.null(table) && self$options$p_value && !is.null(byVariable)) {
+        table <- private$.run_safe({
+          table |> gtsummary::add_p()
+        })
+      }
 
-        # Convert to gt, then to raw HTML string
-        # self$results$tbl is the Html object defined in .r.yaml
+      table
+    },
 
-        html_content <- t1 |>
+    .run = function() {
+      # Check table which triggers computation
+      table <- self$table
+
+      # 1. Render Table (if available)
+      if (!is.null(table)) {
+        private$.render(table)
+        private$.export(table)
+      }
+
+      # 2. Display Notices
+      private$.notices()
+    },
+
+    .render = function(table) {
+      private$.run_safe({
+        htmlContent <- table |>
           gtsummary::as_gt() |>
           gt::as_raw_html()
+        self$results$tbl$setContent(htmlContent)
+      })
+    },
 
-        self$results$tbl$setContent(html_content)
+    .export = function(table) {
+      if (isTRUE(self$options$exportWord)) {
+        # Use utility function to resolve path (includes smart defaults/expansion)
+        path <- resolve_export_path(self$options$exportPath)
+
+        if (is.null(path)) return()
+        private$.run_safe({
+          flexTableObject <- gtsummary::as_flex_table(table)
+          flextable::save_as_docx(flexTableObject, path = path)
+
+          # Create a specific Notice for the save message so it stands out
+          saveNotice <- jmvcore::Notice$new(
+            options = self$options,
+            name = 'saveMessage',
+            type = jmvcore::NoticeType$INFO
+          )
+          saveNotice$setContent(paste0("Successfully saved to: ", path))
+          self$results$insert(1, saveNotice)
+        })
       }
-    )
+    },
+
+    .notices = function() {
+      # 1. Messages (INFO)
+      if (length(private$.message_msgs) > 0) {
+        # Combine messages
+        finalContent <- paste(private$.message_msgs, collapse = "\n")
+
+        # Create Notice with INFO type
+        messageNotice <- jmvcore::Notice$new(
+          options = self$options,
+          name = 'runMessage',
+          type = jmvcore::NoticeType$INFO
+        )
+        messageNotice$setContent(finalContent)
+        self$results$insert(1, messageNotice)
+      }
+
+      # 2. Warnings (WARNING)
+      if (length(private$.warning_msgs) > 0) {
+        # Combine warnings
+        finalContent <- paste(private$.warning_msgs, collapse = "\n")
+
+        # Create Notice with WARNING type
+        warningNotice <- jmvcore::Notice$new(
+          options = self$options,
+          name = 'runWarn',
+          type = jmvcore::NoticeType$WARNING
+        )
+        warningNotice$setContent(finalContent)
+        self$results$insert(1, warningNotice)
+      }
+    }
   )
-}
+)

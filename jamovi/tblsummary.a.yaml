@@ -9,9 +9,16 @@ options:
   - name: data
     type: Data
 
-  - name: include
+  - name: vars
     title: Variables
     type: Variables
+    suggested:
+      - continuous
+      - nominal
+      - ordinal
+    permitted:
+      - numeric
+      - factor
 
   - name: by
     title: Group by
@@ -52,16 +59,6 @@ options:
     type: String
     default: Unknown
 
-  - name: sort
-    title: Sort By
-    type: List
-    options:
-      - title: Alphanumeric
-        name: alphameric
-      - title: Frequency
-        name: frequency
-    default: alphameric
-
   - name: percent
     title: Percent Type
     type: List
@@ -78,3 +75,13 @@ options:
     title: Add p-value
     type: Bool
     default: false
+
+  - name: exportWord
+    title: Save to Word
+    type: Bool
+    default: false
+
+  - name: exportPath
+    title: Export path
+    type: String
+    default: ~/Desktop/summary_table.docx

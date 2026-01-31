@@ -6,14 +6,15 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     inherit = jmvcore::Options,
     public = list(
         initialize = function(
-            include = NULL,
+            vars = NULL,
             by = NULL,
             statistic = "auto",
             missing = "ifany",
             missingText = "Unknown",
-            sort = "alphameric",
             percent = "column",
-            p_value = FALSE, ...) {
+            p_value = FALSE,
+            exportWord = FALSE,
+            exportPath = "~/Desktop/summary_table.docx", ...) {
 
             super$initialize(
                 package="SummaryTables",
@@ -21,9 +22,16 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 requiresData=TRUE,
                 ...)
 
-            private$..include <- jmvcore::OptionVariables$new(
-                "include",
-                include)
+            private$..vars <- jmvcore::OptionVariables$new(
+                "vars",
+                vars,
+                suggested=list(
+                    "continuous",
+                    "nominal",
+                    "ordinal"),
+                permitted=list(
+                    "numeric",
+                    "factor"))
             private$..by <- jmvcore::OptionVariable$new(
                 "by",
                 by,
@@ -52,13 +60,6 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 "missingText",
                 missingText,
                 default="Unknown")
-            private$..sort <- jmvcore::OptionList$new(
-                "sort",
-                sort,
-                options=list(
-                    "alphameric",
-                    "frequency"),
-                default="alphameric")
             private$..percent <- jmvcore::OptionList$new(
                 "percent",
                 percent,
@@ -71,34 +72,45 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 "p_value",
                 p_value,
                 default=FALSE)
+            private$..exportWord <- jmvcore::OptionBool$new(
+                "exportWord",
+                exportWord,
+                default=FALSE)
+            private$..exportPath <- jmvcore::OptionString$new(
+                "exportPath",
+                exportPath,
+                default="~/Desktop/summary_table.docx")
 
-            self$.addOption(private$..include)
+            self$.addOption(private$..vars)
             self$.addOption(private$..by)
             self$.addOption(private$..statistic)
             self$.addOption(private$..missing)
             self$.addOption(private$..missingText)
-            self$.addOption(private$..sort)
             self$.addOption(private$..percent)
             self$.addOption(private$..p_value)
+            self$.addOption(private$..exportWord)
+            self$.addOption(private$..exportPath)
         }),
     active = list(
-        include = function() private$..include$value,
+        vars = function() private$..vars$value,
         by = function() private$..by$value,
         statistic = function() private$..statistic$value,
         missing = function() private$..missing$value,
         missingText = function() private$..missingText$value,
-        sort = function() private$..sort$value,
         percent = function() private$..percent$value,
-        p_value = function() private$..p_value$value),
+        p_value = function() private$..p_value$value,
+        exportWord = function() private$..exportWord$value,
+        exportPath = function() private$..exportPath$value),
     private = list(
-        ..include = NA,
+        ..vars = NA,
         ..by = NA,
         ..statistic = NA,
         ..missing = NA,
         ..missingText = NA,
-        ..sort = NA,
         ..percent = NA,
-        ..p_value = NA)
+        ..p_value = NA,
+        ..exportWord = NA,
+        ..exportPath = NA)
 )
 
 tblSummaryResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -143,14 +155,15 @@ tblSummaryBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'
 #' 
 #' @param data .
-#' @param include .
+#' @param vars .
 #' @param by .
 #' @param statistic .
 #' @param missing .
 #' @param missingText .
-#' @param sort .
 #' @param percent .
 #' @param p_value .
+#' @param exportWord .
+#' @param exportPath .
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$tbl} \tab \tab \tab \tab \tab a html \cr
@@ -159,36 +172,38 @@ tblSummaryBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @export
 tblSummary <- function(
     data,
-    include,
+    vars,
     by,
     statistic = "auto",
     missing = "ifany",
     missingText = "Unknown",
-    sort = "alphameric",
     percent = "column",
-    p_value = FALSE) {
+    p_value = FALSE,
+    exportWord = FALSE,
+    exportPath = "~/Desktop/summary_table.docx") {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
         stop("tblSummary requires jmvcore to be installed (restart may be required)")
 
-    if ( ! missing(include)) include <- jmvcore::resolveQuo(jmvcore::enquo(include))
+    if ( ! missing(vars)) vars <- jmvcore::resolveQuo(jmvcore::enquo(vars))
     if ( ! missing(by)) by <- jmvcore::resolveQuo(jmvcore::enquo(by))
     if (missing(data))
         data <- jmvcore::marshalData(
             parent.frame(),
-            `if`( ! missing(include), include, NULL),
+            `if`( ! missing(vars), vars, NULL),
             `if`( ! missing(by), by, NULL))
 
 
     options <- tblSummaryOptions$new(
-        include = include,
+        vars = vars,
         by = by,
         statistic = statistic,
         missing = missing,
         missingText = missingText,
-        sort = sort,
         percent = percent,
-        p_value = p_value)
+        p_value = p_value,
+        exportWord = exportWord,
+        exportPath = exportPath)
 
     analysis <- tblSummaryClass$new(
         options = options,

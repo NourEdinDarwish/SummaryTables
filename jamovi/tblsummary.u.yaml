@@ -2,7 +2,7 @@ title: Table Summary
 name: tblSummary
 jus: '3.0'
 stage: 0
-compilerMode: aggressive
+compilerMode: tame
 children:
   - type: VariableSupplier
     persistentItems: false
@@ -12,7 +12,7 @@ children:
         label: Variables
         children:
           - type: VariablesListBox
-            name: include
+            name: vars
             isTarget: true
       - type: TargetLayoutBox
         label: Group by
@@ -41,14 +41,17 @@ children:
     margin: large
     children:
       - type: ComboBox
-        name: sort
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
         name: percent
   - type: LayoutBox
     margin: large
     children:
       - type: CheckBox
         name: p_value
+      - type: CheckBox
+        name: exportWord
+  - type: LayoutBox
+    margin: large
+    children:
+      - type: TextBox
+        name: exportPath
+        format: string

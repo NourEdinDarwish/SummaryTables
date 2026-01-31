@@ -1,2 +1,7 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+^build$
+^jamovi$
+^\.agent$
+^.*\.jmo$
+^.*\.code-workspace$
