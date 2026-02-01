@@ -40,8 +40,11 @@ tblSummaryClass <- R6::R6Class(
 
     .computeTable = function() {
       # 1. Validation & Setup
+      vars_cont <- self$options$vars_cont
+      vars_cat <- self$options$vars_cat
+      
       # Check if any variables are selected
-      if (length(self$options$vars) == 0) {
+      if (length(vars_cont) == 0 && length(vars_cat) == 0) {
         return(NULL)
       }
 
@@ -49,38 +52,70 @@ tblSummaryClass <- R6::R6Class(
       data <- self$data
 
       # 2. Argument Mapping & Data Preparation
-      # Get User Inputs (Unified List)
-      vars_settings <- self$options$vars
+      # Combine variables (Categorical first, then Continuous - or user preference?)
+      # adhering to standard assumption: Cat then Cont
+      all_vars <- c(vars_cat, vars_cont)
       
-      # Extract variable names and construction 'type' mapping
-      all_vars <- vars_settings
+      # Determine Types
       typeArguments <- list()
-      
-      # For now, we let gtsummary/data types decide. 
-      # If specific logic is needed for ordinal vs continuous (e.g. Likert), 
-      # it can be inferred from data class or handled in future updates.
-
-      # Map 'statistic' option
-      statOption <- self$options$statistic
-      statisticArguments <- NULL # Defaults to auto
-
-      if (statOption == "mean_sd") {
-        statisticArguments <- list(
-          gtsummary::all_continuous() ~ "{mean} ({sd})",
-          gtsummary::all_categorical() ~ "{n} ({p}%)"
-        )
-      } else if (statOption == "median_iqr") {
-        statisticArguments <- list(
-          gtsummary::all_continuous() ~ "{median} ({p25}, {p75})",
-          gtsummary::all_categorical() ~ "{n} ({p}%)"
-        )
-      } else if (statOption == "n_percent") {
-        statisticArguments <- list(
-          gtsummary::all_continuous() ~ "{n} ({p}%)",
-          gtsummary::all_categorical() ~ "{n} ({p}%)"
-        )
+      if (length(vars_cont) > 0) {
+         for (v in vars_cont) typeArguments[[v]] <- "continuous"
+      }
+      if (length(vars_cat) > 0) {
+         for (v in vars_cat) typeArguments[[v]] <- "categorical"
       }
 
+      # Helper to map option to gtsummary string
+      get_stat_string <- function(option, type) {
+        if (type == "continuous") {
+          if (option == "mean_sd") return("{mean} ({sd})")
+          if (option == "median_iqr") return("{median} ({p25}, {p75})")
+          if (option == "n_percent") return("{n} ({p}%)") # Unusual for cont, but possible
+          if (option == "range") return("{min}, {max}")
+        } else if (type == "categorical") {
+          if (option == "n_percent") return("{n} ({p}%)")
+          if (option == "n_total_percent") return("{n} / {N} ({p}%)")
+        }
+        return(NULL)
+      }
+
+      # Statistic Arguments (List of Formulas)
+      statisticArguments <- list()
+
+      # Global Defaults 
+      # We use formulas for selectors like all_continuous()
+      
+      global_stat_cont <- get_stat_string(self$options$stat_cont_global, "continuous")
+      global_stat_cat <- get_stat_string(self$options$stat_cat_global, "categorical")
+      
+      if (!is.null(global_stat_cont)) {
+        statisticArguments <- c(statisticArguments, list(gtsummary::all_continuous() ~ global_stat_cont))
+      }
+      if (!is.null(global_stat_cat)) {
+        statisticArguments <- c(statisticArguments, list(gtsummary::all_categorical() ~ global_stat_cat))
+      }
+
+      # Specific Overrides - Continuous
+      # For specific variables, we can use named lists or formulas string ~ value
+      for (item in self$options$stats_cont_specific) {
+        if (item$stat != "use_global" && item$var %in% vars_cont) {
+           val <- get_stat_string(item$stat, "continuous")
+           if (!is.null(val)) {
+             # safely append formula for specific variable
+             statisticArguments <- c(statisticArguments, list(stats::as.formula(paste0("`", item$var, "` ~ '", val, "'"))))
+           }
+        }
+      }
+
+      # Specific Overrides - Categorical
+      for (item in self$options$stats_cat_specific) {
+        if (item$stat != "use_global" && item$var %in% vars_cat) {
+           val <- get_stat_string(item$stat, "categorical")
+           if (!is.null(val)) {
+             statisticArguments <- c(statisticArguments, list(stats::as.formula(paste0("`", item$var, "` ~ '", val, "'"))))
+           }
+        }
+      }
 
       # Map 'by' option
       byVariable <- self$options$by

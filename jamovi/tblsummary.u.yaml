@@ -3,17 +3,29 @@ name: tblSummary
 jus: '3.0'
 stage: 0
 compilerMode: tame
+events:
+  update: ./tblsummary.events::update
 children:
   - type: VariableSupplier
     persistentItems: false
     stretchFactor: 1
     children:
       - type: TargetLayoutBox
-        label: Variables
+        label: Continuous Variables
         children:
           - type: VariablesListBox
-            name: vars
+            name: vars_cont
             isTarget: true
+            events:
+              change: ./tblsummary.events::onChange_vars_cont
+      - type: TargetLayoutBox
+        label: Categorical Variables
+        children:
+          - type: VariablesListBox
+            name: vars_cat
+            isTarget: true
+            events:
+              change: ./tblsummary.events::onChange_vars_cat
       - type: TargetLayoutBox
         label: Group by
         children:
@@ -21,37 +33,97 @@ children:
             name: by
             maxItemCount: 1
             isTarget: true
-  - type: LayoutBox
-    margin: large
+
+  - type: CollapseBox
+    label: Statistics
+    collapsed: true
     children:
-      - type: ComboBox
-        name: statistic
-  - type: LayoutBox
-    margin: large
+      - type: Label
+        label: Continuous Variables
+      - type: LayoutBox
+        children:
+          - type: ComboBox
+            name: stat_cont_global
+      - type: ListBox
+        name: stats_cont_specific
+        showColumnHeaders: true
+        fullRowSelect: true
+        stretchFactor: 1
+        height: large
+        columns:
+          - name: var
+            label: Variable
+            selectable: false
+            stretchFactor: 1
+            template:
+              type: VariableLabel
+          - name: stat
+            label: Statistic
+            selectable: false
+            stretchFactor: 1
+            template:
+              type: ComboBox
+              label: ''
+
+      - type: Label
+        label: Categorical Variables
+        margin: large
+      - type: LayoutBox
+        children:
+          - type: ComboBox
+            name: stat_cat_global
+      - type: ListBox
+        name: stats_cat_specific
+        showColumnHeaders: true
+        fullRowSelect: true
+        stretchFactor: 1
+        height: large
+        columns:
+          - name: var
+            label: Variable
+            selectable: false
+            stretchFactor: 1
+            template:
+              type: VariableLabel
+          - name: stat
+            label: Statistic
+            selectable: false
+            stretchFactor: 1
+            template:
+              type: ComboBox
+              label: ''
+
+  - type: CollapseBox
+    label: Options
     children:
-      - type: ComboBox
-        name: missing
-  - type: LayoutBox
-    margin: large
+      - type: LayoutBox
+        children:
+          - type: ComboBox
+            name: missing
+      - type: LayoutBox
+        children:
+          - type: TextBox
+            name: missingText
+            format: string
+      - type: LayoutBox
+        children:
+          - type: ComboBox
+            name: percent
+      - type: LayoutBox
+        children:
+          - type: CheckBox
+            name: p_value
+
+  - type: CollapseBox
+    label: Export
+    collapsed: true
     children:
-      - type: TextBox
-        name: missingText
-        format: string
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: ComboBox
-        name: percent
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: CheckBox
-        name: p_value
-      - type: CheckBox
-        name: exportWord
-  - type: LayoutBox
-    margin: large
-    children:
-      - type: TextBox
-        name: exportPath
-        format: string
+      - type: LayoutBox
+        children:
+          - type: CheckBox
+            name: exportWord
+      - type: LayoutBox
+        children:
+          - type: TextBox
+            name: exportPath
+            format: string

@@ -6,9 +6,13 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     inherit = jmvcore::Options,
     public = list(
         initialize = function(
-            vars = NULL,
+            vars_cont = NULL,
+            vars_cat = NULL,
             by = NULL,
-            statistic = "auto",
+            stat_cont_global = "mean_sd",
+            stats_cont_specific = NULL,
+            stat_cat_global = "n_percent",
+            stats_cat_specific = NULL,
             missing = "ifany",
             missingText = "Unknown",
             percent = "column",
@@ -22,16 +26,22 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 requiresData=TRUE,
                 ...)
 
-            private$..vars <- jmvcore::OptionVariables$new(
-                "vars",
-                vars,
+            private$..vars_cont <- jmvcore::OptionVariables$new(
+                "vars_cont",
+                vars_cont,
                 suggested=list(
-                    "continuous",
+                    "continuous"),
+                permitted=list(
+                    "numeric"))
+            private$..vars_cat <- jmvcore::OptionVariables$new(
+                "vars_cat",
+                vars_cat,
+                suggested=list(
                     "nominal",
                     "ordinal"),
                 permitted=list(
-                    "numeric",
-                    "factor"))
+                    "factor",
+                    "numeric"))
             private$..by <- jmvcore::OptionVariable$new(
                 "by",
                 by,
@@ -39,15 +49,58 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "nominal",
                     "ordinal",
                     "id"))
-            private$..statistic <- jmvcore::OptionList$new(
-                "statistic",
-                statistic,
+            private$..stat_cont_global <- jmvcore::OptionList$new(
+                "stat_cont_global",
+                stat_cont_global,
                 options=list(
-                    "auto",
                     "mean_sd",
                     "median_iqr",
-                    "n_percent"),
-                default="auto")
+                    "range"),
+                default="mean_sd")
+            private$..stats_cont_specific <- jmvcore::OptionArray$new(
+                "stats_cont_specific",
+                stats_cont_specific,
+                template=jmvcore::OptionGroup$new(
+                    "stats_cont_specific",
+                    NULL,
+                    elements=list(
+                        jmvcore::OptionVariable$new(
+                            "var",
+                            NULL),
+                        jmvcore::OptionList$new(
+                            "stat",
+                            NULL,
+                            options=list(
+                                "use_global",
+                                "mean_sd",
+                                "median_iqr",
+                                "range"),
+                            default="use_global"))))
+            private$..stat_cat_global <- jmvcore::OptionList$new(
+                "stat_cat_global",
+                stat_cat_global,
+                options=list(
+                    "n_percent",
+                    "n_total_percent"),
+                default="n_percent")
+            private$..stats_cat_specific <- jmvcore::OptionArray$new(
+                "stats_cat_specific",
+                stats_cat_specific,
+                template=jmvcore::OptionGroup$new(
+                    "stats_cat_specific",
+                    NULL,
+                    elements=list(
+                        jmvcore::OptionVariable$new(
+                            "var",
+                            NULL),
+                        jmvcore::OptionList$new(
+                            "stat",
+                            NULL,
+                            options=list(
+                                "use_global",
+                                "n_percent",
+                                "n_total_percent"),
+                            default="use_global"))))
             private$..missing <- jmvcore::OptionList$new(
                 "missing",
                 missing,
@@ -81,9 +134,13 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 exportPath,
                 default="~/Desktop/summary_table.docx")
 
-            self$.addOption(private$..vars)
+            self$.addOption(private$..vars_cont)
+            self$.addOption(private$..vars_cat)
             self$.addOption(private$..by)
-            self$.addOption(private$..statistic)
+            self$.addOption(private$..stat_cont_global)
+            self$.addOption(private$..stats_cont_specific)
+            self$.addOption(private$..stat_cat_global)
+            self$.addOption(private$..stats_cat_specific)
             self$.addOption(private$..missing)
             self$.addOption(private$..missingText)
             self$.addOption(private$..percent)
@@ -92,9 +149,13 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..exportPath)
         }),
     active = list(
-        vars = function() private$..vars$value,
+        vars_cont = function() private$..vars_cont$value,
+        vars_cat = function() private$..vars_cat$value,
         by = function() private$..by$value,
-        statistic = function() private$..statistic$value,
+        stat_cont_global = function() private$..stat_cont_global$value,
+        stats_cont_specific = function() private$..stats_cont_specific$value,
+        stat_cat_global = function() private$..stat_cat_global$value,
+        stats_cat_specific = function() private$..stats_cat_specific$value,
         missing = function() private$..missing$value,
         missingText = function() private$..missingText$value,
         percent = function() private$..percent$value,
@@ -102,9 +163,13 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         exportWord = function() private$..exportWord$value,
         exportPath = function() private$..exportPath$value),
     private = list(
-        ..vars = NA,
+        ..vars_cont = NA,
+        ..vars_cat = NA,
         ..by = NA,
-        ..statistic = NA,
+        ..stat_cont_global = NA,
+        ..stats_cont_specific = NA,
+        ..stat_cat_global = NA,
+        ..stats_cat_specific = NA,
         ..missing = NA,
         ..missingText = NA,
         ..percent = NA,
@@ -155,9 +220,13 @@ tblSummaryBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #'
 #' 
 #' @param data .
-#' @param vars .
+#' @param vars_cont .
+#' @param vars_cat .
 #' @param by .
-#' @param statistic .
+#' @param stat_cont_global .
+#' @param stats_cont_specific .
+#' @param stat_cat_global .
+#' @param stats_cat_specific .
 #' @param missing .
 #' @param missingText .
 #' @param percent .
@@ -172,9 +241,13 @@ tblSummaryBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @export
 tblSummary <- function(
     data,
-    vars,
+    vars_cont,
+    vars_cat,
     by,
-    statistic = "auto",
+    stat_cont_global = "mean_sd",
+    stats_cont_specific,
+    stat_cat_global = "n_percent",
+    stats_cat_specific,
     missing = "ifany",
     missingText = "Unknown",
     percent = "column",
@@ -185,19 +258,25 @@ tblSummary <- function(
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
         stop("tblSummary requires jmvcore to be installed (restart may be required)")
 
-    if ( ! missing(vars)) vars <- jmvcore::resolveQuo(jmvcore::enquo(vars))
+    if ( ! missing(vars_cont)) vars_cont <- jmvcore::resolveQuo(jmvcore::enquo(vars_cont))
+    if ( ! missing(vars_cat)) vars_cat <- jmvcore::resolveQuo(jmvcore::enquo(vars_cat))
     if ( ! missing(by)) by <- jmvcore::resolveQuo(jmvcore::enquo(by))
     if (missing(data))
         data <- jmvcore::marshalData(
             parent.frame(),
-            `if`( ! missing(vars), vars, NULL),
+            `if`( ! missing(vars_cont), vars_cont, NULL),
+            `if`( ! missing(vars_cat), vars_cat, NULL),
             `if`( ! missing(by), by, NULL))
 
 
     options <- tblSummaryOptions$new(
-        vars = vars,
+        vars_cont = vars_cont,
+        vars_cat = vars_cat,
         by = by,
-        statistic = statistic,
+        stat_cont_global = stat_cont_global,
+        stats_cont_specific = stats_cont_specific,
+        stat_cat_global = stat_cat_global,
+        stats_cat_specific = stats_cat_specific,
         missing = missing,
         missingText = missingText,
         percent = percent,

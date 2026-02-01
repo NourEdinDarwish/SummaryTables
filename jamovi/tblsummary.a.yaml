@@ -9,16 +9,23 @@ options:
   - name: data
     type: Data
 
-  - name: vars
-    title: Variables
+  - name: vars_cont
+    title: Continuous Variables
     type: Variables
     suggested:
       - continuous
+    permitted:
+      - numeric
+
+  - name: vars_cat
+    title: Categorical Variables
+    type: Variables
+    suggested:
       - nominal
       - ordinal
     permitted:
-      - numeric
       - factor
+      - numeric
 
   - name: by
     title: Group by
@@ -28,19 +35,69 @@ options:
       - ordinal
       - id
 
-  - name: statistic
-    title: Statistic Type
+  - name: stat_cont_global
+    title: Global Continuous Stat
     type: List
     options:
-      - title: Auto
-        name: auto
       - title: Mean (SD)
         name: mean_sd
       - title: Median (IQR)
         name: median_iqr
+      - title: Range
+        name: range
+    default: mean_sd
+
+  - name: stats_cont_specific
+    title: Specific Continuous Stats
+    type: Array
+    template:
+      type: Group
+      elements:
+        - name: var
+          type: Variable
+        - name: stat
+          title: Statistic
+          type: List
+          options:
+            - title: Use Global
+              name: use_global
+            - title: Mean (SD)
+              name: mean_sd
+            - title: Median (IQR)
+              name: median_iqr
+            - title: Range
+              name: range
+          default: use_global
+
+  - name: stat_cat_global
+    title: Global Categorical Stat
+    type: List
+    options:
       - title: n (%)
         name: n_percent
-    default: auto
+      - title: n/N (%)
+        name: n_total_percent
+    default: n_percent
+
+  - name: stats_cat_specific
+    title: Specific Categorical Stats
+    type: Array
+    template:
+      type: Group
+      elements:
+        - name: var
+          type: Variable
+        - name: stat
+          title: Statistic
+          type: List
+          options:
+            - title: Use Global
+              name: use_global
+            - title: n (%)
+              name: n_percent
+            - title: n/N (%)
+              name: n_total_percent
+          default: use_global
 
   - name: missing
     title: Missing Values
