@@ -9,7 +9,7 @@ options:
   - name: data
     type: Data
 
-  - name: vars_cont
+  - name: varsCont
     title: Continuous Variables
     type: Variables
     suggested:
@@ -17,7 +17,7 @@ options:
     permitted:
       - numeric
 
-  - name: vars_cat
+  - name: varsCat
     title: Categorical Variables
     type: Variables
     suggested:
@@ -25,17 +25,45 @@ options:
       - ordinal
     permitted:
       - factor
-      - numeric
+      - id
 
-  - name: by
+  - name: groupBy
     title: Group by
     type: Variable
     suggested:
       - nominal
       - ordinal
-      - id
 
-  - name: stat_cont_global
+  - name: missing
+    title: Missing Values
+    type: List
+    options:
+      - title: Show if present
+        name: ifany
+      - title: Hide
+        name: no
+      - title: Always show
+        name: always
+    default: ifany
+
+  - name: missingText
+    title: Label for missing data
+    type: String
+    default: Unknown
+
+  - name: percent
+    title: Percent Type
+    type: List
+    options:
+      - title: Column %
+        name: column
+      - title: Row %
+        name: row
+      - title: Total %
+        name: cell
+    default: column
+
+  - name: statContGlobal
     title: Global Continuous Stat
     type: List
     options:
@@ -47,7 +75,7 @@ options:
         name: range
     default: mean_sd
 
-  - name: stats_cont_specific
+  - name: statsContSpecific
     title: Specific Continuous Stats
     type: Array
     template:
@@ -69,7 +97,7 @@ options:
               name: range
           default: use_global
 
-  - name: stat_cat_global
+  - name: statCatGlobal
     title: Global Categorical Stat
     type: List
     options:
@@ -79,7 +107,7 @@ options:
         name: n_total_percent
     default: n_percent
 
-  - name: stats_cat_specific
+  - name: statsCatSpecific
     title: Specific Categorical Stats
     type: Array
     template:
@@ -99,46 +127,130 @@ options:
               name: n_total_percent
           default: use_global
 
-  - name: missing
-    title: Missing Values
-    type: List
-    options:
-      - title: If any
-        name: ifany
-      - title: No
-        name: no
-      - title: Always
-        name: always
-    default: ifany
-
-  - name: missingText
-    title: Missing Text
-    type: String
-    default: Unknown
-
-  - name: percent
-    title: Percent Type
-    type: List
-    options:
-      - title: Column
-        name: column
-      - title: Row
-        name: row
-      - title: Cell
-        name: cell
-    default: column
-
-  - name: p_value
+  - name: pValue
     title: Add p-value
     type: Bool
     default: false
 
-  - name: exportWord
+  - name: testContGlobal
+    title: Global Test
+    type: List
+    options:
+      - title: Auto-select
+        name: auto
+      - title: Student's t-test
+        name: t.test
+      - title: One-way ANOVA
+        name: oneway.test
+      - title: Paired t-test
+        name: paired.t.test
+      - title: Wilcoxon rank-sum
+        name: wilcox.test
+      - title: Kruskal-Wallis
+        name: kruskal.test
+      - title: Paired Wilcoxon rank-sum
+        name: paired.wilcox.test
+      - title: Mood's two-sample test of scale
+        name: mood.test
+      - title: ANCOVA
+        name: ancova
+      - title: Random intercept logistic
+        name: lme4
+    default: auto
+  - name: testsContSpecific
+    title: Specific Tests
+    type: Array
+    default: []
+    template:
+      type: Group
+      elements:
+        - name: var
+          type: Variable
+        - name: test
+          type: List
+          options:
+            - title: Use Global
+              name: use_global
+            - title: Auto-select
+              name: auto
+            - title: Student's t-test
+              name: t.test
+            - title: One-way ANOVA
+              name: oneway.test
+            - title: Paired t-test
+              name: paired.t.test
+            - title: Wilcoxon rank-sum
+              name: wilcox.test
+            - title: Kruskal-Wallis
+              name: kruskal.test
+            - title: Paired Wilcoxon rank-sum
+              name: paired.wilcox.test
+            - title: Mood's two-sample test of scale
+              name: mood.test
+            - title: ANCOVA
+              name: ancova
+            - title: Random intercept logistic
+              name: lme4
+          default: use_global
+  - name: testCatGlobal
+    title: Global Test
+    type: List
+    options:
+      - title: Auto-select
+        name: auto
+      - title: Chi-square
+        name: chisq.test.no.correct
+      - title: Chi-square (continuity correction)
+        name: chisq.test
+      - title: Fisher's exact
+        name: fisher.test
+      - title: McNemar's test
+        name: mcnemar.test
+      - title: McNemar's test (wide)
+        name: mcnemar.test.wide
+      - title: Test for equality of proportions
+        name: prop.test
+      - title: Random intercept logistic
+        name: lme4
+    default: auto
+  - name: testsCatSpecific
+    title: Specific Tests
+    type: Array
+    default: []
+    template:
+      type: Group
+      elements:
+        - name: var
+          type: Variable
+        - name: test
+          type: List
+          options:
+            - title: Use Global
+              name: use_global
+            - title: Auto-select
+              name: auto
+            - title: Chi-square
+              name: chisq.test.no.correct
+            - title: Chi-square (continuity correction)
+              name: chisq.test
+            - title: Fisher's exact
+              name: fisher.test
+            - title: McNemar's test
+              name: mcnemar.test
+            - title: McNemar's test (wide)
+              name: mcnemar.test.wide
+            - title: Test for equality of proportions
+              name: prop.test
+            - title: Random intercept logistic
+              name: lme4
+          default: use_global
+
+  - name: export
     title: Save to Word
     type: Bool
     default: false
 
-  - name: exportPath
+  - name: path
     title: Export path
     type: String
     default: ~/Desktop/summary_table.docx

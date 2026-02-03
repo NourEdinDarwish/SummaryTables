@@ -11,66 +11,40 @@ tblSummaryClass <- R6::R6Class(
   ),
   private = list(
     .table = NULL,
-    .message_msgs = character(),
-    .warning_msgs = character(),
+    .messageMsgs = character(),
+    .warningMsgs = character(),
 
-    .add_message = function(msg) {
-      private$.message_msgs <- c(private$.message_msgs, msg)
+    .addMessage = function(msg) {
+      private$.messageMsgs <- c(private$.messageMsgs, msg)
     },
 
-    .add_warning = function(msg) {
+    .addWarning = function(msg) {
       if (!grepl("C:/Rtools/home/builder", msg, fixed = TRUE)) {
-        private$.warning_msgs <- c(private$.warning_msgs, msg)
+        private$.warningMsgs <- c(private$.warningMsgs, msg)
       }
     },
 
-    .run_safe = function(expr) {
+    .runSafe = function(expr) {
       withCallingHandlers(
         expr,
         warning = function(w) {
-          private$.add_warning(w$message)
+          private$.addWarning(w$message)
           invokeRestart("muffleWarning")
         },
         message = function(m) {
-          private$.add_message(m$message)
+          private$.addMessage(m$message)
           invokeRestart("muffleMessage")
         }
       )
     },
 
-    .computeTable = function() {
-      # 1. Validation & Setup
-      vars_cont <- self$options$vars_cont
-      vars_cat <- self$options$vars_cat
-      
-      # Check if any variables are selected
-      if (length(vars_cont) == 0 && length(vars_cat) == 0) {
-        return(NULL)
-      }
-
-      # Explicitly select data to ensure clean environment
-      data <- self$data
-
-      # 2. Argument Mapping & Data Preparation
-      # Combine variables (Categorical first, then Continuous - or user preference?)
-      # adhering to standard assumption: Cat then Cont
-      all_vars <- c(vars_cat, vars_cont)
-      
-      # Determine Types
-      typeArguments <- list()
-      if (length(vars_cont) > 0) {
-         for (v in vars_cont) typeArguments[[v]] <- "continuous"
-      }
-      if (length(vars_cat) > 0) {
-         for (v in vars_cat) typeArguments[[v]] <- "categorical"
-      }
-
+    .constructStatArgs = function(varsCont, varsCat) {
       # Helper to map option to gtsummary string
-      get_stat_string <- function(option, type) {
+      getStatString <- function(option, type) {
         if (type == "continuous") {
           if (option == "mean_sd") return("{mean} ({sd})")
           if (option == "median_iqr") return("{median} ({p25}, {p75})")
-          if (option == "n_percent") return("{n} ({p}%)") # Unusual for cont, but possible
+          if (option == "n_percent") return("{n} ({p}%)")
           if (option == "range") return("{min}, {max}")
         } else if (type == "categorical") {
           if (option == "n_percent") return("{n} ({p}%)")
@@ -79,57 +53,115 @@ tblSummaryClass <- R6::R6Class(
         return(NULL)
       }
 
-      # Statistic Arguments (List of Formulas)
       statisticArguments <- list()
 
-      # Global Defaults 
-      # We use formulas for selectors like all_continuous()
-      
-      global_stat_cont <- get_stat_string(self$options$stat_cont_global, "continuous")
-      global_stat_cat <- get_stat_string(self$options$stat_cat_global, "categorical")
-      
-      if (!is.null(global_stat_cont)) {
-        statisticArguments <- c(statisticArguments, list(gtsummary::all_continuous() ~ global_stat_cont))
+      # Global Defaults
+      globalStatCont <- getStatString(self$options$statContGlobal, "continuous")
+      globalStatCat <- getStatString(self$options$statCatGlobal, "categorical")
+
+      if (!is.null(globalStatCont)) {
+        statisticArguments <- c(statisticArguments, list(gtsummary::all_continuous() ~ globalStatCont))
       }
-      if (!is.null(global_stat_cat)) {
-        statisticArguments <- c(statisticArguments, list(gtsummary::all_categorical() ~ global_stat_cat))
+      if (!is.null(globalStatCat)) {
+        statisticArguments <- c(statisticArguments, list(gtsummary::all_categorical() ~ globalStatCat))
       }
 
       # Specific Overrides - Continuous
-      # For specific variables, we can use named lists or formulas string ~ value
-      for (item in self$options$stats_cont_specific) {
-        if (item$stat != "use_global" && item$var %in% vars_cont) {
-           val <- get_stat_string(item$stat, "continuous")
-           if (!is.null(val)) {
-             # safely append formula for specific variable
-             statisticArguments <- c(statisticArguments, list(stats::as.formula(paste0("`", item$var, "` ~ '", val, "'"))))
-           }
+      for (item in self$options$statsContSpecific) {
+        if (item$stat != "use_global" && item$var %in% varsCont) {
+          val <- getStatString(item$stat, "continuous")
+          if (!is.null(val)) {
+            statisticArguments <- c(statisticArguments, list(stats::as.formula(paste0("`", item$var, "` ~ '", val, "'"))))
+          }
         }
       }
 
       # Specific Overrides - Categorical
-      for (item in self$options$stats_cat_specific) {
-        if (item$stat != "use_global" && item$var %in% vars_cat) {
-           val <- get_stat_string(item$stat, "categorical")
-           if (!is.null(val)) {
-             statisticArguments <- c(statisticArguments, list(stats::as.formula(paste0("`", item$var, "` ~ '", val, "'"))))
-           }
+      for (item in self$options$statsCatSpecific) {
+        if (item$stat != "use_global" && item$var %in% varsCat) {
+          val <- getStatString(item$stat, "categorical")
+          if (!is.null(val)) {
+            statisticArguments <- c(statisticArguments, list(stats::as.formula(paste0("`", item$var, "` ~ '", val, "'"))))
+          }
         }
       }
 
+      return(statisticArguments)
+    },
+
+    .constructTestArgs = function(varsCont, varsCat) {
+      testArguments <- list()
+
+      # Helper to resolve test selection
+      resolveTest <- function(specificChoice, globalChoice) {
+        if (specificChoice == "use_global") return(globalChoice)
+        return(specificChoice)
+      }
+
+      # 1. Continuous Variables
+      for (item in self$options$testsContSpecific) {
+        if (item$var %in% varsCont) {
+          selection <- resolveTest(item$test, self$options$testContGlobal)
+          if (selection != "auto") {
+            testArguments[[item$var]] <- selection
+          }
+        }
+      }
+
+      # 2. Categorical Variables
+      for (item in self$options$testsCatSpecific) {
+        if (item$var %in% varsCat) {
+          selection <- resolveTest(item$test, self$options$testCatGlobal)
+          if (selection != "auto") {
+            testArguments[[item$var]] <- selection
+          }
+        }
+      }
+
+      return(testArguments)
+    },
+
+    .computeTable = function() {
+      # 1. Validation & Setup
+      varsCont <- self$options$varsCont
+      varsCat <- self$options$varsCat
+
+      # Check if any variables are selected
+      if (length(varsCont) == 0 && length(varsCat) == 0) {
+        return(NULL)
+      }
+
+      # Explicitly select data to ensure clean environment
+      data <- self$data
+
+      # 2. Argument Mapping & Data Preparation
+      # Combine variables (Categorical first, then Continuous)
+      allVars <- c(varsCat, varsCont)
+
+      # Determine Types
+      typeArguments <- list()
+      if (length(varsCont) > 0) {
+        for (v in varsCont) typeArguments[[v]] <- "continuous"
+      }
+      if (length(varsCat) > 0) {
+        for (v in varsCat) typeArguments[[v]] <- "categorical"
+      }
+
+      # Statistic Arguments (delegated)
+      statisticArguments <- private$.constructStatArgs(varsCont, varsCat)
+
       # Map 'by' option
-      byVariable <- self$options$by
+      byVariable <- self$options$groupBy
       if (is.null(byVariable)) {
         byVariable <- NULL
       }
 
       # 3. Execution (gtsummary)
-
       # Core analysis
-      table <- private$.run_safe({
+      table <- private$.runSafe({
         gtsummary::tbl_summary(
           data = data,
-          include = all_vars,
+          include = allVars,
           by = byVariable,
           type = typeArguments,
           statistic = statisticArguments,
@@ -140,9 +172,12 @@ tblSummaryClass <- R6::R6Class(
       })
 
       # Add p-values if requested AND grouping variable is present
-      if (!is.null(table) && self$options$p_value && !is.null(byVariable)) {
-        table <- private$.run_safe({
-          table |> gtsummary::add_p()
+      if (!is.null(table) && self$options$pValue && !is.null(byVariable)) {
+        testArguments <- private$.constructTestArgs(varsCont, varsCat)
+        
+        table <- private$.runSafe({
+          # We must pass the list, even if empty (empty list = all auto)
+          gtsummary::add_p(table, test = testArguments)
         })
       }
 
@@ -164,7 +199,7 @@ tblSummaryClass <- R6::R6Class(
     },
 
     .render = function(table) {
-      private$.run_safe({
+      private$.runSafe({
         htmlContent <- table |>
           gtsummary::as_gt() |>
           gt::as_raw_html()
@@ -173,12 +208,12 @@ tblSummaryClass <- R6::R6Class(
     },
 
     .export = function(table) {
-      if (isTRUE(self$options$exportWord)) {
+      if (isTRUE(self$options$export)) {
         # Use utility function to resolve path (includes smart defaults/expansion)
-        path <- resolve_export_path(self$options$exportPath)
+        path <- resolveExportPath(self$options$path)
 
         if (is.null(path)) return()
-        private$.run_safe({
+        private$.runSafe({
           flexTableObject <- gtsummary::as_flex_table(table)
           flextable::save_as_docx(flexTableObject, path = path)
 
@@ -196,9 +231,9 @@ tblSummaryClass <- R6::R6Class(
 
     .notices = function() {
       # 1. Messages (INFO)
-      if (length(private$.message_msgs) > 0) {
+      if (length(private$.messageMsgs) > 0) {
         # Combine messages
-        finalContent <- paste(private$.message_msgs, collapse = "\n")
+        finalContent <- paste(private$.messageMsgs, collapse = "\n")
 
         # Create Notice with INFO type
         messageNotice <- jmvcore::Notice$new(
@@ -211,9 +246,9 @@ tblSummaryClass <- R6::R6Class(
       }
 
       # 2. Warnings (WARNING)
-      if (length(private$.warning_msgs) > 0) {
+      if (length(private$.warningMsgs) > 0) {
         # Combine warnings
-        finalContent <- paste(private$.warning_msgs, collapse = "\n")
+        finalContent <- paste(private$.warningMsgs, collapse = "\n")
 
         # Create Notice with WARNING type
         warningNotice <- jmvcore::Notice$new(

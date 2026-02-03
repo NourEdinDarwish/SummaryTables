@@ -7,7 +7,7 @@
 #'
 #' @param path String. The user-provided path or filename.
 #' @return String. The absolute, normalized path.
-resolve_export_path <- function(path) {
+resolveExportPath <- function(path) {
   # Expand ~ manually if possible on Windows to avoid Rtools/builder path issues
   if (grepl("~", path, fixed = TRUE)) {
     home <- Sys.getenv("USERPROFILE")
