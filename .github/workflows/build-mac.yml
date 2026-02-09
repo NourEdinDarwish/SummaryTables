@@ -16,7 +16,7 @@ jobs:
     - name: Download and Install Jamovi
       run: |
         # Download the latest jamovi for macOS (ARM64 for macos-latest)
-        curl -O https://www.jamovi.org/downloads/jamovi-2.7.18.0-macos-arm64.dmg
+        curl -L -O https://www.jamovi.org/downloads/jamovi-2.7.18.0-macos-arm64.dmg
         
         # Mount the DMG
         hdiutil attach jamovi-2.7.18.0-macos-arm64.dmg
