@@ -1,54 +1,33 @@
-const events = {
-  // Fires when user adds/removes continuous variables
-  varsCont_changed: function (ui) {
-    updateList(ui, ui.varsCont, ui.statsContSpecific, "use_global", "stat");
-    updateList(ui, ui.varsCont, ui.testsContSpecific, "use_global", "test");
-  },
-
-  // Fires when user adds/removes categorical variables
-  varsCat_changed: function (ui) {
-    updateList(ui, ui.varsCat, ui.statsCatSpecific, "use_global", "stat");
-    updateList(ui, ui.varsCat, ui.testsCatSpecific, "use_global", "test");
-  },
-};
-
 /**
- * Generic function to update a specific settings list based on a variable source list.
- * @param {Object} ui - The UI object.
- * @param {Object} sourceCtrl - The control containing the list of variables (e.g., varsCont).
- * @param {Object} targetCtrl - The control to update (e.g., statsContSpecific).
- * @param {string} defaultValue - The default value for the setting (e.g., "use_global").
- * @param {string} keyName - The key name for the setting in the item object (e.g., "stat" or "test").
+ * Syncs a settings list to match the selected variables.
+ * @param {Object} source - The source control with variable names
+ * @param {Object} target - The target control to update
+ * @param {string} targetIdName - Name of the identifier element in target (e.g. "var")
+ * @param {string} targetValName - Name of the value element in target (e.g. "stat")
+ * @param {string} defaultVal - Value for new entries (e.g. "use_global")
  */
-let updateList = function (ui, sourceCtrl, targetCtrl, defaultValue, keyName) {
-  let variableList = sourceCtrl.value();
-  if (!variableList) variableList = [];
+const sync = function (source, target, targetIdName, targetValName, defaultVal) {
+  const sourceList = source.value() || [];
+  const targetList = target.value() || [];
 
-  let currentList = targetCtrl.value();
-  if (!currentList) currentList = [];
+  const updated = sourceList.map(function (sourceItem) {
+    const existing = targetList.find(function (targetItem) {
+      return targetItem[targetIdName] === sourceItem;
+    });
+    return existing || { [targetIdName]: sourceItem, [targetValName]: defaultVal };
+  });
 
-  let newList = [];
-  for (let i = 0; i < variableList.length; i++) {
-    let found = null;
-    for (let j = 0; j < currentList.length; j++) {
-      if (currentList[j] && currentList[j].var === variableList[i]) {
-        found = currentList[j];
-        break;
-      }
-    }
-
-    if (found === null) {
-      // Create new item with correct key
-      let newItem = { var: variableList[i] };
-      newItem[keyName] = defaultValue;
-      newList.push(newItem);
-    } else {
-      // Keep existing item
-      newList.push(found);
-    }
-  }
-
-  targetCtrl.setValue(newList);
+  target.setValue(updated);
 };
 
-module.exports = events;
+module.exports = {
+  varsCont_changed: function (ui) {
+    sync(ui.varsCont, ui.statsContSpecific, "var", "stat", "use_global");
+    sync(ui.varsCont, ui.testsContSpecific, "var", "test", "use_global");
+  },
+
+  varsCat_changed: function (ui) {
+    sync(ui.varsCat, ui.statsCatSpecific, "var", "stat", "use_global");
+    sync(ui.varsCat, ui.testsCatSpecific, "var", "test", "use_global");
+  },
+};
