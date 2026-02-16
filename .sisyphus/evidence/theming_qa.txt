@@ -1,0 +1,40 @@
+===============================================
+THEMING.R QA TEST RESULTS
+Date: 2026-02-16 17:59:15 
+===============================================
+
+=== QA Scenario 1: Theme application changes output ===
+Default and JAMA tables different: TRUE 
+RESULT: PASS
+
+=== QA Scenario 2: Theme reset clears previous ===
+After reset matches never-themed: TRUE 
+RESULT: PASS
+
+=== QA Scenario 3: Language theme changes labels ===
+Spanish header label: **Característica** 
+Contains Caracteristica: TRUE 
+RESULT: PASS
+
+=== QA Scenario 4: Theme stacking (journal + compact + language + theme) ===
+Stacked theme applied without error
+RESULT: PASS
+
+=== QA Scenario 5: All individual theme options ===
+Option 1: theme=mean_sd, journal=none, lang=en, compact=FALSE -> OK
+Setting theme "Exploratory Data Analysis"
+Option 2: theme=eda, journal=none, lang=en, compact=FALSE -> OK
+Option 3: theme=continuous2, journal=none, lang=en, compact=FALSE -> OK
+Option 4: theme=none, journal=jama, lang=en, compact=FALSE -> OK
+Option 5: theme=none, journal=lancet, lang=en, compact=FALSE -> OK
+Option 6: theme=none, journal=nejm, lang=en, compact=FALSE -> OK
+Option 7: theme=none, journal=qjecon, lang=en, compact=FALSE -> OK
+Option 8: theme=none, journal=none, lang=de, compact=FALSE -> OK
+Option 9: theme=none, journal=none, lang=fr, compact=FALSE -> OK
+Option 10: theme=none, journal=none, lang=es, compact=FALSE -> OK
+Option 11: theme=none, journal=none, lang=en, compact=TRUE -> OK
+RESULT: PASS 
+
+===============================================
+ALL QA SCENARIOS PASSED
+===============================================
