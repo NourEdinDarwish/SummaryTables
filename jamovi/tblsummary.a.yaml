@@ -63,6 +63,79 @@ options:
         name: cell
     default: column
 
+  - name: journal
+    title: Journal Style
+    type: List
+    options:
+      - title: Default
+        name: none
+      - title: JAMA
+        name: jama
+      - title: The Lancet
+        name: lancet
+      - title: NEJM
+        name: nejm
+      - title: QJEcon
+        name: qjecon
+    default: none
+
+  - name: compact
+    title: Compact Display
+    type: Bool
+    default: false
+
+  - name: theme
+    title: General Theme
+    type: List
+    options:
+      - title: Default
+        name: none
+      - title: Mean (SD)
+        name: mean_sd
+      - title: EDA
+        name: eda
+      - title: Continuous2
+        name: continuous2
+    default: none
+
+  - name: language
+    title: Language
+    type: List
+    options:
+      - title: English
+        name: en
+      - title: German
+        name: de
+      - title: Spanish
+        name: es
+      - title: French
+        name: fr
+      - title: Gujarati
+        name: gu
+      - title: Hindi
+        name: hi
+      - title: Icelandic
+        name: is
+      - title: Japanese
+        name: ja
+      - title: Korean
+        name: kr
+      - title: Marathi
+        name: mr
+      - title: Dutch
+        name: nl
+      - title: Norwegian
+        name: no
+      - title: Portuguese
+        name: pt
+      - title: Swedish
+        name: se
+      - title: Chinese (Simplified)
+        name: zh-cn
+      - title: Chinese (Traditional)
+        name: zh-tw
+    default: en
+
   - name: statContGlobal
     title: Global Continuous Stat
     type: List
