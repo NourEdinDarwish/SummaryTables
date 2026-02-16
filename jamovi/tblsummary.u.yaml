@@ -47,6 +47,27 @@ children:
             name: percent
 
   - type: CollapseBox
+    label: Themes
+    collapsed: true
+    children:
+      - type: LayoutBox
+        children:
+          - type: ComboBox
+            name: journal
+      - type: LayoutBox
+        children:
+          - type: CheckBox
+            name: compact
+      - type: LayoutBox
+        children:
+          - type: ComboBox
+            name: theme
+      - type: LayoutBox
+        children:
+          - type: ComboBox
+            name: language
+
+  - type: CollapseBox
     label: Statistics
     collapsed: true
     children:
