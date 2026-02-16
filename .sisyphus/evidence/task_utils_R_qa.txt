@@ -1,0 +1,18 @@
+
+QA Verification Results for utils.R
+=====================================
+
+Test 1: resolveExportPath still works
+- Input: '~/test.docx'
+- Output: 'C:/Users/noore/test.docx'
+- Status: PASS - Returns valid absolute path
+
+Test 2: isNullOrEmpty works correctly
+- isNullOrEmpty(NULL): TRUE
+- isNullOrEmpty(NA): TRUE  
+- isNullOrEmpty(''): TRUE
+- isNullOrEmpty('test'): FALSE
+- Status: PASS - All cases correct
+
+File loaded successfully: TRUE
+
