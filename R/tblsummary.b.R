@@ -4,15 +4,14 @@ tblSummaryClass <- R6::R6Class(
   active = list(
     table = function() {
       if (is.null(private$.table)) {
-        collector <- newCollector()
-        on.exit(resetTheme(), add = TRUE)
-        private$.table <- private$.computeTable(collector)
+        private$.table <- private$.computeTable(private$.collector)
       }
       private$.table
     }
   ),
   private = list(
     .table = NULL,
+    .collector = NULL,
 
     .constructStatArgs = function(varsCont, varsCat) {
       # Helper to map option to gtsummary string
@@ -39,26 +38,28 @@ tblSummaryClass <- R6::R6Class(
 
       statisticArguments <- list()
 
-      # Global Defaults
-      globalStatCont <- getStatString(self$options$statContGlobal, "continuous")
-      globalStatCat <- getStatString(self$options$statCatGlobal, "categorical")
+      # Default statistics (skip adding argument if "auto")
+      statContDefault <- self$options$statContDefault
+      statCatDefault <- self$options$statCatDefault
 
-      if (!is.null(globalStatCont)) {
+      defaultStatCont <- getStatString(statContDefault, "continuous")
+      if (!is.null(defaultStatCont)) {
         statisticArguments <- c(
           statisticArguments,
-          list(gtsummary::all_continuous() ~ globalStatCont)
+          list(gtsummary::all_continuous() ~ defaultStatCont)
         )
       }
-      if (!is.null(globalStatCat)) {
+      defaultStatCat <- getStatString(statCatDefault, "categorical")
+      if (!is.null(defaultStatCat)) {
         statisticArguments <- c(
           statisticArguments,
-          list(gtsummary::all_categorical() ~ globalStatCat)
+          list(gtsummary::all_categorical() ~ defaultStatCat)
         )
       }
 
       # Specific Overrides - Continuous
       for (item in self$options$statsContSpecific) {
-        if (item$stat != "use_global" && item$var %in% varsCont) {
+        if (item$stat != "use_default" && item$var %in% varsCont) {
           val <- getStatString(item$stat, "continuous")
           if (!is.null(val)) {
             statisticArguments <- c(
@@ -71,7 +72,7 @@ tblSummaryClass <- R6::R6Class(
 
       # Specific Overrides - Categorical
       for (item in self$options$statsCatSpecific) {
-        if (item$stat != "use_global" && item$var %in% varsCat) {
+        if (item$stat != "use_default" && item$var %in% varsCat) {
           val <- getStatString(item$stat, "categorical")
           if (!is.null(val)) {
             statisticArguments <- c(
@@ -88,10 +89,34 @@ tblSummaryClass <- R6::R6Class(
     .constructTestArgs = function(varsCont, varsCat) {
       testArguments <- list()
 
+      # Helper to resolve nonparametric/parametric shortcuts based on group count
+      resolveTestShortcut <- function(testName, nGroups) {
+        if (testName == "nonparametric") {
+          if (nGroups == 2) {
+            return("wilcox.test")
+          }
+          if (nGroups >= 3) return("kruskal.test")
+        }
+        if (testName == "parametric") {
+          if (nGroups == 2) {
+            return("t.test")
+          }
+          if (nGroups >= 3) return("oneway.test")
+        }
+        return(testName) # Return unchanged if not a shortcut
+      }
+
+      # Determine number of levels in groupBy variable
+      groupBy <- self$options$groupBy
+      nGroups <- 0
+      if (!is.null(groupBy) && groupBy %in% names(self$data)) {
+        nGroups <- length(unique(self$data[[groupBy]]))
+      }
+
       # Helper to resolve test selection
-      resolveTest <- function(specificChoice, globalChoice) {
-        if (specificChoice == "use_global") {
-          return(globalChoice)
+      resolveTest <- function(specificChoice, defaultChoice) {
+        if (specificChoice == "use_default") {
+          return(defaultChoice)
         }
         return(specificChoice)
       }
@@ -99,9 +124,10 @@ tblSummaryClass <- R6::R6Class(
       # 1. Continuous Variables
       for (item in self$options$testsContSpecific) {
         if (item$var %in% varsCont) {
-          selection <- resolveTest(item$test, self$options$testContGlobal)
+          selection <- resolveTest(item$test, self$options$testContDefault)
           if (selection != "auto") {
-            testArguments[[item$var]] <- selection
+            resolvedTest <- resolveTestShortcut(selection, nGroups)
+            testArguments[[item$var]] <- resolvedTest
           }
         }
       }
@@ -109,9 +135,10 @@ tblSummaryClass <- R6::R6Class(
       # 2. Categorical Variables
       for (item in self$options$testsCatSpecific) {
         if (item$var %in% varsCat) {
-          selection <- resolveTest(item$test, self$options$testCatGlobal)
+          selection <- resolveTest(item$test, self$options$testCatDefault)
           if (selection != "auto") {
-            testArguments[[item$var]] <- selection
+            resolvedTest <- resolveTestShortcut(selection, nGroups)
+            testArguments[[item$var]] <- resolvedTest
           }
         }
       }
@@ -123,7 +150,6 @@ tblSummaryClass <- R6::R6Class(
       # Theme setup - ensure cleanup even on error
       on.exit(resetTheme(), add = TRUE)
       applyTheme(
-        themeOption = self$options$theme,
         journalOption = self$options$journal,
         languageOption = self$options$language,
         compactOption = self$options$compact,
@@ -148,9 +174,11 @@ tblSummaryClass <- R6::R6Class(
 
       # Determine Types
       typeArguments <- list()
+      # Determine continuous type based on summaryType option
+      contType <- "continuous"
       if (length(varsCont) > 0) {
         for (v in varsCont) {
-          typeArguments[[v]] <- "continuous"
+          typeArguments[[v]] <- contType
         }
       }
       if (length(varsCat) > 0) {
@@ -203,27 +231,33 @@ tblSummaryClass <- R6::R6Class(
     },
 
     .run = function() {
-      # Create collector at start
-      collector <- newCollector()
+      # 1. Create collector for messages/warnings
+      private$.collector <- newCollector()
 
-      # Compute table (this also applies themes)
-      table <- private$.computeTable(collector)
+      # 2. Compute table (triggers theme setup via applyTheme)
+      table <- self$table
 
-      # Render if table exists
+      # 3. Render Table (if available)
       if (!is.null(table)) {
-        renderHtml(table, self$results$tbl, collector)
+        renderHtml(table, self$results$tbl, private$.collector)
 
-        # Export if enabled
+        # 4. Export (if requested)
         if (isTRUE(self$options$export)) {
           path <- resolveExportPath(self$options$path)
           if (!is.null(path)) {
-            exportDocx(table, path, self$options, self$results, collector)
+            exportDocx(
+              table,
+              path,
+              self$options,
+              self$results,
+              private$.collector
+            )
           }
         }
       }
 
-      # Display notices
-      displayNotices(collector, self$options, self$results)
+      # 5. Display Notices
+      displayNotices(private$.collector, self$options, self$results)
     }
   )
 )
