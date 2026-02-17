@@ -5,3 +5,4 @@
 ^\.agent$
 ^.*\.jmo$
 ^.*\.code-workspace$
+^\.sisyphus$

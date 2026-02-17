@@ -4,7 +4,7 @@
  * @param {Object} target - The target control to update
  * @param {string} targetIdName - Name of the identifier element in target (e.g. "var")
  * @param {string} targetValName - Name of the value element in target (e.g. "stat")
- * @param {string} defaultVal - Value for new entries (e.g. "use_global")
+ * @param {string} defaultVal - Value for new entries (e.g. "use_default")
  */
 const sync = function (source, target, targetIdName, targetValName, defaultVal) {
   const sourceList = source.value() || [];
@@ -22,12 +22,12 @@ const sync = function (source, target, targetIdName, targetValName, defaultVal) 
 
 module.exports = {
   varsCont_changed: function (ui) {
-    sync(ui.varsCont, ui.statsContSpecific, "var", "stat", "use_global");
-    sync(ui.varsCont, ui.testsContSpecific, "var", "test", "use_global");
+    sync(ui.varsCont, ui.statsContSpecific, "var", "stat", "use_default");
+    sync(ui.varsCont, ui.testsContSpecific, "var", "test", "use_default");
   },
 
   varsCat_changed: function (ui) {
-    sync(ui.varsCat, ui.statsCatSpecific, "var", "stat", "use_global");
-    sync(ui.varsCat, ui.testsCatSpecific, "var", "test", "use_global");
+    sync(ui.varsCat, ui.statsCatSpecific, "var", "stat", "use_default");
+    sync(ui.varsCat, ui.testsCatSpecific, "var", "test", "use_default");
   },
 };

@@ -20,8 +20,6 @@ resetTheme <- function() {
 #' first to prevent state leakage from previous runs. Themes stack on top of
 #' each other (e.g., JAMA + compact + Spanish).
 #'
-#' @param themeOption Character: General theme to apply. One of:
-#'   "none", "mean_sd", "eda", "continuous2"
 #' @param journalOption Character: Journal theme to apply. One of:
 #'   "none", "jama", "lancet", "nejm", "qjecon"
 #' @param languageOption Character: Language for labels. One of:
@@ -31,7 +29,6 @@ resetTheme <- function() {
 #' @return NULL (invisibly)
 #' @export
 applyTheme <- function(
-  themeOption = "none",
   journalOption = "none",
   languageOption = "en",
   compactOption = FALSE,
@@ -54,20 +51,6 @@ applyTheme <- function(
       gtsummary::theme_gtsummary_compact(set_theme = TRUE),
       collector
     )
-  }
-
-  # Apply general theme if specified (not "none")
-  if (themeOption != "none") {
-    themeExpr <- switch(
-      themeOption,
-      "mean_sd" = gtsummary::theme_gtsummary_mean_sd(),
-      "eda" = gtsummary::theme_gtsummary_eda(),
-      "continuous2" = gtsummary::theme_gtsummary_continuous2(),
-      NULL
-    )
-    if (!is.null(themeExpr)) {
-      runSafe(themeExpr, collector)
-    }
   }
 
   # Apply language theme if not English

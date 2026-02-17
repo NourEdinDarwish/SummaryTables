@@ -63,3 +63,4 @@ man/
 npm-debug.log
 inst/doc
 tests/testthat/Rplots.pdf
+.sisyphus/
