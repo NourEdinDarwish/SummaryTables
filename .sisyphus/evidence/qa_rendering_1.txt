@@ -1,4 +1,0 @@
-QA Test 1: Rendering produces HTML
- Result: HTML conversion successful
- Contains <table> tag:  TRUE 
- Content length:  8368  characters

@@ -1,5 +1,0 @@
-=== QA Scenario 2: Rtools Filter ===
-Result: 42
-Warnings count: 0
-Warnings: 
-Test PASSED: TRUE

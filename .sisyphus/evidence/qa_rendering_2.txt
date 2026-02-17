@@ -1,5 +1,0 @@
-QA Test 2: Rendering captures warnings
- Initial warnings: 0
- Final warnings:  0 
- Collector active: TRUE
- TEST 2 PASS: Rendering completed with collector active

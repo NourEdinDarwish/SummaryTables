@@ -1,5 +1,0 @@
-=== QA Scenario 1: Warning Capture ===
-Result: 42
-Warnings: test
-Messages: 
-Test PASSED: TRUE

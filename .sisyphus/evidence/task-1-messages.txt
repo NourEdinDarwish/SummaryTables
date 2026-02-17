@@ -1,6 +1,0 @@
-=== QA Scenario 3: Message Capture ===
-Result: 42
-Warnings: 
-Messages: test msg
-
-Test PASSED: TRUE

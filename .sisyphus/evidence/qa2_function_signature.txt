@@ -1,2 +1,0 @@
-function (collector, options, results) 
-NULL

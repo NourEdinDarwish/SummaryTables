@@ -12,14 +12,17 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             missing = "ifany",
             missingText = "Unknown",
             percent = "column",
-            statContGlobal = "mean_sd",
+            journal = "none",
+            compact = FALSE,
+            language = "en",
+            statContDefault = "mean_sd",
             statsContSpecific = NULL,
-            statCatGlobal = "n_percent",
+            statCatDefault = "n_percent",
             statsCatSpecific = NULL,
             pValue = FALSE,
-            testContGlobal = "auto",
+            testContDefault = "parametric",
             testsContSpecific = list(),
-            testCatGlobal = "auto",
+            testCatDefault = "auto",
             testsCatSpecific = list(),
             export = FALSE,
             path = "~/Desktop/summary_table.docx", ...) {
@@ -72,9 +75,44 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "row",
                     "cell"),
                 default="column")
-            private$..statContGlobal <- jmvcore::OptionList$new(
-                "statContGlobal",
-                statContGlobal,
+            private$..journal <- jmvcore::OptionList$new(
+                "journal",
+                journal,
+                options=list(
+                    "none",
+                    "jama",
+                    "lancet",
+                    "nejm",
+                    "qjecon"),
+                default="none")
+            private$..compact <- jmvcore::OptionBool$new(
+                "compact",
+                compact,
+                default=FALSE)
+            private$..language <- jmvcore::OptionList$new(
+                "language",
+                language,
+                options=list(
+                    "en",
+                    "de",
+                    "es",
+                    "fr",
+                    "gu",
+                    "hi",
+                    "is",
+                    "ja",
+                    "kr",
+                    "mr",
+                    "nl",
+                    "no",
+                    "pt",
+                    "se",
+                    "zh-cn",
+                    "zh-tw"),
+                default="en")
+            private$..statContDefault <- jmvcore::OptionList$new(
+                "statContDefault",
+                statContDefault,
                 options=list(
                     "mean_sd",
                     "median_iqr",
@@ -94,14 +132,14 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                             "stat",
                             NULL,
                             options=list(
-                                "use_global",
+                                "use_default",
                                 "mean_sd",
                                 "median_iqr",
                                 "range"),
-                            default="use_global"))))
-            private$..statCatGlobal <- jmvcore::OptionList$new(
-                "statCatGlobal",
-                statCatGlobal,
+                            default="use_default"))))
+            private$..statCatDefault <- jmvcore::OptionList$new(
+                "statCatDefault",
+                statCatDefault,
                 options=list(
                     "n_percent",
                     "n_total_percent"),
@@ -120,19 +158,20 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                             "stat",
                             NULL,
                             options=list(
-                                "use_global",
+                                "use_default",
                                 "n_percent",
                                 "n_total_percent"),
-                            default="use_global"))))
+                            default="use_default"))))
             private$..pValue <- jmvcore::OptionBool$new(
                 "pValue",
                 pValue,
                 default=FALSE)
-            private$..testContGlobal <- jmvcore::OptionList$new(
-                "testContGlobal",
-                testContGlobal,
+            private$..testContDefault <- jmvcore::OptionList$new(
+                "testContDefault",
+                testContDefault,
                 options=list(
-                    "auto",
+                    "parametric",
+                    "nonparametric",
                     "t.test",
                     "oneway.test",
                     "paired.t.test",
@@ -142,7 +181,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "mood.test",
                     "ancova",
                     "lme4"),
-                default="auto")
+                default="parametric")
             private$..testsContSpecific <- jmvcore::OptionArray$new(
                 "testsContSpecific",
                 testsContSpecific,
@@ -158,8 +197,9 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                             "test",
                             NULL,
                             options=list(
-                                "use_global",
-                                "auto",
+                                "use_default",
+                                "parametric",
+                                "nonparametric",
                                 "t.test",
                                 "oneway.test",
                                 "paired.t.test",
@@ -169,10 +209,10 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                                 "mood.test",
                                 "ancova",
                                 "lme4"),
-                            default="use_global"))))
-            private$..testCatGlobal <- jmvcore::OptionList$new(
-                "testCatGlobal",
-                testCatGlobal,
+                            default="use_default"))))
+            private$..testCatDefault <- jmvcore::OptionList$new(
+                "testCatDefault",
+                testCatDefault,
                 options=list(
                     "auto",
                     "chisq.test.no.correct",
@@ -198,8 +238,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                             "test",
                             NULL,
                             options=list(
-                                "use_global",
-                                "auto",
+                                "use_default",
                                 "chisq.test.no.correct",
                                 "chisq.test",
                                 "fisher.test",
@@ -207,7 +246,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                                 "mcnemar.test.wide",
                                 "prop.test",
                                 "lme4"),
-                            default="use_global"))))
+                            default="use_default"))))
             private$..export <- jmvcore::OptionBool$new(
                 "export",
                 export,
@@ -223,14 +262,17 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..missing)
             self$.addOption(private$..missingText)
             self$.addOption(private$..percent)
-            self$.addOption(private$..statContGlobal)
+            self$.addOption(private$..journal)
+            self$.addOption(private$..compact)
+            self$.addOption(private$..language)
+            self$.addOption(private$..statContDefault)
             self$.addOption(private$..statsContSpecific)
-            self$.addOption(private$..statCatGlobal)
+            self$.addOption(private$..statCatDefault)
             self$.addOption(private$..statsCatSpecific)
             self$.addOption(private$..pValue)
-            self$.addOption(private$..testContGlobal)
+            self$.addOption(private$..testContDefault)
             self$.addOption(private$..testsContSpecific)
-            self$.addOption(private$..testCatGlobal)
+            self$.addOption(private$..testCatDefault)
             self$.addOption(private$..testsCatSpecific)
             self$.addOption(private$..export)
             self$.addOption(private$..path)
@@ -242,14 +284,17 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         missing = function() private$..missing$value,
         missingText = function() private$..missingText$value,
         percent = function() private$..percent$value,
-        statContGlobal = function() private$..statContGlobal$value,
+        journal = function() private$..journal$value,
+        compact = function() private$..compact$value,
+        language = function() private$..language$value,
+        statContDefault = function() private$..statContDefault$value,
         statsContSpecific = function() private$..statsContSpecific$value,
-        statCatGlobal = function() private$..statCatGlobal$value,
+        statCatDefault = function() private$..statCatDefault$value,
         statsCatSpecific = function() private$..statsCatSpecific$value,
         pValue = function() private$..pValue$value,
-        testContGlobal = function() private$..testContGlobal$value,
+        testContDefault = function() private$..testContDefault$value,
         testsContSpecific = function() private$..testsContSpecific$value,
-        testCatGlobal = function() private$..testCatGlobal$value,
+        testCatDefault = function() private$..testCatDefault$value,
         testsCatSpecific = function() private$..testsCatSpecific$value,
         export = function() private$..export$value,
         path = function() private$..path$value),
@@ -260,14 +305,17 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..missing = NA,
         ..missingText = NA,
         ..percent = NA,
-        ..statContGlobal = NA,
+        ..journal = NA,
+        ..compact = NA,
+        ..language = NA,
+        ..statContDefault = NA,
         ..statsContSpecific = NA,
-        ..statCatGlobal = NA,
+        ..statCatDefault = NA,
         ..statsCatSpecific = NA,
         ..pValue = NA,
-        ..testContGlobal = NA,
+        ..testContDefault = NA,
         ..testsContSpecific = NA,
-        ..testCatGlobal = NA,
+        ..testCatDefault = NA,
         ..testsCatSpecific = NA,
         ..export = NA,
         ..path = NA)
@@ -321,14 +369,17 @@ tblSummaryBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param missing .
 #' @param missingText .
 #' @param percent .
-#' @param statContGlobal .
+#' @param journal .
+#' @param compact .
+#' @param language .
+#' @param statContDefault .
 #' @param statsContSpecific .
-#' @param statCatGlobal .
+#' @param statCatDefault .
 #' @param statsCatSpecific .
 #' @param pValue .
-#' @param testContGlobal .
+#' @param testContDefault .
 #' @param testsContSpecific .
-#' @param testCatGlobal .
+#' @param testCatDefault .
 #' @param testsCatSpecific .
 #' @param export .
 #' @param path .
@@ -346,14 +397,17 @@ tblSummary <- function(
     missing = "ifany",
     missingText = "Unknown",
     percent = "column",
-    statContGlobal = "mean_sd",
+    journal = "none",
+    compact = FALSE,
+    language = "en",
+    statContDefault = "mean_sd",
     statsContSpecific,
-    statCatGlobal = "n_percent",
+    statCatDefault = "n_percent",
     statsCatSpecific,
     pValue = FALSE,
-    testContGlobal = "auto",
+    testContDefault = "parametric",
     testsContSpecific = list(),
-    testCatGlobal = "auto",
+    testCatDefault = "auto",
     testsCatSpecific = list(),
     export = FALSE,
     path = "~/Desktop/summary_table.docx") {
@@ -379,14 +433,17 @@ tblSummary <- function(
         missing = missing,
         missingText = missingText,
         percent = percent,
-        statContGlobal = statContGlobal,
+        journal = journal,
+        compact = compact,
+        language = language,
+        statContDefault = statContDefault,
         statsContSpecific = statsContSpecific,
-        statCatGlobal = statCatGlobal,
+        statCatDefault = statCatDefault,
         statsCatSpecific = statsCatSpecific,
         pValue = pValue,
-        testContGlobal = testContGlobal,
+        testContDefault = testContDefault,
         testsContSpecific = testsContSpecific,
-        testCatGlobal = testCatGlobal,
+        testCatDefault = testCatDefault,
         testsCatSpecific = testsCatSpecific,
         export = export,
         path = path)
