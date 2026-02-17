@@ -17,23 +17,21 @@ tblSummaryClass <- R6::R6Class(
       # Helper to map option to gtsummary string
       getStatString <- function(option, type) {
         if (type == "continuous") {
-          if (option == "mean_sd") {
-            return("{mean} ({sd})")
-          }
-          if (option == "median_iqr") {
-            return("{median} ({p25}, {p75})")
-          }
-          if (option == "n_percent") {
-            return("{n} ({p}%)")
-          }
-          if (option == "range") return("{min}, {max}")
+          switch(
+            option,
+            "meanSd" = "{mean} ({sd})",
+            "medianIqr" = "{median} ({p25}, {p75})",
+            "medianRange" = "{median} ({min}, {max})",
+            "range" = "{min}, {max}"
+          )
         } else if (type == "categorical") {
-          if (option == "n_percent") {
-            return("{n} ({p}%)")
-          }
-          if (option == "n_total_percent") return("{n} / {N} ({p}%)")
+          switch(
+            option,
+            "nPercent" = "{n} ({p}%)",
+            "n" = "{n}",
+            "percent" = "{p}%"
+          )
         }
-        return(NULL)
       }
 
       statisticArguments <- list()
@@ -62,10 +60,7 @@ tblSummaryClass <- R6::R6Class(
         if (item$stat != "use_default" && item$var %in% varsCont) {
           val <- getStatString(item$stat, "continuous")
           if (!is.null(val)) {
-            statisticArguments <- c(
-              statisticArguments,
-              list(stats::as.formula(paste0("`", item$var, "` ~ '", val, "'")))
-            )
+            statisticArguments[[item$var]] <- val
           }
         }
       }
@@ -75,15 +70,39 @@ tblSummaryClass <- R6::R6Class(
         if (item$stat != "use_default" && item$var %in% varsCat) {
           val <- getStatString(item$stat, "categorical")
           if (!is.null(val)) {
-            statisticArguments <- c(
-              statisticArguments,
-              list(stats::as.formula(paste0("`", item$var, "` ~ '", val, "'")))
-            )
+            statisticArguments[[item$var]] <- val
           }
         }
       }
 
       return(statisticArguments)
+    },
+
+    .constructDigitsArgs = function(varsCont, varsCat) {
+      digitsArguments <- list()
+
+      # Get user options (convert string to integer)
+      contDigits <- as.integer(self$options$digitsCont)
+      pctDigits <- as.integer(self$options$digitsPct)
+
+      # Add continuous digits if continuous variables exist
+      if (length(varsCont) > 0 && !is.na(contDigits)) {
+        digitsArguments <- c(
+          digitsArguments,
+          list(gtsummary::all_continuous() ~ contDigits)
+        )
+      }
+
+      # Add categorical digits if categorical variables exist
+      # For {n} ({p}%) format: n always 0 decimals, p uses user selection
+      if (length(varsCat) > 0 && !is.na(pctDigits)) {
+        digitsArguments <- c(
+          digitsArguments,
+          list(gtsummary::all_categorical() ~ c(0, pctDigits))
+        )
+      }
+
+      return(digitsArguments)
     },
 
     .constructTestArgs = function(varsCont, varsCat) {
@@ -190,6 +209,9 @@ tblSummaryClass <- R6::R6Class(
       # Statistic Arguments (delegated)
       statisticArguments <- private$.constructStatArgs(varsCont, varsCat)
 
+      # Digits Arguments (for rounding control)
+      digitsArguments <- private$.constructDigitsArgs(varsCont, varsCat)
+
       # Map 'by' option
       byVariable <- self$options$groupBy
       if (is.null(byVariable)) {
@@ -206,6 +228,7 @@ tblSummaryClass <- R6::R6Class(
             by = byVariable,
             type = typeArguments,
             statistic = statisticArguments,
+            digits = digitsArguments,
             missing = self$options$missing,
             missing_text = self$options$missingText,
             percent = self$options$percent

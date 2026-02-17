@@ -1,6 +1,6 @@
 title: Table Summary
 name: tblSummary
-jus: "3.0"
+jus: '3.0'
 stage: 0
 compilerMode: tame
 children:
@@ -27,7 +27,6 @@ children:
             name: groupBy
             maxItemCount: 1
             isTarget: true
-
   - type: CollapseBox
     label: Options
     children:
@@ -45,7 +44,6 @@ children:
         children:
           - type: ComboBox
             name: percent
-
   - type: CollapseBox
     label: Themes
     collapsed: true
@@ -62,7 +60,6 @@ children:
         children:
           - type: ComboBox
             name: language
-
   - type: CollapseBox
     label: Statistics
     collapsed: true
@@ -92,8 +89,11 @@ children:
             stretchFactor: 1
             template:
               type: ComboBox
-              label: ""
-
+              label: ''
+      - type: LayoutBox
+        children:
+          - type: ComboBox
+            name: digitsCont
       - type: Label
         label: Categorical Variables
         margin: large
@@ -120,8 +120,11 @@ children:
             stretchFactor: 1
             template:
               type: ComboBox
-              label: ""
-
+              label: ''
+      - type: LayoutBox
+        children:
+          - type: ComboBox
+            name: digitsPct
   - type: CollapseBox
     label: P-value
     collapsed: true
@@ -155,7 +158,7 @@ children:
             stretchFactor: 1
             template:
               type: ComboBox
-              label: ""
+              label: ''
       - type: Label
         label: Categorical Variables
       - type: LayoutBox
@@ -181,8 +184,7 @@ children:
             stretchFactor: 1
             template:
               type: ComboBox
-              label: " "
-
+              label: ' '
   - type: CollapseBox
     label: Export
     collapsed: true

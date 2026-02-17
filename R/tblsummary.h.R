@@ -15,10 +15,12 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             journal = "none",
             compact = FALSE,
             language = "en",
-            statContDefault = "mean_sd",
+            statContDefault = "meanSd",
             statsContSpecific = NULL,
-            statCatDefault = "n_percent",
+            digitsCont = "1",
+            statCatDefault = "nPercent",
             statsCatSpecific = NULL,
+            digitsPct = "0",
             pValue = FALSE,
             testContDefault = "parametric",
             testsContSpecific = list(),
@@ -114,10 +116,11 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 "statContDefault",
                 statContDefault,
                 options=list(
-                    "mean_sd",
-                    "median_iqr",
+                    "meanSd",
+                    "medianIqr",
+                    "medianRange",
                     "range"),
-                default="mean_sd")
+                default="meanSd")
             private$..statsContSpecific <- jmvcore::OptionArray$new(
                 "statsContSpecific",
                 statsContSpecific,
@@ -133,17 +136,28 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                             NULL,
                             options=list(
                                 "use_default",
-                                "mean_sd",
-                                "median_iqr",
+                                "meanSd",
+                                "medianIqr",
+                                "medianRange",
                                 "range"),
                             default="use_default"))))
+            private$..digitsCont <- jmvcore::OptionList$new(
+                "digitsCont",
+                digitsCont,
+                options=list(
+                    "0",
+                    "1",
+                    "2",
+                    "3"),
+                default="1")
             private$..statCatDefault <- jmvcore::OptionList$new(
                 "statCatDefault",
                 statCatDefault,
                 options=list(
-                    "n_percent",
-                    "n_total_percent"),
-                default="n_percent")
+                    "nPercent",
+                    "n",
+                    "percent"),
+                default="nPercent")
             private$..statsCatSpecific <- jmvcore::OptionArray$new(
                 "statsCatSpecific",
                 statsCatSpecific,
@@ -159,9 +173,18 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                             NULL,
                             options=list(
                                 "use_default",
-                                "n_percent",
-                                "n_total_percent"),
+                                "nPercent",
+                                "n",
+                                "percent"),
                             default="use_default"))))
+            private$..digitsPct <- jmvcore::OptionList$new(
+                "digitsPct",
+                digitsPct,
+                options=list(
+                    "0",
+                    "1",
+                    "2"),
+                default="0")
             private$..pValue <- jmvcore::OptionBool$new(
                 "pValue",
                 pValue,
@@ -267,8 +290,10 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..language)
             self$.addOption(private$..statContDefault)
             self$.addOption(private$..statsContSpecific)
+            self$.addOption(private$..digitsCont)
             self$.addOption(private$..statCatDefault)
             self$.addOption(private$..statsCatSpecific)
+            self$.addOption(private$..digitsPct)
             self$.addOption(private$..pValue)
             self$.addOption(private$..testContDefault)
             self$.addOption(private$..testsContSpecific)
@@ -289,8 +314,10 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         language = function() private$..language$value,
         statContDefault = function() private$..statContDefault$value,
         statsContSpecific = function() private$..statsContSpecific$value,
+        digitsCont = function() private$..digitsCont$value,
         statCatDefault = function() private$..statCatDefault$value,
         statsCatSpecific = function() private$..statsCatSpecific$value,
+        digitsPct = function() private$..digitsPct$value,
         pValue = function() private$..pValue$value,
         testContDefault = function() private$..testContDefault$value,
         testsContSpecific = function() private$..testsContSpecific$value,
@@ -310,8 +337,10 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..language = NA,
         ..statContDefault = NA,
         ..statsContSpecific = NA,
+        ..digitsCont = NA,
         ..statCatDefault = NA,
         ..statsCatSpecific = NA,
+        ..digitsPct = NA,
         ..pValue = NA,
         ..testContDefault = NA,
         ..testsContSpecific = NA,
@@ -374,8 +403,10 @@ tblSummaryBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param language .
 #' @param statContDefault .
 #' @param statsContSpecific .
+#' @param digitsCont .
 #' @param statCatDefault .
 #' @param statsCatSpecific .
+#' @param digitsPct .
 #' @param pValue .
 #' @param testContDefault .
 #' @param testsContSpecific .
@@ -400,10 +431,12 @@ tblSummary <- function(
     journal = "none",
     compact = FALSE,
     language = "en",
-    statContDefault = "mean_sd",
+    statContDefault = "meanSd",
     statsContSpecific,
-    statCatDefault = "n_percent",
+    digitsCont = "1",
+    statCatDefault = "nPercent",
     statsCatSpecific,
+    digitsPct = "0",
     pValue = FALSE,
     testContDefault = "parametric",
     testsContSpecific = list(),
@@ -438,8 +471,10 @@ tblSummary <- function(
         language = language,
         statContDefault = statContDefault,
         statsContSpecific = statsContSpecific,
+        digitsCont = digitsCont,
         statCatDefault = statCatDefault,
         statsCatSpecific = statsCatSpecific,
+        digitsPct = digitsPct,
         pValue = pValue,
         testContDefault = testContDefault,
         testsContSpecific = testsContSpecific,

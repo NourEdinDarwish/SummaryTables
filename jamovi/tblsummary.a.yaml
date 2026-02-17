@@ -127,12 +127,14 @@ options:
     type: List
     options:
       - title: Mean (SD)
-        name: mean_sd
+        name: meanSd
       - title: Median (IQR)
-        name: median_iqr
+        name: medianIqr
+      - title: Median (Range)
+        name: medianRange
       - title: Range
         name: range
-    default: mean_sd
+    default: meanSd
 
   - name: statsContSpecific
     title: Specific Continuous Stats
@@ -149,22 +151,40 @@ options:
             - title: Use Default
               name: use_default
             - title: Mean (SD)
-              name: mean_sd
+              name: meanSd
             - title: Median (IQR)
-              name: median_iqr
+              name: medianIqr
+            - title: Median (Range)
+              name: medianRange
             - title: Range
               name: range
           default: use_default
+
+  - name: digitsCont
+    title: Decimal places (continuous)
+    type: List
+    options:
+      - title: "0"
+        name: "0"
+      - title: "1"
+        name: "1"
+      - title: "2"
+        name: "2"
+      - title: "3"
+        name: "3"
+    default: "1"
 
   - name: statCatDefault
     title: Default Categorical Statistic
     type: List
     options:
       - title: n (%)
-        name: n_percent
-      - title: n/N (%)
-        name: n_total_percent
-    default: n_percent
+        name: nPercent
+      - title: n
+        name: n
+      - title: "%"
+        name: percent
+    default: nPercent
 
   - name: statsCatSpecific
     title: Specific Categorical Stats
@@ -181,10 +201,24 @@ options:
             - title: Use Default
               name: use_default
             - title: n (%)
-              name: n_percent
-            - title: n/N (%)
-              name: n_total_percent
+              name: nPercent
+            - title: n
+              name: n
+            - title: "%"
+              name: percent
           default: use_default
+
+  - name: digitsPct
+    title: Decimal places (percentage)
+    type: List
+    options:
+      - title: "0"
+        name: "0"
+      - title: "1"
+        name: "1"
+      - title: "2"
+        name: "2"
+    default: "0"
 
   - name: pValue
     title: Add p-value
