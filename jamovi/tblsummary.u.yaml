@@ -45,7 +45,7 @@ children:
           - type: ComboBox
             name: percent
   - type: CollapseBox
-    label: Themes
+    label: Appearance
     collapsed: true
     children:
       - type: LayoutBox
@@ -60,6 +60,34 @@ children:
         children:
           - type: ComboBox
             name: language
+  - type: CollapseBox
+    label: Category Order
+    collapsed: true
+    children:
+      - type: LayoutBox
+        children:
+          - type: ComboBox
+            name: sortCatDefault
+      - type: ListBox
+        name: sortCatSpecific
+        showColumnHeaders: true
+        fullRowSelect: true
+        stretchFactor: 1
+        height: normal
+        columns:
+          - name: var
+            label: Variable
+            selectable: false
+            stretchFactor: 1
+            template:
+              type: VariableLabel
+          - name: sort
+            label: Order
+            selectable: false
+            stretchFactor: 1
+            template:
+              type: ComboBox
+              label: ''
   - type: CollapseBox
     label: Statistics
     collapsed: true

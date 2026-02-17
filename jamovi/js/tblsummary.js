@@ -29,5 +29,6 @@ module.exports = {
   varsCat_changed: function (ui) {
     sync(ui.varsCat, ui.statsCatSpecific, "var", "stat", "use_default");
     sync(ui.varsCat, ui.testsCatSpecific, "var", "test", "use_default");
+    sync(ui.varsCat, ui.sortCatSpecific, "var", "sort", "use_default");
   },
 };

@@ -64,7 +64,7 @@ options:
     default: column
 
   - name: journal
-    title: Journal Style
+    title: Theme
     type: List
     options:
       - title: Default
@@ -73,14 +73,14 @@ options:
         name: jama
       - title: The Lancet
         name: lancet
-      - title: NEJM
+      - title: The New England Journal of Medicine
         name: nejm
-      - title: QJEcon
+      - title: The Quarterly Journal of Economics
         name: qjecon
     default: none
 
   - name: compact
-    title: Compact Display
+    title: Compact
     type: Bool
     default: false
 
@@ -88,14 +88,18 @@ options:
     title: Language
     type: List
     options:
+      - title: Chinese (Simplified)
+        name: zh-cn
+      - title: Chinese (Traditional)
+        name: zh-tw
+      - title: Dutch
+        name: nl
       - title: English
         name: en
-      - title: German
-        name: de
-      - title: Spanish
-        name: es
       - title: French
         name: fr
+      - title: German
+        name: de
       - title: Gujarati
         name: gu
       - title: Hindi
@@ -108,19 +112,45 @@ options:
         name: kr
       - title: Marathi
         name: mr
-      - title: Dutch
-        name: nl
       - title: Norwegian
         name: no
       - title: Portuguese
         name: pt
+      - title: Spanish
+        name: es
       - title: Swedish
         name: se
-      - title: Chinese (Simplified)
-        name: zh-cn
-      - title: Chinese (Traditional)
-        name: zh-tw
     default: en
+
+  - name: sortCatDefault
+    title: Default Category Order
+    type: List
+    options:
+      - title: Level order
+        name: alphanumeric
+      - title: By frequency
+        name: frequency
+    default: alphanumeric
+
+  - name: sortCatSpecific
+    title: Specific Category Order
+    type: Array
+    template:
+      type: Group
+      elements:
+        - name: var
+          type: Variable
+        - name: sort
+          title: Order
+          type: List
+          options:
+            - title: Same as default
+              name: use_default
+            - title: Level order
+              name: alphanumeric
+            - title: By frequency
+              name: frequency
+          default: use_default
 
   - name: statContDefault
     title: Default Continuous Statistic
@@ -132,8 +162,6 @@ options:
         name: medianIqr
       - title: Median (Range)
         name: medianRange
-      - title: Range
-        name: range
     default: meanSd
 
   - name: statsContSpecific
@@ -148,7 +176,7 @@ options:
           title: Statistic
           type: List
           options:
-            - title: Use Default
+            - title: Same as default
               name: use_default
             - title: Mean (SD)
               name: meanSd
@@ -156,8 +184,6 @@ options:
               name: medianIqr
             - title: Median (Range)
               name: medianRange
-            - title: Range
-              name: range
           default: use_default
 
   - name: digitsCont
@@ -198,7 +224,7 @@ options:
           title: Statistic
           type: List
           options:
-            - title: Use Default
+            - title: Same as default
               name: use_default
             - title: n (%)
               name: nPercent
@@ -219,6 +245,8 @@ options:
       - title: "2"
         name: "2"
     default: "0"
+
+
 
   - name: pValue
     title: Add p-value
@@ -264,7 +292,7 @@ options:
         - name: test
           type: List
           options:
-            - title: Use Default
+            - title: Same as default
               name: use_default
             - title: Parametric (t-test / ANOVA)
               name: parametric
@@ -322,7 +350,7 @@ options:
         - name: test
           type: List
           options:
-            - title: Use Default
+            - title: Same as default
               name: use_default
             - title: Chi-square
               name: chisq.test.no.correct

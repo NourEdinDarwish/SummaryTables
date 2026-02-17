@@ -14,95 +14,87 @@ tblSummaryClass <- R6::R6Class(
     .collector = NULL,
 
     .constructStatArgs = function(varsCont, varsCat) {
-      # Helper to map option to gtsummary string
-      getStatString <- function(option, type) {
-        if (type == "continuous") {
-          switch(
-            option,
-            "meanSd" = "{mean} ({sd})",
-            "medianIqr" = "{median} ({p25}, {p75})",
-            "medianRange" = "{median} ({min}, {max})",
-            "range" = "{min}, {max}"
-          )
-        } else if (type == "categorical") {
-          switch(
-            option,
-            "nPercent" = "{n} ({p}%)",
-            "n" = "{n}",
-            "percent" = "{p}%"
-          )
-        }
-      }
-
-      statisticArguments <- list()
-
-      # Default statistics (skip adding argument if "auto")
-      statContDefault <- self$options$statContDefault
-      statCatDefault <- self$options$statCatDefault
-
-      defaultStatCont <- getStatString(statContDefault, "continuous")
-      if (!is.null(defaultStatCont)) {
-        statisticArguments <- c(
-          statisticArguments,
-          list(gtsummary::all_continuous() ~ defaultStatCont)
+      # Lookup tables: option name → glue format string
+      statStrings <- list(
+        continuous = c(
+          meanSd      = "{mean} ({sd})",
+          medianIqr   = "{median} ({p25}, {p75})",
+          medianRange = "{median} ({min}, {max})"
+        ),
+        categorical = c(
+          nPercent = "{n} ({p}%)",
+          n        = "{n}",
+          percent  = "{p}%"
         )
-      }
-      defaultStatCat <- getStatString(statCatDefault, "categorical")
-      if (!is.null(defaultStatCat)) {
-        statisticArguments <- c(
-          statisticArguments,
-          list(gtsummary::all_categorical() ~ defaultStatCat)
-        )
+      )
+
+      args <- list()
+
+      # Default continuous
+      contStr <- statStrings$continuous[self$options$statContDefault]
+      if (!is.na(contStr)) {
+        args <- c(args, list(gtsummary::all_continuous() ~ contStr))
       }
 
-      # Specific Overrides - Continuous
+      # Default categorical
+      catStr <- statStrings$categorical[self$options$statCatDefault]
+      if (!is.na(catStr)) {
+        args <- c(args, list(gtsummary::all_categorical() ~ catStr))
+      }
+
+      # Per-variable overrides — Continuous
       for (item in self$options$statsContSpecific) {
         if (item$stat != "use_default" && item$var %in% varsCont) {
-          val <- getStatString(item$stat, "continuous")
-          if (!is.null(val)) {
-            statisticArguments[[item$var]] <- val
-          }
+          val <- statStrings$continuous[item$stat]
+          if (!is.na(val)) args[[item$var]] <- val
         }
       }
 
-      # Specific Overrides - Categorical
+      # Per-variable overrides — Categorical
       for (item in self$options$statsCatSpecific) {
         if (item$stat != "use_default" && item$var %in% varsCat) {
-          val <- getStatString(item$stat, "categorical")
-          if (!is.null(val)) {
-            statisticArguments[[item$var]] <- val
-          }
+          val <- statStrings$categorical[item$stat]
+          if (!is.na(val)) args[[item$var]] <- val
         }
       }
 
-      return(statisticArguments)
+      args
     },
 
     .constructDigitsArgs = function(varsCont, varsCat) {
-      digitsArguments <- list()
-
-      # Get user options (convert string to integer)
       contDigits <- as.integer(self$options$digitsCont)
       pctDigits <- as.integer(self$options$digitsPct)
 
-      # Add continuous digits if continuous variables exist
-      if (length(varsCont) > 0 && !is.na(contDigits)) {
-        digitsArguments <- c(
-          digitsArguments,
-          list(gtsummary::all_continuous() ~ contDigits)
-        )
+      args <- list()
+
+      # Continuous: all stats use the same decimal places
+      if (!is.na(contDigits)) {
+        args <- c(args, list(gtsummary::all_continuous() ~ contDigits))
       }
 
-      # Add categorical digits if categorical variables exist
-      # For {n} ({p}%) format: n always 0 decimals, p uses user selection
-      if (length(varsCat) > 0 && !is.na(pctDigits)) {
-        digitsArguments <- c(
-          digitsArguments,
-          list(gtsummary::all_categorical() ~ c(0, pctDigits))
-        )
+      # Categorical: n always 0 decimals, p uses user selection
+      if (!is.na(pctDigits)) {
+        args <- c(args, list(gtsummary::all_categorical() ~ c(0, pctDigits)))
       }
 
-      return(digitsArguments)
+      args
+    },
+
+    .constructSortArgs = function(varsCat) {
+      args <- list()
+
+      # Default sort for all categorical
+      sortDefault <- self$options$sortCatDefault
+      args <- c(args, list(gtsummary::all_categorical(FALSE) ~ sortDefault))
+
+      # Per-variable overrides
+      for (item in self$options$sortCatSpecific) {
+        if (item$sort != "use_default" && item$var %in% varsCat) {
+          args[[item$var]] <- item$sort
+        }
+      }
+
+      args
     },
 
     .constructTestArgs = function(varsCont, varsCat) {
@@ -166,14 +158,6 @@ tblSummaryClass <- R6::R6Class(
     },
 
     .computeTable = function(collector) {
-      # Theme setup - ensure cleanup even on error
-      on.exit(resetTheme(), add = TRUE)
-      applyTheme(
-        journalOption = self$options$journal,
-        languageOption = self$options$language,
-        compactOption = self$options$compact,
-        collector = collector
-      )
 
       # 1. Validation & Setup
       varsCont <- self$options$varsCont
@@ -212,6 +196,9 @@ tblSummaryClass <- R6::R6Class(
       # Digits Arguments (for rounding control)
       digitsArguments <- private$.constructDigitsArgs(varsCont, varsCat)
 
+      # Sort Arguments (for category ordering)
+      sortArguments <- private$.constructSortArgs(varsCat)
+
       # Map 'by' option
       byVariable <- self$options$groupBy
       if (is.null(byVariable)) {
@@ -231,7 +218,8 @@ tblSummaryClass <- R6::R6Class(
             digits = digitsArguments,
             missing = self$options$missing,
             missing_text = self$options$missingText,
-            percent = self$options$percent
+            percent = self$options$percent,
+            sort = sortArguments
           )
         },
         collector
@@ -257,14 +245,23 @@ tblSummaryClass <- R6::R6Class(
       # 1. Create collector for messages/warnings
       private$.collector <- newCollector()
 
-      # 2. Compute table (triggers theme setup via applyTheme)
+      # 2. Theme setup - stays active through render + export
+      on.exit(resetTheme(), add = TRUE)
+      applyTheme(
+        journalOption = self$options$journal,
+        languageOption = self$options$language,
+        compactOption = self$options$compact,
+        collector = private$.collector
+      )
+
+      # 3. Compute table
       table <- self$table
 
-      # 3. Render Table (if available)
+      # 4. Render Table (if available)
       if (!is.null(table)) {
         renderHtml(table, self$results$tbl, private$.collector)
 
-        # 4. Export (if requested)
+        # 5. Export (if requested)
         if (isTRUE(self$options$export)) {
           path <- resolveExportPath(self$options$path)
           if (!is.null(path)) {
@@ -279,7 +276,7 @@ tblSummaryClass <- R6::R6Class(
         }
       }
 
-      # 5. Display Notices
+      # 6. Display Notices
       displayNotices(private$.collector, self$options, self$results)
     }
   )

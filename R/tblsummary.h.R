@@ -15,6 +15,8 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             journal = "none",
             compact = FALSE,
             language = "en",
+            sortCatDefault = "alphanumeric",
+            sortCatSpecific = NULL,
             statContDefault = "meanSd",
             statsContSpecific = NULL,
             digitsCont = "1",
@@ -95,31 +97,55 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 "language",
                 language,
                 options=list(
+                    "zh-cn",
+                    "zh-tw",
+                    "nl",
                     "en",
-                    "de",
-                    "es",
                     "fr",
+                    "de",
                     "gu",
                     "hi",
                     "is",
                     "ja",
                     "kr",
                     "mr",
-                    "nl",
                     "no",
                     "pt",
-                    "se",
-                    "zh-cn",
-                    "zh-tw"),
+                    "es",
+                    "se"),
                 default="en")
+            private$..sortCatDefault <- jmvcore::OptionList$new(
+                "sortCatDefault",
+                sortCatDefault,
+                options=list(
+                    "alphanumeric",
+                    "frequency"),
+                default="alphanumeric")
+            private$..sortCatSpecific <- jmvcore::OptionArray$new(
+                "sortCatSpecific",
+                sortCatSpecific,
+                template=jmvcore::OptionGroup$new(
+                    "sortCatSpecific",
+                    NULL,
+                    elements=list(
+                        jmvcore::OptionVariable$new(
+                            "var",
+                            NULL),
+                        jmvcore::OptionList$new(
+                            "sort",
+                            NULL,
+                            options=list(
+                                "use_default",
+                                "alphanumeric",
+                                "frequency"),
+                            default="use_default"))))
             private$..statContDefault <- jmvcore::OptionList$new(
                 "statContDefault",
                 statContDefault,
                 options=list(
                     "meanSd",
                     "medianIqr",
-                    "medianRange",
-                    "range"),
+                    "medianRange"),
                 default="meanSd")
             private$..statsContSpecific <- jmvcore::OptionArray$new(
                 "statsContSpecific",
@@ -138,8 +164,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                                 "use_default",
                                 "meanSd",
                                 "medianIqr",
-                                "medianRange",
-                                "range"),
+                                "medianRange"),
                             default="use_default"))))
             private$..digitsCont <- jmvcore::OptionList$new(
                 "digitsCont",
@@ -288,6 +313,8 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..journal)
             self$.addOption(private$..compact)
             self$.addOption(private$..language)
+            self$.addOption(private$..sortCatDefault)
+            self$.addOption(private$..sortCatSpecific)
             self$.addOption(private$..statContDefault)
             self$.addOption(private$..statsContSpecific)
             self$.addOption(private$..digitsCont)
@@ -312,6 +339,8 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         journal = function() private$..journal$value,
         compact = function() private$..compact$value,
         language = function() private$..language$value,
+        sortCatDefault = function() private$..sortCatDefault$value,
+        sortCatSpecific = function() private$..sortCatSpecific$value,
         statContDefault = function() private$..statContDefault$value,
         statsContSpecific = function() private$..statsContSpecific$value,
         digitsCont = function() private$..digitsCont$value,
@@ -335,6 +364,8 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..journal = NA,
         ..compact = NA,
         ..language = NA,
+        ..sortCatDefault = NA,
+        ..sortCatSpecific = NA,
         ..statContDefault = NA,
         ..statsContSpecific = NA,
         ..digitsCont = NA,
@@ -401,6 +432,8 @@ tblSummaryBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param journal .
 #' @param compact .
 #' @param language .
+#' @param sortCatDefault .
+#' @param sortCatSpecific .
 #' @param statContDefault .
 #' @param statsContSpecific .
 #' @param digitsCont .
@@ -431,6 +464,8 @@ tblSummary <- function(
     journal = "none",
     compact = FALSE,
     language = "en",
+    sortCatDefault = "alphanumeric",
+    sortCatSpecific,
     statContDefault = "meanSd",
     statsContSpecific,
     digitsCont = "1",
@@ -469,6 +504,8 @@ tblSummary <- function(
         journal = journal,
         compact = compact,
         language = language,
+        sortCatDefault = sortCatDefault,
+        sortCatSpecific = sortCatSpecific,
         statContDefault = statContDefault,
         statsContSpecific = statsContSpecific,
         digitsCont = digitsCont,
