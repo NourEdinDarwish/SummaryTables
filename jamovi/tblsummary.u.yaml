@@ -61,10 +61,6 @@ children:
       - type: LayoutBox
         children:
           - type: ComboBox
-            name: theme
-      - type: LayoutBox
-        children:
-          - type: ComboBox
             name: language
 
   - type: CollapseBox
@@ -76,7 +72,7 @@ children:
       - type: LayoutBox
         children:
           - type: ComboBox
-            name: statContGlobal
+            name: statContDefault
       - type: ListBox
         name: statsContSpecific
         showColumnHeaders: true
@@ -104,7 +100,7 @@ children:
       - type: LayoutBox
         children:
           - type: ComboBox
-            name: statCatGlobal
+            name: statCatDefault
       - type: ListBox
         name: statsCatSpecific
         showColumnHeaders: true
@@ -139,7 +135,7 @@ children:
       - type: LayoutBox
         children:
           - type: ComboBox
-            name: testContGlobal
+            name: testContDefault
       - type: ListBox
         name: testsContSpecific
         showColumnHeaders: true
@@ -165,7 +161,7 @@ children:
       - type: LayoutBox
         children:
           - type: ComboBox
-            name: testCatGlobal
+            name: testCatDefault
       - type: ListBox
         name: testsCatSpecific
         showColumnHeaders: true

@@ -84,20 +84,6 @@ options:
     type: Bool
     default: false
 
-  - name: theme
-    title: General Theme
-    type: List
-    options:
-      - title: Default
-        name: none
-      - title: Mean (SD)
-        name: mean_sd
-      - title: EDA
-        name: eda
-      - title: Continuous2
-        name: continuous2
-    default: none
-
   - name: language
     title: Language
     type: List
@@ -136,8 +122,8 @@ options:
         name: zh-tw
     default: en
 
-  - name: statContGlobal
-    title: Global Continuous Stat
+  - name: statContDefault
+    title: Default Continuous Statistic
     type: List
     options:
       - title: Mean (SD)
@@ -160,18 +146,18 @@ options:
           title: Statistic
           type: List
           options:
-            - title: Use Global
-              name: use_global
+            - title: Use Default
+              name: use_default
             - title: Mean (SD)
               name: mean_sd
             - title: Median (IQR)
               name: median_iqr
             - title: Range
               name: range
-          default: use_global
+          default: use_default
 
-  - name: statCatGlobal
-    title: Global Categorical Stat
+  - name: statCatDefault
+    title: Default Categorical Statistic
     type: List
     options:
       - title: n (%)
@@ -192,25 +178,27 @@ options:
           title: Statistic
           type: List
           options:
-            - title: Use Global
-              name: use_global
+            - title: Use Default
+              name: use_default
             - title: n (%)
               name: n_percent
             - title: n/N (%)
               name: n_total_percent
-          default: use_global
+          default: use_default
 
   - name: pValue
     title: Add p-value
     type: Bool
     default: false
 
-  - name: testContGlobal
-    title: Global Test
+  - name: testContDefault
+    title: Default Continuous Test
     type: List
     options:
-      - title: Auto-select
-        name: auto
+      - title: Parametric (t-test / ANOVA)
+        name: parametric
+      - title: Non-parametric (Wilcoxon / Kruskal-Wallis)
+        name: nonparametric
       - title: Student's t-test
         name: t.test
       - title: One-way ANOVA
@@ -229,7 +217,7 @@ options:
         name: ancova
       - title: Random intercept logistic
         name: lme4
-    default: auto
+    default: parametric
   - name: testsContSpecific
     title: Specific Tests
     type: Array
@@ -242,10 +230,12 @@ options:
         - name: test
           type: List
           options:
-            - title: Use Global
-              name: use_global
-            - title: Auto-select
-              name: auto
+            - title: Use Default
+              name: use_default
+            - title: Parametric (t-test / ANOVA)
+              name: parametric
+            - title: Non-parametric (Wilcoxon / Kruskal-Wallis)
+              name: nonparametric
             - title: Student's t-test
               name: t.test
             - title: One-way ANOVA
@@ -264,12 +254,12 @@ options:
               name: ancova
             - title: Random intercept logistic
               name: lme4
-          default: use_global
-  - name: testCatGlobal
-    title: Global Test
+          default: use_default
+  - name: testCatDefault
+    title: Default Categorical Test
     type: List
     options:
-      - title: Auto-select
+      - title: Chi-square / Fisher's (auto)
         name: auto
       - title: Chi-square
         name: chisq.test.no.correct
@@ -298,10 +288,8 @@ options:
         - name: test
           type: List
           options:
-            - title: Use Global
-              name: use_global
-            - title: Auto-select
-              name: auto
+            - title: Use Default
+              name: use_default
             - title: Chi-square
               name: chisq.test.no.correct
             - title: Chi-square (continuity correction)
@@ -316,7 +304,7 @@ options:
               name: prop.test
             - title: Random intercept logistic
               name: lme4
-          default: use_global
+          default: use_default
 
   - name: export
     title: Save to Word
