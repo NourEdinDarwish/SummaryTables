@@ -60,6 +60,21 @@ children:
         children:
           - type: ComboBox
             name: language
+      - type: Label
+        label: Text Formatting
+        margin: large
+      - type: LayoutBox
+        children:
+          - type: CheckBox
+            name: boldLabels
+          - type: CheckBox
+            name: boldLevels
+      - type: LayoutBox
+        children:
+          - type: CheckBox
+            name: italicizeLabels
+          - type: CheckBox
+            name: italicizeLevels
   - type: CollapseBox
     label: Category Order
     collapsed: true
@@ -165,6 +180,20 @@ children:
         children:
           - type: ComboBox
             name: digitsPvalue
+      - type: LayoutBox
+        children:
+          - type: CheckBox
+            name: boldP
+      - type: LayoutBox
+        children:
+          - type: TextBox
+            name: boldPThreshold
+            format: number
+            enable: (boldP)
+      - type: LayoutBox
+        children:
+          - type: CheckBox
+            name: separatePFootnotes
       - type: Label
         label: Continuous Variables
       - type: LayoutBox

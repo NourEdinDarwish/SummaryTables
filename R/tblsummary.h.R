@@ -15,6 +15,10 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             journal = "none",
             compact = FALSE,
             language = "en",
+            boldLabels = FALSE,
+            boldLevels = FALSE,
+            italicizeLabels = FALSE,
+            italicizeLevels = FALSE,
             sortCatDefault = "alphanumeric",
             sortCatSpecific = NULL,
             statContDefault = "meanSd",
@@ -25,6 +29,9 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             digitsPct = "auto",
             pValue = FALSE,
             digitsPvalue = "auto",
+            boldP = FALSE,
+            boldPThreshold = 0.05,
+            separatePFootnotes = FALSE,
             testContDefault = "parametric",
             testsContSpecific = list(),
             testCatDefault = "auto",
@@ -115,6 +122,22 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "es",
                     "se"),
                 default="en")
+            private$..boldLabels <- jmvcore::OptionBool$new(
+                "boldLabels",
+                boldLabels,
+                default=FALSE)
+            private$..boldLevels <- jmvcore::OptionBool$new(
+                "boldLevels",
+                boldLevels,
+                default=FALSE)
+            private$..italicizeLabels <- jmvcore::OptionBool$new(
+                "italicizeLabels",
+                italicizeLabels,
+                default=FALSE)
+            private$..italicizeLevels <- jmvcore::OptionBool$new(
+                "italicizeLevels",
+                italicizeLevels,
+                default=FALSE)
             private$..sortCatDefault <- jmvcore::OptionList$new(
                 "sortCatDefault",
                 sortCatDefault,
@@ -226,6 +249,20 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "2",
                     "3"),
                 default="auto")
+            private$..boldP <- jmvcore::OptionBool$new(
+                "boldP",
+                boldP,
+                default=FALSE)
+            private$..boldPThreshold <- jmvcore::OptionNumber$new(
+                "boldPThreshold",
+                boldPThreshold,
+                min=0,
+                max=1,
+                default=0.05)
+            private$..separatePFootnotes <- jmvcore::OptionBool$new(
+                "separatePFootnotes",
+                separatePFootnotes,
+                default=FALSE)
             private$..testContDefault <- jmvcore::OptionList$new(
                 "testContDefault",
                 testContDefault,
@@ -325,6 +362,10 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..journal)
             self$.addOption(private$..compact)
             self$.addOption(private$..language)
+            self$.addOption(private$..boldLabels)
+            self$.addOption(private$..boldLevels)
+            self$.addOption(private$..italicizeLabels)
+            self$.addOption(private$..italicizeLevels)
             self$.addOption(private$..sortCatDefault)
             self$.addOption(private$..sortCatSpecific)
             self$.addOption(private$..statContDefault)
@@ -335,6 +376,9 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..digitsPct)
             self$.addOption(private$..pValue)
             self$.addOption(private$..digitsPvalue)
+            self$.addOption(private$..boldP)
+            self$.addOption(private$..boldPThreshold)
+            self$.addOption(private$..separatePFootnotes)
             self$.addOption(private$..testContDefault)
             self$.addOption(private$..testsContSpecific)
             self$.addOption(private$..testCatDefault)
@@ -352,6 +396,10 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         journal = function() private$..journal$value,
         compact = function() private$..compact$value,
         language = function() private$..language$value,
+        boldLabels = function() private$..boldLabels$value,
+        boldLevels = function() private$..boldLevels$value,
+        italicizeLabels = function() private$..italicizeLabels$value,
+        italicizeLevels = function() private$..italicizeLevels$value,
         sortCatDefault = function() private$..sortCatDefault$value,
         sortCatSpecific = function() private$..sortCatSpecific$value,
         statContDefault = function() private$..statContDefault$value,
@@ -362,6 +410,9 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         digitsPct = function() private$..digitsPct$value,
         pValue = function() private$..pValue$value,
         digitsPvalue = function() private$..digitsPvalue$value,
+        boldP = function() private$..boldP$value,
+        boldPThreshold = function() private$..boldPThreshold$value,
+        separatePFootnotes = function() private$..separatePFootnotes$value,
         testContDefault = function() private$..testContDefault$value,
         testsContSpecific = function() private$..testsContSpecific$value,
         testCatDefault = function() private$..testCatDefault$value,
@@ -378,6 +429,10 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..journal = NA,
         ..compact = NA,
         ..language = NA,
+        ..boldLabels = NA,
+        ..boldLevels = NA,
+        ..italicizeLabels = NA,
+        ..italicizeLevels = NA,
         ..sortCatDefault = NA,
         ..sortCatSpecific = NA,
         ..statContDefault = NA,
@@ -388,6 +443,9 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..digitsPct = NA,
         ..pValue = NA,
         ..digitsPvalue = NA,
+        ..boldP = NA,
+        ..boldPThreshold = NA,
+        ..separatePFootnotes = NA,
         ..testContDefault = NA,
         ..testsContSpecific = NA,
         ..testCatDefault = NA,
@@ -447,6 +505,10 @@ tblSummaryBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param journal .
 #' @param compact .
 #' @param language .
+#' @param boldLabels .
+#' @param boldLevels .
+#' @param italicizeLabels .
+#' @param italicizeLevels .
 #' @param sortCatDefault .
 #' @param sortCatSpecific .
 #' @param statContDefault .
@@ -457,6 +519,9 @@ tblSummaryBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param digitsPct .
 #' @param pValue .
 #' @param digitsPvalue .
+#' @param boldP .
+#' @param boldPThreshold .
+#' @param separatePFootnotes .
 #' @param testContDefault .
 #' @param testsContSpecific .
 #' @param testCatDefault .
@@ -480,6 +545,10 @@ tblSummary <- function(
     journal = "none",
     compact = FALSE,
     language = "en",
+    boldLabels = FALSE,
+    boldLevels = FALSE,
+    italicizeLabels = FALSE,
+    italicizeLevels = FALSE,
     sortCatDefault = "alphanumeric",
     sortCatSpecific,
     statContDefault = "meanSd",
@@ -490,6 +559,9 @@ tblSummary <- function(
     digitsPct = "auto",
     pValue = FALSE,
     digitsPvalue = "auto",
+    boldP = FALSE,
+    boldPThreshold = 0.05,
+    separatePFootnotes = FALSE,
     testContDefault = "parametric",
     testsContSpecific = list(),
     testCatDefault = "auto",
@@ -521,6 +593,10 @@ tblSummary <- function(
         journal = journal,
         compact = compact,
         language = language,
+        boldLabels = boldLabels,
+        boldLevels = boldLevels,
+        italicizeLabels = italicizeLabels,
+        italicizeLevels = italicizeLevels,
         sortCatDefault = sortCatDefault,
         sortCatSpecific = sortCatSpecific,
         statContDefault = statContDefault,
@@ -531,6 +607,9 @@ tblSummary <- function(
         digitsPct = digitsPct,
         pValue = pValue,
         digitsPvalue = digitsPvalue,
+        boldP = boldP,
+        boldPThreshold = boldPThreshold,
+        separatePFootnotes = separatePFootnotes,
         testContDefault = testContDefault,
         testsContSpecific = testsContSpecific,
         testCatDefault = testCatDefault,

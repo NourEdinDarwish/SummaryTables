@@ -122,6 +122,26 @@ options:
         name: se
     default: en
 
+  - name: boldLabels
+    title: Bold labels
+    type: Bool
+    default: false
+
+  - name: boldLevels
+    title: Bold levels
+    type: Bool
+    default: false
+
+  - name: italicizeLabels
+    title: Italicize labels
+    type: Bool
+    default: false
+
+  - name: italicizeLevels
+    title: Italicize levels
+    type: Bool
+    default: false
+
   - name: sortCatDefault
     title: Default Category Order
     type: List
@@ -270,6 +290,23 @@ options:
       - title: "3"
         name: "3"
     default: auto
+
+  - name: boldP
+    title: Bold significant p-values
+    type: Bool
+    default: false
+
+  - name: boldPThreshold
+    title: Significance threshold
+    type: Number
+    min: 0
+    max: 1
+    default: 0.05
+
+  - name: separatePFootnotes
+    title: Separate p-value footnotes
+    type: Bool
+    default: false
 
   - name: testContDefault
     title: Default Continuous Test

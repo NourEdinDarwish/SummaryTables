@@ -260,6 +260,34 @@ tblSummaryClass <- R6::R6Class(
         )
       }
 
+      # ── Text formatting ──
+      if (!is.null(table)) {
+        if (isTRUE(self$options$boldLabels))
+          table <- gtsummary::bold_labels(table)
+        if (isTRUE(self$options$boldLevels))
+          table <- gtsummary::bold_levels(table)
+        if (isTRUE(self$options$italicizeLabels))
+          table <- gtsummary::italicize_labels(table)
+        if (isTRUE(self$options$italicizeLevels))
+          table <- gtsummary::italicize_levels(table)
+
+        # Bold significant p-values (only when p-values are shown)
+        if (isTRUE(self$options$boldP) &&
+            self$options$pValue &&
+            !is.null(self$options$groupBy)) {
+          table <- gtsummary::bold_p(
+            table, t = self$options$boldPThreshold
+          )
+        }
+
+        # Separate p-value footnotes (one per test, instead of combined)
+        if (isTRUE(self$options$separatePFootnotes) &&
+            self$options$pValue &&
+            !is.null(self$options$groupBy)) {
+          table <- gtsummary::separate_p_footnotes(table)
+        }
+      }
+
       table
     },
 
