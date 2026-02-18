@@ -14,17 +14,24 @@ tblSummaryClass <- R6::R6Class(
     .collector = NULL,
 
     .constructStatArgs = function(varsCont, varsCat) {
-      # Lookup tables: option name → glue format string
+      journal <- self$options$journal
+
+      # Theme-aware style decisions
+      iqrSep    <- if (journal %in% c("jama", "nejm", "lancet")) " \U2013 " else ", "
+      rangeSep  <- if (journal %in% c("jama", "nejm", "lancet")) " \U2013 " else ", "
+      pctSuffix <- if (journal %in% c("jama", "nejm"))           ""        else "%"
+
+      # Lookup tables: option name \U2192 glue format string
       statStrings <- list(
         continuous = c(
           meanSd      = "{mean} ({sd})",
-          medianIqr   = "{median} ({p25}, {p75})",
-          medianRange = "{median} ({min}, {max})"
+          medianIqr   = paste0("{median} ({p25}", iqrSep, "{p75})"),
+          medianRange = paste0("{median} ({min}", rangeSep, "{max})")
         ),
         categorical = c(
-          nPercent = "{n} ({p}%)",
+          nPercent = paste0("{n} ({p}", pctSuffix, ")"),
           n        = "{n}",
-          percent  = "{p}%"
+          percent  = paste0("{p}", pctSuffix)
         )
       )
 
@@ -42,7 +49,7 @@ tblSummaryClass <- R6::R6Class(
         args <- c(args, list(gtsummary::all_categorical() ~ catStr))
       }
 
-      # Per-variable overrides — Continuous
+      # Per-variable overrides \U2014 Continuous
       for (item in self$options$statsContSpecific) {
         if (item$stat != "use_default" && item$var %in% varsCont) {
           val <- statStrings$continuous[item$stat]
@@ -50,7 +57,7 @@ tblSummaryClass <- R6::R6Class(
         }
       }
 
-      # Per-variable overrides — Categorical
+      # Per-variable overrides \U2014 Categorical
       for (item in self$options$statsCatSpecific) {
         if (item$stat != "use_default" && item$var %in% varsCat) {
           val <- statStrings$categorical[item$stat]
@@ -62,19 +69,21 @@ tblSummaryClass <- R6::R6Class(
     },
 
     .constructDigitsArgs = function(varsCont, varsCat) {
-      contDigits <- as.integer(self$options$digitsCont)
-      pctDigits <- as.integer(self$options$digitsPct)
+      contDigits <- self$options$digitsCont
+      pctDigits  <- self$options$digitsPct
 
       args <- list()
 
-      # Continuous: all stats use the same decimal places
-      if (!is.na(contDigits)) {
-        args <- c(args, list(gtsummary::all_continuous() ~ contDigits))
+      # Continuous: only pass when user explicitly chose (not "auto")
+      # When "auto": each variable gets its own spread-based decimal count
+      if (contDigits != "auto") {
+        args <- c(args, list(gtsummary::all_continuous() ~ as.integer(contDigits)))
       }
 
-      # Categorical: n always 0 decimals, p uses user selection
-      if (!is.na(pctDigits)) {
-        args <- c(args, list(gtsummary::all_categorical() ~ c(0, pctDigits)))
+      # Categorical: only pass when user explicitly chose (not "auto")
+      # When "auto": theme's percent_fun controls (0 dec default, 1 dec for QJEcon)
+      if (pctDigits != "auto") {
+        args <- c(args, list(gtsummary::all_categorical() ~ c(0L, as.integer(pctDigits))))
       }
 
       args
@@ -229,10 +238,23 @@ tblSummaryClass <- R6::R6Class(
       if (!is.null(table) && self$options$pValue && !is.null(byVariable)) {
         testArguments <- private$.constructTestArgs(varsCont, varsCat)
 
+        # Only pass pvalue_fun when user explicitly chose (not "auto")
+        # When "auto": theme's pkgwide-fn:pvalue_fun controls
+        pvDigits <- self$options$digitsPvalue
+
         table <- runSafe(
           {
-            # We must pass the list, even if empty (empty list = all auto)
-            gtsummary::add_p(table, test = testArguments)
+            if (pvDigits != "auto") {
+              gtsummary::add_p(
+                table,
+                test = testArguments,
+                pvalue_fun = gtsummary::label_style_pvalue(
+                  digits = as.integer(pvDigits)
+                )
+              )
+            } else {
+              gtsummary::add_p(table, test = testArguments)
+            }
           },
           collector
         )

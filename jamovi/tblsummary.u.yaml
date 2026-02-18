@@ -161,6 +161,10 @@ children:
         children:
           - type: CheckBox
             name: pValue
+      - type: LayoutBox
+        children:
+          - type: ComboBox
+            name: digitsPvalue
       - type: Label
         label: Continuous Variables
       - type: LayoutBox

@@ -190,6 +190,8 @@ options:
     title: Decimal places (continuous)
     type: List
     options:
+      - title: Auto (theme-aware)
+        name: auto
       - title: "0"
         name: "0"
       - title: "1"
@@ -198,7 +200,7 @@ options:
         name: "2"
       - title: "3"
         name: "3"
-    default: "1"
+    default: auto
 
   - name: statCatDefault
     title: Default Categorical Statistic
@@ -238,13 +240,15 @@ options:
     title: Decimal places (percentage)
     type: List
     options:
+      - title: Auto (theme-aware)
+        name: auto
       - title: "0"
         name: "0"
       - title: "1"
         name: "1"
       - title: "2"
         name: "2"
-    default: "0"
+    default: auto
 
 
 
@@ -252,6 +256,20 @@ options:
     title: Add p-value
     type: Bool
     default: false
+
+  - name: digitsPvalue
+    title: Decimal places (large p-values)
+    type: List
+    options:
+      - title: Auto (theme-aware)
+        name: auto
+      - title: "1"
+        name: "1"
+      - title: "2"
+        name: "2"
+      - title: "3"
+        name: "3"
+    default: auto
 
   - name: testContDefault
     title: Default Continuous Test

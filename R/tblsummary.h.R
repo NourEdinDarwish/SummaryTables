@@ -19,11 +19,12 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             sortCatSpecific = NULL,
             statContDefault = "meanSd",
             statsContSpecific = NULL,
-            digitsCont = "1",
+            digitsCont = "auto",
             statCatDefault = "nPercent",
             statsCatSpecific = NULL,
-            digitsPct = "0",
+            digitsPct = "auto",
             pValue = FALSE,
+            digitsPvalue = "auto",
             testContDefault = "parametric",
             testsContSpecific = list(),
             testCatDefault = "auto",
@@ -170,11 +171,12 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 "digitsCont",
                 digitsCont,
                 options=list(
+                    "auto",
                     "0",
                     "1",
                     "2",
                     "3"),
-                default="1")
+                default="auto")
             private$..statCatDefault <- jmvcore::OptionList$new(
                 "statCatDefault",
                 statCatDefault,
@@ -206,14 +208,24 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 "digitsPct",
                 digitsPct,
                 options=list(
+                    "auto",
                     "0",
                     "1",
                     "2"),
-                default="0")
+                default="auto")
             private$..pValue <- jmvcore::OptionBool$new(
                 "pValue",
                 pValue,
                 default=FALSE)
+            private$..digitsPvalue <- jmvcore::OptionList$new(
+                "digitsPvalue",
+                digitsPvalue,
+                options=list(
+                    "auto",
+                    "1",
+                    "2",
+                    "3"),
+                default="auto")
             private$..testContDefault <- jmvcore::OptionList$new(
                 "testContDefault",
                 testContDefault,
@@ -322,6 +334,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..statsCatSpecific)
             self$.addOption(private$..digitsPct)
             self$.addOption(private$..pValue)
+            self$.addOption(private$..digitsPvalue)
             self$.addOption(private$..testContDefault)
             self$.addOption(private$..testsContSpecific)
             self$.addOption(private$..testCatDefault)
@@ -348,6 +361,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         statsCatSpecific = function() private$..statsCatSpecific$value,
         digitsPct = function() private$..digitsPct$value,
         pValue = function() private$..pValue$value,
+        digitsPvalue = function() private$..digitsPvalue$value,
         testContDefault = function() private$..testContDefault$value,
         testsContSpecific = function() private$..testsContSpecific$value,
         testCatDefault = function() private$..testCatDefault$value,
@@ -373,6 +387,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..statsCatSpecific = NA,
         ..digitsPct = NA,
         ..pValue = NA,
+        ..digitsPvalue = NA,
         ..testContDefault = NA,
         ..testsContSpecific = NA,
         ..testCatDefault = NA,
@@ -441,6 +456,7 @@ tblSummaryBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param statsCatSpecific .
 #' @param digitsPct .
 #' @param pValue .
+#' @param digitsPvalue .
 #' @param testContDefault .
 #' @param testsContSpecific .
 #' @param testCatDefault .
@@ -468,11 +484,12 @@ tblSummary <- function(
     sortCatSpecific,
     statContDefault = "meanSd",
     statsContSpecific,
-    digitsCont = "1",
+    digitsCont = "auto",
     statCatDefault = "nPercent",
     statsCatSpecific,
-    digitsPct = "0",
+    digitsPct = "auto",
     pValue = FALSE,
+    digitsPvalue = "auto",
     testContDefault = "parametric",
     testsContSpecific = list(),
     testCatDefault = "auto",
@@ -513,6 +530,7 @@ tblSummary <- function(
         statsCatSpecific = statsCatSpecific,
         digitsPct = digitsPct,
         pValue = pValue,
+        digitsPvalue = digitsPvalue,
         testContDefault = testContDefault,
         testsContSpecific = testsContSpecific,
         testCatDefault = testCatDefault,
