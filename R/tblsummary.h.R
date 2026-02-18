@@ -37,7 +37,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             testCatDefault = "auto",
             testsCatSpecific = list(),
             export = FALSE,
-            path = "~/Desktop/summary_table.docx", ...) {
+            path = "~/Desktop/Summary Table.docx", ...) {
 
             super$initialize(
                 package="SummaryTables",
@@ -66,7 +66,10 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 groupBy,
                 suggested=list(
                     "nominal",
-                    "ordinal"))
+                    "ordinal"),
+                permitted=list(
+                    "factor",
+                    "id"))
             private$..missing <- jmvcore::OptionList$new(
                 "missing",
                 missing,
@@ -351,7 +354,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             private$..path <- jmvcore::OptionString$new(
                 "path",
                 path,
-                default="~/Desktop/summary_table.docx")
+                default="~/Desktop/Summary Table.docx")
 
             self$.addOption(private$..varsCont)
             self$.addOption(private$..varsCat)
@@ -567,7 +570,7 @@ tblSummary <- function(
     testCatDefault = "auto",
     testsCatSpecific = list(),
     export = FALSE,
-    path = "~/Desktop/summary_table.docx") {
+    path = "~/Desktop/Summary Table.docx") {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
         stop("tblSummary requires jmvcore to be installed (restart may be required)")

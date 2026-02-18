@@ -28,11 +28,14 @@ options:
       - id
 
   - name: groupBy
-    title: Group by
+    title: Grouping Variable
     type: Variable
     suggested:
       - nominal
       - ordinal
+    permitted:
+      - factor
+      - id
 
   - name: missing
     title: Missing Values
@@ -143,17 +146,17 @@ options:
     default: false
 
   - name: sortCatDefault
-    title: Default Category Order
+    title: Default Level Order
     type: List
     options:
-      - title: Level order
+      - title: As defined
         name: alphanumeric
-      - title: By frequency
+      - title: Frequency
         name: frequency
     default: alphanumeric
 
   - name: sortCatSpecific
-    title: Specific Category Order
+    title: Specific Level Order
     type: Array
     template:
       type: Group
@@ -161,14 +164,14 @@ options:
         - name: var
           type: Variable
         - name: sort
-          title: Order
+          title: Level Order
           type: List
           options:
             - title: Same as default
               name: use_default
-            - title: Level order
+            - title: As defined
               name: alphanumeric
-            - title: By frequency
+            - title: Frequency
               name: frequency
           default: use_default
 
@@ -185,7 +188,7 @@ options:
     default: meanSd
 
   - name: statsContSpecific
-    title: Specific Continuous Stats
+    title: Specific Continuous Statistics
     type: Array
     template:
       type: Group
@@ -207,7 +210,7 @@ options:
           default: use_default
 
   - name: digitsCont
-    title: Decimal places (continuous)
+    title: Decimal places
     type: List
     options:
       - title: Auto (theme-aware)
@@ -235,7 +238,7 @@ options:
     default: nPercent
 
   - name: statsCatSpecific
-    title: Specific Categorical Stats
+    title: Specific Categorical Statistics
     type: Array
     template:
       type: Group
@@ -269,8 +272,6 @@ options:
       - title: "2"
         name: "2"
     default: auto
-
-
 
   - name: pValue
     title: Add p-value
@@ -335,6 +336,7 @@ options:
       - title: Random intercept logistic
         name: lme4
     default: parametric
+
   - name: testsContSpecific
     title: Specific Tests
     type: Array
@@ -372,6 +374,7 @@ options:
             - title: Random intercept logistic
               name: lme4
           default: use_default
+
   - name: testCatDefault
     title: Default Categorical Test
     type: List
@@ -393,6 +396,7 @@ options:
       - title: Random intercept logistic
         name: lme4
     default: auto
+
   - name: testsCatSpecific
     title: Specific Tests
     type: Array
@@ -424,11 +428,11 @@ options:
           default: use_default
 
   - name: export
-    title: Save to Word
+    title: Save
     type: Bool
     default: false
 
   - name: path
-    title: Export path
+    title: Path
     type: String
-    default: ~/Desktop/summary_table.docx
+    default: ~/Desktop/Summary Table.docx

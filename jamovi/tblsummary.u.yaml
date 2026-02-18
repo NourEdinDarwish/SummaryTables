@@ -1,6 +1,6 @@
 title: Table Summary
 name: tblSummary
-jus: '3.0'
+jus: "3.0"
 stage: 0
 compilerMode: tame
 children:
@@ -9,19 +9,16 @@ children:
     stretchFactor: 1
     children:
       - type: TargetLayoutBox
-        label: Continuous Variables
         children:
           - type: VariablesListBox
             name: varsCont
             isTarget: true
       - type: TargetLayoutBox
-        label: Categorical Variables
         children:
           - type: VariablesListBox
             name: varsCat
             isTarget: true
       - type: TargetLayoutBox
-        label: Group by
         children:
           - type: VariablesListBox
             name: groupBy
@@ -29,234 +26,225 @@ children:
             isTarget: true
   - type: CollapseBox
     label: Options
+    stretchFactor: 1
     children:
-      - type: LayoutBox
-        children:
-          - type: ComboBox
-            name: missing
-      - type: LayoutBox
-        children:
-          - type: TextBox
-            name: missingText
-            format: string
-            width: large
-      - type: LayoutBox
-        children:
-          - type: ComboBox
-            name: percent
+      - type: ComboBox
+        name: missing
+      - type: TextBox
+        name: missingText
+        format: string
+        width: large
+      - type: ComboBox
+        name: percent
   - type: CollapseBox
     label: Appearance
     collapsed: true
+    stretchFactor: 1
     children:
+      - type: ComboBox
+        name: journal
+      - type: CheckBox
+        name: compact
+      - type: ComboBox
+        name: language
       - type: LayoutBox
-        children:
-          - type: ComboBox
-            name: journal
-      - type: LayoutBox
-        children:
-          - type: CheckBox
-            name: compact
-      - type: LayoutBox
-        children:
-          - type: ComboBox
-            name: language
-      - type: Label
-        label: Text Formatting
-        margin: large
-      - type: LayoutBox
+        fitToGrid: true
         children:
           - type: CheckBox
             name: boldLabels
+            cell:
+              row: 0
+              column: 0
           - type: CheckBox
             name: boldLevels
-      - type: LayoutBox
-        children:
+            cell:
+              row: 0
+              column: 1
           - type: CheckBox
             name: italicizeLabels
+            cell:
+              row: 1
+              column: 0
           - type: CheckBox
             name: italicizeLevels
+            cell:
+              row: 1
+              column: 1
   - type: CollapseBox
-    label: Category Order
+    label: Level Order
     collapsed: true
+    stretchFactor: 1
     children:
-      - type: LayoutBox
-        children:
-          - type: ComboBox
-            name: sortCatDefault
+      - type: ComboBox
+        name: sortCatDefault
       - type: ListBox
         name: sortCatSpecific
         showColumnHeaders: true
         fullRowSelect: true
         stretchFactor: 1
-        height: normal
+        height: large
         columns:
           - name: var
             label: Variable
             selectable: false
             stretchFactor: 1
+            maxWidth: 300
             template:
               type: VariableLabel
           - name: sort
-            label: Order
+            label: Level Order
             selectable: false
             stretchFactor: 1
             template:
               type: ComboBox
-              label: ''
+              label: ""
   - type: CollapseBox
     label: Statistics
     collapsed: true
+    stretchFactor: 1
     children:
       - type: Label
         label: Continuous Variables
-      - type: LayoutBox
+        stretchFactor: 1
         children:
           - type: ComboBox
             name: statContDefault
-      - type: ListBox
-        name: statsContSpecific
-        showColumnHeaders: true
-        fullRowSelect: true
-        stretchFactor: 1
-        height: normal
-        columns:
-          - name: var
-            label: Variable
-            selectable: false
+          - type: ListBox
+            name: statsContSpecific
+            showColumnHeaders: true
+            fullRowSelect: true
             stretchFactor: 1
-            template:
-              type: VariableLabel
-          - name: stat
-            label: Statistic
-            selectable: false
-            stretchFactor: 1
-            template:
-              type: ComboBox
-              label: ''
-      - type: LayoutBox
-        children:
+            height: large
+            columns:
+              - name: var
+                label: Variable
+                selectable: false
+                stretchFactor: 1
+                maxWidth: 300
+                template:
+                  type: VariableLabel
+              - name: stat
+                label: Statistic
+                selectable: false
+                stretchFactor: 1
+                template:
+                  type: ComboBox
+                  label: ""
           - type: ComboBox
             name: digitsCont
       - type: Label
         label: Categorical Variables
-        margin: large
-      - type: LayoutBox
+        stretchFactor: 1
         children:
           - type: ComboBox
             name: statCatDefault
-      - type: ListBox
-        name: statsCatSpecific
-        showColumnHeaders: true
-        fullRowSelect: true
-        stretchFactor: 1
-        height: normal
-        columns:
-          - name: var
-            label: Variable
-            selectable: false
+          - type: ListBox
+            name: statsCatSpecific
+            showColumnHeaders: true
+            fullRowSelect: true
             stretchFactor: 1
-            template:
-              type: VariableLabel
-          - name: stat
-            label: Statistic
-            selectable: false
-            stretchFactor: 1
-            template:
-              type: ComboBox
-              label: ''
-      - type: LayoutBox
-        children:
+            height: large
+            columns:
+              - name: var
+                label: Variable
+                selectable: false
+                stretchFactor: 1
+                maxWidth: 300
+                template:
+                  type: VariableLabel
+              - name: stat
+                label: Statistic
+                selectable: false
+                stretchFactor: 1
+                template:
+                  type: ComboBox
+                  label: ""
           - type: ComboBox
             name: digitsPct
   - type: CollapseBox
     label: P-value
     collapsed: true
+    stretchFactor: 1
     children:
       - type: LayoutBox
+        margin: large
         children:
           - type: CheckBox
             name: pValue
-      - type: LayoutBox
-        children:
+            label: Add p-value (requires Grouping Variable)
           - type: ComboBox
             name: digitsPvalue
-      - type: LayoutBox
-        children:
           - type: CheckBox
             name: boldP
-      - type: LayoutBox
-        children:
-          - type: TextBox
-            name: boldPThreshold
-            format: number
-            enable: (boldP)
-      - type: LayoutBox
-        children:
+            children:
+              - type: TextBox
+                name: boldPThreshold
+                format: number
+                enable: (boldP)
           - type: CheckBox
             name: separatePFootnotes
       - type: Label
         label: Continuous Variables
-      - type: LayoutBox
+        stretchFactor: 1
         children:
           - type: ComboBox
             name: testContDefault
-      - type: ListBox
-        name: testsContSpecific
-        showColumnHeaders: true
-        fullRowSelect: true
-        stretchFactor: 1
-        height: normal
-        columns:
-          - name: var
-            label: Variable
-            selectable: false
+          - type: ListBox
+            name: testsContSpecific
+            showColumnHeaders: true
+            fullRowSelect: true
             stretchFactor: 1
-            template:
-              type: VariableLabel
-          - name: test
-            label: Test
-            selectable: false
-            stretchFactor: 1
-            template:
-              type: ComboBox
-              label: ''
+            height: normal
+            columns:
+              - name: var
+                label: Variable
+                selectable: false
+                stretchFactor: 1
+                maxWidth: 300
+                template:
+                  type: VariableLabel
+              - name: test
+                label: Test
+                selectable: false
+                stretchFactor: 1
+                template:
+                  type: ComboBox
+                  label: ""
       - type: Label
         label: Categorical Variables
-      - type: LayoutBox
+        stretchFactor: 1
         children:
           - type: ComboBox
             name: testCatDefault
-      - type: ListBox
-        name: testsCatSpecific
-        showColumnHeaders: true
-        fullRowSelect: true
-        stretchFactor: 1
-        height: normal
-        columns:
-          - name: var
-            label: Variable
-            selectable: false
+          - type: ListBox
+            name: testsCatSpecific
+            showColumnHeaders: true
+            fullRowSelect: true
             stretchFactor: 1
-            template:
-              type: VariableLabel
-          - name: test
-            label: Test
-            selectable: false
-            stretchFactor: 1
-            template:
-              type: ComboBox
-              label: ' '
+            height: normal
+            columns:
+              - name: var
+                label: Variable
+                selectable: false
+                stretchFactor: 1
+                maxWidth: 300
+                template:
+                  type: VariableLabel
+              - name: test
+                label: Test
+                selectable: false
+                stretchFactor: 1
+                template:
+                  type: ComboBox
+                  label: ""
   - type: CollapseBox
-    label: Export
+    label: Save to Word
     collapsed: true
+    stretchFactor: 1
     children:
-      - type: LayoutBox
-        children:
-          - type: TextBox
-            name: path
-            format: string
-            width: largest
-      - type: LayoutBox
-        children:
-          - type: CheckBox
-            name: export
+      - type: TextBox
+        name: path
+        format: string
+        stretchFactor: 1
+      - type: CheckBox
+        name: export
