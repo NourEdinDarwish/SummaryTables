@@ -42,6 +42,10 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             testsContSpecific = list(),
             testCatDefault = "auto",
             testsCatSpecific = list(),
+            addQ = FALSE,
+            qMethod = "BH",
+            boldQ = FALSE,
+            boldQThreshold = 0.05,
             export = FALSE,
             path = "~/Desktop/Summary Table.docx", ...) {
 
@@ -381,6 +385,32 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                                 "prop.test",
                                 "lme4"),
                             default="use_default"))))
+            private$..addQ <- jmvcore::OptionBool$new(
+                "addQ",
+                addQ,
+                default=FALSE)
+            private$..qMethod <- jmvcore::OptionList$new(
+                "qMethod",
+                qMethod,
+                options=list(
+                    "BH",
+                    "BY",
+                    "bonferroni",
+                    "holm",
+                    "hochberg",
+                    "hommel",
+                    "none"),
+                default="BH")
+            private$..boldQ <- jmvcore::OptionBool$new(
+                "boldQ",
+                boldQ,
+                default=FALSE)
+            private$..boldQThreshold <- jmvcore::OptionNumber$new(
+                "boldQThreshold",
+                boldQThreshold,
+                min=0,
+                max=1,
+                default=0.05)
             private$..export <- jmvcore::OptionBool$new(
                 "export",
                 export,
@@ -426,6 +456,10 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..testsContSpecific)
             self$.addOption(private$..testCatDefault)
             self$.addOption(private$..testsCatSpecific)
+            self$.addOption(private$..addQ)
+            self$.addOption(private$..qMethod)
+            self$.addOption(private$..boldQ)
+            self$.addOption(private$..boldQThreshold)
             self$.addOption(private$..export)
             self$.addOption(private$..path)
         }),
@@ -466,6 +500,10 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         testsContSpecific = function() private$..testsContSpecific$value,
         testCatDefault = function() private$..testCatDefault$value,
         testsCatSpecific = function() private$..testsCatSpecific$value,
+        addQ = function() private$..addQ$value,
+        qMethod = function() private$..qMethod$value,
+        boldQ = function() private$..boldQ$value,
+        boldQThreshold = function() private$..boldQThreshold$value,
         export = function() private$..export$value,
         path = function() private$..path$value),
     private = list(
@@ -505,6 +543,10 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..testsContSpecific = NA,
         ..testCatDefault = NA,
         ..testsCatSpecific = NA,
+        ..addQ = NA,
+        ..qMethod = NA,
+        ..boldQ = NA,
+        ..boldQThreshold = NA,
         ..export = NA,
         ..path = NA)
 )
@@ -587,6 +629,10 @@ tblSummaryBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param testsContSpecific .
 #' @param testCatDefault .
 #' @param testsCatSpecific .
+#' @param addQ .
+#' @param qMethod .
+#' @param boldQ .
+#' @param boldQThreshold .
 #' @param export .
 #' @param path .
 #' @return A results object containing:
@@ -633,6 +679,10 @@ tblSummary <- function(
     testsContSpecific = list(),
     testCatDefault = "auto",
     testsCatSpecific = list(),
+    addQ = FALSE,
+    qMethod = "BH",
+    boldQ = FALSE,
+    boldQThreshold = 0.05,
     export = FALSE,
     path = "~/Desktop/Summary Table.docx") {
 
@@ -687,6 +737,10 @@ tblSummary <- function(
         testsContSpecific = testsContSpecific,
         testCatDefault = testCatDefault,
         testsCatSpecific = testsCatSpecific,
+        addQ = addQ,
+        qMethod = qMethod,
+        boldQ = boldQ,
+        boldQThreshold = boldQThreshold,
         export = export,
         path = path)
 

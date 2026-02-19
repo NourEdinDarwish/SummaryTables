@@ -268,6 +268,25 @@ children:
                   type: ComboBox
                   label: ""
   - type: CollapseBox
+    label: Q-value (P-value Adjustment)
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: CheckBox
+        name: addQ
+        enable: (pValue)
+      - type: ComboBox
+        name: qMethod
+        enable: (pValue && addQ)
+      - type: CheckBox
+        name: boldQ
+        enable: (pValue && addQ)
+        children:
+          - type: TextBox
+            name: boldQThreshold
+            format: number
+            enable: (pValue && addQ && boldQ)
+  - type: CollapseBox
     label: Save to Word
     collapsed: true
     stretchFactor: 1

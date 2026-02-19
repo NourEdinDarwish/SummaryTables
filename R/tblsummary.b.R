@@ -122,6 +122,17 @@ tblSummaryClass <- R6::R6Class(
           },
           private$.collector
         )
+
+        # Add q-values if requested
+        if (isTRUE(self$options$addQ)) {
+          table <- runSafe(
+            gtsummary::add_q(
+              table,
+              method = self$options$qMethod
+            ),
+            private$.collector
+          )
+        }
       }
 
       # Add N column
@@ -180,6 +191,20 @@ tblSummaryClass <- R6::R6Class(
         table <- gtsummary::bold_p(
           table,
           t = self$options$boldPThreshold
+        )
+      }
+
+      # Bold significant q-values (only when q-values are shown)
+      if (
+        isTRUE(self$options$boldQ) &&
+          isTRUE(self$options$addQ) &&
+          self$options$pValue &&
+          !is.null(self$options$groupBy)
+      ) {
+        table <- gtsummary::bold_p(
+          table,
+          t = self$options$boldQThreshold,
+          q = TRUE
         )
       }
 
