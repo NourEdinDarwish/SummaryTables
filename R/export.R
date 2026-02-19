@@ -34,34 +34,30 @@ resolveExportPath <- function(path) {
 #' Export a gtsummary table to DOCX format
 #'
 #' Converts a gtsummary table to a flextable and saves it as a DOCX file.
-#' Also inserts a success Notice into the results.
+#' Also inserts a success Notice into the results. Export is a single
+#' deterministic operation (not an iterator), so no runSafe() wrapping
+#' is needed.
 #'
 #' @param table A gtsummary object to export
 #' @param path A resolved file path string where the DOCX will be saved
 #' @param options A jamovi options object for Notice creation
 #' @param results A jamovi results group to insert the success Notice into
-#' @param collector An environment for warning capture (from safeExecution.R)
 #'
 #' @return Invisibly returns NULL. Called for side effects (file creation and notice insertion).
 #'
 #' @export
-exportDocx <- function(table, path, options, results, collector) {
-  runSafe(
-    {
-      flexTableObject <- gtsummary::as_flex_table(table)
-      flextable::save_as_docx(flexTableObject, path = path)
+exportDocx <- function(table, path, options, results) {
+  flexTableObject <- gtsummary::as_flex_table(table)
+  flextable::save_as_docx(flexTableObject, path = path)
 
-      # Create a specific Notice for the save message so it stands out
-      saveNotice <- jmvcore::Notice$new(
-        options = options,
-        name = "exportSuccess",
-        type = jmvcore::NoticeType$INFO
-      )
-      saveNotice$setContent(paste0("Exported to: ", path))
-      results$insert(1, saveNotice)
-    },
-    collector
+  # Create a specific Notice for the save message so it stands out
+  saveNotice <- jmvcore::Notice$new(
+    options = options,
+    name = "exportSuccess",
+    type = jmvcore::NoticeType$INFO
   )
+  saveNotice$setContent(paste0("Exported to: ", path))
+  results$insert(1, saveNotice)
 
   invisible(NULL)
 }

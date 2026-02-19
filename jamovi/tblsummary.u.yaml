@@ -172,29 +172,35 @@ children:
           - type: CheckBox
             name: pValue
             label: Add p-value (requires Grouping Variable)
+            enable: "({return !!ui['groupBy'].value();})"
           - type: ComboBox
             name: digitsPvalue
+            enable: (pValue)
           - type: CheckBox
             name: boldP
+            enable: (pValue)
             children:
               - type: TextBox
                 name: boldPThreshold
                 format: number
-                enable: (boldP)
+                enable: (pValue && boldP)
           - type: CheckBox
             name: separatePFootnotes
+            enable: (pValue)
       - type: Label
         label: Continuous Variables
         stretchFactor: 1
         children:
           - type: ComboBox
             name: testContDefault
+            enable: (pValue)
           - type: ListBox
             name: testsContSpecific
             showColumnHeaders: true
             fullRowSelect: true
             stretchFactor: 1
             height: normal
+            enable: (pValue)
             columns:
               - name: var
                 label: Variable
@@ -216,12 +222,14 @@ children:
         children:
           - type: ComboBox
             name: testCatDefault
+            enable: (pValue)
           - type: ListBox
             name: testsCatSpecific
             showColumnHeaders: true
             fullRowSelect: true
             stretchFactor: 1
             height: normal
+            enable: (pValue)
             columns:
               - name: var
                 label: Variable

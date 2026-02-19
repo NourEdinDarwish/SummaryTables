@@ -1,45 +1,43 @@
-# Notice Display Utility for SummaryTables
-#
-# Converts collected messages/warnings into jmvcore::Notice objects
-# and inserts them into the results.
+# notices.R - Notice Display Utility for SummaryTables
+# Converts collected warnings and messages into jmvcore::Notice objects
 
 #' Display Notices
 #'
-#' Converts collected messages/warnings into jmvcore::Notice objects
+#' Converts collected warnings and messages into jmvcore::Notice objects
 #' and inserts them into results.
 #'
-#' @param collector Environment with `$messages` and `$warnings` character vectors
+#' Messages are displayed as INFO notices — they come from cards/gtsummary
+#' re-emitting statistical test warnings (e.g., "cannot compute exact
+#' p-value with ties") via cli_inform().
+#'
+#' @param collector Environment with `$warnings` and `$messages` vectors
 #' @param options jamovi options for Notice creation
 #' @param results jamovi results group to insert Notices into
 #' @export
 displayNotices <- function(collector, options, results) {
-  # 1. Messages (INFO)
+  # Messages (INFO) — stat test feedback from cards
   if (length(collector$messages) > 0) {
-    # Combine messages
-    finalContent <- paste(collector$messages, collapse = "\n")
+    msgContent <- paste(collector$messages, collapse = "\n")
 
-    # Create Notice with INFO type
-    messageNotice <- jmvcore::Notice$new(
+    msgNotice <- jmvcore::Notice$new(
       options = options,
-      name = 'runMessage',
+      name = "runMsg",
       type = jmvcore::NoticeType$INFO
     )
-    messageNotice$setContent(finalContent)
-    results$insert(1, messageNotice)
+    msgNotice$setContent(msgContent)
+    results$insert(1, msgNotice)
   }
 
-  # 2. Warnings (WARNING)
+  # Warnings (WARNING) — direct R warnings
   if (length(collector$warnings) > 0) {
-    # Combine warnings
-    finalContent <- paste(collector$warnings, collapse = "\n")
+    warnContent <- paste(collector$warnings, collapse = "\n")
 
-    # Create Notice with WARNING type
-    warningNotice <- jmvcore::Notice$new(
+    warnNotice <- jmvcore::Notice$new(
       options = options,
-      name = 'runWarn',
+      name = "runWarn",
       type = jmvcore::NoticeType$WARNING
     )
-    warningNotice$setContent(finalContent)
-    results$insert(1, warningNotice)
+    warnNotice$setContent(warnContent)
+    results$insert(1, warnNotice)
   }
 }

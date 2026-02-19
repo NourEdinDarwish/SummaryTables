@@ -4,24 +4,18 @@
 #' Render gtsummary table to HTML for jamovi results
 #'
 #' Converts a gtsummary table to raw HTML using gt and sets it on a jamovi
-#' Html results element. Warning and message capture is handled via the
-#' collector environment.
+#' Html results element. Rendering is a single deterministic operation (not
+#' an iterator), so no runSafe() wrapping is needed.
 #'
 #' @param table A gtsummary object (e.g., from tbl_summary(), tbl_cross(), etc.)
 #' @param resultsHtml A jmvcore::Html object with `$setContent()` method
-#' @param collector An environment from `newCollector()` for warning/message capture
 #'
 #' @return Invisibly returns the HTML content string
 #' @export
-renderHtml <- function(table, resultsHtml, collector) {
-  htmlContent <- runSafe(
-    {
-      table |>
-        gtsummary::as_gt() |>
-        gt::as_raw_html()
-    },
-    collector
-  )
+renderHtml <- function(table, resultsHtml) {
+  htmlContent <- table |>
+    gtsummary::as_gt() |>
+    gt::as_raw_html()
 
   resultsHtml$setContent(htmlContent)
   invisible(htmlContent)
