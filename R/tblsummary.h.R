@@ -11,7 +11,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             groupBy = NULL,
             addN = FALSE,
             addNLast = FALSE,
-            addNFootnote = FALSE,
+            addNFootnote = TRUE,
             addOverall = FALSE,
             addOverallLast = FALSE,
             missing = "ifany",
@@ -87,7 +87,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             private$..addNFootnote <- jmvcore::OptionBool$new(
                 "addNFootnote",
                 addNFootnote,
-                default=FALSE)
+                default=TRUE)
             private$..addOverall <- jmvcore::OptionBool$new(
                 "addOverall",
                 addOverall,
@@ -602,7 +602,7 @@ tblSummary <- function(
     groupBy,
     addN = FALSE,
     addNLast = FALSE,
-    addNFootnote = FALSE,
+    addNFootnote = TRUE,
     addOverall = FALSE,
     addOverallLast = FALSE,
     missing = "ifany",

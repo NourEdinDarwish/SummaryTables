@@ -25,7 +25,8 @@ children:
             maxItemCount: 1
             isTarget: true
   - type: CollapseBox
-    label: Options
+    label: General
+    collapsed: true
     stretchFactor: 1
     children:
       - type: CheckBox
@@ -39,14 +40,13 @@ children:
             enable: (addN)
       - type: CheckBox
         name: addOverall
-        label: Add Overall column (requires Grouping Variable)
         enable: ({return !!ui['groupBy'].value();})
         children:
           - type: CheckBox
             name: addOverallLast
             enable: ({return !!ui['groupBy'].value() && ui['addOverall'].value();})
       - type: Label
-        label: Missing Data
+        label: Missing Values
         children:
           - type: ComboBox
             name: missing
@@ -196,7 +196,6 @@ children:
         children:
           - type: CheckBox
             name: pValue
-            label: Add p-value (requires Grouping Variable)
             enable: ({return !!ui['groupBy'].value();})
           - type: ComboBox
             name: digitsPvalue

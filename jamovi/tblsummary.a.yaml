@@ -43,27 +43,27 @@ options:
     default: false
 
   - name: addNLast
-    title: Place N column last
+    title: Place last
     type: Bool
     default: false
 
   - name: addNFootnote
-    title: Show footnote for N
+    title: Show footnote
     type: Bool
-    default: false
+    default: true
 
   - name: addOverall
-    title: Add Overall column
+    title: Add overall column (requires Grouping Variable)
     type: Bool
     default: false
 
   - name: addOverallLast
-    title: Place Overall column last
+    title: Place last
     type: Bool
     default: false
 
   - name: missing
-    title: Missing Values
+    title: Visibility
     type: List
     options:
       - title: Show if present
@@ -75,12 +75,12 @@ options:
     default: ifany
 
   - name: missingText
-    title: Label for missing data
+    title: Label
     type: String
     default: Unknown
 
   - name: missingStat
-    title: Missing value stats
+    title: Statistic
     type: List
     options:
       - title: Count
@@ -171,7 +171,7 @@ options:
     default: false
 
   - name: sortCatDefault
-    title: Default Level Order
+    title: Default level order
     type: List
     options:
       - title: As defined
@@ -181,7 +181,7 @@ options:
     default: alphanumeric
 
   - name: sortCatSpecific
-    title: Specific Level Order
+    title: Specific level order
     type: Array
     template:
       type: Group
@@ -189,7 +189,7 @@ options:
         - name: var
           type: Variable
         - name: sort
-          title: Level Order
+          title: Level order
           type: List
           options:
             - title: Same as default
@@ -201,7 +201,7 @@ options:
           default: use_default
 
   - name: statContDefault
-    title: Default Continuous Statistic
+    title: Default statistic
     type: List
     options:
       - title: Mean (SD)
@@ -213,7 +213,7 @@ options:
     default: meanSd
 
   - name: statsContSpecific
-    title: Specific Continuous Statistics
+    title: Specific statistics
     type: Array
     template:
       type: Group
@@ -251,7 +251,7 @@ options:
     default: auto
 
   - name: statCatDefault
-    title: Default Categorical Statistic
+    title: Default statistic
     type: List
     options:
       - title: Count (%)
@@ -263,7 +263,7 @@ options:
     default: nPercent
 
   - name: statsCatSpecific
-    title: Specific Categorical Statistics
+    title: Specific statistics
     type: Array
     template:
       type: Group
@@ -299,7 +299,7 @@ options:
     default: auto
 
   - name: percent
-    title: Percent Type (requires Grouping Variable)
+    title: Percentage type (requires Grouping Variable)
     type: List
     options:
       - title: Column %
@@ -311,7 +311,7 @@ options:
     default: column
 
   - name: pValue
-    title: Add p-value
+    title: Add p-value (requires Grouping Variable)
     type: Bool
     default: false
 
@@ -347,7 +347,7 @@ options:
     default: false
 
   - name: testContDefault
-    title: Default Continuous Test
+    title: Default test
     type: List
     options:
       - title: Parametric (t-test / ANOVA)
@@ -375,7 +375,7 @@ options:
     default: parametric
 
   - name: testsContSpecific
-    title: Specific Tests
+    title: Specific tests
     type: Array
     default: []
     template:
@@ -413,7 +413,7 @@ options:
           default: use_default
 
   - name: testCatDefault
-    title: Default Categorical Test
+    title: Default test
     type: List
     options:
       - title: Chi-square / Fisher's (auto)
@@ -435,7 +435,7 @@ options:
     default: auto
 
   - name: testsCatSpecific
-    title: Specific Tests
+    title: Specific tests
     type: Array
     default: []
     template:
