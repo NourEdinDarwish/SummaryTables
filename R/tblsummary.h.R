@@ -9,9 +9,14 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             varsCont = NULL,
             varsCat = NULL,
             groupBy = NULL,
+            addN = FALSE,
+            addNLast = FALSE,
+            addNFootnote = FALSE,
+            addOverall = FALSE,
+            addOverallLast = FALSE,
             missing = "ifany",
             missingText = "Unknown",
-            percent = "column",
+            missingStat = "n",
             journal = "none",
             compact = FALSE,
             language = "en",
@@ -27,6 +32,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             statCatDefault = "nPercent",
             statsCatSpecific = NULL,
             digitsPct = "auto",
+            percent = "column",
             pValue = FALSE,
             digitsPvalue = "auto",
             boldP = FALSE,
@@ -70,6 +76,26 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 permitted=list(
                     "factor",
                     "id"))
+            private$..addN <- jmvcore::OptionBool$new(
+                "addN",
+                addN,
+                default=FALSE)
+            private$..addNLast <- jmvcore::OptionBool$new(
+                "addNLast",
+                addNLast,
+                default=FALSE)
+            private$..addNFootnote <- jmvcore::OptionBool$new(
+                "addNFootnote",
+                addNFootnote,
+                default=FALSE)
+            private$..addOverall <- jmvcore::OptionBool$new(
+                "addOverall",
+                addOverall,
+                default=FALSE)
+            private$..addOverallLast <- jmvcore::OptionBool$new(
+                "addOverallLast",
+                addOverallLast,
+                default=FALSE)
             private$..missing <- jmvcore::OptionList$new(
                 "missing",
                 missing,
@@ -82,14 +108,14 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 "missingText",
                 missingText,
                 default="Unknown")
-            private$..percent <- jmvcore::OptionList$new(
-                "percent",
-                percent,
+            private$..missingStat <- jmvcore::OptionList$new(
+                "missingStat",
+                missingStat,
                 options=list(
-                    "column",
-                    "row",
-                    "cell"),
-                default="column")
+                    "n",
+                    "nPercent",
+                    "percent"),
+                default="n")
             private$..journal <- jmvcore::OptionList$new(
                 "journal",
                 journal,
@@ -239,6 +265,14 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "1",
                     "2"),
                 default="auto")
+            private$..percent <- jmvcore::OptionList$new(
+                "percent",
+                percent,
+                options=list(
+                    "column",
+                    "row",
+                    "cell"),
+                default="column")
             private$..pValue <- jmvcore::OptionBool$new(
                 "pValue",
                 pValue,
@@ -359,9 +393,14 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..varsCont)
             self$.addOption(private$..varsCat)
             self$.addOption(private$..groupBy)
+            self$.addOption(private$..addN)
+            self$.addOption(private$..addNLast)
+            self$.addOption(private$..addNFootnote)
+            self$.addOption(private$..addOverall)
+            self$.addOption(private$..addOverallLast)
             self$.addOption(private$..missing)
             self$.addOption(private$..missingText)
-            self$.addOption(private$..percent)
+            self$.addOption(private$..missingStat)
             self$.addOption(private$..journal)
             self$.addOption(private$..compact)
             self$.addOption(private$..language)
@@ -377,6 +416,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..statCatDefault)
             self$.addOption(private$..statsCatSpecific)
             self$.addOption(private$..digitsPct)
+            self$.addOption(private$..percent)
             self$.addOption(private$..pValue)
             self$.addOption(private$..digitsPvalue)
             self$.addOption(private$..boldP)
@@ -393,9 +433,14 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         varsCont = function() private$..varsCont$value,
         varsCat = function() private$..varsCat$value,
         groupBy = function() private$..groupBy$value,
+        addN = function() private$..addN$value,
+        addNLast = function() private$..addNLast$value,
+        addNFootnote = function() private$..addNFootnote$value,
+        addOverall = function() private$..addOverall$value,
+        addOverallLast = function() private$..addOverallLast$value,
         missing = function() private$..missing$value,
         missingText = function() private$..missingText$value,
-        percent = function() private$..percent$value,
+        missingStat = function() private$..missingStat$value,
         journal = function() private$..journal$value,
         compact = function() private$..compact$value,
         language = function() private$..language$value,
@@ -411,6 +456,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         statCatDefault = function() private$..statCatDefault$value,
         statsCatSpecific = function() private$..statsCatSpecific$value,
         digitsPct = function() private$..digitsPct$value,
+        percent = function() private$..percent$value,
         pValue = function() private$..pValue$value,
         digitsPvalue = function() private$..digitsPvalue$value,
         boldP = function() private$..boldP$value,
@@ -426,9 +472,14 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..varsCont = NA,
         ..varsCat = NA,
         ..groupBy = NA,
+        ..addN = NA,
+        ..addNLast = NA,
+        ..addNFootnote = NA,
+        ..addOverall = NA,
+        ..addOverallLast = NA,
         ..missing = NA,
         ..missingText = NA,
-        ..percent = NA,
+        ..missingStat = NA,
         ..journal = NA,
         ..compact = NA,
         ..language = NA,
@@ -444,6 +495,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..statCatDefault = NA,
         ..statsCatSpecific = NA,
         ..digitsPct = NA,
+        ..percent = NA,
         ..pValue = NA,
         ..digitsPvalue = NA,
         ..boldP = NA,
@@ -502,9 +554,14 @@ tblSummaryBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param varsCont .
 #' @param varsCat .
 #' @param groupBy .
+#' @param addN .
+#' @param addNLast .
+#' @param addNFootnote .
+#' @param addOverall .
+#' @param addOverallLast .
 #' @param missing .
 #' @param missingText .
-#' @param percent .
+#' @param missingStat .
 #' @param journal .
 #' @param compact .
 #' @param language .
@@ -520,6 +577,7 @@ tblSummaryBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param statCatDefault .
 #' @param statsCatSpecific .
 #' @param digitsPct .
+#' @param percent .
 #' @param pValue .
 #' @param digitsPvalue .
 #' @param boldP .
@@ -542,9 +600,14 @@ tblSummary <- function(
     varsCont,
     varsCat,
     groupBy,
+    addN = FALSE,
+    addNLast = FALSE,
+    addNFootnote = FALSE,
+    addOverall = FALSE,
+    addOverallLast = FALSE,
     missing = "ifany",
     missingText = "Unknown",
-    percent = "column",
+    missingStat = "n",
     journal = "none",
     compact = FALSE,
     language = "en",
@@ -560,6 +623,7 @@ tblSummary <- function(
     statCatDefault = "nPercent",
     statsCatSpecific,
     digitsPct = "auto",
+    percent = "column",
     pValue = FALSE,
     digitsPvalue = "auto",
     boldP = FALSE,
@@ -590,9 +654,14 @@ tblSummary <- function(
         varsCont = varsCont,
         varsCat = varsCat,
         groupBy = groupBy,
+        addN = addN,
+        addNLast = addNLast,
+        addNFootnote = addNFootnote,
+        addOverall = addOverall,
+        addOverallLast = addOverallLast,
         missing = missing,
         missingText = missingText,
-        percent = percent,
+        missingStat = missingStat,
         journal = journal,
         compact = compact,
         language = language,
@@ -608,6 +677,7 @@ tblSummary <- function(
         statCatDefault = statCatDefault,
         statsCatSpecific = statsCatSpecific,
         digitsPct = digitsPct,
+        percent = percent,
         pValue = pValue,
         digitsPvalue = digitsPvalue,
         boldP = boldP,

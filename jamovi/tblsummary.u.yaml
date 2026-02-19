@@ -28,14 +28,36 @@ children:
     label: Options
     stretchFactor: 1
     children:
-      - type: ComboBox
-        name: missing
-      - type: TextBox
-        name: missingText
-        format: string
-        width: large
-      - type: ComboBox
-        name: percent
+      - type: CheckBox
+        name: addN
+        children:
+          - type: CheckBox
+            name: addNLast
+            enable: (addN)
+          - type: CheckBox
+            name: addNFootnote
+            enable: (addN)
+      - type: CheckBox
+        name: addOverall
+        label: Add Overall column (requires Grouping Variable)
+        enable: ({return !!ui['groupBy'].value();})
+        children:
+          - type: CheckBox
+            name: addOverallLast
+            enable: ({return !!ui['groupBy'].value() && ui['addOverall'].value();})
+      - type: Label
+        label: Missing Data
+        children:
+          - type: ComboBox
+            name: missing
+          - type: TextBox
+            name: missingText
+            format: string
+            width: large
+            enable: (!(missing:no))
+          - type: ComboBox
+            name: missingStat
+            enable: (!(missing:no))
   - type: CollapseBox
     label: Appearance
     collapsed: true
@@ -161,6 +183,9 @@ children:
                   label: ""
           - type: ComboBox
             name: digitsPct
+          - type: ComboBox
+            name: percent
+            enable: ({return !!ui['groupBy'].value();})
   - type: CollapseBox
     label: P-value
     collapsed: true

@@ -37,6 +37,31 @@ options:
       - factor
       - id
 
+  - name: addN
+    title: Add N column
+    type: Bool
+    default: false
+
+  - name: addNLast
+    title: Place N column last
+    type: Bool
+    default: false
+
+  - name: addNFootnote
+    title: Show footnote for N
+    type: Bool
+    default: false
+
+  - name: addOverall
+    title: Add Overall column
+    type: Bool
+    default: false
+
+  - name: addOverallLast
+    title: Place Overall column last
+    type: Bool
+    default: false
+
   - name: missing
     title: Missing Values
     type: List
@@ -54,17 +79,17 @@ options:
     type: String
     default: Unknown
 
-  - name: percent
-    title: Percent Type
+  - name: missingStat
+    title: Missing value stats
     type: List
     options:
-      - title: Column %
-        name: column
-      - title: Row %
-        name: row
-      - title: Total %
-        name: cell
-    default: column
+      - title: Count
+        name: n
+      - title: Count (%)
+        name: nPercent
+      - title: "%"
+        name: percent
+    default: n
 
   - name: journal
     title: Theme
@@ -229,9 +254,9 @@ options:
     title: Default Categorical Statistic
     type: List
     options:
-      - title: n (%)
+      - title: Count (%)
         name: nPercent
-      - title: n
+      - title: Count
         name: n
       - title: "%"
         name: percent
@@ -251,9 +276,9 @@ options:
           options:
             - title: Same as default
               name: use_default
-            - title: n (%)
+            - title: Count (%)
               name: nPercent
-            - title: n
+            - title: Count
               name: n
             - title: "%"
               name: percent
@@ -272,6 +297,18 @@ options:
       - title: "2"
         name: "2"
     default: auto
+
+  - name: percent
+    title: Percent Type (requires Grouping Variable)
+    type: List
+    options:
+      - title: Column %
+        name: column
+      - title: Row %
+        name: row
+      - title: Total %
+        name: cell
+    default: column
 
   - name: pValue
     title: Add p-value

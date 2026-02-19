@@ -60,6 +60,9 @@ tblSummaryClass <- R6::R6Class(
       sortArguments <- private$.constructSortArgs(varsCat)
       byVariable <- self$options$groupBy
 
+      # Theme-aware percent suffix (shared logic with .constructStatArgs)
+      pctSuffix <- if (self$options$journal %in% c("jama", "nejm")) "" else "%"
+
       # Build the gtsummary table
       table <- runSafe(
         {
@@ -72,6 +75,12 @@ tblSummaryClass <- R6::R6Class(
             digits = digitsArguments,
             missing = self$options$missing,
             missing_text = self$options$missingText,
+            missing_stat = switch(
+              self$options$missingStat,
+              n = "{N_miss}",
+              nPercent = paste0("{N_miss} ({p_miss}", pctSuffix, ")"),
+              percent = paste0("{p_miss}", pctSuffix)
+            ),
             percent = self$options$percent,
             sort = sortArguments
           )
@@ -111,6 +120,30 @@ tblSummaryClass <- R6::R6Class(
               gtsummary::add_p(table, test = testArguments)
             }
           },
+          private$.collector
+        )
+      }
+
+      # Add N column
+      if (!is.null(table) && isTRUE(self$options$addN)) {
+        table <- gtsummary::add_n(
+          table,
+          last = isTRUE(self$options$addNLast),
+          footnote = isTRUE(self$options$addNFootnote)
+        )
+      }
+
+      # Add Overall column (only when groupBy is present)
+      if (
+        !is.null(table) &&
+          isTRUE(self$options$addOverall) &&
+          !is.null(self$options$groupBy)
+      ) {
+        table <- runSafe(
+          gtsummary::add_overall(
+            table,
+            last = isTRUE(self$options$addOverallLast)
+          ),
           private$.collector
         )
       }
