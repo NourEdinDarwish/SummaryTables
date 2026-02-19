@@ -172,7 +172,7 @@ children:
           - type: CheckBox
             name: pValue
             label: Add p-value (requires Grouping Variable)
-            enable: "({return !!ui['groupBy'].value();})"
+            enable: ({return !!ui['groupBy'].value();})
           - type: ComboBox
             name: digitsPvalue
             enable: (pValue)
@@ -200,7 +200,6 @@ children:
             fullRowSelect: true
             stretchFactor: 1
             height: normal
-            enable: (pValue)
             columns:
               - name: var
                 label: Variable
@@ -229,7 +228,6 @@ children:
             fullRowSelect: true
             stretchFactor: 1
             height: normal
-            enable: (pValue)
             columns:
               - name: var
                 label: Variable
