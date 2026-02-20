@@ -211,7 +211,9 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 options=list(
                     "meanSd",
                     "medianIqr",
-                    "medianRange"),
+                    "medianRange",
+                    "mean",
+                    "median"),
                 default="meanSd")
             private$..statsContSpecific <- jmvcore::OptionArray$new(
                 "statsContSpecific",
@@ -230,7 +232,9 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                                 "use_default",
                                 "meanSd",
                                 "medianIqr",
-                                "medianRange"),
+                                "medianRange",
+                                "mean",
+                                "median"),
                             default="use_default"))))
             private$..digitsCont <- jmvcore::OptionList$new(
                 "digitsCont",
@@ -240,7 +244,9 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "0",
                     "1",
                     "2",
-                    "3"),
+                    "3",
+                    "4",
+                    "5"),
                 default="auto")
             private$..statCatDefault <- jmvcore::OptionList$new(
                 "statCatDefault",
@@ -276,7 +282,10 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "auto",
                     "0",
                     "1",
-                    "2"),
+                    "2",
+                    "3",
+                    "4",
+                    "5"),
                 default="auto")
             private$..percent <- jmvcore::OptionList$new(
                 "percent",
@@ -468,7 +477,9 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "0",
                     "1",
                     "2",
-                    "3"),
+                    "3",
+                    "4",
+                    "5"),
                 default="auto")
             private$..ciMethodCatDefault <- jmvcore::OptionList$new(
                 "ciMethodCatDefault",
@@ -514,7 +525,9 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "0",
                     "1",
                     "2",
-                    "3"),
+                    "3",
+                    "4",
+                    "5"),
                 default="auto")
             private$..export <- jmvcore::OptionBool$new(
                 "export",

@@ -210,6 +210,10 @@ options:
         name: medianIqr
       - title: Median (Range)
         name: medianRange
+      - title: Mean
+        name: mean
+      - title: Median
+        name: median
     default: meanSd
 
   - name: statsContSpecific
@@ -232,13 +236,17 @@ options:
               name: medianIqr
             - title: Median (Range)
               name: medianRange
+            - title: Mean
+              name: mean
+            - title: Median
+              name: median
           default: use_default
 
   - name: digitsCont
     title: Decimal places
     type: List
     options:
-      - title: Auto (theme-aware)
+      - title: Auto
         name: auto
       - title: "0"
         name: "0"
@@ -248,6 +256,10 @@ options:
         name: "2"
       - title: "3"
         name: "3"
+      - title: "4"
+        name: "4"
+      - title: "5"
+        name: "5"
     default: auto
 
   - name: statCatDefault
@@ -296,6 +308,12 @@ options:
         name: "1"
       - title: "2"
         name: "2"
+      - title: "3"
+        name: "3"
+      - title: "4"
+        name: "4"
+      - title: "5"
+        name: "5"
     default: auto
 
   - name: percent
@@ -514,7 +532,7 @@ options:
     default: 95
 
   - name: ciCombine
-    title: Combine with statistic
+    title: Merge with statistic column
     type: Bool
     default: false
 
@@ -522,9 +540,9 @@ options:
     title: Default method
     type: List
     options:
-      - title: t-test
+      - title: T-test (mean)
         name: t.test
-      - title: Wilcoxon signed-rank
+      - title: Wilcoxon signed-rank (pseudomedian)
         name: wilcox.test
     default: t.test
 
@@ -543,9 +561,9 @@ options:
           options:
             - title: Same as default
               name: use_default
-            - title: t-test
+            - title: T-test (mean)
               name: t.test
-            - title: Wilcoxon signed-rank
+            - title: Wilcoxon signed-rank (pseudomedian)
               name: wilcox.test
           default: use_default
 
@@ -553,7 +571,7 @@ options:
     title: Decimal places
     type: List
     options:
-      - title: Auto (significant figures)
+      - title: Auto
         name: auto
       - title: "0"
         name: "0"
@@ -563,21 +581,25 @@ options:
         name: "2"
       - title: "3"
         name: "3"
+      - title: "4"
+        name: "4"
+      - title: "5"
+        name: "5"
     default: auto
 
   - name: ciMethodCatDefault
     title: Default method
     type: List
     options:
-      - title: Wilson
+      - title: Wilson (continuity correction)
         name: wilson
-      - title: Wilson (no correction)
+      - title: Wilson
         name: wilson.no.correct
       - title: Exact (Clopper-Pearson)
         name: exact
-      - title: Wald
+      - title: Wald (continuity correction)
         name: wald
-      - title: Wald (no correction)
+      - title: Wald
         name: wald.no.correct
       - title: Agresti-Coull
         name: agresti.coull
@@ -600,15 +622,15 @@ options:
           options:
             - title: Same as default
               name: use_default
-            - title: Wilson
+            - title: Wilson (continuity correction)
               name: wilson
-            - title: Wilson (no correction)
+            - title: Wilson
               name: wilson.no.correct
             - title: Exact (Clopper-Pearson)
               name: exact
-            - title: Wald
+            - title: Wald (continuity correction)
               name: wald
-            - title: Wald (no correction)
+            - title: Wald
               name: wald.no.correct
             - title: Agresti-Coull
               name: agresti.coull
@@ -620,7 +642,7 @@ options:
     title: Decimal places
     type: List
     options:
-      - title: Auto (significant figures)
+      - title: Auto
         name: auto
       - title: "0"
         name: "0"
@@ -630,6 +652,10 @@ options:
         name: "2"
       - title: "3"
         name: "3"
+      - title: "4"
+        name: "4"
+      - title: "5"
+        name: "5"
     default: auto
 
   - name: export

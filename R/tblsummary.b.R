@@ -50,8 +50,9 @@ tblSummaryClass <- R6::R6Class(
 
       # Convert continuous variables to numeric (jamovi stores all data as factors)
       if (!is.null(varsCont)) {
-        for (v in varsCont)
+        for (v in varsCont) {
           data[[v]] <- jmvcore::toNumeric(data[[v]])
+        }
       }
 
       # Type assignment (must be a named list for gtsummary)
@@ -145,21 +146,78 @@ tblSummaryClass <- R6::R6Class(
       if (!is.null(table) && isTRUE(self$options$addCi)) {
         ciMethodArgs <- private$.constructCiMethodArgs(varsCont, varsCat)
         confLevel <- self$options$confLevel / 100
-        ciPattern <- if (isTRUE(self$options$ciCombine)) "{stat} ({ci})" else NULL
+
+        # Determine if we need square brackets based on the selected statistics
+        statsWithParens <- c("meanSd", "medianIqr", "medianRange", "nPercent")
+
+        # Gather all selected statistics from the UI into one flat list
+        selectedStats <- c(
+          self$options$statContDefault,
+          self$options$statCatDefault,
+          vapply(self$options$statsContSpecific, \(x) x$stat, character(1)),
+          vapply(self$options$statsCatSpecific, \(x) x$stat, character(1))
+        )
+
+        # Use square brackets if ANY selected stat uses parentheses
+        useSquareBrackets <- any(selectedStats %in% statsWithParens)
+
+        ciPattern <- if (isTRUE(self$options$ciCombine)) {
+          if (useSquareBrackets) "{stat} [{ci}]" else "{stat} ({ci})"
+        } else {
+          NULL
+        }
+
+        # Build theme-aware statistic argument for add_ci
+        # gtsummary themes don't natively update add_ci() statistics, so we do it manually.
+        ciSep <- gtsummary:::get_theme_element(
+          "pkgwide-str:ci.sep",
+          default = ", "
+        )
+        ciPctSuffix <- if (self$options$journal %in% c("jama", "nejm")) {
+          ""
+        } else {
+          "%"
+        }
+
+        ciStatArg <- list(
+          gtsummary::all_continuous() ~ paste0(
+            "{conf.low}",
+            ciSep,
+            "{conf.high}"
+          ),
+          gtsummary::all_categorical() ~ paste0(
+            "{conf.low}",
+            ciPctSuffix,
+            ciSep,
+            "{conf.high}",
+            ciPctSuffix
+          )
+        )
 
         # Build style_fun override when user selects explicit decimal places
         ciStyleFun <- list()
         if (self$options$ciDigitsCont != "auto") {
           d <- as.integer(self$options$ciDigitsCont)
-          ciStyleFun <- c(ciStyleFun, list(
-            gtsummary::all_continuous() ~ gtsummary::label_style_number(digits = d)
-          ))
+          ciStyleFun <- c(
+            ciStyleFun,
+            list(
+              gtsummary::all_continuous() ~ gtsummary::label_style_number(
+                digits = d
+              )
+            )
+          )
         }
         if (self$options$ciDigitsCat != "auto") {
           d <- as.integer(self$options$ciDigitsCat)
-          ciStyleFun <- c(ciStyleFun, list(
-            gtsummary::all_categorical() ~ gtsummary::label_style_number(digits = d, scale = 100)
-          ))
+          ciStyleFun <- c(
+            ciStyleFun,
+            list(
+              gtsummary::all_categorical() ~ gtsummary::label_style_number(
+                digits = d,
+                scale = 100
+              )
+            )
+          )
         }
 
         table <- runSafe(
@@ -167,6 +225,7 @@ tblSummaryClass <- R6::R6Class(
             args <- list(
               x = table,
               method = ciMethodArgs,
+              statistic = ciStatArg,
               conf.level = confLevel,
               pattern = ciPattern
             )
@@ -417,9 +476,12 @@ tblSummaryClass <- R6::R6Class(
 
       # Default continuous method
       contDefault <- self$options$ciMethodContDefault
-      methodArgs <- c(methodArgs, list(
-        gtsummary::all_continuous() ~ contDefault
-      ))
+      methodArgs <- c(
+        methodArgs,
+        list(
+          gtsummary::all_continuous() ~ contDefault
+        )
+      )
 
       # Per-variable continuous overrides
       for (item in self$options$ciMethodsContSpecific) {
@@ -430,9 +492,12 @@ tblSummaryClass <- R6::R6Class(
 
       # Default categorical method
       catDefault <- self$options$ciMethodCatDefault
-      methodArgs <- c(methodArgs, list(
-        gtsummary::all_categorical() ~ catDefault
-      ))
+      methodArgs <- c(
+        methodArgs,
+        list(
+          gtsummary::all_categorical() ~ catDefault
+        )
+      )
 
       # Per-variable categorical overrides
       for (item in self$options$ciMethodsCatSpecific) {
