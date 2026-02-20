@@ -56,8 +56,21 @@ tblSummaryClass <- R6::R6Class(
       }
 
       # Type assignment (must be a named list for gtsummary)
+      # We deduce type "continuous2" if "eda" is selected anywhere for the variable.
+      defaultType <- if (self$options$statContDefault == "eda") "continuous2" else "continuous"
+      typeArgsBuilder <- stats::setNames(rep(defaultType, length(varsCont)), varsCont)
+      
+      # Apply specific overrides
+      if (!is.null(varsCont)) {
+        for (item in self$options$statsContSpecific) {
+          if (item$var %in% varsCont && item$stat != "use_default") {
+            typeArgsBuilder[[item$var]] <- if (item$stat == "eda") "continuous2" else "continuous"
+          }
+        }
+      }
+
       typeArguments <- as.list(c(
-        stats::setNames(rep("continuous", length(varsCont)), varsCont),
+        typeArgsBuilder,
         stats::setNames(rep("categorical", length(varsCat)), varsCat)
       ))
 
@@ -148,7 +161,7 @@ tblSummaryClass <- R6::R6Class(
         confLevel <- self$options$confLevel / 100
 
         # Determine if we need square brackets based on the selected statistics
-        statsWithParens <- c("meanSd", "medianIqr", "medianRange", "nPercent")
+        statsWithParens <- c("meanSd", "medianIqr", "medianRange", "nPercent", "eda")
 
         # Gather all selected statistics from the UI into one flat list
         selectedStats <- c(
@@ -383,12 +396,19 @@ tblSummaryClass <- R6::R6Class(
 
       # Lookup tables: option name -> glue format string
       statStrings <- list(
-        continuous = c(
+        continuous = list(
           meanSd = "{mean} ({sd})",
           medianIqr = paste0("{median} ({p25}", iqrSep, "{p75})"),
-          medianRange = paste0("{median} ({min}", rangeSep, "{max})")
+          medianRange = paste0("{median} ({min}", rangeSep, "{max})"),
+          eda = c(
+            paste0("{median} ({p25}", iqrSep, "{p75})"),
+            "{mean} ({sd})",
+            paste0("{min}", rangeSep, "{max}")
+          ),
+          mean = "{mean}",
+          median = "{median}"
         ),
-        categorical = c(
+        categorical = list(
           nPercent = paste0("{n} ({p}", pctSuffix, ")"),
           n = "{n}",
           percent = paste0("{p}", pctSuffix)
@@ -398,30 +418,30 @@ tblSummaryClass <- R6::R6Class(
       args <- list()
 
       # Default continuous
-      contStr <- statStrings$continuous[self$options$statContDefault]
-      if (!is.na(contStr)) {
+      contStr <- statStrings$continuous[[self$options$statContDefault]]
+      if (!is.null(contStr)) {
         args <- c(args, list(gtsummary::all_continuous() ~ contStr))
       }
 
       # Default categorical
-      catStr <- statStrings$categorical[self$options$statCatDefault]
-      if (!is.na(catStr)) {
+      catStr <- statStrings$categorical[[self$options$statCatDefault]]
+      if (!is.null(catStr)) {
         args <- c(args, list(gtsummary::all_categorical() ~ catStr))
       }
 
       # Per-variable overrides — Continuous
       for (item in self$options$statsContSpecific) {
         if (item$stat != "use_default" && item$var %in% varsCont) {
-          val <- statStrings$continuous[item$stat]
-          if (!is.na(val)) args[[item$var]] <- val
+          val <- statStrings$continuous[[item$stat]]
+          if (!is.null(val)) args[[item$var]] <- val
         }
       }
 
       # Per-variable overrides — Categorical
       for (item in self$options$statsCatSpecific) {
         if (item$stat != "use_default" && item$var %in% varsCat) {
-          val <- statStrings$categorical[item$stat]
-          if (!is.na(val)) args[[item$var]] <- val
+          val <- statStrings$categorical[[item$stat]]
+          if (!is.null(val)) args[[item$var]] <- val
         }
       }
 

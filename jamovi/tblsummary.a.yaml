@@ -214,6 +214,8 @@ options:
         name: mean
       - title: Median
         name: median
+      - title: All
+        name: eda
     default: meanSd
 
   - name: statsContSpecific
@@ -240,6 +242,8 @@ options:
               name: mean
             - title: Median
               name: median
+            - title: All
+              name: eda
           default: use_default
 
   - name: digitsCont

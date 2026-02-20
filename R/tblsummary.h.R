@@ -213,7 +213,8 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "medianIqr",
                     "medianRange",
                     "mean",
-                    "median"),
+                    "median",
+                    "eda"),
                 default="meanSd")
             private$..statsContSpecific <- jmvcore::OptionArray$new(
                 "statsContSpecific",
@@ -234,7 +235,8 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                                 "medianIqr",
                                 "medianRange",
                                 "mean",
-                                "median"),
+                                "median",
+                                "eda"),
                             default="use_default"))))
             private$..digitsCont <- jmvcore::OptionList$new(
                 "digitsCont",
