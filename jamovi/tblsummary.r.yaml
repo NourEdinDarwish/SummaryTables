@@ -7,3 +7,4 @@ items:
   - name: tbl
     title: Table Summary
     type: Html
+    clearWith: []

@@ -2,7 +2,6 @@ tblSummaryClass <- R6::R6Class(
   "tblSummaryClass",
   inherit = tblSummaryBase,
   private = list(
-
     # ── Entry point ──────────────────────────────────────────────────────────
     .run = function() {
       collector <- newCollector()
@@ -30,7 +29,19 @@ tblSummaryClass <- R6::R6Class(
 
       # ── 2. Data prep ───────────────────────────────────────────────────────
       data <- self$data
-      allVars <- c(varsCat, varsCont)
+
+      # Track variable insertion order across multiple listboxes
+      # Queue order: varsCat = type 1, varsCont = type 2
+      orderState <- trackVariableOrder(
+        savedState = self$results$tbl$state,
+        varsCat,
+        varsCont
+      )
+      allVars <- orderState$vars
+
+      # Save the updated order back to State for the next run
+      self$results$tbl$setState(orderState)
+
       byVariable <- self$options$groupBy
       hasByVar <- !is.null(byVariable)
 

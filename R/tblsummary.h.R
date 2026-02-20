@@ -713,7 +713,8 @@ tblSummaryResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$add(jmvcore::Html$new(
                 options=options,
                 name="tbl",
-                title="Table Summary"))}))
+                title="Table Summary",
+                clearWith=list()))}))
 
 tblSummaryBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "tblSummaryBase",

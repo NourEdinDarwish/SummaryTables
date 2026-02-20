@@ -372,11 +372,11 @@ options:
     title: Default test
     type: List
     options:
-      - title: Parametric (t-test / ANOVA)
+      - title: Parametric (t-test/ANOVA)
         name: parametric
-      - title: Non-parametric (Wilcoxon / Kruskal-Wallis)
+      - title: Non-parametric (Wilcoxon/Kruskal-Wallis)
         name: nonparametric
-      - title: Student's t-test
+      - title: t-test
         name: t.test
       - title: One-way ANOVA
         name: oneway.test
@@ -388,11 +388,11 @@ options:
         name: kruskal.test
       - title: Paired Wilcoxon rank-sum
         name: paired.wilcox.test
-      - title: Mood's two-sample test of scale
+      - title: Mood's test of scale
         name: mood.test
       - title: ANCOVA
         name: ancova
-      - title: Random intercept logistic
+      - title: Linear mixed-effects model
         name: lme4
     default: parametric
 
@@ -410,11 +410,11 @@ options:
           options:
             - title: Same as default
               name: use_default
-            - title: Parametric (t-test / ANOVA)
+            - title: Parametric (t-test/ANOVA)
               name: parametric
-            - title: Non-parametric (Wilcoxon / Kruskal-Wallis)
+            - title: Non-parametric (Wilcoxon/Kruskal-Wallis)
               name: nonparametric
-            - title: Student's t-test
+            - title: t-test
               name: t.test
             - title: One-way ANOVA
               name: oneway.test
@@ -426,11 +426,11 @@ options:
               name: kruskal.test
             - title: Paired Wilcoxon rank-sum
               name: paired.wilcox.test
-            - title: Mood's two-sample test of scale
+            - title: Mood's test of scale
               name: mood.test
             - title: ANCOVA
               name: ancova
-            - title: Random intercept logistic
+            - title: Linear mixed-effects model
               name: lme4
           default: use_default
 
@@ -438,7 +438,7 @@ options:
     title: Default test
     type: List
     options:
-      - title: Chi-square / Fisher's (auto)
+      - title: Chi-square/Fisher's exact
         name: auto
       - title: Chi-square
         name: chisq.test.no.correct
@@ -452,7 +452,7 @@ options:
         name: mcnemar.test.wide
       - title: Test for equality of proportions
         name: prop.test
-      - title: Random intercept logistic
+      - title: Logistic mixed-effects model
         name: lme4
     default: auto
 
@@ -482,7 +482,7 @@ options:
               name: mcnemar.test.wide
             - title: Test for equality of proportions
               name: prop.test
-            - title: Random intercept logistic
+            - title: Logistic mixed-effects model
               name: lme4
           default: use_default
 
@@ -544,7 +544,7 @@ options:
     title: Default method
     type: List
     options:
-      - title: T-test (mean)
+      - title: t-test (mean)
         name: t.test
       - title: Wilcoxon signed-rank (pseudomedian)
         name: wilcox.test
@@ -565,7 +565,7 @@ options:
           options:
             - title: Same as default
               name: use_default
-            - title: T-test (mean)
+            - title: t-test (mean)
               name: t.test
             - title: Wilcoxon signed-rank (pseudomedian)
               name: wilcox.test
