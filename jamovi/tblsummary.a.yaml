@@ -501,6 +501,137 @@ options:
     max: 1
     default: 0.05
 
+  - name: addCi
+    title: Add confidence interval
+    type: Bool
+    default: false
+
+  - name: confLevel
+    title: Confidence level
+    type: Number
+    min: 50
+    max: 99.9
+    default: 95
+
+  - name: ciCombine
+    title: Combine with statistic
+    type: Bool
+    default: false
+
+  - name: ciMethodContDefault
+    title: Default method
+    type: List
+    options:
+      - title: t-test
+        name: t.test
+      - title: Wilcoxon signed-rank
+        name: wilcox.test
+    default: t.test
+
+  - name: ciMethodsContSpecific
+    title: Specific methods
+    type: Array
+    default: []
+    template:
+      type: Group
+      elements:
+        - name: var
+          type: Variable
+        - name: method
+          title: Method
+          type: List
+          options:
+            - title: Same as default
+              name: use_default
+            - title: t-test
+              name: t.test
+            - title: Wilcoxon signed-rank
+              name: wilcox.test
+          default: use_default
+
+  - name: ciDigitsCont
+    title: Decimal places
+    type: List
+    options:
+      - title: Auto (significant figures)
+        name: auto
+      - title: "0"
+        name: "0"
+      - title: "1"
+        name: "1"
+      - title: "2"
+        name: "2"
+      - title: "3"
+        name: "3"
+    default: auto
+
+  - name: ciMethodCatDefault
+    title: Default method
+    type: List
+    options:
+      - title: Wilson
+        name: wilson
+      - title: Wilson (no correction)
+        name: wilson.no.correct
+      - title: Exact (Clopper-Pearson)
+        name: exact
+      - title: Wald
+        name: wald
+      - title: Wald (no correction)
+        name: wald.no.correct
+      - title: Agresti-Coull
+        name: agresti.coull
+      - title: Jeffreys
+        name: jeffreys
+    default: wilson
+
+  - name: ciMethodsCatSpecific
+    title: Specific methods
+    type: Array
+    default: []
+    template:
+      type: Group
+      elements:
+        - name: var
+          type: Variable
+        - name: method
+          title: Method
+          type: List
+          options:
+            - title: Same as default
+              name: use_default
+            - title: Wilson
+              name: wilson
+            - title: Wilson (no correction)
+              name: wilson.no.correct
+            - title: Exact (Clopper-Pearson)
+              name: exact
+            - title: Wald
+              name: wald
+            - title: Wald (no correction)
+              name: wald.no.correct
+            - title: Agresti-Coull
+              name: agresti.coull
+            - title: Jeffreys
+              name: jeffreys
+          default: use_default
+
+  - name: ciDigitsCat
+    title: Decimal places
+    type: List
+    options:
+      - title: Auto (significant figures)
+        name: auto
+      - title: "0"
+        name: "0"
+      - title: "1"
+        name: "1"
+      - title: "2"
+        name: "2"
+      - title: "3"
+        name: "3"
+    default: auto
+
   - name: export
     title: Save
     type: Bool

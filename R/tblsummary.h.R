@@ -46,6 +46,15 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             qMethod = "BH",
             boldQ = FALSE,
             boldQThreshold = 0.05,
+            addCi = FALSE,
+            confLevel = 95,
+            ciCombine = FALSE,
+            ciMethodContDefault = "t.test",
+            ciMethodsContSpecific = list(),
+            ciDigitsCont = "auto",
+            ciMethodCatDefault = "wilson",
+            ciMethodsCatSpecific = list(),
+            ciDigitsCat = "auto",
             export = FALSE,
             path = "~/Desktop/Summary Table.docx", ...) {
 
@@ -411,6 +420,102 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 min=0,
                 max=1,
                 default=0.05)
+            private$..addCi <- jmvcore::OptionBool$new(
+                "addCi",
+                addCi,
+                default=FALSE)
+            private$..confLevel <- jmvcore::OptionNumber$new(
+                "confLevel",
+                confLevel,
+                min=50,
+                max=99.9,
+                default=95)
+            private$..ciCombine <- jmvcore::OptionBool$new(
+                "ciCombine",
+                ciCombine,
+                default=FALSE)
+            private$..ciMethodContDefault <- jmvcore::OptionList$new(
+                "ciMethodContDefault",
+                ciMethodContDefault,
+                options=list(
+                    "t.test",
+                    "wilcox.test"),
+                default="t.test")
+            private$..ciMethodsContSpecific <- jmvcore::OptionArray$new(
+                "ciMethodsContSpecific",
+                ciMethodsContSpecific,
+                default=list(),
+                template=jmvcore::OptionGroup$new(
+                    "ciMethodsContSpecific",
+                    NULL,
+                    elements=list(
+                        jmvcore::OptionVariable$new(
+                            "var",
+                            NULL),
+                        jmvcore::OptionList$new(
+                            "method",
+                            NULL,
+                            options=list(
+                                "use_default",
+                                "t.test",
+                                "wilcox.test"),
+                            default="use_default"))))
+            private$..ciDigitsCont <- jmvcore::OptionList$new(
+                "ciDigitsCont",
+                ciDigitsCont,
+                options=list(
+                    "auto",
+                    "0",
+                    "1",
+                    "2",
+                    "3"),
+                default="auto")
+            private$..ciMethodCatDefault <- jmvcore::OptionList$new(
+                "ciMethodCatDefault",
+                ciMethodCatDefault,
+                options=list(
+                    "wilson",
+                    "wilson.no.correct",
+                    "exact",
+                    "wald",
+                    "wald.no.correct",
+                    "agresti.coull",
+                    "jeffreys"),
+                default="wilson")
+            private$..ciMethodsCatSpecific <- jmvcore::OptionArray$new(
+                "ciMethodsCatSpecific",
+                ciMethodsCatSpecific,
+                default=list(),
+                template=jmvcore::OptionGroup$new(
+                    "ciMethodsCatSpecific",
+                    NULL,
+                    elements=list(
+                        jmvcore::OptionVariable$new(
+                            "var",
+                            NULL),
+                        jmvcore::OptionList$new(
+                            "method",
+                            NULL,
+                            options=list(
+                                "use_default",
+                                "wilson",
+                                "wilson.no.correct",
+                                "exact",
+                                "wald",
+                                "wald.no.correct",
+                                "agresti.coull",
+                                "jeffreys"),
+                            default="use_default"))))
+            private$..ciDigitsCat <- jmvcore::OptionList$new(
+                "ciDigitsCat",
+                ciDigitsCat,
+                options=list(
+                    "auto",
+                    "0",
+                    "1",
+                    "2",
+                    "3"),
+                default="auto")
             private$..export <- jmvcore::OptionBool$new(
                 "export",
                 export,
@@ -460,6 +565,15 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..qMethod)
             self$.addOption(private$..boldQ)
             self$.addOption(private$..boldQThreshold)
+            self$.addOption(private$..addCi)
+            self$.addOption(private$..confLevel)
+            self$.addOption(private$..ciCombine)
+            self$.addOption(private$..ciMethodContDefault)
+            self$.addOption(private$..ciMethodsContSpecific)
+            self$.addOption(private$..ciDigitsCont)
+            self$.addOption(private$..ciMethodCatDefault)
+            self$.addOption(private$..ciMethodsCatSpecific)
+            self$.addOption(private$..ciDigitsCat)
             self$.addOption(private$..export)
             self$.addOption(private$..path)
         }),
@@ -504,6 +618,15 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         qMethod = function() private$..qMethod$value,
         boldQ = function() private$..boldQ$value,
         boldQThreshold = function() private$..boldQThreshold$value,
+        addCi = function() private$..addCi$value,
+        confLevel = function() private$..confLevel$value,
+        ciCombine = function() private$..ciCombine$value,
+        ciMethodContDefault = function() private$..ciMethodContDefault$value,
+        ciMethodsContSpecific = function() private$..ciMethodsContSpecific$value,
+        ciDigitsCont = function() private$..ciDigitsCont$value,
+        ciMethodCatDefault = function() private$..ciMethodCatDefault$value,
+        ciMethodsCatSpecific = function() private$..ciMethodsCatSpecific$value,
+        ciDigitsCat = function() private$..ciDigitsCat$value,
         export = function() private$..export$value,
         path = function() private$..path$value),
     private = list(
@@ -547,6 +670,15 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..qMethod = NA,
         ..boldQ = NA,
         ..boldQThreshold = NA,
+        ..addCi = NA,
+        ..confLevel = NA,
+        ..ciCombine = NA,
+        ..ciMethodContDefault = NA,
+        ..ciMethodsContSpecific = NA,
+        ..ciDigitsCont = NA,
+        ..ciMethodCatDefault = NA,
+        ..ciMethodsCatSpecific = NA,
+        ..ciDigitsCat = NA,
         ..export = NA,
         ..path = NA)
 )
@@ -633,6 +765,15 @@ tblSummaryBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param qMethod .
 #' @param boldQ .
 #' @param boldQThreshold .
+#' @param addCi .
+#' @param confLevel .
+#' @param ciCombine .
+#' @param ciMethodContDefault .
+#' @param ciMethodsContSpecific .
+#' @param ciDigitsCont .
+#' @param ciMethodCatDefault .
+#' @param ciMethodsCatSpecific .
+#' @param ciDigitsCat .
 #' @param export .
 #' @param path .
 #' @return A results object containing:
@@ -683,6 +824,15 @@ tblSummary <- function(
     qMethod = "BH",
     boldQ = FALSE,
     boldQThreshold = 0.05,
+    addCi = FALSE,
+    confLevel = 95,
+    ciCombine = FALSE,
+    ciMethodContDefault = "t.test",
+    ciMethodsContSpecific = list(),
+    ciDigitsCont = "auto",
+    ciMethodCatDefault = "wilson",
+    ciMethodsCatSpecific = list(),
+    ciDigitsCat = "auto",
     export = FALSE,
     path = "~/Desktop/Summary Table.docx") {
 
@@ -741,6 +891,15 @@ tblSummary <- function(
         qMethod = qMethod,
         boldQ = boldQ,
         boldQThreshold = boldQThreshold,
+        addCi = addCi,
+        confLevel = confLevel,
+        ciCombine = ciCombine,
+        ciMethodContDefault = ciMethodContDefault,
+        ciMethodsContSpecific = ciMethodsContSpecific,
+        ciDigitsCont = ciDigitsCont,
+        ciMethodCatDefault = ciMethodCatDefault,
+        ciMethodsCatSpecific = ciMethodsCatSpecific,
+        ciDigitsCat = ciDigitsCat,
         export = export,
         path = path)
 

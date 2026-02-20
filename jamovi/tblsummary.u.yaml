@@ -1,6 +1,6 @@
 title: Table Summary
 name: tblSummary
-jus: "3.0"
+jus: '3.0'
 stage: 0
 compilerMode: tame
 children:
@@ -119,7 +119,7 @@ children:
             stretchFactor: 1
             template:
               type: ComboBox
-              label: ""
+              label: ''
   - type: CollapseBox
     label: Statistics
     collapsed: true
@@ -151,7 +151,7 @@ children:
                 stretchFactor: 1
                 template:
                   type: ComboBox
-                  label: ""
+                  label: ''
           - type: ComboBox
             name: digitsCont
       - type: Label
@@ -180,7 +180,7 @@ children:
                 stretchFactor: 1
                 template:
                   type: ComboBox
-                  label: ""
+                  label: ''
           - type: ComboBox
             name: digitsPct
           - type: ComboBox
@@ -238,7 +238,7 @@ children:
                 stretchFactor: 1
                 template:
                   type: ComboBox
-                  label: ""
+                  label: ''
       - type: Label
         label: Categorical Variables
         stretchFactor: 1
@@ -266,7 +266,7 @@ children:
                 stretchFactor: 1
                 template:
                   type: ComboBox
-                  label: ""
+                  label: ''
   - type: CollapseBox
     label: Q-value (P-value Adjustment)
     collapsed: true
@@ -286,6 +286,86 @@ children:
             name: boldQThreshold
             format: number
             enable: (pValue && addQ && boldQ)
+  - type: CollapseBox
+    label: Confidence Interval
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: LayoutBox
+        margin: large
+        children:
+          - type: CheckBox
+            name: addCi
+          - type: TextBox
+            name: confLevel
+            suffix: '%'
+            format: number
+            enable: (addCi)
+          - type: CheckBox
+            name: ciCombine
+            enable: (addCi)
+      - type: Label
+        label: Continuous Variables
+        stretchFactor: 1
+        children:
+          - type: ComboBox
+            name: ciMethodContDefault
+            enable: (addCi)
+          - type: ListBox
+            name: ciMethodsContSpecific
+            showColumnHeaders: true
+            fullRowSelect: true
+            stretchFactor: 1
+            height: large
+            columns:
+              - name: var
+                label: Variable
+                selectable: false
+                stretchFactor: 1
+                maxWidth: 300
+                template:
+                  type: VariableLabel
+              - name: method
+                label: Method
+                selectable: false
+                stretchFactor: 1
+                template:
+                  type: ComboBox
+                  label: ''
+          - type: ComboBox
+            name: ciDigitsCont
+            enable: (addCi)
+      - type: Label
+        label: Categorical Variables
+        stretchFactor: 1
+        children:
+          - type: ComboBox
+            name: ciMethodCatDefault
+            enable: (addCi)
+          - type: ListBox
+            name: ciMethodsCatSpecific
+            showColumnHeaders: true
+            fullRowSelect: true
+            stretchFactor: 1
+            height: large
+            columns:
+              - name: var
+                label: Variable
+                selectable: false
+                stretchFactor: 1
+                maxWidth: 300
+                template:
+                  type: VariableLabel
+              - name: method
+                label: Method
+                selectable: false
+                stretchFactor: 1
+                template:
+                  type: ComboBox
+                  label: ''
+          - type: ComboBox
+            name: ciDigitsCat
+            enable: (addCi)
   - type: CollapseBox
     label: Save to Word
     collapsed: true

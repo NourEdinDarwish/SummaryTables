@@ -24,11 +24,13 @@ module.exports = {
   varsCont_changed: function (ui) {
     sync(ui.varsCont, ui.statsContSpecific, "var", "stat", "use_default");
     sync(ui.varsCont, ui.testsContSpecific, "var", "test", "use_default");
+    sync(ui.varsCont, ui.ciMethodsContSpecific, "var", "method", "use_default");
   },
 
   varsCat_changed: function (ui) {
     sync(ui.varsCat, ui.statsCatSpecific, "var", "stat", "use_default");
     sync(ui.varsCat, ui.testsCatSpecific, "var", "test", "use_default");
     sync(ui.varsCat, ui.sortCatSpecific, "var", "sort", "use_default");
+    sync(ui.varsCat, ui.ciMethodsCatSpecific, "var", "method", "use_default");
   },
 };
