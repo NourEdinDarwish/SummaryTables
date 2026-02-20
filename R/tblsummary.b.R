@@ -2,69 +2,63 @@ tblSummaryClass <- R6::R6Class(
   "tblSummaryClass",
   inherit = tblSummaryBase,
   private = list(
-    .collector = NULL,
 
-    # ── Entry point ──────────────────────────────────────────────────
+    # ── Entry point ──────────────────────────────────────────────────────────
     .run = function() {
-      private$.collector <- newCollector()
+      collector <- newCollector()
 
-      on.exit(resetTheme(), add = TRUE)
+      # ── 0. Theme ───────────────────────────────────────────────────────────
+      on.exit(gtsummary::reset_gtsummary_theme(), add = TRUE)
       applyTheme(
         journalOption = self$options$journal,
         languageOption = self$options$language,
         compactOption = self$options$compact
       )
+      # Single source of truth for all theme-aware formatting strings
+      ts <- getThemeStrings(self$options$journal)
 
-      table <- private$.buildTable()
-
-      if (!is.null(table)) {
-        renderHtml(table, self$results$tbl)
-
-        if (isTRUE(self$options$export)) {
-          path <- resolveExportPath(self$options$path)
-          if (!is.null(path)) {
-            exportDocx(
-              table,
-              path,
-              self$options,
-              self$results
-            )
-          }
-        }
-      }
-
-      displayNotices(private$.collector, self$options, self$results)
-    },
-
-    # ── Core table construction ──────────────────────────────────────
-    .buildTable = function() {
+      # ── 1. Guard ───────────────────────────────────────────────────────────
       varsCont <- self$options$varsCont
       varsCat <- self$options$varsCat
+      hasCont <- length(varsCont) > 0
+      hasCat <- length(varsCat) > 0
 
-      if (length(varsCont) == 0 && length(varsCat) == 0) {
+      if (!hasCont && !hasCat) {
+        displayNotices(collector, self$options, self$results)
         return(NULL)
       }
 
+      # ── 2. Data prep ───────────────────────────────────────────────────────
       data <- self$data
       allVars <- c(varsCat, varsCont)
+      byVariable <- self$options$groupBy
+      hasByVar <- !is.null(byVariable)
 
-      # Convert continuous variables to numeric (jamovi stores all data as factors)
-      if (!is.null(varsCont)) {
+      # Jamovi stores all data as factors; convert continuous vars to numeric
+      if (hasCont) {
         for (v in varsCont) {
           data[[v]] <- jmvcore::toNumeric(data[[v]])
         }
       }
 
-      # Type assignment (must be a named list for gtsummary)
-      # We deduce type "continuous2" if "eda" is selected anywhere for the variable.
-      defaultType <- if (self$options$statContDefault == "eda") "continuous2" else "continuous"
-      typeArgsBuilder <- stats::setNames(rep(defaultType, length(varsCont)), varsCont)
-      
-      # Apply specific overrides
-      if (!is.null(varsCont)) {
-        for (item in self$options$statsContSpecific) {
-          if (item$var %in% varsCont && item$stat != "use_default") {
-            typeArgsBuilder[[item$var]] <- if (item$stat == "eda") "continuous2" else "continuous"
+      # ── 3. Type arguments ──────────────────────────────────────────────────
+      # "continuous2" is needed for EDA (multi-row) display
+      defaultType <- if (self$options$statContDefault == "eda") {
+        "continuous2"
+      } else {
+        "continuous"
+      }
+      typeArgsBuilder <- stats::setNames(
+        rep(defaultType, length(varsCont)),
+        varsCont
+      )
+
+      for (item in self$options$statsContSpecific) {
+        if (item$var %in% varsCont && item$stat != "use_default") {
+          typeArgsBuilder[[item$var]] <- if (item$stat == "eda") {
+            "continuous2"
+          } else {
+            "continuous"
           }
         }
       }
@@ -74,16 +68,99 @@ tblSummaryClass <- R6::R6Class(
         stats::setNames(rep("categorical", length(varsCat)), varsCat)
       ))
 
-      # Delegated argument builders
-      statisticArguments <- private$.constructStatArgs(varsCont, varsCat)
-      digitsArguments <- private$.constructDigitsArgs(varsCont, varsCat)
-      sortArguments <- private$.constructSortArgs(varsCat)
-      byVariable <- self$options$groupBy
+      # ── 4. Statistic arguments ─────────────────────────────────────────────
+      # Lookup: option name -> glue format string, using centralised ts values
+      statStrings <- list(
+        continuous = list(
+          meanSd = "{mean} ({sd})",
+          medianIqr = paste0("{median} ({p25}", ts$iqrSep, "{p75})"),
+          medianRange = paste0("{median} ({min}", ts$rangeSep, "{max})"),
+          eda = c(
+            paste0("{median} ({p25}", ts$iqrSep, "{p75})"),
+            "{mean} ({sd})",
+            paste0("{min}", ts$rangeSep, "{max}")
+          ),
+          mean = "{mean}",
+          median = "{median}"
+        ),
+        categorical = list(
+          nPercent = paste0("{n} ({p}", ts$pctSuffix, ")"),
+          n = "{n}",
+          percent = paste0("{p}", ts$pctSuffix)
+        )
+      )
 
-      # Theme-aware percent suffix (shared logic with .constructStatArgs)
-      pctSuffix <- if (self$options$journal %in% c("jama", "nejm")) "" else "%"
+      statisticArguments <- list()
 
-      # Build the gtsummary table
+      # Default continuous
+      contStr <- statStrings$continuous[[self$options$statContDefault]]
+      if (!is.null(contStr)) {
+        statisticArguments <- c(
+          statisticArguments,
+          list(gtsummary::all_continuous() ~ contStr)
+        )
+      }
+
+      # Default categorical
+      catStr <- statStrings$categorical[[self$options$statCatDefault]]
+      if (!is.null(catStr)) {
+        statisticArguments <- c(
+          statisticArguments,
+          list(gtsummary::all_categorical() ~ catStr)
+        )
+      }
+
+      # Per-variable continuous overrides
+      for (item in self$options$statsContSpecific) {
+        if (item$stat != "use_default" && item$var %in% varsCont) {
+          val <- statStrings$continuous[[item$stat]]
+          if (!is.null(val)) statisticArguments[[item$var]] <- val
+        }
+      }
+
+      # Per-variable categorical overrides
+      for (item in self$options$statsCatSpecific) {
+        if (item$stat != "use_default" && item$var %in% varsCat) {
+          val <- statStrings$categorical[[item$stat]]
+          if (!is.null(val)) statisticArguments[[item$var]] <- val
+        }
+      }
+
+      # ── 5. Digits arguments ────────────────────────────────────────────────
+      digitsArguments <- list()
+
+      if (self$options$digitsCont != "auto") {
+        digitsArguments <- c(
+          digitsArguments,
+          list(
+            gtsummary::all_continuous() ~ as.integer(self$options$digitsCont)
+          )
+        )
+      }
+      if (self$options$digitsPct != "auto") {
+        digitsArguments <- c(
+          digitsArguments,
+          list(
+            gtsummary::all_categorical() ~ c(
+              0L,
+              as.integer(self$options$digitsPct)
+            )
+          )
+        )
+      }
+
+      # ── 6. Sort arguments ──────────────────────────────────────────────────
+      sortArguments <- list(
+        gtsummary::all_categorical(FALSE) ~ self$options$sortCatDefault
+      )
+
+      for (item in self$options$sortCatSpecific) {
+        if (item$sort != "use_default" && item$var %in% varsCat) {
+          sortArguments[[item$var]] <- item$sort
+        }
+      }
+
+      # ── 7. tbl_summary ─────────────────────────────────────────────────────
       table <- runSafe(
         {
           gtsummary::tbl_summary(
@@ -98,34 +175,70 @@ tblSummaryClass <- R6::R6Class(
             missing_stat = switch(
               self$options$missingStat,
               n = "{N_miss}",
-              nPercent = paste0("{N_miss} ({p_miss}", pctSuffix, ")"),
-              percent = paste0("{p_miss}", pctSuffix)
+              nPercent = paste0("{N_miss} ({p_miss}", ts$pctSuffix, ")"),
+              percent = paste0("{p_miss}", ts$pctSuffix)
             ),
             percent = self$options$percent,
             sort = sortArguments
           )
         },
-        private$.collector
+        collector
       )
 
-      # Add p-values if requested AND grouping variable is present
-      if (!is.null(table) && self$options$pValue && !is.null(byVariable)) {
-        # Set continuous test defaults via theme elements
-        # (same mechanism as theme_gtsummary_mean_sd)
-        # Source: gtsummary/R/theme_gtsummary.R L424-434
-        contDefault <- self$options$testContDefault
-        if (contDefault == "parametric") {
+      # ── 8. IQR label patch for continuous2 (EDA) ──────────────────────────
+      # JAMA/NEJM/Lancet themes rename "Q1 – Q3" → "IQR" via gsub on the
+      # stat_label column, but for continuous2 that column is always NA —
+      # the label text lives in table_body$label for level rows. Patch it here.
+      if (!is.null(table) && ts$iqrJournals) {
+        table <- gtsummary::modify_table_body(table, function(tb) {
+          tb$label <- gsub("Q1 \U2013 Q3", "IQR", tb$label)
+          tb
+        })
+      }
+
+      # ── 9. add_p ───────────────────────────────────────────────────────────
+      if (!is.null(table) && self$options$pValue && hasByVar) {
+        # Parametric default: set via theme elements (same mechanism as
+        # theme_gtsummary_mean_sd). Only set when user chose parametric;
+        # nonparametric is gtsummary's built-in default.
+        if (self$options$testContDefault == "parametric") {
           gtsummary::set_gtsummary_theme(list(
             "add_p.tbl_summary-attr:test.continuous_by2" = "t.test",
             "add_p.tbl_summary-attr:test.continuous" = "oneway.test"
           ))
         }
-        # "nonparametric" needs no theme — gtsummary defaults are already
-        # wilcox.test (2 groups) and kruskal.test (3+ groups)
 
-        testArguments <- private$.constructTestArgs(varsCont, varsCat)
+        # Per-variable test overrides
+        by2 <- hasByVar &&
+          byVariable %in% names(self$data) &&
+          length(unique(self$data[[byVariable]])) == 2
+
+        testArguments <- list()
+
+        for (item in self$options$testsContSpecific) {
+          if (item$var %in% varsCont && item$test != "use_default") {
+            testArguments[[item$var]] <- switch(
+              item$test,
+              parametric = if (by2) "t.test" else "oneway.test",
+              nonparametric = if (by2) "wilcox.test" else "kruskal.test",
+              item$test
+            )
+          }
+        }
+
+        defaultCat <- self$options$testCatDefault
+        for (item in self$options$testsCatSpecific) {
+          if (item$var %in% varsCat) {
+            selection <- if (item$test == "use_default") {
+              defaultCat
+            } else {
+              item$test
+            }
+            if (selection != "auto") testArguments[[item$var]] <- selection
+          }
+        }
+
         pvDigits <- self$options$digitsPvalue
-
         table <- runSafe(
           {
             if (pvDigits != "auto") {
@@ -140,38 +253,53 @@ tblSummaryClass <- R6::R6Class(
               gtsummary::add_p(table, test = testArguments)
             }
           },
-          private$.collector
+          collector
         )
 
-        # Add q-values if requested
-        if (isTRUE(self$options$addQ)) {
+        # ── 9a. add_q ─────────────────────────────────────────────────────
+        if (!is.null(table) && isTRUE(self$options$addQ)) {
           table <- runSafe(
-            gtsummary::add_q(
-              table,
-              method = self$options$qMethod
-            ),
-            private$.collector
+            gtsummary::add_q(table, method = self$options$qMethod),
+            collector
           )
         }
       }
 
-      # Add confidence intervals if requested
+      # ── 10. add_ci ─────────────────────────────────────────────────────────
       if (!is.null(table) && isTRUE(self$options$addCi)) {
-        ciMethodArgs <- private$.constructCiMethodArgs(varsCont, varsCat)
-        confLevel <- self$options$confLevel / 100
+        # Default + per-variable method overrides
+        ciMethodArgs <- list(
+          gtsummary::all_continuous() ~ self$options$ciMethodContDefault
+        )
+        for (item in self$options$ciMethodsContSpecific) {
+          if (item$method != "use_default" && item$var %in% varsCont) {
+            ciMethodArgs[[item$var]] <- item$method
+          }
+        }
+        ciMethodArgs <- c(
+          ciMethodArgs,
+          list(gtsummary::all_categorical() ~ self$options$ciMethodCatDefault)
+        )
+        for (item in self$options$ciMethodsCatSpecific) {
+          if (item$method != "use_default" && item$var %in% varsCat) {
+            ciMethodArgs[[item$var]] <- item$method
+          }
+        }
 
-        # Determine if we need square brackets based on the selected statistics
-        statsWithParens <- c("meanSd", "medianIqr", "medianRange", "nPercent", "eda")
-
-        # Gather all selected statistics from the UI into one flat list
+        # Square-bracket wrapping when any selected stat already uses parens
+        statsWithParens <- c(
+          "meanSd",
+          "medianIqr",
+          "medianRange",
+          "nPercent",
+          "eda"
+        )
         selectedStats <- c(
           self$options$statContDefault,
           self$options$statCatDefault,
           vapply(self$options$statsContSpecific, \(x) x$stat, character(1)),
           vapply(self$options$statsCatSpecific, \(x) x$stat, character(1))
         )
-
-        # Use square brackets if ANY selected stat uses parentheses
         useSquareBrackets <- any(selectedStats %in% statsWithParens)
 
         ciPattern <- if (isTRUE(self$options$ciCombine)) {
@@ -180,53 +308,40 @@ tblSummaryClass <- R6::R6Class(
           NULL
         }
 
-        # Build theme-aware statistic argument for add_ci
-        # gtsummary themes don't natively update add_ci() statistics, so we do it manually.
-        ciSep <- gtsummary:::get_theme_element(
-          "pkgwide-str:ci.sep",
-          default = ", "
-        )
-        ciPctSuffix <- if (self$options$journal %in% c("jama", "nejm")) {
-          ""
-        } else {
-          "%"
-        }
-
+        # CI statistic format — use centralised ts values
         ciStatArg <- list(
           gtsummary::all_continuous() ~ paste0(
             "{conf.low}",
-            ciSep,
+            ts$ciSep,
             "{conf.high}"
           ),
           gtsummary::all_categorical() ~ paste0(
             "{conf.low}",
-            ciPctSuffix,
-            ciSep,
+            ts$ciPctSuffix,
+            ts$ciSep,
             "{conf.high}",
-            ciPctSuffix
+            ts$ciPctSuffix
           )
         )
 
-        # Build style_fun override when user selects explicit decimal places
+        # Style overrides when user picks explicit decimal places
         ciStyleFun <- list()
         if (self$options$ciDigitsCont != "auto") {
-          d <- as.integer(self$options$ciDigitsCont)
           ciStyleFun <- c(
             ciStyleFun,
             list(
               gtsummary::all_continuous() ~ gtsummary::label_style_number(
-                digits = d
+                digits = as.integer(self$options$ciDigitsCont)
               )
             )
           )
         }
         if (self$options$ciDigitsCat != "auto") {
-          d <- as.integer(self$options$ciDigitsCat)
           ciStyleFun <- c(
             ciStyleFun,
             list(
               gtsummary::all_categorical() ~ gtsummary::label_style_number(
-                digits = d,
+                digits = as.integer(self$options$ciDigitsCat),
                 scale = 100
               )
             )
@@ -239,7 +354,7 @@ tblSummaryClass <- R6::R6Class(
               x = table,
               method = ciMethodArgs,
               statistic = ciStatArg,
-              conf.level = confLevel,
+              conf.level = self$options$confLevel / 100,
               pattern = ciPattern
             )
             if (length(ciStyleFun) > 0) {
@@ -247,11 +362,11 @@ tblSummaryClass <- R6::R6Class(
             }
             do.call(gtsummary::add_ci, args)
           },
-          private$.collector
+          collector
         )
       }
 
-      # Add N column
+      # ── 11. add_n ──────────────────────────────────────────────────────────
       if (!is.null(table) && isTRUE(self$options$addN)) {
         table <- gtsummary::add_n(
           table,
@@ -260,273 +375,77 @@ tblSummaryClass <- R6::R6Class(
         )
       }
 
-      # Add Overall column (only when groupBy is present)
+      # ── 12. add_overall ────────────────────────────────────────────────────
       if (
         !is.null(table) &&
           isTRUE(self$options$addOverall) &&
-          !is.null(self$options$groupBy)
+          hasByVar
       ) {
         table <- runSafe(
           gtsummary::add_overall(
             table,
             last = isTRUE(self$options$addOverallLast)
           ),
-          private$.collector
+          collector
         )
       }
 
-      # Apply text formatting
+      # ── 13. Text formatting ────────────────────────────────────────────────
       if (!is.null(table)) {
-        table <- private$.applyFormatting(table)
-      }
-
-      table
-    },
-
-    # ── Text formatting ──────────────────────────────────────────────
-    .applyFormatting = function(table) {
-      if (isTRUE(self$options$boldLabels)) {
-        table <- gtsummary::bold_labels(table)
-      }
-      if (isTRUE(self$options$boldLevels)) {
-        table <- gtsummary::bold_levels(table)
-      }
-      if (isTRUE(self$options$italicizeLabels)) {
-        table <- gtsummary::italicize_labels(table)
-      }
-      if (isTRUE(self$options$italicizeLevels)) {
-        table <- gtsummary::italicize_levels(table)
-      }
-
-      # Bold significant p-values (only when p-values are shown)
-      if (
-        isTRUE(self$options$boldP) &&
-          self$options$pValue &&
-          !is.null(self$options$groupBy)
-      ) {
-        table <- gtsummary::bold_p(
-          table,
-          t = self$options$boldPThreshold
-        )
-      }
-
-      # Bold significant q-values (only when q-values are shown)
-      if (
-        isTRUE(self$options$boldQ) &&
-          isTRUE(self$options$addQ) &&
-          self$options$pValue &&
-          !is.null(self$options$groupBy)
-      ) {
-        table <- gtsummary::bold_p(
-          table,
-          t = self$options$boldQThreshold,
-          q = TRUE
-        )
-      }
-
-      # Separate p-value footnotes (one per test, instead of combined)
-      if (
-        isTRUE(self$options$separatePFootnotes) &&
-          self$options$pValue &&
-          !is.null(self$options$groupBy)
-      ) {
-        table <- gtsummary::separate_p_footnotes(table)
-      }
-
-      table
-    },
-
-    # ── Argument builders ────────────────────────────────────────────
-
-    .constructDigitsArgs = function(varsCont, varsCat) {
-      contDigits <- self$options$digitsCont
-      pctDigits <- self$options$digitsPct
-
-      args <- list()
-
-      # Continuous: only pass when user explicitly chose (not "auto")
-      if (contDigits != "auto") {
-        args <- c(
-          args,
-          list(gtsummary::all_continuous() ~ as.integer(contDigits))
-        )
-      }
-
-      # Categorical: only pass when user explicitly chose (not "auto")
-      if (pctDigits != "auto") {
-        args <- c(
-          args,
-          list(gtsummary::all_categorical() ~ c(0L, as.integer(pctDigits)))
-        )
-      }
-
-      args
-    },
-
-    .constructSortArgs = function(varsCat) {
-      args <- list()
-
-      sortDefault <- self$options$sortCatDefault
-      args <- c(args, list(gtsummary::all_categorical(FALSE) ~ sortDefault))
-
-      for (item in self$options$sortCatSpecific) {
-        if (item$sort != "use_default" && item$var %in% varsCat) {
-          args[[item$var]] <- item$sort
+        if (isTRUE(self$options$boldLabels)) {
+          table <- gtsummary::bold_labels(table)
         }
-      }
-
-      args
-    },
-
-    .constructStatArgs = function(varsCont, varsCat) {
-      journal <- self$options$journal
-
-      # Theme-aware style decisions
-      iqrSep <- if (journal %in% c("jama", "nejm", "lancet")) {
-        " \U2013 "
-      } else {
-        ", "
-      }
-      rangeSep <- if (journal %in% c("jama", "nejm", "lancet")) {
-        " \U2013 "
-      } else {
-        ", "
-      }
-      pctSuffix <- if (journal %in% c("jama", "nejm")) "" else "%"
-
-      # Lookup tables: option name -> glue format string
-      statStrings <- list(
-        continuous = list(
-          meanSd = "{mean} ({sd})",
-          medianIqr = paste0("{median} ({p25}", iqrSep, "{p75})"),
-          medianRange = paste0("{median} ({min}", rangeSep, "{max})"),
-          eda = c(
-            paste0("{median} ({p25}", iqrSep, "{p75})"),
-            "{mean} ({sd})",
-            paste0("{min}", rangeSep, "{max}")
-          ),
-          mean = "{mean}",
-          median = "{median}"
-        ),
-        categorical = list(
-          nPercent = paste0("{n} ({p}", pctSuffix, ")"),
-          n = "{n}",
-          percent = paste0("{p}", pctSuffix)
-        )
-      )
-
-      args <- list()
-
-      # Default continuous
-      contStr <- statStrings$continuous[[self$options$statContDefault]]
-      if (!is.null(contStr)) {
-        args <- c(args, list(gtsummary::all_continuous() ~ contStr))
-      }
-
-      # Default categorical
-      catStr <- statStrings$categorical[[self$options$statCatDefault]]
-      if (!is.null(catStr)) {
-        args <- c(args, list(gtsummary::all_categorical() ~ catStr))
-      }
-
-      # Per-variable overrides — Continuous
-      for (item in self$options$statsContSpecific) {
-        if (item$stat != "use_default" && item$var %in% varsCont) {
-          val <- statStrings$continuous[[item$stat]]
-          if (!is.null(val)) args[[item$var]] <- val
+        if (isTRUE(self$options$boldLevels)) {
+          table <- gtsummary::bold_levels(table)
         }
-      }
-
-      # Per-variable overrides — Categorical
-      for (item in self$options$statsCatSpecific) {
-        if (item$stat != "use_default" && item$var %in% varsCat) {
-          val <- statStrings$categorical[[item$stat]]
-          if (!is.null(val)) args[[item$var]] <- val
+        if (isTRUE(self$options$italicizeLabels)) {
+          table <- gtsummary::italicize_labels(table)
         }
-      }
+        if (isTRUE(self$options$italicizeLevels)) {
+          table <- gtsummary::italicize_levels(table)
+        }
 
-      args
-    },
-
-    # Build per-variable test overrides only.
-    # Default test selection is handled via theme elements before add_p().
-    .constructTestArgs = function(varsCont, varsCat) {
-      testArguments <- list()
-
-      # Group count needed to resolve parametric/nonparametric per-variable
-      # shortcuts
-      groupBy <- self$options$groupBy
-      by2 <- FALSE
-      if (!is.null(groupBy) && groupBy %in% names(self$data)) {
-        by2 <- length(unique(self$data[[groupBy]])) == 2
-      }
-
-      # Continuous: per-variable overrides only
-      # "parametric"/"nonparametric" are shortcuts that resolve based on group
-      # count
-      for (item in self$options$testsContSpecific) {
-        if (item$var %in% varsCont && item$test != "use_default") {
-          testArguments[[item$var]] <- switch(
-            item$test,
-            parametric = if (by2) "t.test" else "oneway.test",
-            nonparametric = if (by2) "wilcox.test" else "kruskal.test",
-            item$test # specific test name passed through
+        if (
+          isTRUE(self$options$boldP) &&
+            self$options$pValue &&
+            hasByVar
+        ) {
+          table <- gtsummary::bold_p(table, t = self$options$boldPThreshold)
+        }
+        if (
+          isTRUE(self$options$boldQ) &&
+            isTRUE(self$options$addQ) &&
+            self$options$pValue &&
+            hasByVar
+        ) {
+          table <- gtsummary::bold_p(
+            table,
+            t = self$options$boldQThreshold,
+            q = TRUE
           )
         }
+        if (
+          isTRUE(self$options$separatePFootnotes) &&
+            self$options$pValue &&
+            hasByVar
+        ) {
+          table <- gtsummary::separate_p_footnotes(table)
+        }
       }
 
-      # Categorical: per-variable overrides only
-      defaultCat <- self$options$testCatDefault
-      for (item in self$options$testsCatSpecific) {
-        if (item$var %in% varsCat) {
-          selection <- if (item$test == "use_default") defaultCat else item$test
-          if (selection != "auto") {
-            testArguments[[item$var]] <- selection
+      # ── 14. Render & export ────────────────────────────────────────────────
+      if (!is.null(table)) {
+        renderHtml(table, self$results$tbl)
+
+        if (isTRUE(self$options$export)) {
+          path <- resolveExportPath(self$options$path)
+          if (!is.null(path)) {
+            exportDocx(table, path, self$options, self$results)
           }
         }
       }
 
-      testArguments
-    },
-
-    # Build method arguments for add_ci().
-    # Uses the same default + per-variable override pattern as .constructTestArgs().
-    .constructCiMethodArgs = function(varsCont, varsCat) {
-      methodArgs <- list()
-
-      # Default continuous method
-      contDefault <- self$options$ciMethodContDefault
-      methodArgs <- c(
-        methodArgs,
-        list(
-          gtsummary::all_continuous() ~ contDefault
-        )
-      )
-
-      # Per-variable continuous overrides
-      for (item in self$options$ciMethodsContSpecific) {
-        if (item$method != "use_default" && item$var %in% varsCont) {
-          methodArgs[[item$var]] <- item$method
-        }
-      }
-
-      # Default categorical method
-      catDefault <- self$options$ciMethodCatDefault
-      methodArgs <- c(
-        methodArgs,
-        list(
-          gtsummary::all_categorical() ~ catDefault
-        )
-      )
-
-      # Per-variable categorical overrides
-      for (item in self$options$ciMethodsCatSpecific) {
-        if (item$method != "use_default" && item$var %in% varsCat) {
-          methodArgs[[item$var]] <- item$method
-        }
-      }
-
-      methodArgs
+      displayNotices(collector, self$options, self$results)
     }
   )
 )

@@ -1,18 +1,6 @@
 # theming.R - Standalone gtsummary theme management utilities
-# Provides functions to reset and apply gtsummary themes
+# Provides functions to apply and derive gtsummary themes
 
-#' Reset all active gtsummary themes
-#'
-#' Clears any previously applied gtsummary themes to prevent state leakage
-#' between analyses. Should be called at the start of each table generation
-#' and on cleanup via on.exit().
-#'
-#' @return NULL (invisibly)
-#' @export
-resetTheme <- function() {
-  gtsummary::reset_gtsummary_theme()
-  invisible(NULL)
-}
 
 #' Apply gtsummary theme(s) based on user options
 #'
@@ -27,8 +15,9 @@ resetTheme <- function() {
 #'
 #' @param journalOption Character: Journal theme to apply. One of:
 #'   "none", "jama", "lancet", "nejm", "qjecon"
-#' @param languageOption Character: Language for labels. One of:
-#'   "en", "de", "es", "fr", "gu", "hi", "is", "ja", "kr", "mr", "nl", "no", "pt", "se", "zh-cn", "zh-tw"
+#' @param languageOption Character: Language for labels. One of: "en", "de",
+#'   "es", "fr", "gu", "hi", "is", "ja", "kr", "mr", "nl", "no", "pt", "se",
+#'   "zh-cn", "zh-tw"
 #' @param compactOption Logical: Apply compact theme if TRUE
 #' @return NULL (invisibly)
 #' @export
@@ -38,7 +27,7 @@ applyTheme <- function(
   compactOption = FALSE
 ) {
   # ALWAYS reset first to prevent state leakage
-  resetTheme()
+  gtsummary::reset_gtsummary_theme()
 
   # Apply journal theme if specified (not "none")
   if (journalOption != "none") {
@@ -55,5 +44,34 @@ applyTheme <- function(
     gtsummary::theme_gtsummary_language(language = languageOption)
   }
 
-  invisible(NULL)
+}
+
+
+#' Derive all theme-aware formatting strings from user options
+#'
+#' Call ONCE after applyTheme(). Returns a named list used everywhere in .run,
+#' eliminating duplicated journal-option checks across argument builders.
+#'
+#' - iqrSep / rangeSep: en-dash for JAMA/NEJM/Lancet, comma otherwise
+#' - pctSuffix: empty for JAMA/NEJM (theme strips %), "%" otherwise
+#' - ciSep: read from active theme (set by journal/language theme)
+#' - iqrJournals: TRUE when the IQR label patch for continuous2 is needed
+#'
+#' @param journalOption Character: selected journal (e.g. "jama", "none")
+#' @return Named list of formatting strings
+#' @export
+getThemeStrings <- function(journalOption = "none") {
+  dashJournals <- c("jama", "nejm", "lancet")
+  sep <- if (journalOption %in% dashJournals) " \U2013 " else ", "
+  pctSuffix <- if (journalOption %in% c("jama", "nejm")) "" else "%"
+  ciSep <- gtsummary:::get_theme_element("pkgwide-str:ci.sep", default = ", ")
+
+  list(
+    iqrSep = sep,
+    rangeSep = sep,
+    pctSuffix = pctSuffix,
+    ciSep = ciSep,
+    ciPctSuffix = pctSuffix,
+    iqrJournals = journalOption %in% dashJournals
+  )
 }
