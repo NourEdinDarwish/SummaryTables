@@ -1,34 +1,20 @@
-# theming.R - Standalone gtsummary theme management utilities
-# Provides functions to apply and derive gtsummary themes
-
-
 #' Apply gtsummary theme(s) based on user options
 #'
 #' Applies one or more gtsummary themes in the correct order. ALWAYS resets
 #' first to prevent state leakage from previous runs. Themes stack on top of
 #' each other (e.g., JAMA + compact + Spanish).
 #'
-#' Theme functions are deterministic config setters — they never produce
-#' data-dependent warnings or errors, so they are called directly without
-#' runSafe(). Any confirmation messages they emit are harmless in jamovi
-#' (they go nowhere since there is no visible console).
-#'
-#' @param journalOption Character: Journal theme to apply. One of:
-#'   "none", "jama", "lancet", "nejm", "qjecon"
+#' @param journalOption Character: Journal theme to apply. One of: "none",
+#'   "jama", "lancet", "nejm", "qjecon"
 #' @param languageOption Character: Language for labels. One of: "en", "de",
 #'   "es", "fr", "gu", "hi", "is", "ja", "kr", "mr", "nl", "no", "pt", "se",
 #'   "zh-cn", "zh-tw"
 #' @param compactOption Logical: Apply compact theme if TRUE
-#' @return NULL (invisibly)
-#' @export
 applyTheme <- function(
   journalOption = "none",
   languageOption = "en",
   compactOption = FALSE
 ) {
-  # ALWAYS reset first to prevent state leakage
-  gtsummary::reset_gtsummary_theme()
-
   # Apply journal theme if specified (not "none")
   if (journalOption != "none") {
     gtsummary::theme_gtsummary_journal(journal = journalOption)
@@ -36,16 +22,14 @@ applyTheme <- function(
 
   # Apply compact theme if requested
   if (compactOption) {
-    gtsummary::theme_gtsummary_compact(set_theme = TRUE)
+    gtsummary::theme_gtsummary_compact()
   }
 
   # Apply language theme if not English
   if (languageOption != "en") {
     gtsummary::theme_gtsummary_language(language = languageOption)
   }
-
 }
-
 
 #' Derive all theme-aware formatting strings from user options
 #'
@@ -59,7 +43,6 @@ applyTheme <- function(
 #'
 #' @param journalOption Character: selected journal (e.g. "jama", "none")
 #' @return Named list of formatting strings
-#' @export
 getThemeStrings <- function(journalOption = "none") {
   dashJournals <- c("jama", "nejm", "lancet")
   sep <- if (journalOption %in% dashJournals) " \U2013 " else ", "
