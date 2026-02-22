@@ -372,28 +372,22 @@ options:
     title: Default test
     type: List
     options:
-      - title: Parametric (t-test/ANOVA)
+      - title: Parametric (t-test / ANOVA)
         name: parametric
-      - title: Non-parametric (Wilcoxon/Kruskal-Wallis)
+      - title: Non-parametric (Wilcoxon rank-sum / Kruskal-Wallis)
         name: nonparametric
       - title: t-test
         name: t.test
-      - title: One-way ANOVA
+      - title: t-test (equal variance)
+        name: t.test.student
+      - title: ANOVA
         name: oneway.test
-      - title: Paired t-test
-        name: paired.t.test
+      - title: ANOVA (equal variance)
+        name: oneway.test.classical
       - title: Wilcoxon rank-sum
         name: wilcox.test
       - title: Kruskal-Wallis
         name: kruskal.test
-      - title: Paired Wilcoxon rank-sum
-        name: paired.wilcox.test
-      - title: Mood's test of scale
-        name: mood.test
-      - title: ANCOVA
-        name: ancova
-      - title: Linear mixed-effects model
-        name: lme4
     default: parametric
 
   - name: testsContSpecific
@@ -410,50 +404,32 @@ options:
           options:
             - title: Same as default
               name: use_default
-            - title: Parametric (t-test/ANOVA)
-              name: parametric
-            - title: Non-parametric (Wilcoxon/Kruskal-Wallis)
-              name: nonparametric
             - title: t-test
               name: t.test
-            - title: One-way ANOVA
+            - title: t-test (equal variance)
+              name: t.test.student
+            - title: ANOVA
               name: oneway.test
-            - title: Paired t-test
-              name: paired.t.test
+            - title: ANOVA (equal variance)
+              name: oneway.test.classical
             - title: Wilcoxon rank-sum
               name: wilcox.test
             - title: Kruskal-Wallis
               name: kruskal.test
-            - title: Paired Wilcoxon rank-sum
-              name: paired.wilcox.test
-            - title: Mood's test of scale
-              name: mood.test
-            - title: ANCOVA
-              name: ancova
-            - title: Linear mixed-effects model
-              name: lme4
           default: use_default
 
   - name: testCatDefault
     title: Default test
     type: List
     options:
-      - title: Chi-square/Fisher's exact
+      - title: Chi-square / Fisher's exact test
         name: auto
       - title: Chi-square
         name: chisq.test.no.correct
-      - title: Chi-square (continuity correction)
+      - title: Chi-square (Yates' correction)
         name: chisq.test
-      - title: Fisher's exact
+      - title: Fisher's exact test
         name: fisher.test
-      - title: McNemar's test
-        name: mcnemar.test
-      - title: McNemar's test (wide)
-        name: mcnemar.test.wide
-      - title: Test for equality of proportions
-        name: prop.test
-      - title: Logistic mixed-effects model
-        name: lme4
     default: auto
 
   - name: testsCatSpecific
@@ -472,18 +448,10 @@ options:
               name: use_default
             - title: Chi-square
               name: chisq.test.no.correct
-            - title: Chi-square (continuity correction)
+            - title: Chi-square (Yates' correction)
               name: chisq.test
-            - title: Fisher's exact
+            - title: Fisher's exact test
               name: fisher.test
-            - title: McNemar's test
-              name: mcnemar.test
-            - title: McNemar's test (wide)
-              name: mcnemar.test.wide
-            - title: Test for equality of proportions
-              name: prop.test
-            - title: Logistic mixed-effects model
-              name: lme4
           default: use_default
 
   - name: addQ

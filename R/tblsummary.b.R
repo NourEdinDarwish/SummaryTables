@@ -209,34 +209,49 @@ tblSummaryClass <- R6::R6Class(
 
       # ── 9. add_p ───────────────────────────────────────────────────────────
       if (!is.null(table) && self$options$pValue && hasByVar) {
-        # Parametric default: set via theme elements (same mechanism as
-        # theme_gtsummary_mean_sd). Only set when user chose parametric;
-        # nonparametric is gtsummary's built-in default.
-        if (self$options$testContDefault == "parametric") {
+        # Translate our jamovi aliases to real gtsummary test names
+        resolveTest <- function(alias) {
+          switch(alias,
+            t.test.student        = "t.test",
+            oneway.test.classical = "oneway.test",
+            alias
+          )
+        }
+
+        testArguments <- list()
+        testArgsArguments <- list()
+
+        # Default continuous test
+        contDefault <- self$options$testContDefault
+        if (contDefault == "parametric") {
+          # Theme lets gtsummary auto-pick t.test vs oneway.test by group count
           gtsummary::set_gtsummary_theme(list(
             "add_p.tbl_summary-attr:test.continuous_by2" = "t.test",
             "add_p.tbl_summary-attr:test.continuous" = "oneway.test"
           ))
-        }
-
-        # Per-variable test overrides
-        by2 <- hasByVar &&
-          byVariable %in% names(self$data) &&
-          length(unique(self$data[[byVariable]])) == 2
-
-        testArguments <- list()
-
-        for (item in self$options$testsContSpecific) {
-          if (item$var %in% varsCont && item$test != "use_default") {
-            testArguments[[item$var]] <- switch(
-              item$test,
-              parametric = if (by2) "t.test" else "oneway.test",
-              nonparametric = if (by2) "wilcox.test" else "kruskal.test",
-              item$test
+        } else if (contDefault != "nonparametric") {
+          # Specific test — use selector (nonparametric = gtsummary default)
+          testArguments <- c(testArguments,
+            list(gtsummary::all_continuous() ~ resolveTest(contDefault))
+          )
+          if (contDefault %in% c("t.test.student", "oneway.test.classical")) {
+            testArgsArguments <- c(testArgsArguments,
+              list(gtsummary::all_continuous() ~ list(var.equal = TRUE))
             )
           }
         }
 
+        # Per-variable continuous test overrides
+        for (item in self$options$testsContSpecific) {
+          if (item$var %in% varsCont && item$test != "use_default") {
+            testArguments[[item$var]] <- resolveTest(item$test)
+            if (item$test %in% c("t.test.student", "oneway.test.classical")) {
+              testArgsArguments[[item$var]] <- list(var.equal = TRUE)
+            }
+          }
+        }
+
+        # Per-variable categorical test overrides
         defaultCat <- self$options$testCatDefault
         for (item in self$options$testsCatSpecific) {
           if (item$var %in% varsCat) {
@@ -249,23 +264,18 @@ tblSummaryClass <- R6::R6Class(
           }
         }
 
+        # Build add_p() call
         pvDigits <- self$options$digitsPvalue
-        table <- runSafe(
-          {
-            if (pvDigits != "auto") {
-              gtsummary::add_p(
-                table,
-                test = testArguments,
-                pvalue_fun = gtsummary::label_style_pvalue(
-                  digits = as.integer(pvDigits)
-                )
-              )
-            } else {
-              gtsummary::add_p(table, test = testArguments)
-            }
-          },
-          collector
-        )
+        addPArgs <- list(x = table, test = testArguments)
+        if (length(testArgsArguments) > 0) {
+          addPArgs$test.args <- testArgsArguments
+        }
+        if (pvDigits != "auto") {
+          addPArgs$pvalue_fun <- gtsummary::label_style_pvalue(
+            digits = as.integer(pvDigits)
+          )
+        }
+        table <- runSafe(do.call(gtsummary::add_p, addPArgs), collector)
 
         # ── 9a. add_q ─────────────────────────────────────────────────────
         if (!is.null(table) && isTRUE(self$options$addQ)) {

@@ -331,14 +331,11 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "parametric",
                     "nonparametric",
                     "t.test",
+                    "t.test.student",
                     "oneway.test",
-                    "paired.t.test",
+                    "oneway.test.classical",
                     "wilcox.test",
-                    "kruskal.test",
-                    "paired.wilcox.test",
-                    "mood.test",
-                    "ancova",
-                    "lme4"),
+                    "kruskal.test"),
                 default="parametric")
             private$..testsContSpecific <- jmvcore::OptionArray$new(
                 "testsContSpecific",
@@ -356,17 +353,12 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                             NULL,
                             options=list(
                                 "use_default",
-                                "parametric",
-                                "nonparametric",
                                 "t.test",
+                                "t.test.student",
                                 "oneway.test",
-                                "paired.t.test",
+                                "oneway.test.classical",
                                 "wilcox.test",
-                                "kruskal.test",
-                                "paired.wilcox.test",
-                                "mood.test",
-                                "ancova",
-                                "lme4"),
+                                "kruskal.test"),
                             default="use_default"))))
             private$..testCatDefault <- jmvcore::OptionList$new(
                 "testCatDefault",
@@ -375,11 +367,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "auto",
                     "chisq.test.no.correct",
                     "chisq.test",
-                    "fisher.test",
-                    "mcnemar.test",
-                    "mcnemar.test.wide",
-                    "prop.test",
-                    "lme4"),
+                    "fisher.test"),
                 default="auto")
             private$..testsCatSpecific <- jmvcore::OptionArray$new(
                 "testsCatSpecific",
@@ -399,11 +387,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                                 "use_default",
                                 "chisq.test.no.correct",
                                 "chisq.test",
-                                "fisher.test",
-                                "mcnemar.test",
-                                "mcnemar.test.wide",
-                                "prop.test",
-                                "lme4"),
+                                "fisher.test"),
                             default="use_default"))))
             private$..addQ <- jmvcore::OptionBool$new(
                 "addQ",
