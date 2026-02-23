@@ -426,7 +426,7 @@ options:
         name: auto
       - title: Chi-square
         name: chisq.test.no.correct
-      - title: Chi-square (Yates' correction)
+      - title: Chi-square (continuity correction)
         name: chisq.test
       - title: Fisher's exact test
         name: fisher.test
@@ -448,7 +448,7 @@ options:
               name: use_default
             - title: Chi-square
               name: chisq.test.no.correct
-            - title: Chi-square (Yates' correction)
+            - title: Chi-square (continuity correction)
               name: chisq.test
             - title: Fisher's exact test
               name: fisher.test
