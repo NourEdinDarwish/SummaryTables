@@ -902,7 +902,7 @@ tblSummaryBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 weightsSupport = 'auto')
         }))
 
-#' Table Summary
+#' Summary Table
 #'
 #' 
 #' @param data .

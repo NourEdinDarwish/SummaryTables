@@ -1,23 +1,33 @@
 ---
-title: What the Package Does (Title Case)
+title: Publication-Ready Summary Tables
 name: SummaryTables
-version: 0.0.0
+version: 0.1.0
 jms: '1.0'
 authors:
   - Nour Edin Darwish
 maintainer: Nour Edin Darwish <nouredindarwish@gmail.com>
-date: '1970-01-01'
+date: '2026-02-23'
 type: R
 description: >-
-  More about what it does (maybe more than one line) Use four spaces when
-  indenting paragraphs within the Description.
+  Create presentation-ready summary tables for descriptive statistics and group
+  comparisons. Supports continuous and categorical variables with a wide range
+  of summary statistics (mean, median, IQR, frequencies, and more). Includes
+  statistical testing (t-tests, ANOVA, Wilcoxon, Chi-square, Fisher's exact),
+  effect sizes (Cohen's d, Hedge's g, SMD), confidence intervals, p-value
+  adjustment (Benjamini-Hochberg, Bonferroni, and others), and journal-specific
+  formatting (JAMA, Lancet, NEJM, QJE). Tables can be exported to Word (.docx).
+  Supports 16 languages. Based on the gtsummary R package.
 analyses:
-  - title: Table Summary
+  - title: Summary Table
     name: tblSummary
     ns: SummaryTables
-    category: analyses
     menuGroup: Summary Tables
-    menuTitle: Table Summary
+    menuTitle: Summary Table
+    category: analyses
+    description: >-
+      Create a publication-ready summary table with descriptive statistics,
+      group comparisons, statistical tests, effect sizes, confidence intervals,
+      and journal-specific formatting. Export to Word.
 usesNative: true
 minApp: 1.0.8
 

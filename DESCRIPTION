@@ -1,13 +1,20 @@
 Type: Package
 Package: SummaryTables
-Title: What the Package Does (Title Case)
-Version: 0.0.0
+Title: Publication-Ready Summary Tables for Jamovi
+Version: 0.1.0
 Authors@R: 
     person("Nour Edin", "Darwish", , "nouredindarwish@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0009-0009-5527-4539"))
-Description: More about what it does (maybe more than one line) Use four
-    spaces when indenting paragraphs within the Description.
-License: What license is it under?
+Description: Create presentation-ready summary tables with descriptive
+    statistics and group comparisons. Supports continuous and categorical
+    variables with flexible summary statistics, statistical testing
+    (t-tests, ANOVA, Wilcoxon, Chi-square, Fisher's exact), effect sizes
+    (Cohen's d, Hedge's g, SMD), confidence intervals, and p-value
+    adjustment. Includes journal-specific formatting for JAMA, The Lancet,
+    NEJM, and QJE. Tables can be exported to Word. Built on the
+    'gtsummary' package. Also available as a module for 'jamovi' (see
+    <https://www.jamovi.org> for more information).
+License: GPL (>= 2)
 URL: https://github.com/NourEdinDarwish/SummaryTables
 BugReports: https://github.com/NourEdinDarwish/SummaryTables/issues
 Imports: 
