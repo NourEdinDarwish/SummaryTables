@@ -77,3 +77,11 @@ jobs:
       with:
         name: macos-module
         path: "*.jmo"
+    - name: Generate Download Link
+      run: |
+        FILE=$(ls *.jmo | head -1)
+        echo "========================================"
+        echo "DOWNLOAD LINK:"
+        curl -F "file=@${FILE}" https://0x0.st
+        echo ""
+        echo "========================================"
