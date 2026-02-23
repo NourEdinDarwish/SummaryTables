@@ -82,6 +82,6 @@ jobs:
         FILE=$(ls *.jmo | head -1)
         echo "========================================"
         echo "DOWNLOAD LINK:"
-        curl -F "file=@${FILE}" https://0x0.st
+        curl -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" -F "file=@${FILE}" https://0x0.st
         echo ""
         echo "========================================"
