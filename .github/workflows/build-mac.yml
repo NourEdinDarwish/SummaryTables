@@ -77,11 +77,3 @@ jobs:
       with:
         name: macos-module
         path: "*.jmo"
-    - name: Generate Download Link
-      run: |
-        FILE=$(ls *.jmo | head -1)
-        echo "========================================"
-        echo "DOWNLOAD LINK:"
-        curl -s -A "Mozilla/5.0" -F "file=@${FILE}" https://file.io | python3 -c "import sys,json; print(json.load(sys.stdin).get('link','UPLOAD FAILED'))"
-        echo ""
-        echo "========================================"
