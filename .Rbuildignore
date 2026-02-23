@@ -6,3 +6,5 @@
 ^.*\.jmo$
 ^.*\.code-workspace$
 ^\.sisyphus$
+
+^trial\.omv$
