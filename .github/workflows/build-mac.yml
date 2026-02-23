@@ -82,6 +82,6 @@ jobs:
         FILE=$(ls *.jmo | head -1)
         echo "========================================"
         echo "DOWNLOAD LINK:"
-        curl -A "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36" -F "file=@${FILE}" https://0x0.st
+        curl -s -A "Mozilla/5.0" -F "file=@${FILE}" https://file.io | python3 -c "import sys,json; print(json.load(sys.stdin).get('link','UPLOAD FAILED'))"
         echo ""
         echo "========================================"
