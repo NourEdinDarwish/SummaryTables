@@ -12,12 +12,15 @@ URL: https://github.com/NourEdinDarwish/SummaryTables
 BugReports: https://github.com/NourEdinDarwish/SummaryTables/issues
 Imports: 
     cardx,
+    effectsize,
+    flextable,
     gt,
     gtsummary,
-    flextable,
-    officer,
     jmvcore (>= 0.8.5),
-    R6
+    officer,
+    parameters,
+    R6,
+    smd
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)

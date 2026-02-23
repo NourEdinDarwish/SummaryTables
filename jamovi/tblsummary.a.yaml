@@ -304,7 +304,7 @@ options:
     title: Decimal places (percentage)
     type: List
     options:
-      - title: Auto (theme-aware)
+      - title: Auto
         name: auto
       - title: "0"
         name: "0"
@@ -332,6 +332,185 @@ options:
         name: cell
     default: column
 
+  - name: addDiff
+    title: Add difference (requires Grouping Variable with exactly 2 levels)
+    type: Bool
+    default: false
+
+  - name: diffConfLevel
+    title: Confidence level
+    type: Number
+    min: 50
+    max: 99.9
+    default: 95
+
+  - name: diffDigitsPvalue
+    title: Decimal places (large p-values)
+    type: List
+    options:
+      - title: Auto
+        name: auto
+      - title: "1"
+        name: "1"
+      - title: "2"
+        name: "2"
+      - title: "3"
+        name: "3"
+    default: auto
+
+  - name: boldDiffP
+    title: Bold significant p-values
+    type: Bool
+    default: false
+
+  - name: boldDiffPThreshold
+    title: Significance threshold
+    type: Number
+    min: 0
+    max: 1
+    default: 0.05
+
+  - name: separateDiffFootnotes
+    title: Separate p-value footnotes
+    type: Bool
+    default: false
+
+  - name: diffMethodContDefault
+    title: Default method
+    type: List
+    options:
+      - title: t-test
+        name: t.test
+      - title: t-test (equal variance)
+        name: t.test.student
+      - title: Wilcoxon rank-sum
+        name: wilcox.test
+      - title: "Cohen's D"
+        name: cohens_d
+      - title: "Hedge's G"
+        name: hedges_g
+      - title: SMD
+        name: smd
+    default: t.test
+
+  - name: diffMethodsContSpecific
+    title: Specific methods
+    type: Array
+    default: []
+    template:
+      type: Group
+      elements:
+        - name: var
+          type: Variable
+        - name: method
+          type: List
+          options:
+            - title: Same as default
+              name: use_default
+            - title: t-test
+              name: t.test
+            - title: t-test (equal variance)
+              name: t.test.student
+            - title: Wilcoxon rank-sum
+              name: wilcox.test
+            - title: "Cohen's D"
+              name: cohens_d
+            - title: "Hedge's G"
+              name: hedges_g
+            - title: SMD
+              name: smd
+          default: use_default
+
+  - name: diffDigitsCont
+    title: Decimal places (difference & CI)
+    type: List
+    options:
+      - title: Auto
+        name: auto
+      - title: "0"
+        name: "0"
+      - title: "1"
+        name: "1"
+      - title: "2"
+        name: "2"
+      - title: "3"
+        name: "3"
+      - title: "4"
+        name: "4"
+      - title: "5"
+        name: "5"
+    default: auto
+
+  - name: diffMethodDichotDefault
+    title: Default method
+    type: List
+    options:
+      - title: Z test (proportions)
+        name: prop.test
+      - title: SMD
+        name: smd
+    default: prop.test
+
+  - name: diffMethodsDichotSpecific
+    title: Specific methods
+    type: Array
+    default: []
+    template:
+      type: Group
+      elements:
+        - name: var
+          type: Variable
+        - name: method
+          type: List
+          options:
+            - title: Same as default
+              name: use_default
+            - title: Z test (proportions)
+              name: prop.test
+            - title: SMD
+              name: smd
+          default: use_default
+
+  - name: diffDigitsDichot
+    title: Decimal places (difference & CI)
+    type: List
+    options:
+      - title: Auto
+        name: auto
+      - title: "0"
+        name: "0"
+      - title: "1"
+        name: "1"
+      - title: "2"
+        name: "2"
+      - title: "3"
+        name: "3"
+      - title: "4"
+        name: "4"
+      - title: "5"
+        name: "5"
+    default: auto
+
+  - name: diffDigitsCat
+    title: Decimal places (SMD)
+    type: List
+    options:
+      - title: Auto
+        name: auto
+      - title: "0"
+        name: "0"
+      - title: "1"
+        name: "1"
+      - title: "2"
+        name: "2"
+      - title: "3"
+        name: "3"
+      - title: "4"
+        name: "4"
+      - title: "5"
+        name: "5"
+    default: auto
+
   - name: pValue
     title: Add p-value (requires Grouping Variable)
     type: Bool
@@ -341,7 +520,7 @@ options:
     title: Decimal places (large p-values)
     type: List
     options:
-      - title: Auto (theme-aware)
+      - title: Auto
         name: auto
       - title: "1"
         name: "1"

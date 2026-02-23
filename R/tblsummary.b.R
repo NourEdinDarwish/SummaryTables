@@ -79,6 +79,20 @@ tblSummaryClass <- R6::R6Class(
         stats::setNames(rep("categorical", length(varsCat)), varsCat)
       ))
 
+      # Override categorical → dichotomous for 2-level vars
+      # (required by prop.test in add_difference; skip the by variable)
+      dichotValueArgs <- list()
+      if (isTRUE(self$options$addDiff) && hasByVar && hasCat) {
+        for (v in varsCat) {
+          if (v == byVariable) next
+          lvls <- levels(data[[v]])
+          if (length(lvls) == 2) {
+            typeArguments[[v]] <- "dichotomous"
+            dichotValueArgs[[v]] <- lvls[2]
+          }
+        }
+      }
+
       # ── 4. Statistic arguments ─────────────────────────────────────────────
       # Lookup: option name -> glue format string, using centralised ts values
       statStrings <- list(
@@ -179,6 +193,7 @@ tblSummaryClass <- R6::R6Class(
             include = allVars,
             by = byVariable,
             type = typeArguments,
+            value = dichotValueArgs,
             statistic = statisticArguments,
             digits = digitsArguments,
             missing = self$options$missing,
@@ -284,6 +299,133 @@ tblSummaryClass <- R6::R6Class(
             collector
           )
         }
+      }
+
+      # ── 9b. add_difference ──────────────────────────────────────────────
+      if (!is.null(table) && isTRUE(self$options$addDiff) && hasByVar) {
+        resolveDiffMethod <- function(alias) {
+          switch(alias, t.test.student = "t.test", alias)
+        }
+
+        diffTestArgs <- list()
+        diffTestArgsArgs <- list()
+
+        # Default continuous method
+        contDiffDefault <- self$options$diffMethodContDefault
+        diffTestArgs <- c(diffTestArgs,
+          list(gtsummary::all_continuous() ~ resolveDiffMethod(contDiffDefault))
+        )
+        if (contDiffDefault == "t.test.student") {
+          diffTestArgsArgs <- c(diffTestArgsArgs,
+            list(gtsummary::all_continuous() ~ list(var.equal = TRUE))
+          )
+        }
+
+        # Per-variable continuous overrides
+        for (item in self$options$diffMethodsContSpecific) {
+          if (item$var %in% varsCont && item$method != "use_default") {
+            diffTestArgs[[item$var]] <- resolveDiffMethod(item$method)
+            if (item$method == "t.test.student") {
+              diffTestArgsArgs[[item$var]] <- list(var.equal = TRUE)
+            }
+          }
+        }
+
+        # Dichotomous / categorical method assignment
+        # 3+ level vars always get smd; 2-level vars get user's choice
+        if (hasCat) {
+          dichotDefault <- self$options$diffMethodDichotDefault
+          for (v in varsCat) {
+            if (nlevels(data[[v]]) == 2) {
+              # Start with default
+              resolvedMethod <- dichotDefault
+              # Check per-variable override
+              for (item in self$options$diffMethodsDichotSpecific) {
+                if (item$var == v && item$method != "use_default") {
+                  resolvedMethod <- item$method
+                }
+              }
+              diffTestArgs[[v]] <- resolvedMethod
+            } else {
+              # 3+ levels: hardcode smd
+              diffTestArgs[[v]] <- "smd"
+            }
+          }
+        }
+
+        # ── estimate_fun: rounding for difference & CI columns ──
+        diffEstFun <- list()
+
+        # Continuous: applies to t.test, wilcox, cohens_d, hedges_g, smd
+        if (self$options$diffDigitsCont != "auto") {
+          diffEstFun <- c(diffEstFun, list(
+            gtsummary::all_continuous() ~ gtsummary::label_style_number(
+              digits = as.integer(self$options$diffDigitsCont)
+            )
+          ))
+        }
+
+        # Dichotomous: prop.test uses scale=100 + "%", smd uses plain
+        if (self$options$diffDigitsDichot != "auto") {
+          d <- as.integer(self$options$diffDigitsDichot)
+          diffEstFun <- c(diffEstFun, list(
+            gtsummary::all_dichotomous() ~ gtsummary::label_style_number(
+              digits = d, scale = 100, suffix = "%"
+            )
+          ))
+        }
+
+        # Categorical (always SMD): plain number, no scaling
+        if (self$options$diffDigitsCat != "auto") {
+          diffEstFun <- c(diffEstFun, list(
+            gtsummary::all_categorical(FALSE) ~ gtsummary::label_style_number(
+              digits = as.integer(self$options$diffDigitsCat)
+            )
+          ))
+        }
+
+        # SMD override: when any type uses smd, never apply % scaling
+        # (all_tests("smd") overrides the dichotomous % formatter)
+        smdDigits <- NULL
+        if (self$options$diffDigitsCont != "auto") {
+          smdDigits <- as.integer(self$options$diffDigitsCont)
+        }
+        if (self$options$diffDigitsDichot != "auto") {
+          smdDigits <- as.integer(self$options$diffDigitsDichot)
+        }
+        if (!is.null(smdDigits)) {
+          diffEstFun <- c(diffEstFun, list(
+            gtsummary::all_tests("smd") ~ gtsummary::label_style_number(
+              digits = smdDigits
+            )
+          ))
+        }
+
+        # Build add_difference() call
+        addDiffArgs <- list(
+          x = table,
+          test = diffTestArgs,
+          conf.level = self$options$diffConfLevel / 100
+        )
+        if (length(diffEstFun) > 0) {
+          addDiffArgs$estimate_fun <- diffEstFun
+        }
+        if (length(diffTestArgsArgs) > 0) {
+          addDiffArgs$test.args <- diffTestArgsArgs
+        }
+
+        # p-value formatting
+        diffPvDigits <- self$options$diffDigitsPvalue
+        if (diffPvDigits != "auto") {
+          addDiffArgs$pvalue_fun <- gtsummary::label_style_pvalue(
+            digits = as.integer(diffPvDigits)
+          )
+        }
+
+        table <- runSafe(
+          do.call(gtsummary::add_difference, addDiffArgs),
+          collector
+        )
       }
 
       # ── 10. add_ci ─────────────────────────────────────────────────────────
@@ -448,6 +590,25 @@ tblSummaryClass <- R6::R6Class(
         if (
           isTRUE(self$options$separatePFootnotes) &&
             self$options$pValue &&
+            hasByVar
+        ) {
+          table <- gtsummary::separate_p_footnotes(table)
+        }
+
+        # ── Difference formatting ──
+        if (
+          isTRUE(self$options$boldDiffP) &&
+            isTRUE(self$options$addDiff) &&
+            hasByVar
+        ) {
+          table <- gtsummary::bold_p(
+            table,
+            t = self$options$boldDiffPThreshold
+          )
+        }
+        if (
+          isTRUE(self$options$separateDiffFootnotes) &&
+            isTRUE(self$options$addDiff) &&
             hasByVar
         ) {
           table <- gtsummary::separate_p_footnotes(table)

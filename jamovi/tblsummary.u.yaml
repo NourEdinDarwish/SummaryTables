@@ -187,6 +187,105 @@ children:
             name: percent
             enable: ({return !!ui['groupBy'].value();})
   - type: CollapseBox
+    label: Difference
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: LayoutBox
+        margin: large
+        children:
+          - type: CheckBox
+            name: addDiff
+            enable: ({return !!ui['groupBy'].value();})
+          - type: TextBox
+            name: diffConfLevel
+            suffix: '%'
+            format: number
+            enable: (addDiff)
+          - type: ComboBox
+            name: diffDigitsPvalue
+            enable: (addDiff)
+          - type: CheckBox
+            name: boldDiffP
+            enable: (addDiff)
+            children:
+              - type: TextBox
+                name: boldDiffPThreshold
+                format: number
+                enable: (addDiff && boldDiffP)
+          - type: CheckBox
+            name: separateDiffFootnotes
+            enable: (addDiff)
+      - type: Label
+        label: Continuous Variables
+        stretchFactor: 1
+        children:
+          - type: ComboBox
+            name: diffMethodContDefault
+            enable: (addDiff)
+          - type: ListBox
+            name: diffMethodsContSpecific
+            showColumnHeaders: true
+            fullRowSelect: true
+            stretchFactor: 1
+            height: normal
+            columns:
+              - name: var
+                label: Variable
+                selectable: false
+                stretchFactor: 1
+                maxWidth: 300
+                template:
+                  type: VariableLabel
+              - name: method
+                label: Method
+                selectable: false
+                stretchFactor: 1
+                template:
+                  type: ComboBox
+                  label: ''
+          - type: ComboBox
+            name: diffDigitsCont
+            enable: (addDiff)
+      - type: Label
+        label: Dichotomous Variables (binary)
+        stretchFactor: 1
+        children:
+          - type: ComboBox
+            name: diffMethodDichotDefault
+            enable: (addDiff)
+          - type: ListBox
+            name: diffMethodsDichotSpecific
+            showColumnHeaders: true
+            fullRowSelect: true
+            stretchFactor: 1
+            height: normal
+            columns:
+              - name: var
+                label: Variable
+                selectable: false
+                stretchFactor: 1
+                maxWidth: 300
+                template:
+                  type: VariableLabel
+              - name: method
+                label: Method
+                selectable: false
+                stretchFactor: 1
+                template:
+                  type: ComboBox
+                  label: ''
+          - type: ComboBox
+            name: diffDigitsDichot
+            enable: (addDiff)
+      - type: Label
+        label: Categorical Variables (always SMD)
+        stretchFactor: 1
+        children:
+          - type: ComboBox
+            name: diffDigitsCat
+            enable: (addDiff)
+  - type: CollapseBox
     label: P-value
     collapsed: true
     stretchFactor: 1

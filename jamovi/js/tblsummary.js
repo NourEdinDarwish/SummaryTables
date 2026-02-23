@@ -25,6 +25,7 @@ module.exports = {
     sync(ui.varsCont, ui.statsContSpecific, "var", "stat", "use_default");
     sync(ui.varsCont, ui.testsContSpecific, "var", "test", "use_default");
     sync(ui.varsCont, ui.ciMethodsContSpecific, "var", "method", "use_default");
+    sync(ui.varsCont, ui.diffMethodsContSpecific, "var", "method", "use_default");
   },
 
   varsCat_changed: function (ui) {
@@ -32,5 +33,6 @@ module.exports = {
     sync(ui.varsCat, ui.testsCatSpecific, "var", "test", "use_default");
     sync(ui.varsCat, ui.sortCatSpecific, "var", "sort", "use_default");
     sync(ui.varsCat, ui.ciMethodsCatSpecific, "var", "method", "use_default");
+    sync(ui.varsCat, ui.diffMethodsDichotSpecific, "var", "method", "use_default");
   },
 };
