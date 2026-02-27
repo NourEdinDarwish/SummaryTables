@@ -24,7 +24,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             boldLevels = FALSE,
             italicizeLabels = FALSE,
             italicizeLevels = FALSE,
-            sortCatDefault = "alphanumeric",
+            sortCatDefault = "default",
             sortCatSpecific = NULL,
             statContDefault = "meanSd",
             statContSpecific = NULL,
@@ -91,8 +91,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "nominal",
                     "ordinal"),
                 permitted=list(
-                    "factor",
-                    "id"))
+                    "factor"))
             private$..groupVar <- jmvcore::OptionVariable$new(
                 "groupVar",
                 groupVar,
@@ -100,8 +99,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "nominal",
                     "ordinal"),
                 permitted=list(
-                    "factor",
-                    "id"))
+                    "factor"))
             private$..addN <- jmvcore::OptionBool$new(
                 "addN",
                 addN,
@@ -197,9 +195,9 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 "sortCatDefault",
                 sortCatDefault,
                 options=list(
-                    "alphanumeric",
+                    "default",
                     "frequency"),
-                default="alphanumeric")
+                default="default")
             private$..sortCatSpecific <- jmvcore::OptionArray$new(
                 "sortCatSpecific",
                 sortCatSpecific,
@@ -215,7 +213,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                             NULL,
                             options=list(
                                 "useDefault",
-                                "alphanumeric",
+                                "default",
                                 "frequency"),
                             default="useDefault"))))
             private$..statContDefault <- jmvcore::OptionList$new(
@@ -996,7 +994,7 @@ tblSummary <- function(
     boldLevels = FALSE,
     italicizeLabels = FALSE,
     italicizeLevels = FALSE,
-    sortCatDefault = "alphanumeric",
+    sortCatDefault = "default",
     sortCatSpecific,
     statContDefault = "meanSd",
     statContSpecific,
@@ -1056,6 +1054,8 @@ tblSummary <- function(
             `if`( ! missing(varsCat), varsCat, NULL),
             `if`( ! missing(groupVar), groupVar, NULL))
 
+    for (v in varsCat) if (v %in% names(data)) data[[v]] <- as.factor(data[[v]])
+    for (v in groupVar) if (v %in% names(data)) data[[v]] <- as.factor(data[[v]])
 
     options <- tblSummaryOptions$new(
         varsCont = varsCont,

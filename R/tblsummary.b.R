@@ -42,6 +42,20 @@ tblSummaryClass <- R6::R6Class(
         data[varsCont] <- lapply(data[varsCont], jmvcore::toNumeric)
       }
 
+      if (hasCat) {
+        data[varsCat] <- lapply(data[varsCat], as.factor)
+      }
+
+      if (hasGroupVar) {
+        data[[groupVar]] <- as.factor(data[[groupVar]])
+      }
+
+      data <- sortByFreq(
+        data = data,
+        varsCat = varsCat,
+        options = self$options
+      )
+
       # Build arguments -----------------------------------------------------
       typeArguments <- buildTypeArgs(
         data = data,
@@ -61,7 +75,7 @@ tblSummaryClass <- R6::R6Class(
 
       digitsArguments <- buildDigitsArgs(options = self$options)
 
-      sortArguments <- buildSortArgs(varsCat = varsCat, options = self$options)
+
 
       # Core table ----------------------------------------------------------
       table <- runSafe(
@@ -86,8 +100,7 @@ tblSummaryClass <- R6::R6Class(
               ),
               percent = paste0("{p_miss}", themeStrings$pctSuffix)
             ),
-            percent = self$options$percent,
-            sort = sortArguments
+            percent = self$options$percent
           )
         },
         collector

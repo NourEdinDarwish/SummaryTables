@@ -25,7 +25,6 @@ options:
       - ordinal
     permitted:
       - factor
-      - id
 
   - name: groupVar
     title: Grouping Variable
@@ -35,7 +34,6 @@ options:
       - ordinal
     permitted:
       - factor
-      - id
 
   - name: addN
     title: Add N column
@@ -175,10 +173,10 @@ options:
     type: List
     options:
       - title: As defined
-        name: alphanumeric
+        name: default
       - title: Frequency
         name: frequency
-    default: alphanumeric
+    default: default
 
   - name: sortCatSpecific
     title: Specific level order
@@ -195,7 +193,7 @@ options:
             - title: Same as default
               name: useDefault
             - title: As defined
-              name: alphanumeric
+              name: default
             - title: Frequency
               name: frequency
           default: useDefault
@@ -492,7 +490,7 @@ options:
     default: auto
 
   - name: diffDigitsCat
-    title: Decimal places (SMD)
+    title: Decimal places (difference & CI)
     type: List
     options:
       - title: Auto

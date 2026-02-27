@@ -161,25 +161,3 @@ buildDigitsArgs <- function(options) {
 
   digitsArguments
 }
-
-
-# buildSortArgs -------------------------------------------------------------
-
-#' Build sort arguments for tbl_summary
-#'
-#' @param varsCat Character vector of categorical variable names
-#' @param options Jamovi options object
-#' @return A formula-list suitable for the `sort` argument
-buildSortArgs <- function(varsCat, options) {
-  sortArguments <- list(
-    gtsummary::all_categorical() ~ options$sortCatDefault
-  )
-
-  for (item in options$sortCatSpecific) {
-    if (item$sort != "useDefault" && item$var %in% varsCat) {
-      sortArguments[[item$var]] <- item$sort
-    }
-  }
-
-  sortArguments
-}

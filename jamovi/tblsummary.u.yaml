@@ -1,6 +1,6 @@
 title: Table Summary
 name: tblSummary
-jus: '3.0'
+jus: "3.0"
 stage: 0
 compilerMode: tame
 children:
@@ -119,7 +119,7 @@ children:
             stretchFactor: 1
             template:
               type: ComboBox
-              label: ''
+              label: ""
   - type: CollapseBox
     label: Statistics
     collapsed: true
@@ -151,15 +151,18 @@ children:
                 stretchFactor: 1
                 template:
                   type: ComboBox
-                  label: ''
+                  label: ""
           - type: ComboBox
             name: digitsCont
       - type: Label
         label: Categorical Variables
         stretchFactor: 1
         children:
-          - type: ComboBox
-            name: statCatDefault
+          - type: LayoutBox
+            margin: none
+            children:
+              - type: ComboBox
+                name: statCatDefault
           - type: ListBox
             name: statCatSpecific
             showColumnHeaders: true
@@ -180,12 +183,18 @@ children:
                 stretchFactor: 1
                 template:
                   type: ComboBox
-                  label: ''
-          - type: ComboBox
-            name: digitsCatPct
-          - type: ComboBox
-            name: percent
-            enable: ({return !!ui['groupVar'].value();})
+                  label: ""
+          - type: LayoutBox
+            margin: none
+            children:
+              - type: ComboBox
+                name: digitsCatPct
+          - type: LayoutBox
+            margin: none
+            children:
+              - type: ComboBox
+                name: percent
+                enable: ({return !!ui['groupVar'].value();})
   - type: CollapseBox
     label: Difference
     collapsed: true
@@ -197,14 +206,20 @@ children:
           - type: CheckBox
             name: addDifference
             enable: ({return !!ui['groupVar'].value();})
-          - type: TextBox
-            name: diffConfLevel
-            suffix: '%'
-            format: number
-            enable: (addDifference)
-          - type: ComboBox
-            name: diffDigitsPvalue
-            enable: (addDifference)
+          - type: LayoutBox
+            margin: none
+            children:
+              - type: TextBox
+                name: diffConfLevel
+                suffix: "%"
+                format: number
+                enable: (addDifference)
+          - type: LayoutBox
+            margin: none
+            children:
+              - type: ComboBox
+                name: diffDigitsPvalue
+                enable: (addDifference)
           - type: CheckBox
             name: boldDiffPvalue
             enable: (addDifference)
@@ -220,9 +235,12 @@ children:
         label: Continuous Variables
         stretchFactor: 1
         children:
-          - type: ComboBox
-            name: diffContDefault
-            enable: (addDifference)
+          - type: LayoutBox
+            margin: none
+            children:
+              - type: ComboBox
+                name: diffContDefault
+                enable: (addDifference)
           - type: ListBox
             name: diffContSpecific
             showColumnHeaders: true
@@ -243,17 +261,20 @@ children:
                 stretchFactor: 1
                 template:
                   type: ComboBox
-                  label: ''
+                  label: ""
           - type: ComboBox
             name: diffDigitsCont
             enable: (addDifference)
       - type: Label
-        label: Dichotomous Variables (binary)
+        label: Categorical Variables (2 levels)
         stretchFactor: 1
         children:
-          - type: ComboBox
-            name: diffDichotDefault
-            enable: (addDifference)
+          - type: LayoutBox
+            margin: none
+            children:
+              - type: ComboBox
+                name: diffDichotDefault
+                enable: (addDifference)
           - type: ListBox
             name: diffDichotSpecific
             showColumnHeaders: true
@@ -274,12 +295,12 @@ children:
                 stretchFactor: 1
                 template:
                   type: ComboBox
-                  label: ''
+                  label: ""
           - type: ComboBox
             name: diffDigitsDichot
             enable: (addDifference)
       - type: Label
-        label: Categorical Variables (always SMD)
+        label: Categorical Variables (3+ levels; always SMD)
         stretchFactor: 1
         children:
           - type: ComboBox
@@ -296,9 +317,12 @@ children:
           - type: CheckBox
             name: addPvalue
             enable: ({return !!ui['groupVar'].value();})
-          - type: ComboBox
-            name: digitsPvalue
-            enable: (addPvalue)
+          - type: LayoutBox
+            margin: none
+            children:
+              - type: ComboBox
+                name: digitsPvalue
+                enable: (addPvalue)
           - type: CheckBox
             name: boldPvalue
             enable: (addPvalue)
@@ -337,7 +361,7 @@ children:
                 stretchFactor: 1
                 template:
                   type: ComboBox
-                  label: ''
+                  label: ""
       - type: Label
         label: Categorical Variables
         stretchFactor: 1
@@ -365,7 +389,7 @@ children:
                 stretchFactor: 1
                 template:
                   type: ComboBox
-                  label: ''
+                  label: ""
   - type: CollapseBox
     label: Q-value (P-value Adjustment)
     collapsed: true
@@ -395,11 +419,14 @@ children:
         children:
           - type: CheckBox
             name: addCi
-          - type: TextBox
-            name: confLevel
-            suffix: '%'
-            format: number
-            enable: (addCi)
+          - type: LayoutBox
+            margin: none
+            children:
+              - type: TextBox
+                name: confLevel
+                suffix: "%"
+                format: number
+                enable: (addCi)
           - type: CheckBox
             name: ciCombine
             enable: (addCi)
@@ -430,7 +457,7 @@ children:
                 stretchFactor: 1
                 template:
                   type: ComboBox
-                  label: ''
+                  label: ""
           - type: ComboBox
             name: ciDigitsCont
             enable: (addCi)
@@ -461,7 +488,7 @@ children:
                 stretchFactor: 1
                 template:
                   type: ComboBox
-                  label: ''
+                  label: ""
           - type: ComboBox
             name: ciDigitsCat
             enable: (addCi)
