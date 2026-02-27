@@ -21,7 +21,7 @@ children:
       - type: TargetLayoutBox
         children:
           - type: VariablesListBox
-            name: groupBy
+            name: groupVar
             maxItemCount: 1
             isTarget: true
   - type: CollapseBox
@@ -40,11 +40,11 @@ children:
             enable: (addN)
       - type: CheckBox
         name: addOverall
-        enable: ({return !!ui['groupBy'].value();})
+        enable: ({return !!ui['groupVar'].value();})
         children:
           - type: CheckBox
             name: addOverallLast
-            enable: ({return !!ui['groupBy'].value() && ui['addOverall'].value();})
+            enable: ({return !!ui['groupVar'].value() && ui['addOverall'].value();})
       - type: Label
         label: Missing Values
         children:
@@ -132,7 +132,7 @@ children:
           - type: ComboBox
             name: statContDefault
           - type: ListBox
-            name: statsContSpecific
+            name: statContSpecific
             showColumnHeaders: true
             fullRowSelect: true
             stretchFactor: 1
@@ -161,7 +161,7 @@ children:
           - type: ComboBox
             name: statCatDefault
           - type: ListBox
-            name: statsCatSpecific
+            name: statCatSpecific
             showColumnHeaders: true
             fullRowSelect: true
             stretchFactor: 1
@@ -182,10 +182,10 @@ children:
                   type: ComboBox
                   label: ''
           - type: ComboBox
-            name: digitsPct
+            name: digitsCatPct
           - type: ComboBox
             name: percent
-            enable: ({return !!ui['groupBy'].value();})
+            enable: ({return !!ui['groupVar'].value();})
   - type: CollapseBox
     label: Difference
     collapsed: true
@@ -195,36 +195,36 @@ children:
         margin: large
         children:
           - type: CheckBox
-            name: addDiff
-            enable: ({return !!ui['groupBy'].value();})
+            name: addDifference
+            enable: ({return !!ui['groupVar'].value();})
           - type: TextBox
             name: diffConfLevel
             suffix: '%'
             format: number
-            enable: (addDiff)
+            enable: (addDifference)
           - type: ComboBox
             name: diffDigitsPvalue
-            enable: (addDiff)
+            enable: (addDifference)
           - type: CheckBox
-            name: boldDiffP
-            enable: (addDiff)
+            name: boldDiffPvalue
+            enable: (addDifference)
             children:
               - type: TextBox
-                name: boldDiffPThreshold
+                name: boldDiffPvalueThreshold
                 format: number
-                enable: (addDiff && boldDiffP)
+                enable: (addDifference && boldDiffPvalue)
           - type: CheckBox
-            name: separateDiffFootnotes
-            enable: (addDiff)
+            name: separateDiffPFootnotes
+            enable: (addDifference)
       - type: Label
         label: Continuous Variables
         stretchFactor: 1
         children:
           - type: ComboBox
-            name: diffMethodContDefault
-            enable: (addDiff)
+            name: diffContDefault
+            enable: (addDifference)
           - type: ListBox
-            name: diffMethodsContSpecific
+            name: diffContSpecific
             showColumnHeaders: true
             fullRowSelect: true
             stretchFactor: 1
@@ -246,16 +246,16 @@ children:
                   label: ''
           - type: ComboBox
             name: diffDigitsCont
-            enable: (addDiff)
+            enable: (addDifference)
       - type: Label
         label: Dichotomous Variables (binary)
         stretchFactor: 1
         children:
           - type: ComboBox
-            name: diffMethodDichotDefault
-            enable: (addDiff)
+            name: diffDichotDefault
+            enable: (addDifference)
           - type: ListBox
-            name: diffMethodsDichotSpecific
+            name: diffDichotSpecific
             showColumnHeaders: true
             fullRowSelect: true
             stretchFactor: 1
@@ -277,14 +277,14 @@ children:
                   label: ''
           - type: ComboBox
             name: diffDigitsDichot
-            enable: (addDiff)
+            enable: (addDifference)
       - type: Label
         label: Categorical Variables (always SMD)
         stretchFactor: 1
         children:
           - type: ComboBox
             name: diffDigitsCat
-            enable: (addDiff)
+            enable: (addDifference)
   - type: CollapseBox
     label: P-value
     collapsed: true
@@ -294,31 +294,31 @@ children:
         margin: large
         children:
           - type: CheckBox
-            name: pValue
-            enable: ({return !!ui['groupBy'].value();})
+            name: addPvalue
+            enable: ({return !!ui['groupVar'].value();})
           - type: ComboBox
             name: digitsPvalue
-            enable: (pValue)
+            enable: (addPvalue)
           - type: CheckBox
-            name: boldP
-            enable: (pValue)
+            name: boldPvalue
+            enable: (addPvalue)
             children:
               - type: TextBox
-                name: boldPThreshold
+                name: boldPvalueThreshold
                 format: number
-                enable: (pValue && boldP)
+                enable: (addPvalue && boldPvalue)
           - type: CheckBox
-            name: separatePFootnotes
-            enable: (pValue)
+            name: separatePvalueFootnotes
+            enable: (addPvalue)
       - type: Label
         label: Continuous Variables
         stretchFactor: 1
         children:
           - type: ComboBox
             name: testContDefault
-            enable: (pValue)
+            enable: (addPvalue)
           - type: ListBox
-            name: testsContSpecific
+            name: testContSpecific
             showColumnHeaders: true
             fullRowSelect: true
             stretchFactor: 1
@@ -344,9 +344,9 @@ children:
         children:
           - type: ComboBox
             name: testCatDefault
-            enable: (pValue)
+            enable: (addPvalue)
           - type: ListBox
-            name: testsCatSpecific
+            name: testCatSpecific
             showColumnHeaders: true
             fullRowSelect: true
             stretchFactor: 1
@@ -373,18 +373,18 @@ children:
     children:
       - type: CheckBox
         name: addQ
-        enable: (pValue)
+        enable: (addPvalue || addDifference)
       - type: ComboBox
         name: qMethod
-        enable: (pValue && addQ)
+        enable: ((addPvalue || addDifference) && addQ)
       - type: CheckBox
         name: boldQ
-        enable: (pValue && addQ)
+        enable: ((addPvalue || addDifference) && addQ)
         children:
           - type: TextBox
             name: boldQThreshold
             format: number
-            enable: (pValue && addQ && boldQ)
+            enable: ((addPvalue || addDifference) && addQ && boldQ)
   - type: CollapseBox
     label: Confidence Interval
     collapsed: true
@@ -408,10 +408,10 @@ children:
         stretchFactor: 1
         children:
           - type: ComboBox
-            name: ciMethodContDefault
+            name: ciContDefault
             enable: (addCi)
           - type: ListBox
-            name: ciMethodsContSpecific
+            name: ciContSpecific
             showColumnHeaders: true
             fullRowSelect: true
             stretchFactor: 1
@@ -439,10 +439,10 @@ children:
         stretchFactor: 1
         children:
           - type: ComboBox
-            name: ciMethodCatDefault
+            name: ciCatDefault
             enable: (addCi)
           - type: ListBox
-            name: ciMethodsCatSpecific
+            name: ciCatSpecific
             showColumnHeaders: true
             fullRowSelect: true
             stretchFactor: 1

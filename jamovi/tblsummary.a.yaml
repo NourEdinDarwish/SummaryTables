@@ -27,7 +27,7 @@ options:
       - factor
       - id
 
-  - name: groupBy
+  - name: groupVar
     title: Grouping Variable
     type: Variable
     suggested:
@@ -96,7 +96,7 @@ options:
     type: List
     options:
       - title: Default
-        name: none
+        name: default
       - title: JAMA
         name: jama
       - title: The Lancet
@@ -105,7 +105,7 @@ options:
         name: nejm
       - title: The Quarterly Journal of Economics
         name: qjecon
-    default: none
+    default: default
 
   - name: compact
     title: Compact
@@ -193,12 +193,12 @@ options:
           type: List
           options:
             - title: Same as default
-              name: use_default
+              name: useDefault
             - title: As defined
               name: alphanumeric
             - title: Frequency
               name: frequency
-          default: use_default
+          default: useDefault
 
   - name: statContDefault
     title: Default statistic
@@ -218,7 +218,7 @@ options:
         name: eda
     default: meanSd
 
-  - name: statsContSpecific
+  - name: statContSpecific
     title: Specific statistics
     type: Array
     template:
@@ -231,7 +231,7 @@ options:
           type: List
           options:
             - title: Same as default
-              name: use_default
+              name: useDefault
             - title: Mean (SD)
               name: meanSd
             - title: Median (IQR)
@@ -244,7 +244,7 @@ options:
               name: median
             - title: All
               name: eda
-          default: use_default
+          default: useDefault
 
   - name: digitsCont
     title: Decimal places
@@ -278,7 +278,7 @@ options:
         name: percent
     default: nPercent
 
-  - name: statsCatSpecific
+  - name: statCatSpecific
     title: Specific statistics
     type: Array
     template:
@@ -291,16 +291,16 @@ options:
           type: List
           options:
             - title: Same as default
-              name: use_default
+              name: useDefault
             - title: Count (%)
               name: nPercent
             - title: Count
               name: n
             - title: "%"
               name: percent
-          default: use_default
+          default: useDefault
 
-  - name: digitsPct
+  - name: digitsCatPct
     title: Decimal places (percentage)
     type: List
     options:
@@ -332,7 +332,7 @@ options:
         name: cell
     default: column
 
-  - name: addDiff
+  - name: addDifference
     title: Add difference (requires Grouping Variable with exactly 2 levels)
     type: Bool
     default: false
@@ -358,31 +358,31 @@ options:
         name: "3"
     default: auto
 
-  - name: boldDiffP
+  - name: boldDiffPvalue
     title: Bold significant p-values
     type: Bool
     default: false
 
-  - name: boldDiffPThreshold
+  - name: boldDiffPvalueThreshold
     title: Significance threshold
     type: Number
     min: 0
     max: 1
     default: 0.05
 
-  - name: separateDiffFootnotes
+  - name: separateDiffPFootnotes
     title: Separate p-value footnotes
     type: Bool
     default: false
 
-  - name: diffMethodContDefault
+  - name: diffContDefault
     title: Default method
     type: List
     options:
       - title: t-test
         name: t.test
       - title: t-test (equal variance)
-        name: t.test.student
+        name: t.test.equalVar
       - title: Wilcoxon rank-sum
         name: wilcox.test
       - title: "Cohen's D"
@@ -393,7 +393,7 @@ options:
         name: smd
     default: t.test
 
-  - name: diffMethodsContSpecific
+  - name: diffContSpecific
     title: Specific methods
     type: Array
     default: []
@@ -406,11 +406,11 @@ options:
           type: List
           options:
             - title: Same as default
-              name: use_default
+              name: useDefault
             - title: t-test
               name: t.test
             - title: t-test (equal variance)
-              name: t.test.student
+              name: t.test.equalVar
             - title: Wilcoxon rank-sum
               name: wilcox.test
             - title: "Cohen's D"
@@ -419,7 +419,7 @@ options:
               name: hedges_g
             - title: SMD
               name: smd
-          default: use_default
+          default: useDefault
 
   - name: diffDigitsCont
     title: Decimal places (difference & CI)
@@ -441,7 +441,7 @@ options:
         name: "5"
     default: auto
 
-  - name: diffMethodDichotDefault
+  - name: diffDichotDefault
     title: Default method
     type: List
     options:
@@ -451,7 +451,7 @@ options:
         name: smd
     default: prop.test
 
-  - name: diffMethodsDichotSpecific
+  - name: diffDichotSpecific
     title: Specific methods
     type: Array
     default: []
@@ -464,12 +464,12 @@ options:
           type: List
           options:
             - title: Same as default
-              name: use_default
+              name: useDefault
             - title: Z test (proportions)
               name: prop.test
             - title: SMD
               name: smd
-          default: use_default
+          default: useDefault
 
   - name: diffDigitsDichot
     title: Decimal places (difference & CI)
@@ -511,7 +511,7 @@ options:
         name: "5"
     default: auto
 
-  - name: pValue
+  - name: addPvalue
     title: Add p-value (requires Grouping Variable)
     type: Bool
     default: false
@@ -530,19 +530,19 @@ options:
         name: "3"
     default: auto
 
-  - name: boldP
+  - name: boldPvalue
     title: Bold significant p-values
     type: Bool
     default: false
 
-  - name: boldPThreshold
+  - name: boldPvalueThreshold
     title: Significance threshold
     type: Number
     min: 0
     max: 1
     default: 0.05
 
-  - name: separatePFootnotes
+  - name: separatePvalueFootnotes
     title: Separate p-value footnotes
     type: Bool
     default: false
@@ -558,18 +558,18 @@ options:
       - title: t-test
         name: t.test
       - title: t-test (equal variance)
-        name: t.test.student
+        name: t.test.equalVar
       - title: ANOVA
         name: oneway.test
       - title: ANOVA (equal variance)
-        name: oneway.test.classical
+        name: oneway.test.equalVar
       - title: Wilcoxon rank-sum
         name: wilcox.test
       - title: Kruskal-Wallis
         name: kruskal.test
     default: parametric
 
-  - name: testsContSpecific
+  - name: testContSpecific
     title: Specific tests
     type: Array
     default: []
@@ -582,20 +582,20 @@ options:
           type: List
           options:
             - title: Same as default
-              name: use_default
+              name: useDefault
             - title: t-test
               name: t.test
             - title: t-test (equal variance)
-              name: t.test.student
+              name: t.test.equalVar
             - title: ANOVA
               name: oneway.test
             - title: ANOVA (equal variance)
-              name: oneway.test.classical
+              name: oneway.test.equalVar
             - title: Wilcoxon rank-sum
               name: wilcox.test
             - title: Kruskal-Wallis
               name: kruskal.test
-          default: use_default
+          default: useDefault
 
   - name: testCatDefault
     title: Default test
@@ -611,7 +611,7 @@ options:
         name: fisher.test
     default: auto
 
-  - name: testsCatSpecific
+  - name: testCatSpecific
     title: Specific tests
     type: Array
     default: []
@@ -624,14 +624,14 @@ options:
           type: List
           options:
             - title: Same as default
-              name: use_default
+              name: useDefault
             - title: Chi-square
               name: chisq.test.no.correct
             - title: Chi-square (continuity correction)
               name: chisq.test
             - title: Fisher's exact test
               name: fisher.test
-          default: use_default
+          default: useDefault
 
   - name: addQ
     title: Add q-value (requires p-value)
@@ -687,7 +687,7 @@ options:
     type: Bool
     default: false
 
-  - name: ciMethodContDefault
+  - name: ciContDefault
     title: Default method
     type: List
     options:
@@ -697,7 +697,7 @@ options:
         name: wilcox.test
     default: t.test
 
-  - name: ciMethodsContSpecific
+  - name: ciContSpecific
     title: Specific methods
     type: Array
     default: []
@@ -711,12 +711,12 @@ options:
           type: List
           options:
             - title: Same as default
-              name: use_default
+              name: useDefault
             - title: t-test (mean)
               name: t.test
             - title: Wilcoxon signed-rank (pseudomedian)
               name: wilcox.test
-          default: use_default
+          default: useDefault
 
   - name: ciDigitsCont
     title: Decimal places
@@ -738,7 +738,7 @@ options:
         name: "5"
     default: auto
 
-  - name: ciMethodCatDefault
+  - name: ciCatDefault
     title: Default method
     type: List
     options:
@@ -758,7 +758,7 @@ options:
         name: jeffreys
     default: wilson
 
-  - name: ciMethodsCatSpecific
+  - name: ciCatSpecific
     title: Specific methods
     type: Array
     default: []
@@ -772,7 +772,7 @@ options:
           type: List
           options:
             - title: Same as default
-              name: use_default
+              name: useDefault
             - title: Wilson (continuity correction)
               name: wilson
             - title: Wilson
@@ -787,7 +787,7 @@ options:
               name: agresti.coull
             - title: Jeffreys
               name: jeffreys
-          default: use_default
+          default: useDefault
 
   - name: ciDigitsCat
     title: Decimal places

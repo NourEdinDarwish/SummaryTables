@@ -26,8 +26,10 @@ resolveExportPath <- function(path) {
   # We avoid path.expand("~") because inside Jamovi's R engine on Windows
   # it resolves to Documents, not the user profile.
   getHome <- function() {
-    home <- Sys.getenv("USERPROFILE")  # Windows
-    if (home == "") home <- Sys.getenv("HOME")  # Mac/Linux
+    home <- Sys.getenv("USERPROFILE") # Windows
+    if (home == "") {
+      home <- Sys.getenv("HOME")
+    } # Mac/Linux
     home
   }
 
@@ -53,9 +55,7 @@ resolveExportPath <- function(path) {
 #' Export a gtsummary table to DOCX format
 #'
 #' Converts a gtsummary table to a flextable and saves it as a DOCX file.
-#' Validates the target directory exists, wraps the write in tryCatch to prevent
-#' export errors from crashing the analysis, and inserts a Notice into the
-#' results to report success or failure.
+#' Inserts a Notice into the results to report the saved path.
 #'
 #' @param table A gtsummary object to export
 #' @param path A resolved file path string where the DOCX will be saved
@@ -72,6 +72,4 @@ exportDocx <- function(table, path, options, results) {
   )
   notice$setContent(paste0("Saved to: ", path))
   results$insert(1, notice)
-
 }
-

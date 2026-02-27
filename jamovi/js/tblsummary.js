@@ -4,7 +4,7 @@
  * @param {Object} target - The target control to update
  * @param {string} targetIdName - Name of the identifier element in target (e.g. "var")
  * @param {string} targetValName - Name of the value element in target (e.g. "stat")
- * @param {string} defaultVal - Value for new entries (e.g. "use_default")
+ * @param {string} defaultVal - Value for new entries (e.g. "useDefault")
  */
 const sync = function (source, target, targetIdName, targetValName, defaultVal) {
   const sourceList = source.value() || [];
@@ -22,17 +22,17 @@ const sync = function (source, target, targetIdName, targetValName, defaultVal) 
 
 module.exports = {
   varsCont_changed: function (ui) {
-    sync(ui.varsCont, ui.statsContSpecific, "var", "stat", "use_default");
-    sync(ui.varsCont, ui.testsContSpecific, "var", "test", "use_default");
-    sync(ui.varsCont, ui.ciMethodsContSpecific, "var", "method", "use_default");
-    sync(ui.varsCont, ui.diffMethodsContSpecific, "var", "method", "use_default");
+    sync(ui.varsCont, ui.statContSpecific, "var", "stat", "useDefault");
+    sync(ui.varsCont, ui.testContSpecific, "var", "test", "useDefault");
+    sync(ui.varsCont, ui.ciContSpecific, "var", "method", "useDefault");
+    sync(ui.varsCont, ui.diffContSpecific, "var", "method", "useDefault");
   },
 
   varsCat_changed: function (ui) {
-    sync(ui.varsCat, ui.statsCatSpecific, "var", "stat", "use_default");
-    sync(ui.varsCat, ui.testsCatSpecific, "var", "test", "use_default");
-    sync(ui.varsCat, ui.sortCatSpecific, "var", "sort", "use_default");
-    sync(ui.varsCat, ui.ciMethodsCatSpecific, "var", "method", "use_default");
-    sync(ui.varsCat, ui.diffMethodsDichotSpecific, "var", "method", "use_default");
+    sync(ui.varsCat, ui.statCatSpecific, "var", "stat", "useDefault");
+    sync(ui.varsCat, ui.testCatSpecific, "var", "test", "useDefault");
+    sync(ui.varsCat, ui.sortCatSpecific, "var", "sort", "useDefault");
+    sync(ui.varsCat, ui.ciCatSpecific, "var", "method", "useDefault");
+    sync(ui.varsCat, ui.diffDichotSpecific, "var", "method", "useDefault");
   },
 };

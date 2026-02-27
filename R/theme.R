@@ -4,19 +4,15 @@
 #' first to prevent state leakage from previous runs. Themes stack on top of
 #' each other (e.g., JAMA + compact + Spanish).
 #'
-#' @param journalOption Character: Journal theme to apply. One of: "none",
-#'   "jama", "lancet", "nejm", "qjecon"
+#' @param journalOption Character: Journal theme to apply. One of:
+#'   "default", "jama", "lancet", "nejm", "qjecon"
 #' @param languageOption Character: Language for labels. One of: "en", "de",
 #'   "es", "fr", "gu", "hi", "is", "ja", "kr", "mr", "nl", "no", "pt", "se",
 #'   "zh-cn", "zh-tw"
 #' @param compactOption Logical: Apply compact theme if TRUE
-applyTheme <- function(
-  journalOption = "none",
-  languageOption = "en",
-  compactOption = FALSE
-) {
-  # Apply journal theme if specified (not "none")
-  if (journalOption != "none") {
+applyTheme <- function(journalOption, languageOption, compactOption) {
+  # Apply journal theme if specified (not "default")
+  if (journalOption != "default") {
     gtsummary::theme_gtsummary_journal(journal = journalOption)
   }
 
@@ -41,9 +37,9 @@ applyTheme <- function(
 #' - ciSep: read from active theme (set by journal/language theme)
 #' - iqrJournals: TRUE when the IQR label patch for continuous2 is needed
 #'
-#' @param journalOption Character: selected journal (e.g. "jama", "none")
+#' @param journalOption Character: selected journal (e.g. "default", "jama")
 #' @return Named list of formatting strings
-getThemeStrings <- function(journalOption = "none") {
+getThemeStrings <- function(journalOption) {
   dashJournals <- c("jama", "nejm", "lancet")
   sep <- if (journalOption %in% dashJournals) " \U2013 " else ", "
   pctSuffix <- if (journalOption %in% c("jama", "nejm")) "" else "%"
