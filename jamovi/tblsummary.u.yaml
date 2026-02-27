@@ -99,6 +99,7 @@ children:
     children:
       - type: ComboBox
         name: sortCatDefault
+        enable: ({return (ui['varsCat'].value() || []).length > 0;})
       - type: ListBox
         name: sortCatSpecific
         showColumnHeaders: true
@@ -213,24 +214,24 @@ children:
                 name: diffConfLevel
                 suffix: "%"
                 format: number
-                enable: (addDifference)
+                enable: ({return !!ui['groupVar'].value() && ui['addDifference'].value();})
           - type: LayoutBox
             margin: none
             children:
               - type: ComboBox
                 name: diffDigitsPvalue
-                enable: (addDifference)
+                enable: ({return !!ui['groupVar'].value() && ui['addDifference'].value();})
           - type: CheckBox
             name: boldDiffPvalue
-            enable: (addDifference)
+            enable: ({return !!ui['groupVar'].value() && ui['addDifference'].value();})
             children:
               - type: TextBox
                 name: boldDiffPvalueThreshold
                 format: number
-                enable: (addDifference && boldDiffPvalue)
+                enable: ({return !!ui['groupVar'].value() && ui['addDifference'].value() && ui['boldDiffPvalue'].value();})
           - type: CheckBox
             name: separateDiffPFootnotes
-            enable: (addDifference)
+            enable: ({return !!ui['groupVar'].value() && ui['addDifference'].value();})
       - type: Label
         label: Continuous Variables
         stretchFactor: 1
@@ -240,7 +241,7 @@ children:
             children:
               - type: ComboBox
                 name: diffContDefault
-                enable: (addDifference)
+                enable: ({return !!ui['groupVar'].value() && ui['addDifference'].value();})
           - type: ListBox
             name: diffContSpecific
             showColumnHeaders: true
@@ -264,7 +265,7 @@ children:
                   label: ""
           - type: ComboBox
             name: diffDigitsCont
-            enable: (addDifference)
+            enable: ({return !!ui['groupVar'].value() && ui['addDifference'].value();})
       - type: Label
         label: Categorical Variables (2 levels)
         stretchFactor: 1
@@ -274,7 +275,7 @@ children:
             children:
               - type: ComboBox
                 name: diffDichotDefault
-                enable: (addDifference)
+                enable: ({return !!ui['groupVar'].value() && ui['addDifference'].value();})
           - type: ListBox
             name: diffDichotSpecific
             showColumnHeaders: true
@@ -298,14 +299,14 @@ children:
                   label: ""
           - type: ComboBox
             name: diffDigitsDichot
-            enable: (addDifference)
+            enable: ({return !!ui['groupVar'].value() && ui['addDifference'].value();})
       - type: Label
         label: Categorical Variables (3+ levels; always SMD)
         stretchFactor: 1
         children:
           - type: ComboBox
             name: diffDigitsCat
-            enable: (addDifference)
+            enable: ({return !!ui['groupVar'].value() && ui['addDifference'].value();})
   - type: CollapseBox
     label: P-value
     collapsed: true
@@ -322,25 +323,25 @@ children:
             children:
               - type: ComboBox
                 name: digitsPvalue
-                enable: (addPvalue)
+                enable: ({return !!ui['groupVar'].value() && ui['addPvalue'].value();})
           - type: CheckBox
             name: boldPvalue
-            enable: (addPvalue)
+            enable: ({return !!ui['groupVar'].value() && ui['addPvalue'].value();})
             children:
               - type: TextBox
                 name: boldPvalueThreshold
                 format: number
-                enable: (addPvalue && boldPvalue)
+                enable: ({return !!ui['groupVar'].value() && ui['addPvalue'].value() && ui['boldPvalue'].value();})
           - type: CheckBox
             name: separatePvalueFootnotes
-            enable: (addPvalue)
+            enable: ({return !!ui['groupVar'].value() && ui['addPvalue'].value();})
       - type: Label
         label: Continuous Variables
         stretchFactor: 1
         children:
           - type: ComboBox
             name: testContDefault
-            enable: (addPvalue)
+            enable: ({return !!ui['groupVar'].value() && ui['addPvalue'].value();})
           - type: ListBox
             name: testContSpecific
             showColumnHeaders: true
@@ -368,7 +369,7 @@ children:
         children:
           - type: ComboBox
             name: testCatDefault
-            enable: (addPvalue)
+            enable: ({return !!ui['groupVar'].value() && ui['addPvalue'].value();})
           - type: ListBox
             name: testCatSpecific
             showColumnHeaders: true
@@ -397,18 +398,18 @@ children:
     children:
       - type: CheckBox
         name: addQ
-        enable: (addPvalue || addDifference)
+        enable: ({return !!ui['groupVar'].value() && (ui['addPvalue'].value() || ui['addDifference'].value());})
       - type: ComboBox
         name: qMethod
-        enable: ((addPvalue || addDifference) && addQ)
+        enable: ({return !!ui['groupVar'].value() && (ui['addPvalue'].value() || ui['addDifference'].value()) && ui['addQ'].value();})
       - type: CheckBox
         name: boldQ
-        enable: ((addPvalue || addDifference) && addQ)
+        enable: ({return !!ui['groupVar'].value() && (ui['addPvalue'].value() || ui['addDifference'].value()) && ui['addQ'].value();})
         children:
           - type: TextBox
             name: boldQThreshold
             format: number
-            enable: ((addPvalue || addDifference) && addQ && boldQ)
+            enable: ({return !!ui['groupVar'].value() && (ui['addPvalue'].value() || ui['addDifference'].value()) && ui['addQ'].value() && ui['boldQ'].value();})
   - type: CollapseBox
     label: Confidence Interval
     collapsed: true

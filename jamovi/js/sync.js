@@ -65,7 +65,7 @@ const syncDichotomous = function (
     return;
   }
 
-  var promises = sourceList.map(function (varName) {
+  const promises = sourceList.map(function (varName) {
     return view
       .requestData("column", { columnName: varName, properties: ["levels"] })
       .then(function (rData) {
@@ -77,7 +77,7 @@ const syncDichotomous = function (
   });
 
   Promise.all(promises).then(function (results) {
-    var dichotVars = results
+    const dichotVars = results
       .filter(function (r) {
         return r.levelCount === 2;
       })
@@ -85,8 +85,8 @@ const syncDichotomous = function (
         return r.varName;
       });
 
-    var updated = dichotVars.map(function (varName) {
-      var existing = targetList.find(function (item) {
+    const updated = dichotVars.map(function (varName) {
+      const existing = targetList.find(function (item) {
         return item[targetIdName] === varName;
       });
       return (
