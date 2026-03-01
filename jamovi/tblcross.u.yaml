@@ -1,0 +1,133 @@
+title: Cross Table
+name: tblCross
+jus: "3.0"
+stage: 0
+compilerMode: tame
+children:
+  - type: VariableSupplier
+    persistentItems: false
+    stretchFactor: 1
+    children:
+      - type: TargetLayoutBox
+        children:
+          - type: VariablesListBox
+            name: row
+            maxItemCount: 1
+            isTarget: true
+      - type: TargetLayoutBox
+        children:
+          - type: VariablesListBox
+            name: col
+            maxItemCount: 1
+            isTarget: true
+  - type: CollapseBox
+    label: General
+    collapsed: false
+    stretchFactor: 1
+    children:
+      - type: Label
+        label: Statistic
+        children:
+          - type: ComboBox
+            name: statistic
+          - type: ComboBox
+            name: percent
+            enable: (!(statistic:n))
+          - type: ComboBox
+            name: digits
+            enable: (!(statistic:n))
+      - type: Label
+        label: Totals
+        children:
+          - type: ComboBox
+            name: margin
+          - type: TextBox
+            name: marginText
+            format: string
+            width: large
+      - type: Label
+        label: Missing Values
+        children:
+          - type: ComboBox
+            name: missing
+          - type: TextBox
+            name: missingText
+            format: string
+            width: large
+            enable: (!(missing:no))
+  - type: CollapseBox
+    label: Appearance
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: ComboBox
+        name: journal
+      - type: CheckBox
+        name: compact
+      - type: ComboBox
+        name: language
+      - type: LayoutBox
+        fitToGrid: true
+        children:
+          - type: CheckBox
+            name: boldLabels
+            cell:
+              row: 0
+              column: 0
+          - type: CheckBox
+            name: boldLevels
+            cell:
+              row: 0
+              column: 1
+          - type: CheckBox
+            name: italicizeLabels
+            cell:
+              row: 1
+              column: 0
+          - type: CheckBox
+            name: italicizeLevels
+            cell:
+              row: 1
+              column: 1
+  - type: CollapseBox
+    label: P-value
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: CheckBox
+        name: addPvalue
+        children:
+          - type: LayoutBox
+            margin: none
+            children:
+              - type: ComboBox
+                name: testDefault
+                enable: (addPvalue)
+          - type: LayoutBox
+            margin: none
+            children:
+              - type: ComboBox
+                name: digitsPvalue
+                enable: (addPvalue)
+          - type: CheckBox
+            name: boldPvalue
+            enable: (addPvalue)
+            children:
+              - type: TextBox
+                name: boldPvalueThreshold
+                format: number
+                enable: (addPvalue && boldPvalue)
+          - type: CheckBox
+            name: sourceNote
+            enable: (addPvalue)
+  - type: CollapseBox
+    label: Save to Word
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: TextBox
+        name: path
+        format: string
+        stretchFactor: 1
+      - type: CheckBox
+        name: export

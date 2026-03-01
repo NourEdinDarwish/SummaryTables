@@ -599,7 +599,7 @@ options:
     title: Default test
     type: List
     options:
-      - title: Chi-square / Fisher's exact test
+      - title: Auto (Chi-square / Fisher's exact test)
         name: auto
       - title: Chi-square
         name: chisq.test.no.correct

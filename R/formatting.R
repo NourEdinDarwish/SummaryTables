@@ -4,34 +4,37 @@
 #' bold p-values (including q-values and difference p-values), and
 #' separate-p-footnotes — all controlled by the jamovi options object.
 #'
+#' Uses optTrue() (from utils.R) for boolean options that may not exist
+#' in every analysis, preventing jmvcore's "does not exist" errors.
+#'
 #' @param table A gtsummary table object
 #' @param hasGroupVar Logical: TRUE when a grouping variable is present
 #' @param options A jamovi options object (self$options)
 #' @return The formatted table
 applyTextFormatting <- function(table, hasGroupVar, options) {
   # Labels and levels -------------------------------------------------------
-  if (options$boldLabels) {
+  if (optTrue(options$boldLabels)) {
     table <- gtsummary::bold_labels(table)
   }
-  if (options$boldLevels) {
+  if (optTrue(options$boldLevels)) {
     table <- gtsummary::bold_levels(table)
   }
-  if (options$italicizeLabels) {
+  if (optTrue(options$italicizeLabels)) {
     table <- gtsummary::italicize_labels(table)
   }
-  if (options$italicizeLevels) {
+  if (optTrue(options$italicizeLevels)) {
     table <- gtsummary::italicize_levels(table)
   }
 
   # Bold p-values -----------------------------------------------------------
-  if (options$boldPvalue && options$addPvalue && hasGroupVar) {
+  if (optTrue(options$boldPvalue) && optTrue(options$addPvalue) && hasGroupVar) {
     table <- gtsummary::bold_p(table, t = options$boldPvalueThreshold)
   }
 
   if (
-    options$boldQ &&
-      options$addQ &&
-      (options$addPvalue || options$addDifference) &&
+    optTrue(options$boldQ) &&
+      optTrue(options$addQ) &&
+      (optTrue(options$addPvalue) || optTrue(options$addDifference)) &&
       hasGroupVar
   ) {
     table <- gtsummary::bold_p(
@@ -42,21 +45,21 @@ applyTextFormatting <- function(table, hasGroupVar, options) {
   }
 
   # Separate p-value footnotes ----------------------------------------------
-  if (options$separatePvalueFootnotes && options$addPvalue && hasGroupVar) {
+  if (optTrue(options$separatePvalueFootnotes) && optTrue(options$addPvalue) && hasGroupVar) {
     table <- gtsummary::separate_p_footnotes(table)
   }
 
   # Difference formatting ---------------------------------------------------
   if (
-    options$boldDiffPvalue &&
-      options$addDifference &&
+    optTrue(options$boldDiffPvalue) &&
+      optTrue(options$addDifference) &&
       hasGroupVar
   ) {
     table <- gtsummary::bold_p(table, t = options$boldDiffPvalueThreshold)
   }
   if (
-    options$separateDiffPFootnotes &&
-      options$addDifference &&
+    optTrue(options$separateDiffPFootnotes) &&
+      optTrue(options$addDifference) &&
       hasGroupVar
   ) {
     table <- gtsummary::separate_p_footnotes(table)

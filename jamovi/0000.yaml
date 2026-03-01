@@ -28,6 +28,16 @@ analyses:
       Create a publication-ready summary table with descriptive statistics,
       group comparisons, statistical tests, effect sizes, confidence intervals,
       and journal-specific formatting. Export to Word.
+  - title: Cross Table
+    name: tblCross
+    ns: SummaryTables
+    category: analyses
+    menuGroup: Summary Tables
+    menuTitle: Cross Table
+    description: >-
+      Create a cross-tabulation of two categorical variables with counts,
+      percentages, margins, p-values, and journal-specific formatting. Export to
+      Word.
 usesNative: true
 minApp: 1.0.8
 

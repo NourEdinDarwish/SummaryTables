@@ -79,30 +79,28 @@ tblSummaryClass <- R6::R6Class(
 
       # Core table ----------------------------------------------------------
       table <- runSafe(
-        {
-          gtsummary::tbl_summary(
-            data = data,
-            include = allVars,
-            by = groupVar,
-            type = typeArguments$type,
-            value = typeArguments$dichotValue,
-            statistic = statisticArguments,
-            digits = digitsArguments,
-            missing = self$options$missing,
-            missing_text = self$options$missingText,
-            missing_stat = switch(
-              self$options$missingStat,
-              n = "{N_miss}",
-              nPercent = paste0(
-                "{N_miss} ({p_miss}",
-                themeStrings$pctSuffix,
-                ")"
-              ),
-              percent = paste0("{p_miss}", themeStrings$pctSuffix)
+        gtsummary::tbl_summary(
+          data = data,
+          include = allVars,
+          by = groupVar,
+          type = typeArguments$type,
+          value = typeArguments$dichotValue,
+          statistic = statisticArguments,
+          digits = digitsArguments,
+          missing = self$options$missing,
+          missing_text = self$options$missingText,
+          missing_stat = switch(
+            self$options$missingStat,
+            n = "{N_miss}",
+            nPercent = paste0(
+              "{N_miss} ({p_miss}",
+              themeStrings$pctSuffix,
+              ")"
             ),
-            percent = self$options$percent
-          )
-        },
+            percent = paste0("{p_miss}", themeStrings$pctSuffix)
+          ),
+          percent = self$options$percent
+        ),
         collector
       )
 

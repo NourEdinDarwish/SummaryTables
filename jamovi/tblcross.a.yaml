@@ -1,0 +1,247 @@
+---
+name: tblCross
+title: Cross Table
+menuGroup: Summary Tables
+version: "1.0.0"
+jas: "1.2"
+
+options:
+  - name: data
+    type: Data
+
+  - name: row
+    title: Row Variable
+    type: Variable
+    suggested:
+      - nominal
+      - ordinal
+    permitted:
+      - factor
+
+  - name: col
+    title: Column Variable
+    type: Variable
+    suggested:
+      - nominal
+      - ordinal
+    permitted:
+      - factor
+
+  - name: statistic
+    title: Statistic
+    type: List
+    options:
+      - title: Count (%)
+        name: nPercent
+      - title: Count
+        name: n
+      - title: "%"
+        name: percent
+    default: nPercent
+
+  - name: percent
+    title: Percentage type
+    type: List
+    options:
+      - title: Column %
+        name: column
+      - title: Row %
+        name: row
+      - title: Total %
+        name: cell
+    default: column
+
+  - name: digits
+    title: Decimal places (percentage)
+    type: List
+    options:
+      - title: Auto
+        name: auto
+      - title: "0"
+        name: "0"
+      - title: "1"
+        name: "1"
+      - title: "2"
+        name: "2"
+      - title: "3"
+        name: "3"
+      - title: "4"
+        name: "4"
+      - title: "5"
+        name: "5"
+    default: auto
+
+  - name: margin
+    title: Show
+    type: List
+    options:
+      - title: Row & Column
+        name: both
+      - title: Row
+        name: row
+      - title: Column
+        name: column
+      - title: None
+        name: none
+    default: both
+
+  - name: marginText
+    title: Label
+    type: String
+    default: Total
+
+  - name: missing
+    title: Visibility
+    type: List
+    options:
+      - title: Show if present
+        name: ifany
+      - title: Hide
+        name: no
+      - title: Always show
+        name: always
+    default: ifany
+
+  - name: missingText
+    title: Label
+    type: String
+    default: Unknown
+
+  - name: journal
+    title: Theme
+    type: List
+    options:
+      - title: Default
+        name: default
+      - title: JAMA
+        name: jama
+      - title: The Lancet
+        name: lancet
+      - title: The New England Journal of Medicine
+        name: nejm
+      - title: The Quarterly Journal of Economics
+        name: qjecon
+    default: default
+
+  - name: compact
+    title: Compact
+    type: Bool
+    default: false
+
+  - name: language
+    title: Language
+    type: List
+    options:
+      - title: Chinese (Simplified)
+        name: zh-cn
+      - title: Chinese (Traditional)
+        name: zh-tw
+      - title: Dutch
+        name: nl
+      - title: English
+        name: en
+      - title: French
+        name: fr
+      - title: German
+        name: de
+      - title: Gujarati
+        name: gu
+      - title: Hindi
+        name: hi
+      - title: Icelandic
+        name: is
+      - title: Japanese
+        name: ja
+      - title: Korean
+        name: kr
+      - title: Marathi
+        name: mr
+      - title: Norwegian
+        name: no
+      - title: Portuguese
+        name: pt
+      - title: Spanish
+        name: es
+      - title: Swedish
+        name: se
+    default: en
+
+  - name: boldLabels
+    title: Bold labels
+    type: Bool
+    default: false
+
+  - name: boldLevels
+    title: Bold levels
+    type: Bool
+    default: false
+
+  - name: italicizeLabels
+    title: Italicize labels
+    type: Bool
+    default: false
+
+  - name: italicizeLevels
+    title: Italicize levels
+    type: Bool
+    default: false
+
+  - name: addPvalue
+    title: Add p-value
+    type: Bool
+    default: false
+
+  - name: testDefault
+    title: Test
+    type: List
+    options:
+      - title: Auto (Chi-square / Fisher's exact test)
+        name: auto
+      - title: Chi-square
+        name: chisq.test.no.correct
+      - title: Chi-square (continuity correction)
+        name: chisq.test
+      - title: Fisher's exact test
+        name: fisher.test
+    default: auto
+
+  - name: digitsPvalue
+    title: Decimal places (large p-values)
+    type: List
+    options:
+      - title: Auto
+        name: auto
+      - title: "1"
+        name: "1"
+      - title: "2"
+        name: "2"
+      - title: "3"
+        name: "3"
+    default: auto
+
+  - name: boldPvalue
+    title: Bold significant p-values
+    type: Bool
+    default: false
+
+  - name: boldPvalueThreshold
+    title: Significance threshold
+    type: Number
+    min: 0
+    max: 1
+    default: 0.05
+
+  - name: sourceNote
+    title: Show p-value as source note
+    type: Bool
+    default: false
+
+  - name: path
+    title: Path
+    type: String
+    default: ~/Desktop/Cross Table.docx
+
+  - name: export
+    title: Save
+    type: Bool
+    default: false

@@ -1,0 +1,10 @@
+---
+name: tblCross
+title: Cross Table
+jrs: "1.1"
+
+items:
+  - name: tbl
+    title: Cross Table
+    type: Html
+    visible: true

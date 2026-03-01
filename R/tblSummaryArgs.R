@@ -137,27 +137,33 @@ buildStatArgs <- function(varsCont, varsCat, options, themeStrings) {
 #' @param options Jamovi options object
 #' @return A formula-list suitable for the `digits` argument
 buildDigitsArgs <- function(options) {
-  digitsArguments <- list()
+  customContDigits <- options$digitsCont != "auto"
+  customPctDigits <- options$digitsCatPct != "auto"
 
-  if (options$digitsCont != "auto") {
-    digitsArguments <- c(
-      digitsArguments,
-      list(
-        gtsummary::all_continuous() ~ as.integer(options$digitsCont)
-      )
+  if (customContDigits && customPctDigits) {
+    dCont <- as.numeric(options$digitsCont)
+    dPct <- as.numeric(options$digitsCatPct)
+    contStatNames <- c("mean", "sd", "median", "p25", "p75", "min", "max")
+    contDigits <- stats::setNames(
+      rep(list(dCont), length(contStatNames)),
+      contStatNames
     )
-  }
-  if (options$digitsCatPct != "auto") {
-    digitsArguments <- c(
-      digitsArguments,
-      list(
-        gtsummary::all_categorical() ~ c(
-          0L,
-          as.integer(options$digitsCatPct)
-        )
-      )
+    contDigits[["p_miss"]] <- dPct
+    list(
+      gtsummary::all_continuous() ~ contDigits,
+      gtsummary::all_categorical() ~ list(p = dPct, p_miss = dPct)
     )
+  } else if (customContDigits) {
+    list(
+      gtsummary::all_continuous() ~ as.numeric(options$digitsCont)
+    )
+  } else if (customPctDigits) {
+    d <- as.numeric(options$digitsCatPct)
+    list(
+      gtsummary::all_continuous() ~ list(p_miss = d),
+      gtsummary::all_categorical() ~ list(p = d, p_miss = d)
+    )
+  } else {
+    list()
   }
-
-  digitsArguments
 }
