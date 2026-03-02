@@ -1,6 +1,17 @@
+<div align="center">
+
+<img src="analysis-SummaryTables.svg" alt="SummaryTables" width="148" height="88">
+
 # SummaryTables
 
+<!-- badges: start -->
+[![License: GPL ≥ 2](https://img.shields.io/badge/License-GPL%20%E2%89%A5%202-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
+[![jamovi](https://img.shields.io/badge/jamovi-Module-2196F3.svg)](https://www.jamovi.org)
+<!-- badges: end -->
+
 Publication-ready summary tables for [jamovi](https://www.jamovi.org).
+
+</div>
 
 SummaryTables lets you create professional descriptive statistics tables
 directly in jamovi — no code required. Built on the
@@ -34,8 +45,3 @@ SummaryTables is powered by:
   for summary table creation
 - [gt](https://gt.rstudio.com/) — table rendering
 - [flextable](https://ardata-fr.github.io/flextable-book/) — Word export
-
-
-## License
-
-GPL (>= 2)
