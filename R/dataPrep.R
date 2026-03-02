@@ -36,10 +36,7 @@ sortByFreq <- function(data, varsCat, options) {
   for (v in varsCat) {
     if (sortSpec[[v]] == "frequency" && v %in% names(data)) {
       lbl <- attr(data[[v]], "label")
-      data[[v]] <- factor(
-        data[[v]],
-        levels = names(sort(table(data[[v]]), decreasing = TRUE))
-      )
+      data[[v]] <- forcats::fct_infreq(data[[v]])
       attr(data[[v]], "label") <- lbl
     }
   }

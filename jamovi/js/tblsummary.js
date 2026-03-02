@@ -15,10 +15,7 @@ module.exports = {
       ui.testContSpecific,
       ui.testCatSpecific,
     ]);
-    enable.enable(ui.addCi.value(), [
-      ui.ciContSpecific,
-      ui.ciCatSpecific,
-    ]);
+    enable.enable(ui.addCi.value(), [ui.ciContSpecific, ui.ciCatSpecific]);
   },
 
   // Fires when the user adds/removes variables in the Continuous slot
@@ -68,10 +65,7 @@ module.exports = {
   },
 
   addCi_changed: function (ui) {
-    enable.enable(ui.addCi.value(), [
-      ui.ciContSpecific,
-      ui.ciCatSpecific,
-    ]);
+    enable.enable(ui.addCi.value(), [ui.ciContSpecific, ui.ciCatSpecific]);
   },
 
   // Toggle all groupVar-dependent ListBoxes when groupVar changes

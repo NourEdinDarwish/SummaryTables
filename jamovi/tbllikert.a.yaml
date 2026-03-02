@@ -1,0 +1,175 @@
+name: tblLikert
+title: Likert Summary Table
+menuGroup: Summary Tables
+version: "1.0.0"
+jas: "1.2"
+
+options:
+  - name: data
+    type: Data
+
+  - name: vars
+    title: Variables (should share response levels)
+    type: Variables
+    suggested:
+      - ordinal
+    permitted:
+      - factor
+
+  - name: statistic
+    title: Default statistic
+    type: List
+    options:
+      - title: Count (%)
+        name: nPercent
+      - title: Count
+        name: n
+      - title: "%"
+        name: percent
+    default: nPercent
+
+  - name: statSpecific
+    title: Specific statistics
+    type: Array
+    template:
+      type: Group
+      elements:
+        - name: var
+          type: Variable
+        - name: stat
+          title: Statistic
+          type: List
+          options:
+            - title: Same as default
+              name: useDefault
+            - title: Count (%)
+              name: nPercent
+            - title: Count
+              name: n
+            - title: "%"
+              name: percent
+          default: useDefault
+
+  - name: digits
+    title: Decimal places (percentage)
+    type: List
+    options:
+      - title: Auto
+        name: auto
+      - title: "0"
+        name: "0"
+      - title: "1"
+        name: "1"
+      - title: "2"
+        name: "2"
+      - title: "3"
+        name: "3"
+      - title: "4"
+        name: "4"
+      - title: "5"
+        name: "5"
+    default: auto
+
+  - name: levelOrder
+    title: Level order
+    type: List
+    options:
+      - title: As first variable
+        name: asFirst
+      - title: Reverse of first variable
+        name: reversed
+    default: asFirst
+
+  - name: addN
+    title: Add N column
+    type: Bool
+    default: false
+
+  - name: addNLast
+    title: Place last
+    type: Bool
+    default: false
+
+  - name: addNFootnote
+    title: Show footnote
+    type: Bool
+    default: true
+
+  - name: journal
+    title: Theme
+    type: List
+    options:
+      - title: Default
+        name: default
+      - title: JAMA
+        name: jama
+      - title: The Lancet
+        name: lancet
+      - title: The New England Journal of Medicine
+        name: nejm
+      - title: The Quarterly Journal of Economics
+        name: qjecon
+    default: default
+
+  - name: compact
+    title: Compact
+    type: Bool
+    default: false
+
+  - name: language
+    title: Language
+    type: List
+    options:
+      - title: Chinese (Simplified)
+        name: zh-cn
+      - title: Chinese (Traditional)
+        name: zh-tw
+      - title: Dutch
+        name: nl
+      - title: English
+        name: en
+      - title: French
+        name: fr
+      - title: German
+        name: de
+      - title: Gujarati
+        name: gu
+      - title: Hindi
+        name: hi
+      - title: Icelandic
+        name: is
+      - title: Japanese
+        name: ja
+      - title: Korean
+        name: kr
+      - title: Marathi
+        name: mr
+      - title: Norwegian
+        name: no
+      - title: Portuguese
+        name: pt
+      - title: Spanish
+        name: es
+      - title: Swedish
+        name: se
+    default: en
+
+  - name: boldLabels
+    title: Bold labels
+    type: Bool
+    default: false
+
+  - name: italicizeLabels
+    title: Italicize labels
+    type: Bool
+    default: false
+
+  - name: path
+    title: Path
+    type: String
+    default: ~/Desktop/Likert Summary Table.docx
+
+  - name: export
+    title: Save
+    type: Bool
+    default: false

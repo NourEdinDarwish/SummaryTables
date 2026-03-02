@@ -245,7 +245,6 @@ options:
   - name: testSpecific
     title: Specific tests
     type: Array
-    default: []
     template:
       type: Group
       elements:
@@ -336,7 +335,7 @@ options:
   - name: path
     title: Path
     type: String
-    default: ~/Desktop/Continuous Table.docx
+    default: ~/Desktop/Continuous Summary Table.docx
 
   - name: export
     title: Save

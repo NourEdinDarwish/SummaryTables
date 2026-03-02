@@ -1,7 +1,7 @@
 Type: Package
 Package: SummaryTables
 Title: Publication-Ready Summary Tables for Jamovi
-Version: 0.1.0
+Version: 0.3.0
 Authors@R: 
     person("Nour Edin", "Darwish", , "nouredindarwish@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0009-0009-5527-4539"))
@@ -22,6 +22,7 @@ Imports:
     cardx (>= 0.3.1),
     effectsize,
     flextable,
+    forcats,
     gt,
     gtsummary (>= 2.5.0.9001),
     jmvcore (>= 0.8.5),

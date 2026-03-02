@@ -25,7 +25,7 @@ tblContinuousOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
             digitsCont = "auto",
             addPvalue = FALSE,
             testDefault = "parametric",
-            testSpecific = list(),
+            testSpecific = NULL,
             digitsPvalue = "auto",
             boldPvalue = FALSE,
             boldPvalueThreshold = 0.05,
@@ -33,7 +33,7 @@ tblContinuousOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
             qMethod = "BH",
             boldQ = FALSE,
             boldQThreshold = 0.05,
-            path = "~/Desktop/Continuous Table.docx",
+            path = "~/Desktop/Continuous Summary Table.docx",
             export = FALSE, ...) {
 
             super$initialize(
@@ -212,7 +212,6 @@ tblContinuousOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
             private$..testSpecific <- jmvcore::OptionArray$new(
                 "testSpecific",
                 testSpecific,
-                default=list(),
                 template=jmvcore::OptionGroup$new(
                     "testSpecific",
                     NULL,
@@ -280,7 +279,7 @@ tblContinuousOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
             private$..path <- jmvcore::OptionString$new(
                 "path",
                 path,
-                default="~/Desktop/Continuous Table.docx")
+                default="~/Desktop/Continuous Summary Table.docx")
             private$..export <- jmvcore::OptionBool$new(
                 "export",
                 export,
@@ -475,7 +474,7 @@ tblContinuous <- function(
     digitsCont = "auto",
     addPvalue = FALSE,
     testDefault = "parametric",
-    testSpecific = list(),
+    testSpecific,
     digitsPvalue = "auto",
     boldPvalue = FALSE,
     boldPvalueThreshold = 0.05,
@@ -483,7 +482,7 @@ tblContinuous <- function(
     qMethod = "BH",
     boldQ = FALSE,
     boldQThreshold = 0.05,
-    path = "~/Desktop/Continuous Table.docx",
+    path = "~/Desktop/Continuous Summary Table.docx",
     export = FALSE) {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))

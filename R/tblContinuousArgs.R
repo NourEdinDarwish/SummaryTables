@@ -35,7 +35,9 @@ pipeAddPCont <- function(table, hasGroupVar, options, collector) {
         testArguments,
         list(~ resolveTestAlias(options$testDefault))
       )
-      if (options$testDefault %in% c("t.test.equalVar", "oneway.test.equalVar")) {
+      if (
+        options$testDefault %in% c("t.test.equalVar", "oneway.test.equalVar")
+      ) {
         testArgsArguments <- c(
           testArgsArguments,
           list(~ list(var.equal = TRUE))

@@ -393,7 +393,6 @@ options:
   - name: diffContSpecific
     title: Specific methods
     type: Array
-    default: []
     template:
       type: Group
       elements:
@@ -451,7 +450,6 @@ options:
   - name: diffDichotSpecific
     title: Specific methods
     type: Array
-    default: []
     template:
       type: Group
       elements:
@@ -569,7 +567,6 @@ options:
   - name: testContSpecific
     title: Specific tests
     type: Array
-    default: []
     template:
       type: Group
       elements:
@@ -611,7 +608,6 @@ options:
   - name: testCatSpecific
     title: Specific tests
     type: Array
-    default: []
     template:
       type: Group
       elements:
@@ -697,7 +693,6 @@ options:
   - name: ciContSpecific
     title: Specific methods
     type: Array
-    default: []
     template:
       type: Group
       elements:
@@ -758,7 +753,6 @@ options:
   - name: ciCatSpecific
     title: Specific methods
     type: Array
-    default: []
     template:
       type: Group
       elements:

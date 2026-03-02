@@ -63,8 +63,6 @@ tblContinuousClass <- R6::R6Class(
         collector
       )
 
-
-
       # Pipeline ------------------------------------------------------------
       table <- pipeAddPCont(
         table,

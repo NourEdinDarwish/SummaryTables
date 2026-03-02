@@ -40,10 +40,10 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             boldDiffPvalueThreshold = 0.05,
             separateDiffPFootnotes = FALSE,
             diffContDefault = "t.test",
-            diffContSpecific = list(),
+            diffContSpecific = NULL,
             diffDigitsCont = "auto",
             diffDichotDefault = "prop.test",
-            diffDichotSpecific = list(),
+            diffDichotSpecific = NULL,
             diffDigitsDichot = "auto",
             diffDigitsCat = "auto",
             addPvalue = FALSE,
@@ -52,9 +52,9 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             boldPvalueThreshold = 0.05,
             separatePvalueFootnotes = FALSE,
             testContDefault = "parametric",
-            testContSpecific = list(),
+            testContSpecific = NULL,
             testCatDefault = "auto",
-            testCatSpecific = list(),
+            testCatSpecific = NULL,
             addQ = FALSE,
             qMethod = "BH",
             boldQ = FALSE,
@@ -63,10 +63,10 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             confLevel = 95,
             ciCombine = FALSE,
             ciContDefault = "t.test",
-            ciContSpecific = list(),
+            ciContSpecific = NULL,
             ciDigitsCont = "auto",
             ciCatDefault = "wilson",
-            ciCatSpecific = list(),
+            ciCatSpecific = NULL,
             ciDigitsCat = "auto",
             path = "~/Desktop/Summary Table.docx",
             export = FALSE, ...) {
@@ -355,7 +355,6 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             private$..diffContSpecific <- jmvcore::OptionArray$new(
                 "diffContSpecific",
                 diffContSpecific,
-                default=list(),
                 template=jmvcore::OptionGroup$new(
                     "diffContSpecific",
                     NULL,
@@ -397,7 +396,6 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             private$..diffDichotSpecific <- jmvcore::OptionArray$new(
                 "diffDichotSpecific",
                 diffDichotSpecific,
-                default=list(),
                 template=jmvcore::OptionGroup$new(
                     "diffDichotSpecific",
                     NULL,
@@ -480,7 +478,6 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             private$..testContSpecific <- jmvcore::OptionArray$new(
                 "testContSpecific",
                 testContSpecific,
-                default=list(),
                 template=jmvcore::OptionGroup$new(
                     "testContSpecific",
                     NULL,
@@ -512,7 +509,6 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             private$..testCatSpecific <- jmvcore::OptionArray$new(
                 "testCatSpecific",
                 testCatSpecific,
-                default=list(),
                 template=jmvcore::OptionGroup$new(
                     "testCatSpecific",
                     NULL,
@@ -579,7 +575,6 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             private$..ciContSpecific <- jmvcore::OptionArray$new(
                 "ciContSpecific",
                 ciContSpecific,
-                default=list(),
                 template=jmvcore::OptionGroup$new(
                     "ciContSpecific",
                     NULL,
@@ -622,7 +617,6 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             private$..ciCatSpecific <- jmvcore::OptionArray$new(
                 "ciCatSpecific",
                 ciCatSpecific,
-                default=list(),
                 template=jmvcore::OptionGroup$new(
                     "ciCatSpecific",
                     NULL,
@@ -1009,10 +1003,10 @@ tblSummary <- function(
     boldDiffPvalueThreshold = 0.05,
     separateDiffPFootnotes = FALSE,
     diffContDefault = "t.test",
-    diffContSpecific = list(),
+    diffContSpecific,
     diffDigitsCont = "auto",
     diffDichotDefault = "prop.test",
-    diffDichotSpecific = list(),
+    diffDichotSpecific,
     diffDigitsDichot = "auto",
     diffDigitsCat = "auto",
     addPvalue = FALSE,
@@ -1021,9 +1015,9 @@ tblSummary <- function(
     boldPvalueThreshold = 0.05,
     separatePvalueFootnotes = FALSE,
     testContDefault = "parametric",
-    testContSpecific = list(),
+    testContSpecific,
     testCatDefault = "auto",
-    testCatSpecific = list(),
+    testCatSpecific,
     addQ = FALSE,
     qMethod = "BH",
     boldQ = FALSE,
@@ -1032,10 +1026,10 @@ tblSummary <- function(
     confLevel = 95,
     ciCombine = FALSE,
     ciContDefault = "t.test",
-    ciContSpecific = list(),
+    ciContSpecific,
     ciDigitsCont = "auto",
     ciCatDefault = "wilson",
-    ciCatSpecific = list(),
+    ciCatSpecific,
     ciDigitsCat = "auto",
     path = "~/Desktop/Summary Table.docx",
     export = FALSE) {
