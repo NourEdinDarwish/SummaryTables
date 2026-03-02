@@ -3,7 +3,7 @@ const enable = require("./enable");
 
 module.exports = {
   // Set initial ListBox enabled state when the panel first opens
-  view_loaded: function (ui) {
+  view_updated: function (ui) {
     const noGroup = !ui.groupVar.value();
     enable.enable(noGroup && ui.addPvalue.value(), [ui.testSpecific]);
   },

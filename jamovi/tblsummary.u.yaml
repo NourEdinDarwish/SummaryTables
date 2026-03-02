@@ -99,7 +99,6 @@ children:
     children:
       - type: ComboBox
         name: sortCatDefault
-        enable: ({return (ui['varsCat'].value() || []).length > 0;})
       - type: ListBox
         name: sortCatSpecific
         showColumnHeaders: true

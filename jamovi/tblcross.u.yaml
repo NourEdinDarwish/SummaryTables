@@ -96,30 +96,29 @@ children:
     children:
       - type: CheckBox
         name: addPvalue
+      - type: LayoutBox
+        margin: none
         children:
-          - type: LayoutBox
-            margin: none
-            children:
-              - type: ComboBox
-                name: testDefault
-                enable: (addPvalue)
-          - type: LayoutBox
-            margin: none
-            children:
-              - type: ComboBox
-                name: digitsPvalue
-                enable: (addPvalue)
-          - type: CheckBox
-            name: boldPvalue
+          - type: ComboBox
+            name: testDefault
             enable: (addPvalue)
-            children:
-              - type: TextBox
-                name: boldPvalueThreshold
-                format: number
-                enable: (addPvalue && boldPvalue)
-          - type: CheckBox
-            name: sourceNote
+      - type: LayoutBox
+        margin: none
+        children:
+          - type: ComboBox
+            name: digitsPvalue
             enable: (addPvalue)
+      - type: CheckBox
+        name: boldPvalue
+        enable: (addPvalue)
+        children:
+          - type: TextBox
+            name: boldPvalueThreshold
+            format: number
+            enable: (addPvalue && boldPvalue)
+      - type: CheckBox
+        name: sourceNote
+        enable: (addPvalue)
   - type: CollapseBox
     label: Save to Word
     collapsed: true

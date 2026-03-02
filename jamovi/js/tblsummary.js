@@ -3,10 +3,8 @@ const enable = require("./enable");
 
 module.exports = {
   // Set initial ListBox enabled state when the panel first opens
-  view_loaded: function (ui) {
-    const hasCat = (ui.varsCat.value() || []).length > 0;
+  view_updated: function (ui) {
     const hasGroup = !!ui.groupVar.value();
-    enable.enable(hasCat, [ui.sortCatSpecific]);
     enable.enable(hasGroup && ui.addDifference.value(), [
       ui.diffContSpecific,
       ui.diffDichotSpecific,
@@ -28,9 +26,6 @@ module.exports = {
 
   // Fires when the user adds/removes variables in the Categorical slot
   varsCat_changed: function (ui) {
-    const hasCat = (ui.varsCat.value() || []).length > 0;
-    enable.enable(hasCat, [ui.sortCatSpecific]);
-
     sync.sync(ui.varsCat, ui.statCatSpecific, "var", "stat", "useDefault");
     sync.sync(ui.varsCat, ui.testCatSpecific, "var", "test", "useDefault");
     sync.sync(ui.varsCat, ui.sortCatSpecific, "var", "sort", "useDefault");
