@@ -293,9 +293,7 @@ tblCrossResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 title="Cross Table")
             self$add(jmvcore::Html$new(
                 options=options,
-                name="tbl",
-                title="Cross Table",
-                visible=TRUE))}))
+                name="tbl"))}))
 
 tblCrossBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "tblCrossBase",
