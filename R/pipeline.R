@@ -94,7 +94,10 @@ pipeAddP <- function(
 
   # Call add_p --------------------------------------------------------------
   pvDigits <- options$digitsPvalue
-  addPArgs <- list(x = table, test = testArguments)
+  addPArgs <- list(x = table)
+  if (length(testArguments) > 0) {
+    addPArgs$test <- testArguments
+  }
   if (length(testArgsArguments) > 0) {
     addPArgs$test.args <- testArgsArguments
   }
@@ -122,8 +125,8 @@ pipeAddP <- function(
 #' @return The table with q-values added (or unchanged)
 pipeAddQ <- function(table, hasGroupVar, options, collector) {
   if (
-    !options$addQ ||
-      !(options$addPvalue || options$addDifference) ||
+    !optTrue(options$addQ) ||
+      !(optTrue(options$addPvalue) || optTrue(options$addDifference)) ||
       !hasGroupVar
   ) {
     return(table)

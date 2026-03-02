@@ -1,0 +1,344 @@
+name: tblContinuous
+title: Continuous Summary Table
+menuGroup: Summary Tables
+version: "1.0.0"
+jas: "1.2"
+
+options:
+  - name: data
+    type: Data
+
+  - name: contVar
+    title: Continuous Variable
+    type: Variable
+    suggested:
+      - continuous
+    permitted:
+      - numeric
+
+  - name: varsCat
+    title: Categorical Variables
+    type: Variables
+    suggested:
+      - nominal
+      - ordinal
+    permitted:
+      - factor
+
+  - name: groupVar
+    title: Grouping Variable
+    type: Variable
+    suggested:
+      - nominal
+      - ordinal
+    permitted:
+      - factor
+
+  - name: addOverall
+    title: Add overall column (requires Grouping Variable)
+    type: Bool
+    default: false
+
+  - name: addOverallLast
+    title: Place last
+    type: Bool
+    default: false
+
+  - name: journal
+    title: Theme
+    type: List
+    options:
+      - title: Default
+        name: default
+      - title: JAMA
+        name: jama
+      - title: The Lancet
+        name: lancet
+      - title: The New England Journal of Medicine
+        name: nejm
+      - title: The Quarterly Journal of Economics
+        name: qjecon
+    default: default
+
+  - name: compact
+    title: Compact
+    type: Bool
+    default: false
+
+  - name: language
+    title: Language
+    type: List
+    options:
+      - title: Chinese (Simplified)
+        name: zh-cn
+      - title: Chinese (Traditional)
+        name: zh-tw
+      - title: Dutch
+        name: nl
+      - title: English
+        name: en
+      - title: French
+        name: fr
+      - title: German
+        name: de
+      - title: Gujarati
+        name: gu
+      - title: Hindi
+        name: hi
+      - title: Icelandic
+        name: is
+      - title: Japanese
+        name: ja
+      - title: Korean
+        name: kr
+      - title: Marathi
+        name: mr
+      - title: Norwegian
+        name: no
+      - title: Portuguese
+        name: pt
+      - title: Spanish
+        name: es
+      - title: Swedish
+        name: se
+    default: en
+
+  - name: boldLabels
+    title: Bold labels
+    type: Bool
+    default: false
+
+  - name: boldLevels
+    title: Bold levels
+    type: Bool
+    default: false
+
+  - name: italicizeLabels
+    title: Italicize labels
+    type: Bool
+    default: false
+
+  - name: italicizeLevels
+    title: Italicize levels
+    type: Bool
+    default: false
+
+  - name: sortCatDefault
+    title: Default level order
+    type: List
+    options:
+      - title: As defined
+        name: default
+      - title: Frequency
+        name: frequency
+    default: default
+
+  - name: sortCatSpecific
+    title: Specific level order
+    type: Array
+    template:
+      type: Group
+      elements:
+        - name: var
+          type: Variable
+        - name: sort
+          title: Level order
+          type: List
+          options:
+            - title: Same as default
+              name: useDefault
+            - title: As defined
+              name: default
+            - title: Frequency
+              name: frequency
+          default: useDefault
+
+  - name: statDefault
+    title: Default statistic
+    type: List
+    options:
+      - title: Mean (SD)
+        name: meanSd
+      - title: Median (IQR)
+        name: medianIqr
+      - title: Median (Range)
+        name: medianRange
+      - title: Mean
+        name: mean
+      - title: Median
+        name: median
+    default: meanSd
+
+  - name: statSpecific
+    title: Specific statistics
+    type: Array
+    template:
+      type: Group
+      elements:
+        - name: var
+          type: Variable
+        - name: stat
+          title: Statistic
+          type: List
+          options:
+            - title: Same as default
+              name: useDefault
+            - title: Mean (SD)
+              name: meanSd
+            - title: Median (IQR)
+              name: medianIqr
+            - title: Median (Range)
+              name: medianRange
+            - title: Mean
+              name: mean
+            - title: Median
+              name: median
+          default: useDefault
+
+  - name: digitsCont
+    title: Decimal places
+    type: List
+    options:
+      - title: Auto
+        name: auto
+      - title: "0"
+        name: "0"
+      - title: "1"
+        name: "1"
+      - title: "2"
+        name: "2"
+      - title: "3"
+        name: "3"
+      - title: "4"
+        name: "4"
+      - title: "5"
+        name: "5"
+    default: auto
+
+  - name: addPvalue
+    title: Add p-value
+    type: Bool
+    default: false
+
+  - name: testDefault
+    title: Default test
+    type: List
+    options:
+      - title: Parametric (t-test / ANOVA)
+        name: parametric
+      - title: Non-parametric (Wilcoxon rank-sum / Kruskal-Wallis)
+        name: nonparametric
+      - title: t-test
+        name: t.test
+      - title: t-test (equal variance)
+        name: t.test.equalVar
+      - title: ANOVA
+        name: oneway.test
+      - title: ANOVA (equal variance)
+        name: oneway.test.equalVar
+      - title: Wilcoxon rank-sum
+        name: wilcox.test
+      - title: Kruskal-Wallis
+        name: kruskal.test
+    default: parametric
+
+  - name: testSpecific
+    title: Specific tests
+    type: Array
+    default: []
+    template:
+      type: Group
+      elements:
+        - name: var
+          type: Variable
+        - name: test
+          type: List
+          options:
+            - title: Same as default
+              name: useDefault
+            - title: t-test
+              name: t.test
+            - title: t-test (equal variance)
+              name: t.test.equalVar
+            - title: ANOVA
+              name: oneway.test
+            - title: ANOVA (equal variance)
+              name: oneway.test.equalVar
+            - title: Wilcoxon rank-sum
+              name: wilcox.test
+            - title: Kruskal-Wallis
+              name: kruskal.test
+          default: useDefault
+
+  - name: digitsPvalue
+    title: Decimal places (large p-values)
+    type: List
+    options:
+      - title: Auto
+        name: auto
+      - title: "1"
+        name: "1"
+      - title: "2"
+        name: "2"
+      - title: "3"
+        name: "3"
+    default: auto
+
+  - name: boldPvalue
+    title: Bold significant p-values
+    type: Bool
+    default: false
+
+  - name: boldPvalueThreshold
+    title: Significance threshold
+    type: Number
+    min: 0
+    max: 1
+    default: 0.05
+
+  - name: addQ
+    title: Add q-value (requires p-value)
+    type: Bool
+    default: false
+
+  - name: qMethod
+    title: Method
+    type: List
+    options:
+      - title: Benjamini-Hochberg
+        name: BH
+      - title: Benjamini-Yekutieli
+        name: BY
+      - title: Bonferroni
+        name: bonferroni
+      - title: Holm
+        name: holm
+      - title: Hochberg
+        name: hochberg
+      - title: Hommel
+        name: hommel
+      - title: None
+        name: none
+    default: BH
+
+  - name: boldQ
+    title: Bold significant q-values
+    type: Bool
+    default: false
+
+  - name: boldQThreshold
+    title: Significance threshold
+    type: Number
+    min: 0
+    max: 1
+    default: 0.05
+
+  - name: path
+    title: Path
+    type: String
+    default: ~/Desktop/Continuous Table.docx
+
+  - name: export
+    title: Save
+    type: Bool
+    default: false

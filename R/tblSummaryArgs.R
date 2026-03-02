@@ -164,6 +164,6 @@ buildDigitsArgs <- function(options) {
       gtsummary::all_categorical() ~ list(p = d, p_miss = d)
     )
   } else {
-    list()
+    NULL
   }
 }

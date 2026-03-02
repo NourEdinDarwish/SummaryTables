@@ -28,6 +28,16 @@ analyses:
       Create a publication-ready summary table with descriptive statistics,
       group comparisons, statistical tests, effect sizes, confidence intervals,
       and journal-specific formatting. Export to Word.
+  - title: Continuous Summary Table
+    name: tblContinuous
+    ns: SummaryTables
+    category: analyses
+    menuGroup: Summary Tables
+    menuTitle: Continuous Summary Table
+    description: >-
+      Summarize a continuous variable by one or more categorical variables with
+      flexible summary statistics, p-values, overall column, and
+      journal-specific formatting. Export to Word.
   - title: Cross Table
     name: tblCross
     ns: SummaryTables
