@@ -503,3 +503,23 @@ children:
         stretchFactor: 1
       - type: CheckBox
         name: export
+  - type: CollapseBox
+    label: Help
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: Label
+        label: Documentation coming soon.
+        heading: true
+      - type: Label
+        label: This module is actively being developed.
+        heading: false
+      - type: Label
+        label: "If you encounter any issues, have a question, or have ideas for new features,"
+        heading: false
+      - type: Label
+        label: please open an issue at github.com/NourEdinDarwish/SummaryTables/issues
+        heading: false
+      - type: Label
+        label: or contact me via email at nouredindarwish@gmail.com.
+        heading: false
