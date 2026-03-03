@@ -15,30 +15,23 @@
       </cc:License>
     </rdf:RDF>
   </metadata>
-
-  <g stroke="none">
-    <!-- Header Row -->
-    <rect x="9" y="4" width="13" height="8" fill="#3e6da9"/>
-    <rect x="23" y="4" width="13" height="8" fill="#3e6da9"/>
-    <rect x="37" y="4" width="13" height="8" fill="#3e6da9"/>
-    <rect x="51" y="4" width="13" height="8" fill="#3e6da9"/>
-
-    <!-- Row 1 -->
-    <rect x="9" y="13" width="13" height="8" fill="#6b9de8"/>
-    <rect x="23" y="13" width="13" height="8" fill="#b0cbf3"/>
-    <rect x="37" y="13" width="13" height="8" fill="#b0cbf3"/>
-    <rect x="51" y="13" width="13" height="8" fill="#e6ac40"/>
-
-    <!-- Row 2 -->
-    <rect x="9" y="22" width="13" height="8" fill="#6b9de8"/>
-    <rect x="23" y="22" width="13" height="8" fill="#b0cbf3"/>
-    <rect x="37" y="22" width="13" height="8" fill="#b0cbf3"/>
-    <rect x="51" y="22" width="13" height="8" fill="#e6ac40"/>
-
-    <!-- Row 3 -->
-    <rect x="9" y="31" width="13" height="8" fill="#6b9de8"/>
-    <rect x="23" y="31" width="13" height="8" fill="#b0cbf3"/>
-    <rect x="37" y="31" width="13" height="8" fill="#b0cbf3"/>
-    <rect x="51" y="31" width="13" height="8" fill="#e6ac40"/>
+  <!-- 3x3 table grid: white fill, colored strokes -->
+  <!-- Cells: 14w x 8h, stroke 3px, ~5px gap between cells -->
+  <!-- Centered in 74x44 canvas -->
+  <!-- Col positions: x=10, x=30, x=50 -->
+  <!-- Row positions: y=4, y=18, y=32 -->
+  <g fill="#fff">
+    <!-- Header Row: dark blue strokes -->
+    <rect x="10" y="4"  width="14" height="8" stroke="#3e6da9" stroke-width="3"/>
+    <rect x="30" y="4"  width="14" height="8" stroke="#3e6da9" stroke-width="3"/>
+    <rect x="50" y="4"  width="14" height="8" stroke="#3e6da9" stroke-width="3"/>
+    <!-- Row 1: label=blue, data=gray, summary=amber -->
+    <rect x="10" y="18" width="14" height="8" stroke="#6b9de8" stroke-width="3"/>
+    <rect x="30" y="18" width="14" height="8" stroke="#acacac" stroke-width="3"/>
+    <rect x="50" y="18" width="14" height="8" stroke="#e6ac40" stroke-width="3"/>
+    <!-- Row 2: label=blue, data=gray, summary=amber -->
+    <rect x="10" y="32" width="14" height="8" stroke="#6b9de8" stroke-width="3"/>
+    <rect x="30" y="32" width="14" height="8" stroke="#acacac" stroke-width="3"/>
+    <rect x="50" y="32" width="14" height="8" stroke="#e6ac40" stroke-width="3"/>
   </g>
 </svg>
