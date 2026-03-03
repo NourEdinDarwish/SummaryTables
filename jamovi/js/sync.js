@@ -36,6 +36,19 @@ const sync = function (
 };
 
 /**
+ * Count levels that are actually active (not filtered out and not treated as missing).
+ * In recent jamovi versions, each level object has:
+ *   - filtered: true if the level is not present in the data
+ *   - treatAsMissing: true if the user marked this level as missing
+ */
+const countActiveLevels = function (levels) {
+  if (!levels) return 0;
+  return levels.filter(function (lvl) {
+    return !lvl.filtered && !lvl.treatAsMissing;
+  }).length;
+};
+
+/**
  * Like sync(), but only includes variables with exactly 2 levels (dichotomous).
  *
  * Uses jamovi's requestData API to ask the dataset for each variable's
@@ -71,7 +84,7 @@ const syncDichotomous = function (
       .then(function (rData) {
         return {
           varName: varName,
-          levelCount: rData.columnFound ? rData.levels.length : 0,
+          levelCount: rData.columnFound ? countActiveLevels(rData.levels) : 0,
         };
       });
   });
@@ -98,4 +111,4 @@ const syncDichotomous = function (
   });
 };
 
-module.exports = { sync, syncDichotomous };
+module.exports = { sync, syncDichotomous, countActiveLevels };
