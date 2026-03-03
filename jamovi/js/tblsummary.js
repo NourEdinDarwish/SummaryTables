@@ -78,7 +78,7 @@ module.exports = {
 
   // Fires when the dataset changes (e.g. user adds data creating new levels)
   view_remoteDataChanged: function (ui, event) {
-    if (event.dataType === "columns" && event.dataInfo.levelsChanged) {
+    if (event.dataType === "columns") {
       sync.syncDichotomous(
         this,
         ui.varsCat,
