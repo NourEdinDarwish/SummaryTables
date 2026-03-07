@@ -33,7 +33,7 @@ tblContinuousOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
             qMethod = "BH",
             boldQ = FALSE,
             boldQThreshold = 0.05,
-            path = "~/Desktop/Continuous Summary Table.docx",
+            path = "~/Desktop/Continuous Table.docx",
             export = FALSE, ...) {
 
             super$initialize(
@@ -279,7 +279,7 @@ tblContinuousOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
             private$..path <- jmvcore::OptionString$new(
                 "path",
                 path,
-                default="~/Desktop/Continuous Summary Table.docx")
+                default="~/Desktop/Continuous Table.docx")
             private$..export <- jmvcore::OptionAction$new(
                 "export",
                 export)
@@ -387,10 +387,11 @@ tblContinuousResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
             super$initialize(
                 options=options,
                 name="",
-                title="Continuous Summary Table")
+                title="Continuous Table")
             self$add(jmvcore::Html$new(
                 options=options,
-                name="tbl"))}))
+                name="tbl",
+                refs="gtsummary"))}))
 
 tblContinuousBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "tblContinuousBase",
@@ -413,7 +414,7 @@ tblContinuousBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 weightsSupport = 'auto')
         }))
 
-#' Continuous Summary Table
+#' Continuous Table
 #'
 #' 
 #' @param data .
@@ -481,7 +482,7 @@ tblContinuous <- function(
     qMethod = "BH",
     boldQ = FALSE,
     boldQThreshold = 0.05,
-    path = "~/Desktop/Continuous Summary Table.docx",
+    path = "~/Desktop/Continuous Table.docx",
     export = FALSE) {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))

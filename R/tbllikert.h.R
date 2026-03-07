@@ -19,7 +19,7 @@ tblLikertOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             language = "en",
             boldLabels = FALSE,
             italicizeLabels = FALSE,
-            path = "~/Desktop/Likert Summary Table.docx",
+            path = "~/Desktop/Likert Table.docx",
             export = FALSE, ...) {
 
             super$initialize(
@@ -139,7 +139,7 @@ tblLikertOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             private$..path <- jmvcore::OptionString$new(
                 "path",
                 path,
-                default="~/Desktop/Likert Summary Table.docx")
+                default="~/Desktop/Likert Table.docx")
             private$..export <- jmvcore::OptionAction$new(
                 "export",
                 export)
@@ -205,10 +205,11 @@ tblLikertResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             super$initialize(
                 options=options,
                 name="",
-                title="Likert Summary Table")
+                title="Likert Table")
             self$add(jmvcore::Html$new(
                 options=options,
-                name="tbl"))}))
+                name="tbl",
+                refs="gtsummary"))}))
 
 tblLikertBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "tblLikertBase",
@@ -231,7 +232,7 @@ tblLikertBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 weightsSupport = 'auto')
         }))
 
-#' Likert Summary Table
+#' Likert Table
 #'
 #' 
 #' @param data .
@@ -271,7 +272,7 @@ tblLikert <- function(
     language = "en",
     boldLabels = FALSE,
     italicizeLabels = FALSE,
-    path = "~/Desktop/Likert Summary Table.docx",
+    path = "~/Desktop/Likert Table.docx",
     export = FALSE) {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))

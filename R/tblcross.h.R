@@ -292,7 +292,8 @@ tblCrossResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 title="Cross Table")
             self$add(jmvcore::Html$new(
                 options=options,
-                name="tbl"))}))
+                name="tbl",
+                refs="gtsummary"))}))
 
 tblCrossBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "tblCrossBase",

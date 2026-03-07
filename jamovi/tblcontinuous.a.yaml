@@ -1,5 +1,5 @@
 name: tblContinuous
-title: Continuous Summary Table
+title: Continuous Table
 menuGroup: Summary Tables
 version: "1.0.0"
 jas: "1.2"
@@ -335,7 +335,7 @@ options:
   - name: path
     title: Path
     type: String
-    default: ~/Desktop/Continuous Summary Table.docx
+    default: ~/Desktop/Continuous Table.docx
 
   - name: export
     title: Save

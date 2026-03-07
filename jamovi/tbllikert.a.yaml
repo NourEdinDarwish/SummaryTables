@@ -1,5 +1,5 @@
 name: tblLikert
-title: Likert Summary Table
+title: Likert Table
 menuGroup: Summary Tables
 version: "1.0.0"
 jas: "1.2"
@@ -167,7 +167,7 @@ options:
   - name: path
     title: Path
     type: String
-    default: ~/Desktop/Likert Summary Table.docx
+    default: ~/Desktop/Likert Table.docx
 
   - name: export
     title: Save

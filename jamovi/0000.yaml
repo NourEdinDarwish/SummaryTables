@@ -9,7 +9,7 @@ maintainer: Nour Edin Darwish <nouredindarwish@gmail.com>
 date: '2026-02-23'
 type: R
 description: >-
-  Create presentation-ready summary tables for descriptive statistics and group
+  Create publication-ready summary tables for descriptive statistics and group
   comparisons. Supports continuous and categorical variables with a wide range
   of summary statistics (mean, median, IQR, frequencies, and more). Includes
   statistical testing (t-tests, ANOVA, Wilcoxon, Chi-square, Fisher's exact),
@@ -25,19 +25,20 @@ analyses:
     menuTitle: Summary Table
     category: analyses
     description: >-
-      Create a publication-ready summary table with descriptive statistics,
-      group comparisons, statistical tests, effect sizes, confidence intervals,
-      and journal-specific formatting. Export to Word.
-  - title: Continuous Summary Table
+      Summarize continuous and categorical variables with descriptive
+      statistics, optionally split by a grouping variable (Table 1 style).
+      Includes statistical tests, effect sizes, confidence intervals, and
+      p-value adjustment.
+  - title: Continuous Table
     name: tblContinuous
     ns: SummaryTables
     category: analyses
     menuGroup: Summary Tables
-    menuTitle: Continuous Summary Table
+    menuTitle: Continuous Table
     description: >-
-      Summarize a continuous variable by one or more categorical variables with
-      flexible summary statistics, p-values, overall column, and
-      journal-specific formatting. Export to Word.
+      Summarize a single continuous variable across levels of one or more
+      categorical variables. Useful for stratified descriptive summaries with
+      flexible statistics and overall columns.
   - title: Cross Table
     name: tblCross
     ns: SummaryTables
@@ -45,19 +46,17 @@ analyses:
     menuGroup: Summary Tables
     menuTitle: Cross Table
     description: >-
-      Create a cross-tabulation of two categorical variables with counts,
-      percentages, margins, p-values, and journal-specific formatting. Export to
-      Word.
-  - title: Likert Summary Table
+      Cross-tabulate two categorical variables with counts, percentages, row and
+      column margins, and statistical testing.
+  - title: Likert Table
     name: tblLikert
     ns: SummaryTables
     category: analyses
     menuGroup: Summary Tables
-    menuTitle: Likert Summary Table
+    menuTitle: Likert Table
     description: >-
-      Create a Likert summary table showing response distributions across
-      ordered categorical items. Includes per-variable statistics, N counts,
-      journal-specific formatting, and Word export.
+      Display response distributions for ordered categorical (Likert-type) items
+      with per-item statistics and counts.
 usesNative: true
 minApp: 1.0.8
 
