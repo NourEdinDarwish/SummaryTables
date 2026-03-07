@@ -6,17 +6,21 @@ jms: '1.0'
 authors:
   - Nour Edin Darwish
 maintainer: Nour Edin Darwish <nouredindarwish@gmail.com>
-date: '2026-02-23'
+date: '2026-03-07'
 type: R
 description: >-
-  Create publication-ready summary tables for descriptive statistics and group
-  comparisons. Supports continuous and categorical variables with a wide range
-  of summary statistics (mean, median, IQR, frequencies, and more). Includes
-  statistical testing (t-tests, ANOVA, Wilcoxon, Chi-square, Fisher's exact),
-  effect sizes (Cohen's d, Hedge's g, SMD), confidence intervals, p-value
-  adjustment (Benjamini-Hochberg, Bonferroni, and others), and journal-specific
-  formatting (JAMA, Lancet, NEJM, QJE). Tables can be exported to Word (.docx).
-  Supports 16 languages. Based on the gtsummary R package.
+  Summary tables and descriptive statistics for jamovi. Create Table 1 with
+  group comparisons, cross tabulations, and Likert-scale summaries. Supports
+  continuous variables (mean, SD, median, IQR, range) and categorical variables
+  (counts, percentages, frequencies). Statistical tests include t-test, ANOVA,
+  Wilcoxon rank-sum, Kruskal-Wallis, Chi-square, Fisher's exact test, and Z test
+  for proportions. Effect sizes include Cohen's d, Hedge's g, and standardized
+  mean difference (SMD). Confidence intervals for means and proportions (Wilson,
+  Clopper-Pearson, Wald, Agresti-Coull, Jeffreys). P values with adjustment
+  methods including Bonferroni, Benjamini-Hochberg, Holm, and others. Export
+  tables to Word (.docx). Missing data handling with customizable labels.
+  Journal formatting (JAMA, The Lancet, NEJM, QJE). Per-variable control over
+  statistics, tests, and methods. 16 languages. Built on gtsummary.
 analyses:
   - title: Summary Table
     name: tblSummary
