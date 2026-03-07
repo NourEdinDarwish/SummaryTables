@@ -12,15 +12,14 @@ authors:
       Faculty of Medicine, Mansoura University, Mansoura,
       Egypt
     orcid: "https://orcid.org/0009-0009-5527-4539"
-identifiers:
-  - type: doi
-    value: 10.5281/zenodo.18902312
+doi: 10.5281/zenodo.18902312
+date-released: "2026-03-07"
 repository-code: "https://github.com/NourEdinDarwish/SummaryTables"
 license: GPL-2.0-or-later
 keywords:
   - jamovi
   - gtsummary
-  - summary tables
-  - descriptive statistics
-  - table one
-  - cross tabulation
+  - summary-tables
+  - descriptive-statistics
+  - table-one
+  - cross-tabulation
