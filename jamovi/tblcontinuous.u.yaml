@@ -222,5 +222,5 @@ children:
         label: please open an issue at github.com/NourEdinDarwish/SummaryTables/issues
         heading: false
       - type: Label
-        label: or contact me via email at nouredindarwish@gmail.com.
+        label: or send an email at nouredindarwish@gmail.com
         heading: false
