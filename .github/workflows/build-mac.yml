@@ -64,6 +64,8 @@ jobs:
           }
         )
       shell: Rscript {0}
+      env:
+        GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Verify JMO created
       run: |
