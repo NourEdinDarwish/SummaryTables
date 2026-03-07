@@ -5,4 +5,6 @@ jrs: "1.1"
 items:
   - name: tbl
     type: Html
-    refs: gtsummary
+    refs:
+      - SummaryTables
+      - gtsummary

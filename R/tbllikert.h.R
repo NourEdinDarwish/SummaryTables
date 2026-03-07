@@ -209,7 +209,9 @@ tblLikertResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$add(jmvcore::Html$new(
                 options=options,
                 name="tbl",
-                refs="gtsummary"))}))
+                refs=list(
+                    "SummaryTables",
+                    "gtsummary")))}))
 
 tblLikertBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "tblLikertBase",

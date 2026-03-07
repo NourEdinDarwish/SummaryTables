@@ -5,6 +5,7 @@
 # SummaryTables
 
 <!-- badges: start -->
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.18902312.svg)](https://doi.org/10.5281/zenodo.18902312)
 [![License: GPL ≥ 2](https://img.shields.io/badge/License-GPL%20%E2%89%A5%202-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
 <!-- badges: end -->
 

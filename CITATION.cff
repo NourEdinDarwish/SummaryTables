@@ -1,0 +1,26 @@
+cff-version: 1.2.0
+title: "SummaryTables: Publication-Ready Summary Tables for Jamovi"
+message: >-
+  If you use this software, please cite it using the
+  metadata from this file.
+type: software
+authors:
+  - given-names: Nour Edin
+    family-names: Darwish
+    email: nouredindarwish@gmail.com
+    affiliation: >-
+      Faculty of Medicine, Mansoura University, Mansoura,
+      Egypt
+    orcid: "https://orcid.org/0009-0009-5527-4539"
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.18902312
+repository-code: "https://github.com/NourEdinDarwish/SummaryTables"
+license: GPL-2.0-or-later
+keywords:
+  - jamovi
+  - gtsummary
+  - summary tables
+  - descriptive statistics
+  - table one
+  - cross tabulation

@@ -391,7 +391,9 @@ tblContinuousResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
             self$add(jmvcore::Html$new(
                 options=options,
                 name="tbl",
-                refs="gtsummary"))}))
+                refs=list(
+                    "SummaryTables",
+                    "gtsummary")))}))
 
 tblContinuousBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "tblContinuousBase",

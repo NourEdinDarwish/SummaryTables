@@ -1,5 +1,11 @@
----
 refs:
+    SummaryTables:
+        type: "software"
+        title: "SummaryTables: Publication-Ready Summary Tables for Jamovi"
+        author: Darwish, N. E.
+        year: 2026
+        publisher: "https://doi.org/10.5281/zenodo.18902312"
+        url: https://doi.org/10.5281/zenodo.18902312
     gtsummary:
         type: "article"
         author: Sjoberg, D. D., Whiting, K., Curry, M., Lavery, J. A., & Larmarange, J.
@@ -10,4 +16,3 @@ refs:
         issue: 1
         pages: 570-580
         url: https://doi.org/10.32614/RJ-2021-053
-...
