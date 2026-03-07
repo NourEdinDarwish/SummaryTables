@@ -339,5 +339,4 @@ options:
 
   - name: export
     title: Save
-    type: Bool
-    default: false
+    type: Action

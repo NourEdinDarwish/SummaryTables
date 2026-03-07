@@ -280,10 +280,9 @@ tblContinuousOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
                 "path",
                 path,
                 default="~/Desktop/Continuous Summary Table.docx")
-            private$..export <- jmvcore::OptionBool$new(
+            private$..export <- jmvcore::OptionAction$new(
                 "export",
-                export,
-                default=FALSE)
+                export)
 
             self$.addOption(private$..contVar)
             self$.addOption(private$..varsCat)

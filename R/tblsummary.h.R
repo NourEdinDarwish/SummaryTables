@@ -653,10 +653,9 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 "path",
                 path,
                 default="~/Desktop/Summary Table.docx")
-            private$..export <- jmvcore::OptionBool$new(
+            private$..export <- jmvcore::OptionAction$new(
                 "export",
-                export,
-                default=FALSE)
+                export)
 
             self$.addOption(private$..varsCont)
             self$.addOption(private$..varsCat)

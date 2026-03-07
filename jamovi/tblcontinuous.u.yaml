@@ -202,7 +202,7 @@ children:
         name: path
         format: string
         stretchFactor: 1
-      - type: CheckBox
+      - type: ActionButton
         name: export
   - type: CollapseBox
     label: Help
