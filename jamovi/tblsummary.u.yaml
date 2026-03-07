@@ -246,7 +246,7 @@ children:
             showColumnHeaders: true
             fullRowSelect: true
             stretchFactor: 1
-            height: normal
+            height: large
             columns:
               - name: var
                 label: Variable
@@ -280,7 +280,7 @@ children:
             showColumnHeaders: true
             fullRowSelect: true
             stretchFactor: 1
-            height: normal
+            height: large
             columns:
               - name: var
                 label: Variable
@@ -346,7 +346,7 @@ children:
             showColumnHeaders: true
             fullRowSelect: true
             stretchFactor: 1
-            height: normal
+            height: large
             columns:
               - name: var
                 label: Variable
@@ -374,7 +374,7 @@ children:
             showColumnHeaders: true
             fullRowSelect: true
             stretchFactor: 1
-            height: normal
+            height: large
             columns:
               - name: var
                 label: Variable
