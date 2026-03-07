@@ -42,6 +42,8 @@ jobs:
         # Install module dependencies
         remotes::install_deps(dependencies = TRUE)
       shell: Rscript {0}
+      env:
+        GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
     - name: Build Module
       run: |
