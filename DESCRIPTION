@@ -5,20 +5,18 @@ Version: 0.3.0
 Authors@R: 
     person("Nour Edin", "Darwish", , "nouredindarwish@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0009-0009-5527-4539"))
-Description: Summary tables and descriptive statistics for jamovi. Create
-    Table 1 with group comparisons, cross tabulations, and Likert-scale
-    summaries. Supports continuous variables (mean, SD, median, IQR,
-    range) and categorical variables (counts, percentages, frequencies).
-    Statistical tests include t-test, ANOVA, Wilcoxon rank-sum,
-    Kruskal-Wallis, Chi-square, Fisher's exact test, and Z test for
-    proportions. Effect sizes include Cohen's d, Hedge's g, and
-    standardized mean difference (SMD). Confidence intervals for means and
-    proportions (Wilson, Clopper-Pearson, Wald, Agresti-Coull, Jeffreys).
-    P values with adjustment methods including Bonferroni,
-    Benjamini-Hochberg, Holm, and others. Export tables to Word (.docx).
-    Missing data handling with customizable labels. Journal formatting
-    (JAMA, The Lancet, NEJM, QJE). Per-variable control over statistics,
-    tests, and methods. 16 languages. Built on the 'gtsummary' package.
+Description: A comprehensive module for creating publication-ready summary
+    tables in jamovi, powered by gtsummary. Includes four key analyses.
+    'Summary Table' creates classic "Table 1" summaries, including group
+    comparisons with automatic statistical testing, effect sizes, and
+    p-value adjustments. 'Continuous Table' summarizes a single continuous
+    outcome stratified across multiple categorical variables, including
+    automatic statistical testing and p-value adjustments. 'Cross Table'
+    summarizes the association between two categorical variables using
+    cross-tabulations, including automatic statistical testing. 'Likert
+    Table' summarizes Likert scale items.  Features include direct export
+    to Word (.docx), 16 languages, and pre-built formatting for major
+    journals.
 License: GPL (>= 2)
 URL: https://github.com/NourEdinDarwish/SummaryTables
 BugReports: https://github.com/NourEdinDarwish/SummaryTables/issues
