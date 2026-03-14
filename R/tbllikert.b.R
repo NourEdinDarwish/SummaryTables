@@ -3,12 +3,10 @@ tblLikertClass <- R6::R6Class(
   inherit = tblLikertBase,
   private = list(
     .run = function() {
-      # Clear ---------------------------------------------------------------
-      self$results$tbl$setContent("<div></div>")
-
       # Guard ---------------------------------------------------------------
       vars <- self$options$vars
       if (length(vars) == 0) {
+        self$results$tbl$setContent("<div></div>")
         return()
       }
 

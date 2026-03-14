@@ -3,13 +3,11 @@ tblCrossClass <- R6::R6Class(
   inherit = tblCrossBase,
   private = list(
     .run = function() {
-      # Clear ---------------------------------------------------------------
-      self$results$tbl$setContent("<div></div>")
-
       # Guard ---------------------------------------------------------------
       row <- self$options$row
       col <- self$options$col
       if (is.null(row) || is.null(col)) {
+        self$results$tbl$setContent("<div></div>")
         return()
       }
 

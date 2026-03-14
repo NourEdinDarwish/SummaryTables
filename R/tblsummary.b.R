@@ -3,9 +3,6 @@ tblSummaryClass <- R6::R6Class(
   inherit = tblSummaryBase,
   private = list(
     .run = function() {
-      # Clear ---------------------------------------------------------------
-      self$results$tbl$setContent("<div></div>")
-
       # Guard ---------------------------------------------------------------
       varsCont <- self$options$varsCont
       varsCat <- self$options$varsCat
@@ -13,6 +10,7 @@ tblSummaryClass <- R6::R6Class(
       hasCat <- length(varsCat) > 0
 
       if (!hasCont && !hasCat) {
+        self$results$tbl$setContent("<div></div>")
         return()
       }
 

@@ -3,14 +3,12 @@ tblContinuousClass <- R6::R6Class(
   inherit = tblContinuousBase,
   private = list(
     .run = function() {
-      # Clear ---------------------------------------------------------------
-      self$results$tbl$setContent("<div></div>")
-
       # Guard ---------------------------------------------------------------
       contVar <- self$options$contVar
       varsCat <- self$options$varsCat
 
       if (is.null(contVar) || length(varsCat) == 0) {
+        self$results$tbl$setContent("<div></div>")
         return()
       }
 
