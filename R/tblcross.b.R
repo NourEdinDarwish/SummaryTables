@@ -3,6 +3,17 @@ tblCrossClass <- R6::R6Class(
   inherit = tblCrossBase,
   private = list(
     .run = function() {
+      # Clear ---------------------------------------------------------------
+      self$results$tbl$setContent("<div></div>")
+
+      # Guard ---------------------------------------------------------------
+      row <- self$options$row
+      col <- self$options$col
+      if (is.null(row) || is.null(col)) {
+        return()
+      }
+
+      # Collector ---------------------------------------------------------
       collector <- newCollector()
 
       # Theme ---------------------------------------------------------------
@@ -12,13 +23,6 @@ tblCrossClass <- R6::R6Class(
         languageOption = self$options$language,
         compactOption = self$options$compact
       )
-
-      # Guard ---------------------------------------------------------------
-      row <- self$options$row
-      col <- self$options$col
-      if (is.null(row) || is.null(col)) {
-        return(NULL)
-      }
 
       # Data prep -----------------------------------------------------------
       data <- self$data

@@ -3,6 +3,20 @@ tblSummaryClass <- R6::R6Class(
   inherit = tblSummaryBase,
   private = list(
     .run = function() {
+      # Clear ---------------------------------------------------------------
+      self$results$tbl$setContent("<div></div>")
+
+      # Guard ---------------------------------------------------------------
+      varsCont <- self$options$varsCont
+      varsCat <- self$options$varsCat
+      hasCont <- length(varsCont) > 0
+      hasCat <- length(varsCat) > 0
+
+      if (!hasCont && !hasCat) {
+        return()
+      }
+
+      # Collector ---------------------------------------------------------
       collector <- newCollector()
 
       # Theme ---------------------------------------------------------------
@@ -13,16 +27,6 @@ tblSummaryClass <- R6::R6Class(
         compactOption = self$options$compact
       )
       themeStrings <- getThemeStrings(self$options$journal)
-
-      # Guard ---------------------------------------------------------------
-      varsCont <- self$options$varsCont
-      varsCat <- self$options$varsCat
-      hasCont <- length(varsCont) > 0
-      hasCat <- length(varsCat) > 0
-
-      if (!hasCont && !hasCat) {
-        return(NULL)
-      }
 
       # Data prep -----------------------------------------------------------
       data <- self$data
@@ -74,8 +78,6 @@ tblSummaryClass <- R6::R6Class(
       )
 
       digitsArguments <- buildDigitsArgs(options = self$options)
-
-
 
       # Core table ----------------------------------------------------------
       table <- runSafe(

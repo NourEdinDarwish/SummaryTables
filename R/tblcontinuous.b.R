@@ -3,6 +3,18 @@ tblContinuousClass <- R6::R6Class(
   inherit = tblContinuousBase,
   private = list(
     .run = function() {
+      # Clear ---------------------------------------------------------------
+      self$results$tbl$setContent("<div></div>")
+
+      # Guard ---------------------------------------------------------------
+      contVar <- self$options$contVar
+      varsCat <- self$options$varsCat
+
+      if (is.null(contVar) || length(varsCat) == 0) {
+        return()
+      }
+
+      # Collector ---------------------------------------------------------
       collector <- newCollector()
 
       # Theme ---------------------------------------------------------------
@@ -13,14 +25,6 @@ tblContinuousClass <- R6::R6Class(
         compactOption = self$options$compact
       )
       themeStrings <- getThemeStrings(self$options$journal)
-
-      # Guard ---------------------------------------------------------------
-      contVar <- self$options$contVar
-      varsCat <- self$options$varsCat
-
-      if (is.null(contVar) || length(varsCat) == 0) {
-        return(NULL)
-      }
 
       # Data prep -----------------------------------------------------------
       data <- self$data

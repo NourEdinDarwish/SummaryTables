@@ -3,6 +3,16 @@ tblLikertClass <- R6::R6Class(
   inherit = tblLikertBase,
   private = list(
     .run = function() {
+      # Clear ---------------------------------------------------------------
+      self$results$tbl$setContent("<div></div>")
+
+      # Guard ---------------------------------------------------------------
+      vars <- self$options$vars
+      if (length(vars) == 0) {
+        return()
+      }
+
+      # Collector ---------------------------------------------------------
       collector <- newCollector()
 
       # Theme ---------------------------------------------------------------
@@ -12,12 +22,6 @@ tblLikertClass <- R6::R6Class(
         languageOption = self$options$language,
         compactOption = self$options$compact
       )
-
-      # Guard ---------------------------------------------------------------
-      vars <- self$options$vars
-      if (length(vars) == 0) {
-        return(NULL)
-      }
 
       # Data prep -----------------------------------------------------------
       data <- self$data
