@@ -9,6 +9,7 @@
 renderHtml <- function(table, resultsHtml) {
   htmlContent <- table |>
     gtsummary::as_gt() |>
+    gt::tab_options(table.background.color = "transparent") |>
     gt::as_raw_html()
 
   # Jamovi hardcodes .jmv-results-html { width: 500px }.
