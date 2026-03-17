@@ -7,7 +7,10 @@ tblCrossClass <- R6::R6Class(
       row <- self$options$row
       col <- self$options$col
       if (is.null(row) || is.null(col)) {
-        self$results$tbl$setContent("<div></div>")
+        renderPlaceholder(
+          "Add a row variable and a column variable to generate the table",
+          self$results$tbl
+        )
         return()
       }
 

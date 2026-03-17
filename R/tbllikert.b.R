@@ -6,7 +6,10 @@ tblLikertClass <- R6::R6Class(
       # Guard ---------------------------------------------------------------
       vars <- self$options$vars
       if (length(vars) == 0) {
-        self$results$tbl$setContent("<div></div>")
+        renderPlaceholder(
+          "Add Likert scale variables to generate the table",
+          self$results$tbl
+        )
         return()
       }
 

@@ -10,7 +10,10 @@ tblSummaryClass <- R6::R6Class(
       hasCat <- length(varsCat) > 0
 
       if (!hasCont && !hasCat) {
-        self$results$tbl$setContent("<div></div>")
+        renderPlaceholder(
+          "Add continuous or categorical variables to generate the table",
+          self$results$tbl
+        )
         return()
       }
 

@@ -8,7 +8,10 @@ tblContinuousClass <- R6::R6Class(
       varsCat <- self$options$varsCat
 
       if (is.null(contVar) || length(varsCat) == 0) {
-        self$results$tbl$setContent("<div></div>")
+        renderPlaceholder(
+          "Add a continuous variable and at least one categorical variable to generate the table", # nolint
+          self$results$tbl
+        )
         return()
       }
 
