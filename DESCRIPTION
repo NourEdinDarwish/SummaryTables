@@ -29,7 +29,6 @@ Imports:
     gt,
     gtsummary (>= 2.5.0.9001),
     jmvcore (>= 0.8.5),
-    officer,
     parameters,
     R6,
     smd
