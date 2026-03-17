@@ -14,9 +14,8 @@ Description: A comprehensive module for creating publication-ready summary
     automatic statistical testing and p-value adjustments. 'Cross Table'
     summarizes the association between two categorical variables using
     cross-tabulations, including automatic statistical testing. 'Likert
-    Table' summarizes Likert scale items.  Features include direct export
-    to Word (.docx), 16 languages, and pre-built formatting for major
-    journals.
+    Table' summarizes Likert scale items.  Features include 16 languages
+    and pre-built formatting for major journals.
 License: GPL (>= 2)
 URL: https://github.com/NourEdinDarwish/SummaryTables
 BugReports: https://github.com/NourEdinDarwish/SummaryTables/issues
@@ -24,12 +23,10 @@ Imports:
     cards (>= 0.7.1),
     cardx (>= 0.3.1),
     effectsize,
-    flextable,
     forcats,
     gt,
     gtsummary (>= 2.5.0.9001),
     jmvcore (>= 0.8.5),
-    officer,
     parameters,
     R6,
     smd

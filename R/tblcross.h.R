@@ -27,9 +27,7 @@ tblCrossOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             digitsPvalue = "auto",
             boldPvalue = FALSE,
             boldPvalueThreshold = 0.05,
-            sourceNote = FALSE,
-            path = "~/Desktop/Cross Table.docx",
-            export = FALSE, ...) {
+            sourceNote = FALSE, ...) {
 
             super$initialize(
                 package="SummaryTables",
@@ -193,13 +191,6 @@ tblCrossOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 "sourceNote",
                 sourceNote,
                 default=FALSE)
-            private$..path <- jmvcore::OptionString$new(
-                "path",
-                path,
-                default="~/Desktop/Cross Table.docx")
-            private$..export <- jmvcore::OptionAction$new(
-                "export",
-                export)
 
             self$.addOption(private$..row)
             self$.addOption(private$..col)
@@ -223,8 +214,6 @@ tblCrossOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..boldPvalue)
             self$.addOption(private$..boldPvalueThreshold)
             self$.addOption(private$..sourceNote)
-            self$.addOption(private$..path)
-            self$.addOption(private$..export)
         }),
     active = list(
         row = function() private$..row$value,
@@ -248,9 +237,7 @@ tblCrossOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         digitsPvalue = function() private$..digitsPvalue$value,
         boldPvalue = function() private$..boldPvalue$value,
         boldPvalueThreshold = function() private$..boldPvalueThreshold$value,
-        sourceNote = function() private$..sourceNote$value,
-        path = function() private$..path$value,
-        export = function() private$..export$value),
+        sourceNote = function() private$..sourceNote$value),
     private = list(
         ..row = NA,
         ..col = NA,
@@ -273,9 +260,7 @@ tblCrossOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..digitsPvalue = NA,
         ..boldPvalue = NA,
         ..boldPvalueThreshold = NA,
-        ..sourceNote = NA,
-        ..path = NA,
-        ..export = NA)
+        ..sourceNote = NA)
 )
 
 tblCrossResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -344,8 +329,6 @@ tblCrossBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param boldPvalue .
 #' @param boldPvalueThreshold .
 #' @param sourceNote .
-#' @param path .
-#' @param export .
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$tbl} \tab \tab \tab \tab \tab a html \cr
@@ -375,9 +358,7 @@ tblCross <- function(
     digitsPvalue = "auto",
     boldPvalue = FALSE,
     boldPvalueThreshold = 0.05,
-    sourceNote = FALSE,
-    path = "~/Desktop/Cross Table.docx",
-    export = FALSE) {
+    sourceNote = FALSE) {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
         stop("tblCross requires jmvcore to be installed (restart may be required)")
@@ -415,9 +396,7 @@ tblCross <- function(
         digitsPvalue = digitsPvalue,
         boldPvalue = boldPvalue,
         boldPvalueThreshold = boldPvalueThreshold,
-        sourceNote = sourceNote,
-        path = path,
-        export = export)
+        sourceNote = sourceNote)
 
     analysis <- tblCrossClass$new(
         options = options,

@@ -18,9 +18,7 @@ tblLikertOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             compact = FALSE,
             language = "en",
             boldLabels = FALSE,
-            italicizeLabels = FALSE,
-            path = "~/Desktop/Likert Table.docx",
-            export = FALSE, ...) {
+            italicizeLabels = FALSE, ...) {
 
             super$initialize(
                 package="SummaryTables",
@@ -136,13 +134,6 @@ tblLikertOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 "italicizeLabels",
                 italicizeLabels,
                 default=FALSE)
-            private$..path <- jmvcore::OptionString$new(
-                "path",
-                path,
-                default="~/Desktop/Likert Table.docx")
-            private$..export <- jmvcore::OptionAction$new(
-                "export",
-                export)
 
             self$.addOption(private$..vars)
             self$.addOption(private$..statistic)
@@ -157,8 +148,6 @@ tblLikertOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..language)
             self$.addOption(private$..boldLabels)
             self$.addOption(private$..italicizeLabels)
-            self$.addOption(private$..path)
-            self$.addOption(private$..export)
         }),
     active = list(
         vars = function() private$..vars$value,
@@ -173,9 +162,7 @@ tblLikertOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         compact = function() private$..compact$value,
         language = function() private$..language$value,
         boldLabels = function() private$..boldLabels$value,
-        italicizeLabels = function() private$..italicizeLabels$value,
-        path = function() private$..path$value,
-        export = function() private$..export$value),
+        italicizeLabels = function() private$..italicizeLabels$value),
     private = list(
         ..vars = NA,
         ..statistic = NA,
@@ -189,9 +176,7 @@ tblLikertOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..compact = NA,
         ..language = NA,
         ..boldLabels = NA,
-        ..italicizeLabels = NA,
-        ..path = NA,
-        ..export = NA)
+        ..italicizeLabels = NA)
 )
 
 tblLikertResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -251,8 +236,6 @@ tblLikertBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param language .
 #' @param boldLabels .
 #' @param italicizeLabels .
-#' @param path .
-#' @param export .
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$tbl} \tab \tab \tab \tab \tab a html \cr
@@ -273,9 +256,7 @@ tblLikert <- function(
     compact = FALSE,
     language = "en",
     boldLabels = FALSE,
-    italicizeLabels = FALSE,
-    path = "~/Desktop/Likert Table.docx",
-    export = FALSE) {
+    italicizeLabels = FALSE) {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
         stop("tblLikert requires jmvcore to be installed (restart may be required)")
@@ -301,9 +282,7 @@ tblLikert <- function(
         compact = compact,
         language = language,
         boldLabels = boldLabels,
-        italicizeLabels = italicizeLabels,
-        path = path,
-        export = export)
+        italicizeLabels = italicizeLabels)
 
     analysis <- tblLikertClass$new(
         options = options,

@@ -18,9 +18,8 @@ description: >-
   testing,  and p-value adjustments.</li> <li><b>Cross Table:</b> Summarize the
   association between two categorical variables using cross-tabulations.
   Includes automatic  statistical testing.</li> <li><b>Likert Table:</b>
-  Summarize Likert scale items.</li> </ul> Features include direct export to
-  <b>Word (.docx)</b>, 16 languages, and pre-built formatting for major journals
-  (JAMA, The Lancet, NEJM, QJE).
+  Summarize Likert scale items.</li> </ul> Features include 16 languages and
+  pre-built formatting for major journals (JAMA, The Lancet, NEJM, QJE).
 analyses:
   - title: Summary Table
     name: tblSummary
