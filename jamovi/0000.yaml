@@ -20,12 +20,7 @@ description: >-
   Includes automatic  statistical testing.</li> <li><b>Likert Table:</b>
   Summarize Likert scale items.</li> </ul> Features include direct export to
   <b>Word (.docx)</b>, 16 languages, and pre-built formatting for major journals
-  (JAMA, The Lancet, NEJM, QJE).<br> If you encounter any issues, have a
-  question, or have ideas for new features, please open an issue at <a
-  href="https://github.com/NourEdinDarwish/SummaryTables/issues"
-  target="_blank">github.com/NourEdinDarwish/SummaryTables/issues</a> or send an
-  email at <a href="mailto:nouredindarwish@gmail.com"
-  target="_blank">nouredindarwish@gmail.com</a>.
+  (JAMA, The Lancet, NEJM, QJE).
 analyses:
   - title: Summary Table
     name: tblSummary
