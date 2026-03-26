@@ -102,7 +102,7 @@ tblSummaryClass <- R6::R6Class(
             ),
             percent = paste0("{p_miss}", themeStrings$pctSuffix)
           ),
-          percent = self$options$percent
+          percent = if (hasGroupVar) self$options$percent else "column"
         ),
         collector
       )
