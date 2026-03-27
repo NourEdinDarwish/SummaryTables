@@ -61,6 +61,17 @@ analyses:
     description: >-
       Display response distributions for ordered categorical (Likert-type) items
       with per-item statistics and counts.
+  - title: Multivariable Linear Regression
+    name: tblRegLinear
+    ns: SummaryTables
+    menuGroup: Summary Tables
+    menuSubgroup: Multivariable Regression
+    menuTitle: Linear Regression
+    category: analyses
+    description: >-
+      Fit a multivariable linear regression model and display a
+      publication-ready coefficient table with estimates, confidence intervals,
+      and p-values.
 usesNative: true
 minApp: 1.0.8
 

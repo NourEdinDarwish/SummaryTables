@@ -21,6 +21,7 @@ License: GPL (>= 2)
 URL: https://github.com/NourEdinDarwish/SummaryTables
 BugReports: https://github.com/NourEdinDarwish/SummaryTables/issues
 Imports: 
+    broom.helpers,
     cards (>= 0.7.1),
     cardx (>= 0.3.1),
     effectsize,

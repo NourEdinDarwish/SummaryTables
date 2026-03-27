@@ -1,0 +1,10 @@
+name: tblRegLinear
+title: Multivariable Linear Regression
+jrs: "1.1"
+
+items:
+  - name: tbl
+    type: Html
+    refs:
+      - SummaryTables
+      - gtsummary
