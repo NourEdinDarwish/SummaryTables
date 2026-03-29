@@ -136,9 +136,12 @@ tblSummaryClass <- R6::R6Class(
         collector = collector
       )
 
+      hasPvalue <- hasGroupVar &&
+        (self$options$addPvalue || self$options$addDifference)
+
       table <- pipeAddQ(
         table,
-        hasGroupVar = hasGroupVar,
+        hasPvalue = hasPvalue,
         options = self$options,
         collector = collector
       )
@@ -164,7 +167,7 @@ tblSummaryClass <- R6::R6Class(
       # Text formatting -----------------------------------------------------
       table <- applyTextFormatting(
         table,
-        hasGroupVar = hasGroupVar,
+        hasPvalue = hasPvalue,
         options = self$options
       )
 

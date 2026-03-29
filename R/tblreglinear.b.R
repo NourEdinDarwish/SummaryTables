@@ -57,7 +57,7 @@ tblRegLinearClass <- R6::R6Class(
       # Pipeline ------------------------------------------------------------
       table <- pipeAddQ(
         table,
-        hasGroupVar = TRUE,
+        hasPvalue = TRUE,
         options = self$options,
         collector = collector
       )
@@ -65,7 +65,7 @@ tblRegLinearClass <- R6::R6Class(
       # Text formatting -----------------------------------------------------
       table <- applyTextFormatting(
         table,
-        hasGroupVar = FALSE,
+        hasPvalue = TRUE,
         options = self$options
       )
 

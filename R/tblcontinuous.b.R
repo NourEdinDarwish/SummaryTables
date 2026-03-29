@@ -76,9 +76,11 @@ tblContinuousClass <- R6::R6Class(
         collector = collector
       )
 
+      hasPvalue <- self$options$addPvalue
+
       table <- pipeAddQ(
         table,
-        hasGroupVar = TRUE,
+        hasPvalue = hasPvalue,
         options = self$options,
         collector = collector
       )
@@ -93,7 +95,7 @@ tblContinuousClass <- R6::R6Class(
       # Text formatting -----------------------------------------------------
       table <- applyTextFormatting(
         table,
-        hasGroupVar = TRUE,
+        hasPvalue = hasPvalue,
         options = self$options
       )
 

@@ -115,20 +115,16 @@ pipeAddP <- function(
 #' Add q-values (adjusted p-values) to a gtsummary table
 #'
 #' Shared pipeline step. Calls add_q() to adjust p-values for multiple
-#' comparisons. Requires that add_p() or add_difference() has already
-#' added a p.value column.
+#' comparisons. Requires that a p.value column already exists in the table
+#' (from add_p(), add_difference(), or tbl_regression()).
 #'
 #' @param table A gtsummary table
-#' @param hasGroupVar Logical: TRUE when a grouping variable is present
+#' @param hasPvalue Logical: TRUE when the table has a p.value column
 #' @param options Jamovi options object
 #' @param collector Collector environment from newCollector()
 #' @return The table with q-values added (or unchanged)
-pipeAddQ <- function(table, hasGroupVar, options, collector) {
-  if (
-    !optTrue(options$addQ) ||
-      !(optTrue(options$addPvalue) || optTrue(options$addDifference)) ||
-      !hasGroupVar
-  ) {
+pipeAddQ <- function(table, hasPvalue, options, collector) {
+  if (!optTrue(options$addQ) || !hasPvalue) {
     return(table)
   }
 
