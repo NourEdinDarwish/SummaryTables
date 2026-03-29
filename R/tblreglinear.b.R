@@ -40,7 +40,7 @@ tblRegLinearClass <- R6::R6Class(
       composed <- jmvcore::composeTerms(terms)
       formula <- as.formula(
         paste(
-          dep, "~",
+          jmvcore::composeTerm(dep), "~",
           paste(composed, collapse = " + ")
         )
       )
