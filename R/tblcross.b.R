@@ -11,6 +11,7 @@ tblCrossClass <- R6::R6Class(
           "Add a row variable and a column variable to generate the table",
           self$results$tbl
         )
+        self$results$status$setVisible(FALSE)
         return()
       }
 
@@ -140,6 +141,9 @@ tblCrossClass <- R6::R6Class(
 
       # Notices --------------------------------------------------------------
       displayNotices(collector, self$options, self$results)
+
+      # Hide status indicator ------------------------------------------------
+      self$results$status$setVisible(FALSE)
     }
   )
 )
