@@ -3,6 +3,11 @@ title: Cross Table
 jrs: "1.1"
 
 items:
+  - name: status
+    type: Table
+    title: Generating Table…
+    columns: []
+
   - name: tbl
     type: Html
     refs:

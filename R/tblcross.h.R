@@ -267,6 +267,7 @@ tblCrossResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "tblCrossResults",
     inherit = jmvcore::Group,
     active = list(
+        status = function() private$.items[["status"]],
         tbl = function() private$.items[["tbl"]]),
     private = list(),
     public=list(
@@ -275,6 +276,11 @@ tblCrossResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 options=options,
                 name="",
                 title="Cross Table")
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="status",
+                title="Generating Table\u2026",
+                columns=list()))
             self$add(jmvcore::Html$new(
                 options=options,
                 name="tbl",
@@ -331,8 +337,15 @@ tblCrossBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param sourceNote .
 #' @return A results object containing:
 #' \tabular{llllll}{
+#'   \code{results$status} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$tbl} \tab \tab \tab \tab \tab a html \cr
 #' }
+#'
+#' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
+#'
+#' \code{results$status$asDF}
+#'
+#' \code{as.data.frame(results$status)}
 #'
 #' @export
 tblCross <- function(
