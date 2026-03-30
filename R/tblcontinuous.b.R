@@ -12,6 +12,7 @@ tblContinuousClass <- R6::R6Class(
           "Add a continuous variable and at least one categorical variable to generate the table", # nolint
           self$results$tbl
         )
+        self$results$status$setVisible(FALSE)
         return()
       }
 
@@ -109,6 +110,9 @@ tblContinuousClass <- R6::R6Class(
 
       # Notices --------------------------------------------------------------
       displayNotices(collector, self$options, self$results)
+
+      # Hide status indicator ------------------------------------------------
+      self$results$status$setVisible(FALSE)
     }
   )
 )

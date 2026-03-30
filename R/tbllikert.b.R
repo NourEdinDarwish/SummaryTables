@@ -10,6 +10,7 @@ tblLikertClass <- R6::R6Class(
           "Add Likert scale variables to generate the table",
           self$results$tbl
         )
+        self$results$status$setVisible(FALSE)
         return()
       }
 
@@ -100,6 +101,9 @@ tblLikertClass <- R6::R6Class(
 
       # Notices --------------------------------------------------------------
       displayNotices(collector, self$options, self$results)
+
+      # Hide status indicator ------------------------------------------------
+      self$results$status$setVisible(FALSE)
     }
   )
 )
