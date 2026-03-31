@@ -40,7 +40,7 @@ options:
     type: Terms
 
   - name: digitsCoef
-    title: Decimal places (coefficient)
+    title: Decimal places (coefficient & CI)
     type: List
     options:
       - title: Auto
