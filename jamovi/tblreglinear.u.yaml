@@ -49,6 +49,86 @@ children:
                   type: TermLabel
 
   - type: CollapseBox
+    label: Options
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: LayoutBox
+        stretchFactor: 1
+        children:
+          - type: LayoutBox
+            cell:
+              column: 0
+              row: 0
+            stretchFactor: 1
+            children:
+              - type: Label
+                label: Table Structure
+                children:
+                  - type: CheckBox
+                    name: intercept
+                  - type: CheckBox
+                    name: addRefRowEstimate
+                  - type: CheckBox
+                    name: confInt
+                    children:
+                      - type: TextBox
+                        name: confLevel
+                        suffix: "%"
+                        format: number
+                        enable: (confInt)
+                  - type: CheckBox
+                    name: addN
+                    children:
+                      - type: ComboBox
+                        name: addNLocation
+                        enable: (addN)
+              - type: Label
+                label: Decimal Places
+                children:
+                  - type: ComboBox
+                    name: digitsCoef
+                  - type: ComboBox
+                    name: digitsPvalue
+          - type: LayoutBox
+            cell:
+              column: 1
+              row: 0
+            stretchFactor: 1
+            children:
+              - type: Label
+                label: P-value Formatting
+                children:
+                  - type: CheckBox
+                    name: boldPvalue
+                    children:
+                      - type: TextBox
+                        name: boldPvalueThreshold
+                        format: number
+                        enable: (boldPvalue)
+                  - type: CheckBox
+                    name: addStars
+                    children:
+                      - type: CheckBox
+                        name: starsShowCi
+                        enable: (addStars)
+                      - type: CheckBox
+                        name: starsShowP
+                        enable: (addStars)
+                      - type: CheckBox
+                        name: starsShowSe
+                        enable: (addStars)
+                  - type: CheckBox
+                    name: globalP
+              - type: Label
+                label: Model Diagnostics
+                children:
+                  - type: CheckBox
+                    name: addVif
+                  - type: ComboBox
+                    name: modelFit
+
+  - type: CollapseBox
     label: Appearance
     collapsed: true
     stretchFactor: 1

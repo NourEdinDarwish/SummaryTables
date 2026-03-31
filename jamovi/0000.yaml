@@ -71,7 +71,8 @@ analyses:
     description: >-
       Fit a multivariable linear regression model and display a
       publication-ready coefficient table with estimates, confidence intervals,
-      and p-values.
+      and p-values. Includes global p-values, variance inflation factors, model
+      fit statistics, significance stars, and p-value adjustments.
 usesNative: true
 minApp: 1.0.8
 

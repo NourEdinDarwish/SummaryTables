@@ -39,6 +39,133 @@ options:
     title: Model Terms
     type: Terms
 
+  - name: intercept
+    title: Show intercept
+    type: Bool
+    default: false
+
+  - name: addRefRowEstimate
+    title: Show reference value
+    type: Bool
+    default: false
+
+  - name: confInt
+    title: Show confidence interval
+    type: Bool
+    default: true
+
+  - name: confLevel
+    title: Confidence level
+    type: Number
+    min: 50
+    max: 99.9
+    default: 95
+
+  - name: digitsCoef
+    title: Decimal places (coefficient)
+    type: List
+    options:
+      - title: Auto
+        name: auto
+      - title: "0"
+        name: "0"
+      - title: "1"
+        name: "1"
+      - title: "2"
+        name: "2"
+      - title: "3"
+        name: "3"
+      - title: "4"
+        name: "4"
+      - title: "5"
+        name: "5"
+    default: auto
+
+  - name: digitsPvalue
+    title: Decimal places (p-value)
+    type: List
+    options:
+      - title: Auto
+        name: auto
+      - title: "1"
+        name: "1"
+      - title: "2"
+        name: "2"
+      - title: "3"
+        name: "3"
+    default: auto
+
+  - name: boldPvalue
+    title: Bold significant p-values
+    type: Bool
+    default: false
+
+  - name: boldPvalueThreshold
+    title: Significance threshold
+    type: Number
+    min: 0
+    max: 1
+    default: 0.05
+
+  - name: addStars
+    title: Significance stars
+    type: Bool
+    default: false
+
+  - name: starsShowCi
+    title: Show confidence interval
+    type: Bool
+    default: false
+
+  - name: starsShowP
+    title: Show p-value
+    type: Bool
+    default: false
+
+  - name: starsShowSe
+    title: Show standard error
+    type: Bool
+    default: true
+
+  - name: globalP
+    title: Global p-value
+    type: Bool
+    default: false
+
+  - name: addN
+    title: Add N column
+    type: Bool
+    default: false
+
+  - name: addNLocation
+    title: Location
+    type: List
+    options:
+      - title: Label row
+        name: label
+      - title: Level row
+        name: level
+      - title: Both
+        name: both
+    default: label
+
+  - name: addVif
+    title: "Multicollinearity (VIF/GVIF)"
+    type: Bool
+    default: false
+
+  - name: modelFit
+    title: Model fit statistics
+    type: List
+    options:
+      - title: None
+        name: none
+      - title: Table rows
+        name: table
+      - title: Footnote
+        name: footnote
+    default: none
+
   - name: journal
     title: Theme
     type: List

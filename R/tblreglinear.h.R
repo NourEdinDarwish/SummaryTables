@@ -10,6 +10,23 @@ tblRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             covs = NULL,
             factors = NULL,
             modelTerms = NULL,
+            intercept = FALSE,
+            addRefRowEstimate = FALSE,
+            confInt = TRUE,
+            confLevel = 95,
+            digitsCoef = "auto",
+            digitsPvalue = "auto",
+            boldPvalue = FALSE,
+            boldPvalueThreshold = 0.05,
+            addStars = FALSE,
+            starsShowCi = FALSE,
+            starsShowP = FALSE,
+            starsShowSe = TRUE,
+            globalP = FALSE,
+            addN = FALSE,
+            addNLocation = "label",
+            addVif = FALSE,
+            modelFit = "none",
             journal = "default",
             compact = FALSE,
             language = "en",
@@ -55,6 +72,99 @@ tblRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             private$..modelTerms <- jmvcore::OptionTerms$new(
                 "modelTerms",
                 modelTerms)
+            private$..intercept <- jmvcore::OptionBool$new(
+                "intercept",
+                intercept,
+                default=FALSE)
+            private$..addRefRowEstimate <- jmvcore::OptionBool$new(
+                "addRefRowEstimate",
+                addRefRowEstimate,
+                default=FALSE)
+            private$..confInt <- jmvcore::OptionBool$new(
+                "confInt",
+                confInt,
+                default=TRUE)
+            private$..confLevel <- jmvcore::OptionNumber$new(
+                "confLevel",
+                confLevel,
+                min=50,
+                max=99.9,
+                default=95)
+            private$..digitsCoef <- jmvcore::OptionList$new(
+                "digitsCoef",
+                digitsCoef,
+                options=list(
+                    "auto",
+                    "0",
+                    "1",
+                    "2",
+                    "3",
+                    "4",
+                    "5"),
+                default="auto")
+            private$..digitsPvalue <- jmvcore::OptionList$new(
+                "digitsPvalue",
+                digitsPvalue,
+                options=list(
+                    "auto",
+                    "1",
+                    "2",
+                    "3"),
+                default="auto")
+            private$..boldPvalue <- jmvcore::OptionBool$new(
+                "boldPvalue",
+                boldPvalue,
+                default=FALSE)
+            private$..boldPvalueThreshold <- jmvcore::OptionNumber$new(
+                "boldPvalueThreshold",
+                boldPvalueThreshold,
+                min=0,
+                max=1,
+                default=0.05)
+            private$..addStars <- jmvcore::OptionBool$new(
+                "addStars",
+                addStars,
+                default=FALSE)
+            private$..starsShowCi <- jmvcore::OptionBool$new(
+                "starsShowCi",
+                starsShowCi,
+                default=FALSE)
+            private$..starsShowP <- jmvcore::OptionBool$new(
+                "starsShowP",
+                starsShowP,
+                default=FALSE)
+            private$..starsShowSe <- jmvcore::OptionBool$new(
+                "starsShowSe",
+                starsShowSe,
+                default=TRUE)
+            private$..globalP <- jmvcore::OptionBool$new(
+                "globalP",
+                globalP,
+                default=FALSE)
+            private$..addN <- jmvcore::OptionBool$new(
+                "addN",
+                addN,
+                default=FALSE)
+            private$..addNLocation <- jmvcore::OptionList$new(
+                "addNLocation",
+                addNLocation,
+                options=list(
+                    "label",
+                    "level",
+                    "both"),
+                default="label")
+            private$..addVif <- jmvcore::OptionBool$new(
+                "addVif",
+                addVif,
+                default=FALSE)
+            private$..modelFit <- jmvcore::OptionList$new(
+                "modelFit",
+                modelFit,
+                options=list(
+                    "none",
+                    "table",
+                    "footnote"),
+                default="none")
             private$..journal <- jmvcore::OptionList$new(
                 "journal",
                 journal,
@@ -144,6 +254,23 @@ tblRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             self$.addOption(private$..covs)
             self$.addOption(private$..factors)
             self$.addOption(private$..modelTerms)
+            self$.addOption(private$..intercept)
+            self$.addOption(private$..addRefRowEstimate)
+            self$.addOption(private$..confInt)
+            self$.addOption(private$..confLevel)
+            self$.addOption(private$..digitsCoef)
+            self$.addOption(private$..digitsPvalue)
+            self$.addOption(private$..boldPvalue)
+            self$.addOption(private$..boldPvalueThreshold)
+            self$.addOption(private$..addStars)
+            self$.addOption(private$..starsShowCi)
+            self$.addOption(private$..starsShowP)
+            self$.addOption(private$..starsShowSe)
+            self$.addOption(private$..globalP)
+            self$.addOption(private$..addN)
+            self$.addOption(private$..addNLocation)
+            self$.addOption(private$..addVif)
+            self$.addOption(private$..modelFit)
             self$.addOption(private$..journal)
             self$.addOption(private$..compact)
             self$.addOption(private$..language)
@@ -163,6 +290,23 @@ tblRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
         covs = function() private$..covs$value,
         factors = function() private$..factors$value,
         modelTerms = function() private$..modelTerms$value,
+        intercept = function() private$..intercept$value,
+        addRefRowEstimate = function() private$..addRefRowEstimate$value,
+        confInt = function() private$..confInt$value,
+        confLevel = function() private$..confLevel$value,
+        digitsCoef = function() private$..digitsCoef$value,
+        digitsPvalue = function() private$..digitsPvalue$value,
+        boldPvalue = function() private$..boldPvalue$value,
+        boldPvalueThreshold = function() private$..boldPvalueThreshold$value,
+        addStars = function() private$..addStars$value,
+        starsShowCi = function() private$..starsShowCi$value,
+        starsShowP = function() private$..starsShowP$value,
+        starsShowSe = function() private$..starsShowSe$value,
+        globalP = function() private$..globalP$value,
+        addN = function() private$..addN$value,
+        addNLocation = function() private$..addNLocation$value,
+        addVif = function() private$..addVif$value,
+        modelFit = function() private$..modelFit$value,
         journal = function() private$..journal$value,
         compact = function() private$..compact$value,
         language = function() private$..language$value,
@@ -181,6 +325,23 @@ tblRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
         ..covs = NA,
         ..factors = NA,
         ..modelTerms = NA,
+        ..intercept = NA,
+        ..addRefRowEstimate = NA,
+        ..confInt = NA,
+        ..confLevel = NA,
+        ..digitsCoef = NA,
+        ..digitsPvalue = NA,
+        ..boldPvalue = NA,
+        ..boldPvalueThreshold = NA,
+        ..addStars = NA,
+        ..starsShowCi = NA,
+        ..starsShowP = NA,
+        ..starsShowSe = NA,
+        ..globalP = NA,
+        ..addN = NA,
+        ..addNLocation = NA,
+        ..addVif = NA,
+        ..modelFit = NA,
         ..journal = NA,
         ..compact = NA,
         ..language = NA,
@@ -200,6 +361,7 @@ tblRegLinearResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
     "tblRegLinearResults",
     inherit = jmvcore::Group,
     active = list(
+        status = function() private$.items[["status"]],
         tbl = function() private$.items[["tbl"]]),
     private = list(),
     public=list(
@@ -208,6 +370,11 @@ tblRegLinearResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                 options=options,
                 name="",
                 title="Multivariable Linear Regression")
+            self$add(jmvcore::Table$new(
+                options=options,
+                name="status",
+                title="Generating Table\u2026",
+                columns=list()))
             self$add(jmvcore::Html$new(
                 options=options,
                 name="tbl",
@@ -244,6 +411,23 @@ tblRegLinearBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param covs .
 #' @param factors .
 #' @param modelTerms .
+#' @param intercept .
+#' @param addRefRowEstimate .
+#' @param confInt .
+#' @param confLevel .
+#' @param digitsCoef .
+#' @param digitsPvalue .
+#' @param boldPvalue .
+#' @param boldPvalueThreshold .
+#' @param addStars .
+#' @param starsShowCi .
+#' @param starsShowP .
+#' @param starsShowSe .
+#' @param globalP .
+#' @param addN .
+#' @param addNLocation .
+#' @param addVif .
+#' @param modelFit .
 #' @param journal .
 #' @param compact .
 #' @param language .
@@ -259,8 +443,15 @@ tblRegLinearBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param export .
 #' @return A results object containing:
 #' \tabular{llllll}{
+#'   \code{results$status} \tab \tab \tab \tab \tab a table \cr
 #'   \code{results$tbl} \tab \tab \tab \tab \tab a html \cr
 #' }
+#'
+#' Tables can be converted to data frames with \code{asDF} or \code{\link{as.data.frame}}. For example:
+#'
+#' \code{results$status$asDF}
+#'
+#' \code{as.data.frame(results$status)}
 #'
 #' @export
 tblRegLinear <- function(
@@ -269,6 +460,23 @@ tblRegLinear <- function(
     covs,
     factors,
     modelTerms,
+    intercept = FALSE,
+    addRefRowEstimate = FALSE,
+    confInt = TRUE,
+    confLevel = 95,
+    digitsCoef = "auto",
+    digitsPvalue = "auto",
+    boldPvalue = FALSE,
+    boldPvalueThreshold = 0.05,
+    addStars = FALSE,
+    starsShowCi = FALSE,
+    starsShowP = FALSE,
+    starsShowSe = TRUE,
+    globalP = FALSE,
+    addN = FALSE,
+    addNLocation = "label",
+    addVif = FALSE,
+    modelFit = "none",
     journal = "default",
     compact = FALSE,
     language = "en",
@@ -304,6 +512,23 @@ tblRegLinear <- function(
         covs = covs,
         factors = factors,
         modelTerms = modelTerms,
+        intercept = intercept,
+        addRefRowEstimate = addRefRowEstimate,
+        confInt = confInt,
+        confLevel = confLevel,
+        digitsCoef = digitsCoef,
+        digitsPvalue = digitsPvalue,
+        boldPvalue = boldPvalue,
+        boldPvalueThreshold = boldPvalueThreshold,
+        addStars = addStars,
+        starsShowCi = starsShowCi,
+        starsShowP = starsShowP,
+        starsShowSe = starsShowSe,
+        globalP = globalP,
+        addN = addN,
+        addNLocation = addNLocation,
+        addVif = addVif,
+        modelFit = modelFit,
         journal = journal,
         compact = compact,
         language = language,

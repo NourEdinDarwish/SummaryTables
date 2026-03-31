@@ -31,37 +31,42 @@ tblRegLinearClass <- R6::R6Class(
       data <- self$data
       data[[dep]] <- jmvcore::toNumeric(data[[dep]])
 
-      covs <- self$options$covs
-      factors <- self$options$factors
-
-      data[covs] <- lapply(data[covs], jmvcore::toNumeric)
-      data[factors] <- lapply(data[factors], as.factor)
-
-      # Build formula -------------------------------------------------------
-      composed <- jmvcore::composeTerms(terms)
-      formula <- as.formula(
-        paste(
-          jmvcore::composeTerm(dep), "~",
-          paste(composed, collapse = " + ")
-        )
+      data[self$options$covs] <- lapply(
+        data[self$options$covs],
+        jmvcore::toNumeric
+      )
+      data[self$options$factors] <- lapply(
+        data[self$options$factors],
+        as.factor
       )
 
-      # Fit model -----------------------------------------------------------
+      # Formula and model ---------------------------------------------------
+      formula <- buildFormula(dep, terms)
       model <- lm(formula, data = data)
 
       # Regression table ----------------------------------------------------
       table <- runSafe(
-        gtsummary::tbl_regression(model),
+        buildMultiRegTable(model, self$options),
         collector
       )
 
       # Pipeline ------------------------------------------------------------
+      table <- pipeAddGlobalP(table, self$options, collector)
+
+      table <- pipeAddVif(table, self$options, collector)
+
+      table <- pipeAddNReg(table, self$options, collector)
+
       table <- pipeAddQ(
         table,
         hasPvalue = TRUE,
         options = self$options,
         collector = collector
       )
+
+      table <- pipeAddSignificanceStars(table, self$options, collector)
+
+      table <- pipeAddGlance(table, self$options, collector)
 
       # Text formatting -----------------------------------------------------
       table <- applyTextFormatting(

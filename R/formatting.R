@@ -46,6 +46,12 @@ applyTextFormatting <- function(table, hasPvalue, options) {
     table <- gtsummary::bold_p(table, t = options$boldPvalueThreshold)
   }
 
+  # Bold p-values (regression — inherent p-values, no source toggle) --------
+  if (optTrue(options$boldPvalue) && hasPvalue &&
+        !optTrue(options$addPvalue) && !optTrue(options$addDifference)) {
+    table <- gtsummary::bold_p(table, t = options$boldPvalueThreshold)
+  }
+
   # Bold q-values (adjusts any p-value source) ------------------------------
   if (optTrue(options$boldQ) && optTrue(options$addQ) && hasPvalue) {
     table <- gtsummary::bold_p(
