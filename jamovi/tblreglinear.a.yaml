@@ -39,28 +39,6 @@ options:
     title: Model Terms
     type: Terms
 
-  - name: intercept
-    title: Show intercept
-    type: Bool
-    default: false
-
-  - name: addRefRowEstimate
-    title: Show reference value
-    type: Bool
-    default: false
-
-  - name: confInt
-    title: Show confidence interval
-    type: Bool
-    default: true
-
-  - name: confLevel
-    title: Confidence level
-    type: Number
-    min: 50
-    max: 99.9
-    default: 95
-
   - name: digitsCoef
     title: Decimal places (coefficient)
     type: List
@@ -81,54 +59,25 @@ options:
         name: "5"
     default: auto
 
-  - name: digitsPvalue
-    title: Decimal places (p-value)
-    type: List
-    options:
-      - title: Auto
-        name: auto
-      - title: "1"
-        name: "1"
-      - title: "2"
-        name: "2"
-      - title: "3"
-        name: "3"
-    default: auto
-
-  - name: boldPvalue
-    title: Bold significant p-values
-    type: Bool
-    default: false
-
-  - name: boldPvalueThreshold
-    title: Significance threshold
-    type: Number
-    min: 0
-    max: 1
-    default: 0.05
-
-  - name: addStars
-    title: Significance stars
-    type: Bool
-    default: false
-
-  - name: starsShowCi
+  - name: confInt
     title: Show confidence interval
-    type: Bool
-    default: false
-
-  - name: starsShowP
-    title: Show p-value
-    type: Bool
-    default: false
-
-  - name: starsShowSe
-    title: Show standard error
     type: Bool
     default: true
 
-  - name: globalP
-    title: Global p-value
+  - name: confLevel
+    title: Confidence level
+    type: Number
+    min: 50
+    max: 99.9
+    default: 95
+
+  - name: intercept
+    title: Show intercept
+    type: Bool
+    default: false
+
+  - name: addRefRowEstimate
+    title: Show reference value
     type: Bool
     default: false
 
@@ -160,11 +109,62 @@ options:
     options:
       - title: None
         name: none
-      - title: Table rows
+      - title: As table rows
         name: table
-      - title: Footnote
+      - title: As source note
         name: footnote
     default: none
+
+  - name: digitsPvalue
+    title: Decimal places (large p-values)
+    type: List
+    options:
+      - title: Auto
+        name: auto
+      - title: "1"
+        name: "1"
+      - title: "2"
+        name: "2"
+      - title: "3"
+        name: "3"
+    default: auto
+
+  - name: boldPvalue
+    title: Bold significant p-values
+    type: Bool
+    default: false
+
+  - name: boldPvalueThreshold
+    title: Significance threshold
+    type: Number
+    min: 0
+    max: 1
+    default: 0.05
+
+  - name: globalP
+    title: Global p-value
+    type: Bool
+    default: false
+
+  - name: addStars
+    title: Significance stars
+    type: Bool
+    default: false
+
+  - name: starsShowCi
+    title: Show confidence interval
+    type: Bool
+    default: false
+
+  - name: starsShowP
+    title: Show p-value
+    type: Bool
+    default: false
+
+  - name: starsShowSe
+    title: Show standard error
+    type: Bool
+    default: true
 
   - name: journal
     title: Theme

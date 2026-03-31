@@ -36,9 +36,7 @@ buildMultiRegTable <- function(model, options) {
   args$conf.level <- options$confLevel / 100
   args$intercept <- options$intercept
 
-  if (options$addRefRowEstimate) {
-    args$add_estimate_to_reference_rows <- TRUE
-  }
+  args$add_estimate_to_reference_rows <- options$addRefRowEstimate
 
   if (options$digitsCoef != "auto") {
     args$estimate_fun <- gtsummary::label_style_number(
