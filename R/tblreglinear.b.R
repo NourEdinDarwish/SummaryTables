@@ -9,7 +9,7 @@ tblRegLinearClass <- R6::R6Class(
 
       if (is.null(dep) || length(terms) == 0) {
         renderPlaceholder(
-          "Add a dependent variable and at least one predictor to generate the table", #nolint
+          "Add a dependent variable and at least one term to generate the table", #nolint
           self$results$tbl
         )
         self$results$status$setVisible(FALSE)
@@ -51,11 +51,11 @@ tblRegLinearClass <- R6::R6Class(
       )
 
       # Pipeline ------------------------------------------------------------
-      table <- pipeAddGlobalP(table, self$options, collector)
-
-      table <- pipeAddVif(table, self$options, collector)
-
-      table <- pipeAddNReg(table, self$options, collector)
+      table <- pipeAddGlobalP(
+        table,
+        options = self$options,
+        collector = collector
+      )
 
       table <- pipeAddQ(
         table,
@@ -64,9 +64,29 @@ tblRegLinearClass <- R6::R6Class(
         collector = collector
       )
 
-      table <- pipeAddSignificanceStars(table, self$options, collector)
+      table <- pipeAddVif(
+        table,
+        options = self$options,
+        collector = collector
+      )
 
-      table <- pipeAddGlance(table, self$options, collector)
+      table <- pipeAddNReg(
+        table,
+        options = self$options,
+        collector = collector
+      )
+
+      table <- pipeAddSignificanceStars(
+        table,
+        options = self$options,
+        collector = collector
+      )
+
+      table <- pipeAddGlance(
+        table,
+        options = self$options,
+        collector = collector
+      )
 
       # Text formatting -----------------------------------------------------
       table <- applyTextFormatting(

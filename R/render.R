@@ -40,6 +40,10 @@ renderHtml <- function(table, resultsHtml) {
   htmlContent <- table |>
     gtsummary::as_gt() |>
     gt::tab_options(table.background.color = "transparent") |>
+    gt::tab_style(
+      style = gt::css(width = "1px"),
+      locations = gt::cells_source_notes()
+    ) |>
     gt::as_raw_html()
 
   setHtmlResult(htmlContent, resultsHtml)
