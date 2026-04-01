@@ -1,8 +1,9 @@
-name: tblRegLinear
-title: Multivariable Linear Regression
+name: tblRegLogistic
+title: Multivariable Logistic Regression
 menuGroup: Summary Tables
 menuSubgroup: Multivariable Regression
-menuTitle: Linear Regression
+menuTitle: Logistic Regression
+menuSubtitle: Binomial
 version: "1.0.0"
 jas: "1.2"
 
@@ -14,9 +15,9 @@ options:
     title: Dependent Variable
     type: Variable
     suggested:
-      - continuous
+      - nominal
     permitted:
-      - numeric
+      - factor
 
   - name: covs
     title: Covariates
@@ -38,6 +39,11 @@ options:
   - name: modelTerms
     title: Model Terms
     type: Terms
+
+  - name: exponentiate
+    title: Odds ratio (exponentiate coefficients)
+    type: Bool
+    default: true
 
   - name: digitsCoef
     title: Decimal places (coefficient & CI)
@@ -87,6 +93,23 @@ options:
     default: false
 
   - name: addNLocation
+    title: Location
+    type: List
+    options:
+      - title: Label row
+        name: label
+      - title: Level row
+        name: level
+      - title: Both
+        name: both
+    default: label
+
+  - name: addNEvent
+    title: Add event N column
+    type: Bool
+    default: false
+
+  - name: addNEventLocation
     title: Location
     type: List
     options:
@@ -285,7 +308,7 @@ options:
   - name: path
     title: Path
     type: String
-    default: ~/Desktop/Linear Regression Table.docx
+    default: ~/Desktop/Logistic Regression Table.docx
 
   - name: export
     title: Save

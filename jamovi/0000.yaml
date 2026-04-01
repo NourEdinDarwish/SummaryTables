@@ -73,6 +73,20 @@ analyses:
       publication-ready coefficient table with estimates, confidence intervals,
       and p-values. Includes global p-values, variance inflation factors, model
       fit statistics, significance stars, and p-value adjustments.
+  - title: Multivariable Logistic Regression
+    name: tblRegLogistic
+    ns: SummaryTables
+    menuGroup: Summary Tables
+    menuSubgroup: Multivariable Regression
+    menuTitle: Logistic Regression
+    menuSubtitle: Binomial
+    category: analyses
+    description: >-
+      Fit a multivariable logistic regression model and display a
+      publication-ready coefficient table with odds ratios, confidence
+      intervals, and p-values. Includes global p-values, event counts, variance
+      inflation factors, model fit statistics, significance stars, and p-value
+      adjustments.
 usesNative: true
 minApp: 1.0.8
 

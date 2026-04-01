@@ -32,6 +32,7 @@ buildFormula <- function(dep, terms) {
 buildMultiRegTable <- function(model, options) {
   args <- list(x = model)
 
+  args$exponentiate <- optTrue(options$exponentiate)
   args$conf.int <- options$confInt
   args$conf.level <- options$confLevel / 100
   args$intercept <- options$intercept
@@ -122,6 +123,35 @@ pipeAddNReg <- function(table, options, collector) {
 
   runSafe(
     gtsummary::add_n(table, location = location),
+    collector
+  )
+}
+
+
+# pipeAddNEvent -------------------------------------------------------------
+
+#' Add event counts to a regression table
+#'
+#' Pipeline step for logistic regression tables. Adds event N at label row,
+#' level row, or both.
+#'
+#' @param table A tbl_regression object
+#' @param options Jamovi options object
+#' @param collector Collector environment from newCollector()
+#' @return The table with event N column added (or unchanged)
+pipeAddNEvent <- function(table, options, collector) {
+  if (!options$addNEvent) {
+    return(table)
+  }
+
+  location <- if (options$addNEventLocation == "both") {
+    c("label", "level")
+  } else {
+    options$addNEventLocation
+  }
+
+  runSafe(
+    gtsummary::add_nevent(table, location = location),
     collector
   )
 }
