@@ -31,6 +31,15 @@ tblRegLogisticClass <- R6::R6Class(
       data <- self$data
       data[[dep]] <- as.factor(data[[dep]])
 
+      if (length(levels(data[[dep]])) != 2) {
+        jmvcore::reject(
+          jmvcore::format(
+            "The dependent variable '{}' must have exactly two levels for binomial logistic regression", # nolint
+            dep
+          )
+        )
+      }
+
       data[self$options$covs] <- lapply(
         data[self$options$covs],
         jmvcore::toNumeric
