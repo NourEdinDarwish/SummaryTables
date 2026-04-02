@@ -16,6 +16,8 @@ tblRegLinearClass <- R6::R6Class(
         return()
       }
 
+      validateVarNames(c(self$options$covs, self$options$factors))
+
       # Collector -----------------------------------------------------------
       collector <- newCollector()
 

@@ -17,6 +17,8 @@ tblUniRegLogisticClass <- R6::R6Class(
         return()
       }
 
+      validateVarNames(c(covs, factors))
+
       # Collector -----------------------------------------------------------
       collector <- newCollector()
 

@@ -1,3 +1,32 @@
+# validateVarNames ----------------------------------------------------------
+
+#' Validate variable names for unsupported special characters
+#'
+#' Checks covariate and factor names for characters that break R formula
+#' parsing or the broom.helpers pipeline. Currently rejects backslash
+#' (which also catches \\n and \\t) and backtick.
+#'
+#' @param vars Character vector of variable names to validate
+validateVarNames <- function(vars) {
+  bad <- list(
+    "\\" = "backslash (\\)",
+    "`"  = "backtick (`)"
+  )
+
+  for (char in names(bad)) {
+    affected <- vars[grepl(char, vars, fixed = TRUE)]
+    if (length(affected) > 0) {
+      jmvcore::reject(
+        jmvcore::format(
+          "Variable name '{}' contains a {} character which is not supported in regression analysis. Please rename the variable.", # nolint
+          affected[1], bad[[char]]
+        )
+      )
+    }
+  }
+}
+
+
 # buildFormula --------------------------------------------------------------
 
 #' Build a model formula from jamovi options
