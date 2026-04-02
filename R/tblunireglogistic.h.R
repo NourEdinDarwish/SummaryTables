@@ -37,7 +37,7 @@ tblUniRegLogisticOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             qMethod = "BH",
             boldQ = FALSE,
             boldQThreshold = 0.05,
-            path = "~/Desktop/Univariable Logistic Regression Table.docx",
+            path = "~/Desktop/Univariable Logistic Regression.docx",
             export = FALSE, ...) {
 
             super$initialize(
@@ -241,7 +241,7 @@ tblUniRegLogisticOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             private$..path <- jmvcore::OptionString$new(
                 "path",
                 path,
-                default="~/Desktop/Univariable Logistic Regression Table.docx")
+                default="~/Desktop/Univariable Logistic Regression.docx")
             private$..export <- jmvcore::OptionAction$new(
                 "export",
                 export)
@@ -480,7 +480,7 @@ tblUniRegLogistic <- function(
     qMethod = "BH",
     boldQ = FALSE,
     boldQThreshold = 0.05,
-    path = "~/Desktop/Univariable Logistic Regression Table.docx",
+    path = "~/Desktop/Univariable Logistic Regression.docx",
     export = FALSE) {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))

@@ -41,7 +41,7 @@ tblRegLogisticOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             qMethod = "BH",
             boldQ = FALSE,
             boldQThreshold = 0.05,
-            path = "~/Desktop/Logistic Regression Table.docx",
+            path = "~/Desktop/Multivariable Logistic Regression.docx",
             export = FALSE, ...) {
 
             super$initialize(
@@ -264,7 +264,7 @@ tblRegLogisticOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..path <- jmvcore::OptionString$new(
                 "path",
                 path,
-                default="~/Desktop/Logistic Regression Table.docx")
+                default="~/Desktop/Multivariable Logistic Regression.docx")
             private$..export <- jmvcore::OptionAction$new(
                 "export",
                 export)
@@ -522,7 +522,7 @@ tblRegLogistic <- function(
     qMethod = "BH",
     boldQ = FALSE,
     boldQThreshold = 0.05,
-    path = "~/Desktop/Logistic Regression Table.docx",
+    path = "~/Desktop/Multivariable Logistic Regression.docx",
     export = FALSE) {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))

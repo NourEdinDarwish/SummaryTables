@@ -285,7 +285,7 @@ options:
   - name: path
     title: Path
     type: String
-    default: ~/Desktop/Linear Regression Table.docx
+    default: ~/Desktop/Multivariable Linear Regression.docx
 
   - name: export
     title: Save

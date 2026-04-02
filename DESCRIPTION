@@ -6,17 +6,19 @@ Authors@R:
     person("Nour Edin", "Darwish", , "nouredindarwish@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0009-0009-5527-4539"))
 Description: A comprehensive module for creating publication-ready summary
-    tables in jamovi, powered by gtsummary. Includes four key analyses.
-    'Summary Table' creates classic "Table 1" summaries, including group
-    comparisons with automatic statistical testing, effect sizes, and
-    p-value adjustments. 'Continuous Table' summarizes a single continuous
-    outcome stratified across multiple categorical variables, including
-    automatic statistical testing and p-value adjustments. 'Cross Table'
-    summarizes the association between two categorical variables using
-    cross-tabulations, including automatic statistical testing. 'Likert
-    Table' summarizes Likert scale items.  Features include direct export
-    to Word (.docx), 16 languages, and pre-built formatting for major
-    journals.
+    and regression tables in jamovi, powered by gtsummary. 'Summary Table'
+    creates classic "Table 1" summaries, including group comparisons with
+    automatic statistical testing, effect sizes, and p-value adjustments.
+    'Continuous Table' summarizes a single continuous variable across
+    multiple categorical variables, including automatic statistical
+    testing and p-value adjustments. 'Cross Table' summarizes the
+    association between two categorical variables using cross-tabulations,
+    including automatic statistical testing. 'Likert Table' summarizes
+    Likert scale items. 'Multivariable Regression' fits multivariable
+    linear or logistic regression models. 'Univariable Regression' runs
+    separate univariable linear or logistic regression models for each
+    predictor. Features include direct export to Word (.docx), 16
+    languages, and pre-built formatting for major journals.
 License: GPL (>= 2)
 URL: https://github.com/NourEdinDarwish/SummaryTables
 BugReports: https://github.com/NourEdinDarwish/SummaryTables/issues

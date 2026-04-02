@@ -308,7 +308,7 @@ options:
   - name: path
     title: Path
     type: String
-    default: ~/Desktop/Logistic Regression Table.docx
+    default: ~/Desktop/Multivariable Logistic Regression.docx
 
   - name: export
     title: Save

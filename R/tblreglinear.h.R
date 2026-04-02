@@ -38,7 +38,7 @@ tblRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             qMethod = "BH",
             boldQ = FALSE,
             boldQThreshold = 0.05,
-            path = "~/Desktop/Linear Regression Table.docx",
+            path = "~/Desktop/Multivariable Linear Regression.docx",
             export = FALSE, ...) {
 
             super$initialize(
@@ -245,7 +245,7 @@ tblRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             private$..path <- jmvcore::OptionString$new(
                 "path",
                 path,
-                default="~/Desktop/Linear Regression Table.docx")
+                default="~/Desktop/Multivariable Linear Regression.docx")
             private$..export <- jmvcore::OptionAction$new(
                 "export",
                 export)
@@ -488,7 +488,7 @@ tblRegLinear <- function(
     qMethod = "BH",
     boldQ = FALSE,
     boldQThreshold = 0.05,
-    path = "~/Desktop/Linear Regression Table.docx",
+    path = "~/Desktop/Multivariable Linear Regression.docx",
     export = FALSE) {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))

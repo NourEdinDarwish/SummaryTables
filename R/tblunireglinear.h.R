@@ -34,7 +34,7 @@ tblUniRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             qMethod = "BH",
             boldQ = FALSE,
             boldQThreshold = 0.05,
-            path = "~/Desktop/Univariable Linear Regression Table.docx",
+            path = "~/Desktop/Univariable Linear Regression.docx",
             export = FALSE, ...) {
 
             super$initialize(
@@ -222,7 +222,7 @@ tblUniRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             private$..path <- jmvcore::OptionString$new(
                 "path",
                 path,
-                default="~/Desktop/Univariable Linear Regression Table.docx")
+                default="~/Desktop/Univariable Linear Regression.docx")
             private$..export <- jmvcore::OptionAction$new(
                 "export",
                 export)
@@ -446,7 +446,7 @@ tblUniRegLinear <- function(
     qMethod = "BH",
     boldQ = FALSE,
     boldQThreshold = 0.05,
-    path = "~/Desktop/Univariable Linear Regression Table.docx",
+    path = "~/Desktop/Univariable Linear Regression.docx",
     export = FALSE) {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))

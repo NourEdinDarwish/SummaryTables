@@ -259,7 +259,7 @@ options:
   - name: path
     title: Path
     type: String
-    default: ~/Desktop/Univariable Linear Regression Table.docx
+    default: ~/Desktop/Univariable Linear Regression.docx
 
   - name: export
     title: Save

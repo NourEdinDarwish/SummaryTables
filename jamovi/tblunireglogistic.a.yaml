@@ -282,7 +282,7 @@ options:
   - name: path
     title: Path
     type: String
-    default: ~/Desktop/Univariable Logistic Regression Table.docx
+    default: ~/Desktop/Univariable Logistic Regression.docx
 
   - name: export
     title: Save

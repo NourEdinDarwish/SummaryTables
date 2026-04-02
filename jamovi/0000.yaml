@@ -9,18 +9,20 @@ maintainer: Nour Edin Darwish <nouredindarwish@gmail.com>
 date: '2026-03-30'
 type: R
 description: >-
-  A comprehensive module for creating publication-ready summary tables in
-  jamovi, powered by gtsummary. Includes four key analyses: <ul> <li><b>Summary
-  Table:</b> Create classic "Table 1" summaries. Includes group comparisons with
-  automatic statistical testing, effect sizes, and p-value adjustments.</li>
-  <li><b>Continuous Table:</b> Summarize a single continuous outcome stratified
-  across multiple categorical variables. Includes automatic statistical
-  testing,  and p-value adjustments.</li> <li><b>Cross Table:</b> Summarize the
-  association between two categorical variables using cross-tabulations.
-  Includes automatic  statistical testing.</li> <li><b>Likert Table:</b>
-  Summarize Likert scale items.</li> </ul> Features include direct export to
-  <b>Word (.docx)</b>, 16 languages, and pre-built formatting for major journals
-  (JAMA, The Lancet, NEJM, QJE).
+  A comprehensive module for creating publication-ready summary and regression
+  tables in jamovi, powered by gtsummary. <ul> <li><b>Summary Table:</b> Create
+  classic "Table 1" summaries with group comparisons, automatic statistical
+  testing, effect sizes, and p-value adjustments.</li> <li><b>Continuous
+  Table:</b> Summarize a single continuous variable across multiple categorical
+  variables with automatic statistical testing and p-value adjustments.</li>
+  <li><b>Cross Table:</b> Summarize the association between two categorical
+  variables using cross-tabulations with automatic statistical testing.</li>
+  <li><b>Likert Table:</b> Summarize Likert scale items.</li>
+  <li><b>Multivariable Regression:</b> Fit multivariable linear or logistic
+  regression models.</li> <li><b>Univariable Regression:</b> Run separate
+  univariable linear or logistic regression models for each predictor.</li>
+  </ul> Features include direct export to <b>Word (.docx)</b>, 16 languages, and
+  pre-built formatting for major journals (JAMA, The Lancet, NEJM, QJE).
 analyses:
   - title: Summary Table
     name: tblSummary
