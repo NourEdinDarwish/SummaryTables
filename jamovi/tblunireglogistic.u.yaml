@@ -1,0 +1,189 @@
+name: tblUniRegLogistic
+title: Univariable Logistic Regression
+jus: "3.0"
+stage: 0
+compilerMode: tame
+children:
+  - type: VariableSupplier
+    persistentItems: false
+    stretchFactor: 1
+    children:
+      - type: TargetLayoutBox
+        children:
+          - type: VariablesListBox
+            name: dep
+            maxItemCount: 1
+            isTarget: true
+      - type: TargetLayoutBox
+        children:
+          - type: VariablesListBox
+            name: covs
+            isTarget: true
+      - type: TargetLayoutBox
+        children:
+          - type: VariablesListBox
+            name: factors
+            isTarget: true
+
+  - type: CollapseBox
+    label: Options
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: LayoutBox
+        stretchFactor: 1
+        children:
+          - type: LayoutBox
+            cell:
+              column: 0
+              row: 0
+            stretchFactor: 1
+            children:
+              - type: Label
+                label: General
+                children:
+                  - type: CheckBox
+                    name: exponentiate
+                  - type: ComboBox
+                    name: digitsCoef
+                  - type: CheckBox
+                    name: confInt
+                    children:
+                      - type: TextBox
+                        name: confLevel
+                        suffix: "%"
+                        format: number
+                        enable: (confInt)
+                  - type: CheckBox
+                    name: addRefRowEstimate
+                  - type: CheckBox
+                    name: addN
+                    children:
+                      - type: ComboBox
+                        name: addNLocation
+                        enable: (addN)
+                  - type: CheckBox
+                    name: addNEvent
+                    children:
+                      - type: ComboBox
+                        name: addNEventLocation
+                        enable: (addNEvent)
+          - type: LayoutBox
+            cell:
+              column: 1
+              row: 0
+            stretchFactor: 1
+            children:
+              - type: Label
+                label: P-value
+                children:
+                  - type: ComboBox
+                    name: digitsPvalue
+                  - type: CheckBox
+                    name: boldPvalue
+                    children:
+                      - type: TextBox
+                        name: boldPvalueThreshold
+                        format: number
+                        enable: (boldPvalue)
+                  - type: CheckBox
+                    name: globalP
+                  - type: CheckBox
+                    name: addStars
+                    children:
+                      - type: CheckBox
+                        name: starsShowCi
+                        enable: (addStars)
+                      - type: CheckBox
+                        name: starsShowP
+                        enable: (addStars)
+                      - type: CheckBox
+                        name: starsShowSe
+                        enable: (addStars)
+
+  - type: CollapseBox
+    label: Appearance
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: ComboBox
+        name: journal
+      - type: CheckBox
+        name: compact
+      - type: ComboBox
+        name: language
+      - type: LayoutBox
+        fitToGrid: true
+        children:
+          - type: CheckBox
+            name: boldLabels
+            cell:
+              row: 0
+              column: 0
+          - type: CheckBox
+            name: boldLevels
+            cell:
+              row: 0
+              column: 1
+          - type: CheckBox
+            name: italicizeLabels
+            cell:
+              row: 1
+              column: 0
+          - type: CheckBox
+            name: italicizeLevels
+            cell:
+              row: 1
+              column: 1
+
+  - type: CollapseBox
+    label: Q-value (P-value Adjustment)
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: CheckBox
+        name: addQ
+      - type: ComboBox
+        name: qMethod
+        enable: (addQ)
+      - type: CheckBox
+        name: boldQ
+        enable: (addQ)
+        children:
+          - type: TextBox
+            name: boldQThreshold
+            format: number
+            enable: (addQ && boldQ)
+
+  - type: CollapseBox
+    label: Save to Word
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: TextBox
+        name: path
+        format: string
+        stretchFactor: 1
+      - type: ActionButton
+        name: export
+
+  - type: CollapseBox
+    label: Help
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: Label
+        label: Documentation coming soon.
+        heading: true
+      - type: Label
+        label: This module is actively being developed.
+        heading: false
+      - type: Label
+        label: "If you encounter any issues, have a question, or have ideas for new features,"
+        heading: false
+      - type: Label
+        label: please open an issue at github.com/NourEdinDarwish/SummaryTables/issues
+        heading: false
+      - type: Label
+        label: or send an email at nouredindarwish@gmail.com
+        heading: false

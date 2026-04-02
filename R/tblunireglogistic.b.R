@@ -1,6 +1,6 @@
-tblUniRegLinearClass <- R6::R6Class(
-  "tblUniRegLinearClass",
-  inherit = tblUniRegLinearBase,
+tblUniRegLogisticClass <- R6::R6Class(
+  "tblUniRegLogisticClass",
+  inherit = tblUniRegLogisticBase,
   private = list(
     .run = function() {
       # Guard ---------------------------------------------------------------
@@ -30,7 +30,16 @@ tblUniRegLinearClass <- R6::R6Class(
 
       # Data prep -----------------------------------------------------------
       data <- self$data
-      data[[dep]] <- jmvcore::toNumeric(data[[dep]])
+      data[[dep]] <- as.factor(data[[dep]])
+
+      if (length(levels(data[[dep]])) != 2) {
+        jmvcore::reject(
+          jmvcore::format(
+            "The dependent variable '{}' must have exactly two levels for binomial logistic regression", # nolint
+            dep
+          )
+        )
+      }
 
       data[covs] <- lapply(data[covs], jmvcore::toNumeric)
       data[factors] <- lapply(data[factors], as.factor)
@@ -50,7 +59,8 @@ tblUniRegLinearClass <- R6::R6Class(
           data = data,
           dep = dep,
           include = allVars,
-          method = lm,
+          method = glm,
+          method.args = list(family = binomial),
           options = self$options
         ),
         collector
@@ -71,6 +81,12 @@ tblUniRegLinearClass <- R6::R6Class(
       )
 
       table <- pipeAddNReg(
+        table,
+        options = self$options,
+        collector = collector
+      )
+
+      table <- pipeAddNEvent(
         table,
         options = self$options,
         collector = collector

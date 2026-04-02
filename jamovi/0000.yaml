@@ -99,6 +99,19 @@ analyses:
       against a continuous outcome and display a publication-ready table with
       estimates, confidence intervals, and p-values. Includes global p-values,
       significance stars, and p-value adjustments.
+  - title: Univariable Logistic Regression
+    name: tblUniRegLogistic
+    ns: SummaryTables
+    menuGroup: Summary Tables
+    menuSubgroup: Univariable Regression
+    menuTitle: Logistic Regression
+    menuSubtitle: Binomial
+    category: analyses
+    description: >-
+      Run separate univariable logistic regression models for each predictor
+      against a binary outcome and display a publication-ready table with odds
+      ratios, confidence intervals, and p-values. Includes global p-values,
+      event counts, significance stars, and p-value adjustments.
 usesNative: true
 minApp: 1.0.8
 

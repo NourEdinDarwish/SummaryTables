@@ -64,17 +64,30 @@ buildMultiRegTable <- function(model, options) {
 #' @param data Data frame
 #' @param dep Dependent variable name (string)
 #' @param include Character vector of predictor variable names
+#' @param method Regression function (e.g. lm, glm)
+#' @param method.args Named list of additional arguments passed to method
+#'   (e.g. `list(family = binomial)`). Captured via `substitute()` so that
+#'   tbl_uvregression's internal NSE works through `do.call()`.
 #' @param options Jamovi options object
 #' @return A tbl_uvregression object
-buildUniRegTable <- function(data, dep, include, options) {
+buildUniRegTable <- function(
+  data,
+  dep,
+  include,
+  method,
+  method.args = list(),
+  options
+) {
   args <- list(
     data = data,
-    method = lm,
+    method = method,
     y = jmvcore::composeTerm(dep),
     include = include,
+    method.args = substitute(method.args),
     hide_n = TRUE
   )
 
+  args$exponentiate <- optTrue(options$exponentiate)
   args$conf.int <- options$confInt
   args$conf.level <- options$confLevel / 100
   args$add_estimate_to_reference_rows <- options$addRefRowEstimate
