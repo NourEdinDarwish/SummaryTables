@@ -87,6 +87,18 @@ analyses:
       intervals, and p-values. Includes global p-values, event counts, variance
       inflation factors, model fit statistics, significance stars, and p-value
       adjustments.
+  - title: Univariable Linear Regression
+    name: tblUniRegLinear
+    ns: SummaryTables
+    menuGroup: Summary Tables
+    menuSubgroup: Univariable Regression
+    menuTitle: Linear Regression
+    category: analyses
+    description: >-
+      Run separate univariable linear regression models for each predictor
+      against a continuous outcome and display a publication-ready table with
+      estimates, confidence intervals, and p-values. Includes global p-values,
+      significance stars, and p-value adjustments.
 usesNative: true
 minApp: 1.0.8
 

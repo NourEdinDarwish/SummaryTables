@@ -23,8 +23,7 @@ buildFormula <- function(dep, terms) {
 #' Build a multivariable tbl_regression table
 #'
 #' Constructs tbl_regression() arguments from jamovi options and returns the
-#' table directly. Named *MultiReg* to distinguish from the future
-#' buildUniRegTable() for univariable regression.
+#' table directly.
 #'
 #' @param model A fitted model object (lm, glm, etc.)
 #' @param options Jamovi options object
@@ -52,6 +51,47 @@ buildMultiRegTable <- function(model, options) {
   }
 
   do.call(gtsummary::tbl_regression, args)
+}
+
+
+# buildUniRegTable ----------------------------------------------------------
+
+#' Build a univariable tbl_uvregression table
+#'
+#' Constructs tbl_uvregression() arguments from jamovi options and returns the
+#' table directly. Each predictor is regressed individually against the outcome.
+#'
+#' @param data Data frame
+#' @param dep Dependent variable name (string)
+#' @param include Character vector of predictor variable names
+#' @param options Jamovi options object
+#' @return A tbl_uvregression object
+buildUniRegTable <- function(data, dep, include, options) {
+  args <- list(
+    data = data,
+    method = lm,
+    y = jmvcore::composeTerm(dep),
+    include = include,
+    hide_n = TRUE
+  )
+
+  args$conf.int <- options$confInt
+  args$conf.level <- options$confLevel / 100
+  args$add_estimate_to_reference_rows <- options$addRefRowEstimate
+
+  if (options$digitsCoef != "auto") {
+    args$estimate_fun <- gtsummary::label_style_number(
+      digits = as.integer(options$digitsCoef)
+    )
+  }
+
+  if (options$digitsPvalue != "auto") {
+    args$pvalue_fun <- gtsummary::label_style_pvalue(
+      digits = as.integer(options$digitsPvalue)
+    )
+  }
+
+  do.call(gtsummary::tbl_uvregression, args)
 }
 
 

@@ -1,0 +1,266 @@
+name: tblUniRegLinear
+title: Univariable Linear Regression
+menuGroup: Summary Tables
+menuSubgroup: Univariable Regression
+menuTitle: Linear Regression
+version: "1.0.0"
+jas: "1.2"
+
+options:
+  - name: data
+    type: Data
+
+  - name: dep
+    title: Dependent Variable
+    type: Variable
+    suggested:
+      - continuous
+    permitted:
+      - numeric
+
+  - name: covs
+    title: Covariates
+    type: Variables
+    suggested:
+      - continuous
+    permitted:
+      - numeric
+
+  - name: factors
+    title: Factors
+    type: Variables
+    rejectUnusedLevels: true
+    suggested:
+      - nominal
+    permitted:
+      - factor
+
+  - name: digitsCoef
+    title: Decimal places (coefficient & CI)
+    type: List
+    options:
+      - title: Auto
+        name: auto
+      - title: "0"
+        name: "0"
+      - title: "1"
+        name: "1"
+      - title: "2"
+        name: "2"
+      - title: "3"
+        name: "3"
+      - title: "4"
+        name: "4"
+      - title: "5"
+        name: "5"
+    default: auto
+
+  - name: confInt
+    title: Show confidence interval
+    type: Bool
+    default: true
+
+  - name: confLevel
+    title: Confidence level
+    type: Number
+    min: 50
+    max: 99.9
+    default: 95
+
+  - name: addRefRowEstimate
+    title: Show reference value
+    type: Bool
+    default: false
+
+  - name: addN
+    title: Add N column
+    type: Bool
+    default: true
+
+  - name: addNLocation
+    title: Location
+    type: List
+    options:
+      - title: Label row
+        name: label
+      - title: Level row
+        name: level
+      - title: Both
+        name: both
+    default: label
+
+  - name: digitsPvalue
+    title: Decimal places (large p-values)
+    type: List
+    options:
+      - title: Auto
+        name: auto
+      - title: "1"
+        name: "1"
+      - title: "2"
+        name: "2"
+      - title: "3"
+        name: "3"
+    default: auto
+
+  - name: boldPvalue
+    title: Bold significant p-values
+    type: Bool
+    default: false
+
+  - name: boldPvalueThreshold
+    title: Significance threshold
+    type: Number
+    min: 0
+    max: 1
+    default: 0.05
+
+  - name: globalP
+    title: Global p-value
+    type: Bool
+    default: false
+
+  - name: addStars
+    title: Significance stars
+    type: Bool
+    default: false
+
+  - name: starsShowCi
+    title: Show confidence interval
+    type: Bool
+    default: false
+
+  - name: starsShowP
+    title: Show p-value
+    type: Bool
+    default: false
+
+  - name: starsShowSe
+    title: Show standard error
+    type: Bool
+    default: true
+
+  - name: journal
+    title: Theme
+    type: List
+    options:
+      - title: Default
+        name: default
+      - title: JAMA
+        name: jama
+      - title: The Lancet
+        name: lancet
+      - title: The New England Journal of Medicine
+        name: nejm
+      - title: The Quarterly Journal of Economics
+        name: qjecon
+    default: default
+
+  - name: compact
+    title: Compact
+    type: Bool
+    default: false
+
+  - name: language
+    title: Language
+    type: List
+    options:
+      - title: Chinese (Simplified)
+        name: zh-cn
+      - title: Chinese (Traditional)
+        name: zh-tw
+      - title: Dutch
+        name: nl
+      - title: English
+        name: en
+      - title: French
+        name: fr
+      - title: German
+        name: de
+      - title: Gujarati
+        name: gu
+      - title: Hindi
+        name: hi
+      - title: Icelandic
+        name: is
+      - title: Japanese
+        name: ja
+      - title: Korean
+        name: kr
+      - title: Marathi
+        name: mr
+      - title: Norwegian
+        name: no
+      - title: Portuguese
+        name: pt
+      - title: Spanish
+        name: es
+      - title: Swedish
+        name: se
+    default: en
+
+  - name: boldLabels
+    title: Bold labels
+    type: Bool
+    default: false
+
+  - name: boldLevels
+    title: Bold levels
+    type: Bool
+    default: false
+
+  - name: italicizeLabels
+    title: Italicize labels
+    type: Bool
+    default: false
+
+  - name: italicizeLevels
+    title: Italicize levels
+    type: Bool
+    default: false
+
+  - name: addQ
+    title: Add q-value
+    type: Bool
+    default: false
+
+  - name: qMethod
+    title: Method
+    type: List
+    options:
+      - title: Benjamini-Hochberg
+        name: BH
+      - title: Benjamini-Yekutieli
+        name: BY
+      - title: Bonferroni
+        name: bonferroni
+      - title: Holm
+        name: holm
+      - title: Hochberg
+        name: hochberg
+      - title: Hommel
+        name: hommel
+      - title: None
+        name: none
+    default: BH
+
+  - name: boldQ
+    title: Bold significant q-values
+    type: Bool
+    default: false
+
+  - name: boldQThreshold
+    title: Significance threshold
+    type: Number
+    min: 0
+    max: 1
+    default: 0.05
+
+  - name: path
+    title: Path
+    type: String
+    default: ~/Desktop/Univariable Linear Regression Table.docx
+
+  - name: export
+    title: Save
+    type: Action
