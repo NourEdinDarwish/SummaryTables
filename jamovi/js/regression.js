@@ -6,6 +6,8 @@
  *   2. Auto-adds main effects for newly added variables
  *   3. Removes terms whose source variable was removed
  *
+ * Term order is fully user-controlled (no forced sorting).
+ *
  * @param {Object} ui      - The UI controls object.
  * @param {Object} context - The View instance (`this` in handlers).
  */
@@ -50,29 +52,9 @@ const updateModelTerms = function (ui, context) {
     }
   }
 
-  // 6. Sort terms by length (main effects before interactions)
-  if (utils.sortArraysByLength(terms)) {
-    changed = true;
-  }
-
   if (changed) {
     ui.modelTerms.setValue(terms);
   }
 };
 
-/**
- * Re-sort terms after manual drag/drop inside the ListBox.
- *
- * Without this, the user can drag an interaction above its constituent
- * main effects — violating the hierarchy principle.
- *
- * @param {Object} ui - The UI controls object.
- */
-const enforceTermOrder = function (ui) {
-  const terms = utils.clone(ui.modelTerms.value(), []);
-  if (utils.sortArraysByLength(terms)) {
-    ui.modelTerms.setValue(terms);
-  }
-};
-
-module.exports = { updateModelTerms, enforceTermOrder };
+module.exports = { updateModelTerms };

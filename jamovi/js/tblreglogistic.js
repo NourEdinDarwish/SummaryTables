@@ -15,9 +15,4 @@ module.exports = {
   factors_changed: function (ui) {
     regression.updateModelTerms(ui, this);
   },
-
-  // Fires when the user manually reorders terms (drag/drop inside ListBox)
-  modelTerms_changed: function (ui) {
-    regression.enforceTermOrder(ui);
-  },
 };

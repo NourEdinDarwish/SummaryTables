@@ -10,7 +10,8 @@
 validateVarNames <- function(vars) {
   bad <- list(
     "\\" = "backslash (\\)",
-    "`"  = "backtick (`)"
+    "`"  = "backtick (`)",
+    ":"  = "colon (:)"
   )
 
   for (char in names(bad)) {
@@ -59,6 +60,31 @@ buildFormula <- function(dep, terms) {
 #' @return A tbl_regression object
 buildMultiRegTable <- function(model, options) {
   args <- list(x = model)
+
+  # Preserve user's UI term order. Steps:
+  # 1. composeTerms maps UI arrays to R names (e.g. c("age","age") → "I(age^2)")
+  # 2. .clean_backticks strips `` `T Stage` `` → "T Stage"
+  # 3. Match user terms to model's own term labels, handling R's
+  #    interaction reordering (e.g. user: "Patient Died:Grade"
+  #    but model stores "Grade:Patient Died").
+  user_terms <- broom.helpers::.clean_backticks(
+    jmvcore::composeTerms(options$modelTerms),
+    variable_names = names(model$model)
+  )
+  model_labels <- broom.helpers::.clean_backticks(
+    labels(model$terms),
+    variable_names = names(model$model)
+  )
+  args$include <- vapply(user_terms, function(ut) {
+    if (ut %in% model_labels) return(ut)
+    # Interaction components may be in different order — match by sorted parts
+    ut_parts <- sort(strsplit(ut, ":")[[1]])
+    for (ml in model_labels) {
+      if (!grepl(":", ml, fixed = TRUE)) next
+      if (identical(ut_parts, sort(strsplit(ml, ":")[[1]]))) return(ml)
+    }
+    ut
+  }, character(1), USE.NAMES = FALSE)
 
   args$exponentiate <- optTrue(options$exponentiate)
   args$conf.int <- options$confInt
