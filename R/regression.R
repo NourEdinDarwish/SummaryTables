@@ -48,7 +48,7 @@ buildFormula <- function(dep, terms) {
 }
 
 
-# buildMultiRegTable ---------------------------------------------------------
+# buildMultiRegTable --------------------------------------------------------
 
 #' Build a multivariable tbl_regression table
 #'

@@ -17,7 +17,7 @@ resolveTestAlias <- function(alias) {
 }
 
 
-# pipeAddP -----------------------------------------------------------------
+# pipeAddP ------------------------------------------------------------------
 
 #' Add p-values to a gtsummary table
 #'
@@ -110,7 +110,7 @@ pipeAddP <- function(
 }
 
 
-# pipeAddQ -----------------------------------------------------------------
+# pipeAddQ ------------------------------------------------------------------
 
 #' Add q-values (adjusted p-values) to a gtsummary table
 #'
@@ -135,7 +135,7 @@ pipeAddQ <- function(table, hasPvalue, options, collector) {
 }
 
 
-# pipeAddDifference --------------------------------------------------------
+# pipeAddDifference ---------------------------------------------------------
 
 #' Add difference statistics to a gtsummary table
 #'
@@ -265,7 +265,7 @@ pipeAddDifference <- function(
 }
 
 
-# pipeAddCi ----------------------------------------------------------------
+# pipeAddCi -----------------------------------------------------------------
 
 #' Add confidence intervals to a gtsummary table
 #'
@@ -380,7 +380,7 @@ pipeAddCi <- function(
 }
 
 
-# pipeAddN -----------------------------------------------------------------
+# pipeAddN ------------------------------------------------------------------
 
 #' Add observation counts to a gtsummary table
 #'
@@ -404,7 +404,7 @@ pipeAddN <- function(table, options, collector) {
 }
 
 
-# pipeAddOverall -----------------------------------------------------------
+# pipeAddOverall ------------------------------------------------------------
 
 #' Add overall column to a stratified gtsummary table
 #'

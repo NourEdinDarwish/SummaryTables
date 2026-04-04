@@ -1,4 +1,4 @@
-# setHtmlResult ------------------------------------------------------------
+# setHtmlResult -------------------------------------------------------------
 
 #' Set HTML on a jamovi Html result element with the summaryTable wrapper
 #'
@@ -27,7 +27,7 @@ setHtmlResult <- function(htmlContent, resultsHtml) {
   )
 }
 
-# renderHtml --------------------------------------------------------------
+# renderHtml ----------------------------------------------------------------
 
 #' Render gtsummary table to HTML for jamovi results
 #'
@@ -49,7 +49,7 @@ renderHtml <- function(table, resultsHtml) {
   setHtmlResult(htmlContent, resultsHtml)
 }
 
-# renderPlaceholder -------------------------------------------------------
+# renderPlaceholder ---------------------------------------------------------
 
 #' Render an initialization placeholder before variables are supplied
 #'

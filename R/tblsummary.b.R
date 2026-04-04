@@ -18,7 +18,7 @@ tblSummaryClass <- R6::R6Class(
         return()
       }
 
-      # Collector ---------------------------------------------------------
+      # Collector -----------------------------------------------------------
       collector <- newCollector()
 
       # Theme ---------------------------------------------------------------
@@ -180,7 +180,7 @@ tblSummaryClass <- R6::R6Class(
         exportDocx(table, path, self$options, self$results)
       }
 
-      # Notices --------------------------------------------------------------
+      # Notices -------------------------------------------------------------
       displayNotices(collector, self$options, self$results)
 
     }

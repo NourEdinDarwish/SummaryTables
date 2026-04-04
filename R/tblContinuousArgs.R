@@ -75,7 +75,7 @@ pipeAddPCont <- function(table, hasGroupVar, options, collector) {
 }
 
 
-# buildStatArgsCont ------------------------------------------------------------
+# buildStatArgsCont ---------------------------------------------------------
 
 #' Build statistic arguments for tbl_continuous
 #'
@@ -114,7 +114,7 @@ buildStatArgsCont <- function(varsCat, options, themeStrings) {
 }
 
 
-# buildDigitsArgsCont ----------------------------------------------------------
+# buildDigitsArgsCont -------------------------------------------------------
 
 #' Build digits arguments for tbl_continuous
 #'
