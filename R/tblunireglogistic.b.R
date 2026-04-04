@@ -3,6 +3,7 @@ tblUniRegLogisticClass <- R6::R6Class(
   inherit = tblUniRegLogisticBase,
   private = list(
     .run = function() {
+      on.exit(self$results$status$setVisible(FALSE), add = TRUE)
       # Guard ---------------------------------------------------------------
       dep <- self$options$dep
       covs <- self$options$covs
@@ -13,7 +14,6 @@ tblUniRegLogisticClass <- R6::R6Class(
           "Add a dependent variable and at least one covariate or factor to generate the table", #nolint
           self$results$tbl
         )
-        self$results$status$setVisible(FALSE)
         return()
       }
 
@@ -118,8 +118,6 @@ tblUniRegLogisticClass <- R6::R6Class(
       # Notices -------------------------------------------------------------
       displayNotices(collector, self$options, self$results)
 
-      # Hide status indicator ------------------------------------------------
-      self$results$status$setVisible(FALSE)
     }
   )
 )

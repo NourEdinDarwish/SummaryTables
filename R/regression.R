@@ -3,8 +3,8 @@
 #' Validate variable names for unsupported special characters
 #'
 #' Checks covariate and factor names for characters that break R formula
-#' parsing or the broom.helpers pipeline. Currently rejects backslash
-#' (which also catches \\n and \\t) and backtick.
+#' parsing or the broom.helpers pipeline. Currently rejects: backslash
+#' (which also catches \\n and \\t), backtick, and colon.
 #'
 #' @param vars Character vector of variable names to validate
 validateVarNames <- function(vars) {

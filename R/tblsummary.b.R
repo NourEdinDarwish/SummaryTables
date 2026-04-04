@@ -3,6 +3,7 @@ tblSummaryClass <- R6::R6Class(
   inherit = tblSummaryBase,
   private = list(
     .run = function() {
+      on.exit(self$results$status$setVisible(FALSE), add = TRUE)
       # Guard ---------------------------------------------------------------
       varsCont <- self$options$varsCont
       varsCat <- self$options$varsCat
@@ -14,7 +15,6 @@ tblSummaryClass <- R6::R6Class(
           "Add continuous or categorical variables to generate the table",
           self$results$tbl
         )
-        self$results$status$setVisible(FALSE)
         return()
       }
 
@@ -183,8 +183,6 @@ tblSummaryClass <- R6::R6Class(
       # Notices --------------------------------------------------------------
       displayNotices(collector, self$options, self$results)
 
-      # Hide status indicator ------------------------------------------------
-      self$results$status$setVisible(FALSE)
     }
   )
 )
