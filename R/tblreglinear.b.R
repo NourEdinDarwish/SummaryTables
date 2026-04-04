@@ -3,6 +3,7 @@ tblRegLinearClass <- R6::R6Class(
   inherit = tblRegLinearBase,
   private = list(
     .run = function() {
+      on.exit(self$results$status$setVisible(FALSE), add = TRUE)
       # Guard ---------------------------------------------------------------
       dep <- self$options$dep
       terms <- self$options$modelTerms
@@ -12,7 +13,6 @@ tblRegLinearClass <- R6::R6Class(
           "Add a dependent variable and at least one term to generate the table", #nolint
           self$results$tbl
         )
-        self$results$status$setVisible(FALSE)
         return()
       }
 
@@ -103,8 +103,6 @@ tblRegLinearClass <- R6::R6Class(
       # Notices -------------------------------------------------------------
       displayNotices(collector, self$options, self$results)
 
-      # Hide status indicator -----------------------------------------------
-      self$results$status$setVisible(FALSE)
     }
   )
 )

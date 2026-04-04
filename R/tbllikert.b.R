@@ -3,6 +3,7 @@ tblLikertClass <- R6::R6Class(
   inherit = tblLikertBase,
   private = list(
     .run = function() {
+      on.exit(self$results$status$setVisible(FALSE), add = TRUE)
       # Guard ---------------------------------------------------------------
       vars <- self$options$vars
       if (length(vars) == 0) {
@@ -10,7 +11,6 @@ tblLikertClass <- R6::R6Class(
           "Add Likert scale variables to generate the table",
           self$results$tbl
         )
-        self$results$status$setVisible(FALSE)
         return()
       }
 
@@ -97,8 +97,6 @@ tblLikertClass <- R6::R6Class(
       # Notices -------------------------------------------------------------
       displayNotices(collector, self$options, self$results)
 
-      # Hide status indicator -----------------------------------------------
-      self$results$status$setVisible(FALSE)
     }
   )
 )
