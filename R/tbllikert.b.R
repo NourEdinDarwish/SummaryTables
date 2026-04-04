@@ -87,7 +87,7 @@ tblLikertClass <- R6::R6Class(
       # Text formatting -----------------------------------------------------
       table <- applyTextFormatting(
         table,
-        hasGroupVar = FALSE,
+        hasPvalue = FALSE,
         options = self$options
       )
 

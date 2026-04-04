@@ -127,7 +127,7 @@ tblCrossClass <- R6::R6Class(
       # tblCross always has a "group" (the col variable), so hasGroupVar=TRUE
       table <- applyTextFormatting(
         table,
-        hasGroupVar = TRUE,
+        hasPvalue = self$options$addPvalue,
         options = self$options
       )
 

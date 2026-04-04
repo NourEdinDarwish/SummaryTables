@@ -1,22 +1,24 @@
-tblContinuousClass <- R6::R6Class(
-  "tblContinuousClass",
-  inherit = tblContinuousBase,
+tblRegLinearClass <- R6::R6Class(
+  "tblRegLinearClass",
+  inherit = tblRegLinearBase,
   private = list(
     .run = function() {
       # Guard ---------------------------------------------------------------
-      contVar <- self$options$contVar
-      varsCat <- self$options$varsCat
+      dep <- self$options$dep
+      terms <- self$options$modelTerms
 
-      if (is.null(contVar) || length(varsCat) == 0) {
+      if (is.null(dep) || length(terms) == 0) {
         renderPlaceholder(
-          "Add a continuous variable and at least one categorical variable to generate the table", # nolint
+          "Add a dependent variable and at least one term to generate the table", #nolint
           self$results$tbl
         )
         self$results$status$setVisible(FALSE)
         return()
       }
 
-      # Collector ---------------------------------------------------------
+      validateVarNames(c(self$options$covs, self$options$factors))
+
+      # Collector -----------------------------------------------------------
       collector <- newCollector()
 
       # Theme ---------------------------------------------------------------
@@ -26,69 +28,64 @@ tblContinuousClass <- R6::R6Class(
         languageOption = self$options$language,
         compactOption = self$options$compact
       )
-      themeStrings <- getThemeStrings(self$options$journal)
 
       # Data prep -----------------------------------------------------------
       data <- self$data
+      data[[dep]] <- jmvcore::toNumeric(data[[dep]])
 
-      groupVar <- self$options$groupVar
-      hasGroupVar <- !is.null(groupVar)
-
-      data[[contVar]] <- jmvcore::toNumeric(data[[contVar]])
-      data[varsCat] <- lapply(data[varsCat], as.factor)
-
-      if (hasGroupVar) {
-        data[[groupVar]] <- as.factor(data[[groupVar]])
-      }
-
-      data <- sortByFreq(
-        data = data,
-        varsCat = varsCat,
-        options = self$options
+      data[self$options$covs] <- lapply(
+        data[self$options$covs],
+        jmvcore::toNumeric
+      )
+      data[self$options$factors] <- lapply(
+        data[self$options$factors],
+        as.factor
       )
 
-      # Build arguments -----------------------------------------------------
-      statisticArguments <- buildStatArgsCont(
-        varsCat = varsCat,
-        options = self$options,
-        themeStrings = themeStrings
-      )
+      # Formula and model ---------------------------------------------------
+      formula <- buildFormula(dep, terms)
+      model <- lm(formula, data = data)
 
-      digitsArgument <- buildDigitsArgsCont(options = self$options)
-
-      # Core table ----------------------------------------------------------
+      # Regression table ----------------------------------------------------
       table <- runSafe(
-        gtsummary::tbl_continuous(
-          data = data,
-          variable = contVar,
-          include = varsCat,
-          by = groupVar,
-          statistic = statisticArguments,
-          digits = digitsArgument
-        ),
+        buildMultiRegTable(model, self$options),
         collector
       )
 
       # Pipeline ------------------------------------------------------------
-      table <- pipeAddPCont(
+      table <- pipeAddGlobalP(
         table,
-        hasGroupVar = hasGroupVar,
         options = self$options,
         collector = collector
       )
-
-      hasPvalue <- self$options$addPvalue
 
       table <- pipeAddQ(
         table,
-        hasPvalue = hasPvalue,
+        hasPvalue = TRUE,
         options = self$options,
         collector = collector
       )
 
-      table <- pipeAddOverall(
+      table <- pipeAddVif(
         table,
-        hasGroupVar = hasGroupVar,
+        options = self$options,
+        collector = collector
+      )
+
+      table <- pipeAddNReg(
+        table,
+        options = self$options,
+        collector = collector
+      )
+
+      table <- pipeAddSignificanceStars(
+        table,
+        options = self$options,
+        collector = collector
+      )
+
+      table <- pipeAddGlance(
+        table,
         options = self$options,
         collector = collector
       )
@@ -96,7 +93,7 @@ tblContinuousClass <- R6::R6Class(
       # Text formatting -----------------------------------------------------
       table <- applyTextFormatting(
         table,
-        hasPvalue = hasPvalue,
+        hasPvalue = TRUE,
         options = self$options
       )
 
@@ -108,7 +105,7 @@ tblContinuousClass <- R6::R6Class(
         exportDocx(table, path, self$options, self$results)
       }
 
-      # Notices --------------------------------------------------------------
+      # Notices -------------------------------------------------------------
       displayNotices(collector, self$options, self$results)
 
       # Hide status indicator ------------------------------------------------
