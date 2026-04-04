@@ -15,7 +15,7 @@ tblCrossClass <- R6::R6Class(
         return()
       }
 
-      # Collector ---------------------------------------------------------
+      # Collector -----------------------------------------------------------
       collector <- newCollector()
 
       # Theme ---------------------------------------------------------------
@@ -131,13 +131,13 @@ tblCrossClass <- R6::R6Class(
         options = self$options
       )
 
-      # Render and export ---------------------------------------------------
+      # Render --------------------------------------------------------------
       renderHtml(table, self$results$tbl)
 
-      # Notices --------------------------------------------------------------
+      # Notices -------------------------------------------------------------
       displayNotices(collector, self$options, self$results)
 
-      # Hide status indicator ------------------------------------------------
+      # Hide status indicator -----------------------------------------------
       self$results$status$setVisible(FALSE)
     }
   )
