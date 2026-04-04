@@ -23,7 +23,7 @@ License: GPL (>= 2)
 URL: https://github.com/NourEdinDarwish/SummaryTables
 BugReports: https://github.com/NourEdinDarwish/SummaryTables/issues
 Imports: 
-    broom.helpers,
+    broom.helpers (>= 1.22.0),
     cards (>= 0.7.1),
     cardx (>= 0.3.1),
     effectsize,
@@ -36,9 +36,10 @@ Imports:
     R6,
     smd
 Remotes: 
-    ddsjoberg/gtsummary@v2.5.0,
+    ddsjoberg/gtsummary@952b665,
     insightsengineering/cards@v0.7.1,
-    insightsengineering/cardx@v0.3.1
+    insightsengineering/cardx@v0.3.1,
+    larmarange/broom.helpers@83c07f2
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
