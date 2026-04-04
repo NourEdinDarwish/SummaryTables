@@ -17,8 +17,8 @@ Description: A comprehensive module for creating publication-ready summary
     Likert scale items. 'Multivariable Regression' fits multivariable
     linear or logistic regression models. 'Univariable Regression' runs
     separate univariable linear or logistic regression models for each
-    predictor. Features include direct export to Word (.docx), 16
-    languages, and pre-built formatting for major journals.
+    predictor. Features include 16 languages and pre-built formatting for
+    major journals.
 License: GPL (>= 2)
 URL: https://github.com/NourEdinDarwish/SummaryTables
 BugReports: https://github.com/NourEdinDarwish/SummaryTables/issues
@@ -27,7 +27,6 @@ Imports:
     cards (>= 0.7.1),
     cardx (>= 0.3.1),
     effectsize,
-    flextable,
     forcats,
     gt,
     gtsummary (>= 2.5.0.9001),

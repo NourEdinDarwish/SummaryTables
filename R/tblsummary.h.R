@@ -67,9 +67,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             ciDigitsCont = "auto",
             ciCatDefault = "wilson",
             ciCatSpecific = NULL,
-            ciDigitsCat = "auto",
-            path = "~/Desktop/Summary Table.docx",
-            export = FALSE, ...) {
+            ciDigitsCat = "auto", ...) {
 
             super$initialize(
                 package="SummaryTables",
@@ -649,13 +647,6 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "4",
                     "5"),
                 default="auto")
-            private$..path <- jmvcore::OptionString$new(
-                "path",
-                path,
-                default="~/Desktop/Summary Table.docx")
-            private$..export <- jmvcore::OptionAction$new(
-                "export",
-                export)
 
             self$.addOption(private$..varsCont)
             self$.addOption(private$..varsCat)
@@ -719,8 +710,6 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..ciCatDefault)
             self$.addOption(private$..ciCatSpecific)
             self$.addOption(private$..ciDigitsCat)
-            self$.addOption(private$..path)
-            self$.addOption(private$..export)
         }),
     active = list(
         varsCont = function() private$..varsCont$value,
@@ -784,9 +773,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ciDigitsCont = function() private$..ciDigitsCont$value,
         ciCatDefault = function() private$..ciCatDefault$value,
         ciCatSpecific = function() private$..ciCatSpecific$value,
-        ciDigitsCat = function() private$..ciDigitsCat$value,
-        path = function() private$..path$value,
-        export = function() private$..export$value),
+        ciDigitsCat = function() private$..ciDigitsCat$value),
     private = list(
         ..varsCont = NA,
         ..varsCat = NA,
@@ -849,9 +836,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..ciDigitsCont = NA,
         ..ciCatDefault = NA,
         ..ciCatSpecific = NA,
-        ..ciDigitsCat = NA,
-        ..path = NA,
-        ..export = NA)
+        ..ciDigitsCat = NA)
 )
 
 tblSummaryResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -967,8 +952,6 @@ tblSummaryBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param ciCatDefault .
 #' @param ciCatSpecific .
 #' @param ciDigitsCat .
-#' @param path .
-#' @param export .
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$status} \tab \tab \tab \tab \tab a table \cr
@@ -1045,9 +1028,7 @@ tblSummary <- function(
     ciDigitsCont = "auto",
     ciCatDefault = "wilson",
     ciCatSpecific,
-    ciDigitsCat = "auto",
-    path = "~/Desktop/Summary Table.docx",
-    export = FALSE) {
+    ciDigitsCat = "auto") {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
         stop("tblSummary requires jmvcore to be installed (restart may be required)")
@@ -1127,9 +1108,7 @@ tblSummary <- function(
         ciDigitsCont = ciDigitsCont,
         ciCatDefault = ciCatDefault,
         ciCatSpecific = ciCatSpecific,
-        ciDigitsCat = ciDigitsCat,
-        path = path,
-        export = export)
+        ciDigitsCat = ciDigitsCat)
 
     analysis <- tblSummaryClass$new(
         options = options,
