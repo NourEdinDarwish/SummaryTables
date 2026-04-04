@@ -67,11 +67,11 @@ buildMultiRegTable <- function(model, options) {
   # 3. Match user terms to model's own term labels, handling R's
   #    interaction reordering (e.g. user: "Patient Died:Grade"
   #    but model stores "Grade:Patient Died").
-  user_terms <- broom.helpers::.clean_backticks(
+  user_terms <- broom.helpers:::.clean_backticks(
     jmvcore::composeTerms(options$modelTerms),
     variable_names = names(model$model)
   )
-  model_labels <- broom.helpers::.clean_backticks(
+  model_labels <- broom.helpers:::.clean_backticks(
     labels(model$terms),
     variable_names = names(model$model)
   )
