@@ -73,6 +73,11 @@ options:
     max: 99.9
     default: 95
 
+  - name: ciMerge
+    title: Merge with coefficient column
+    type: Bool
+    default: false
+
   - name: addRefRowEstimate
     title: Show reference value
     type: Bool

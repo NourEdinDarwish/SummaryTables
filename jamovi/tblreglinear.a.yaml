@@ -71,6 +71,11 @@ options:
     max: 99.9
     default: 95
 
+  - name: ciMerge
+    title: Merge with coefficient column
+    type: Bool
+    default: false
+
   - name: intercept
     title: Show intercept
     type: Bool

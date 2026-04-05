@@ -71,12 +71,16 @@ children:
                     name: digitsCoef
                   - type: CheckBox
                     name: confInt
+                    enable: (!(journal:qjecon))
                     children:
                       - type: TextBox
                         name: confLevel
                         suffix: "%"
                         format: number
-                        enable: (confInt)
+                        enable: (confInt && !(journal:qjecon))
+                      - type: CheckBox
+                        name: ciMerge
+                        enable: (confInt && !(journal:jama) && !(journal:qjecon))
                   - type: CheckBox
                     name: intercept
                   - type: CheckBox
@@ -111,27 +115,35 @@ children:
                 children:
                   - type: ComboBox
                     name: digitsPvalue
+                    enable: (!(journal:qjecon))
                   - type: CheckBox
                     name: boldPvalue
+                    enable: (!(journal:qjecon))
                     children:
                       - type: TextBox
                         name: boldPvalueThreshold
                         format: number
-                        enable: (boldPvalue)
+                        enable: (boldPvalue && !(journal:qjecon))
                   - type: CheckBox
                     name: globalP
+                    enable: (!addStars && !(journal:qjecon))
+                    children:
+                      - type: CheckBox
+                        name: globalPKeep
+                        enable: (globalP && !addStars && !(journal:qjecon))
                   - type: CheckBox
                     name: addStars
+                    enable: (!globalP && !(journal:jama) && !(journal:qjecon))
                     children:
                       - type: CheckBox
                         name: starsShowCi
-                        enable: (addStars)
+                        enable: (addStars && !globalP && !(journal:jama) && !(journal:qjecon))
                       - type: CheckBox
                         name: starsShowP
-                        enable: (addStars)
+                        enable: (addStars && !globalP && !(journal:jama) && !(journal:qjecon))
                       - type: CheckBox
                         name: starsShowSe
-                        enable: (addStars)
+                        enable: (addStars && !globalP && !(journal:jama) && !(journal:qjecon))
 
   - type: CollapseBox
     label: Appearance

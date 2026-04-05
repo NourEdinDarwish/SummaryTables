@@ -14,6 +14,7 @@ tblRegLogisticOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             digitsCoef = "auto",
             confInt = TRUE,
             confLevel = 95,
+            ciMerge = FALSE,
             intercept = FALSE,
             addRefRowEstimate = FALSE,
             addN = FALSE,
@@ -26,6 +27,7 @@ tblRegLogisticOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             boldPvalue = FALSE,
             boldPvalueThreshold = 0.05,
             globalP = FALSE,
+            globalPKeep = FALSE,
             addStars = FALSE,
             starsShowCi = FALSE,
             starsShowP = FALSE,
@@ -101,6 +103,10 @@ tblRegLogisticOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 min=50,
                 max=99.9,
                 default=95)
+            private$..ciMerge <- jmvcore::OptionBool$new(
+                "ciMerge",
+                ciMerge,
+                default=FALSE)
             private$..intercept <- jmvcore::OptionBool$new(
                 "intercept",
                 intercept,
@@ -167,6 +173,10 @@ tblRegLogisticOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             private$..globalP <- jmvcore::OptionBool$new(
                 "globalP",
                 globalP,
+                default=FALSE)
+            private$..globalPKeep <- jmvcore::OptionBool$new(
+                "globalPKeep",
+                globalPKeep,
                 default=FALSE)
             private$..addStars <- jmvcore::OptionBool$new(
                 "addStars",
@@ -277,6 +287,7 @@ tblRegLogisticOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$.addOption(private$..digitsCoef)
             self$.addOption(private$..confInt)
             self$.addOption(private$..confLevel)
+            self$.addOption(private$..ciMerge)
             self$.addOption(private$..intercept)
             self$.addOption(private$..addRefRowEstimate)
             self$.addOption(private$..addN)
@@ -289,6 +300,7 @@ tblRegLogisticOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$.addOption(private$..boldPvalue)
             self$.addOption(private$..boldPvalueThreshold)
             self$.addOption(private$..globalP)
+            self$.addOption(private$..globalPKeep)
             self$.addOption(private$..addStars)
             self$.addOption(private$..starsShowCi)
             self$.addOption(private$..starsShowP)
@@ -316,6 +328,7 @@ tblRegLogisticOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         digitsCoef = function() private$..digitsCoef$value,
         confInt = function() private$..confInt$value,
         confLevel = function() private$..confLevel$value,
+        ciMerge = function() private$..ciMerge$value,
         intercept = function() private$..intercept$value,
         addRefRowEstimate = function() private$..addRefRowEstimate$value,
         addN = function() private$..addN$value,
@@ -328,6 +341,7 @@ tblRegLogisticOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         boldPvalue = function() private$..boldPvalue$value,
         boldPvalueThreshold = function() private$..boldPvalueThreshold$value,
         globalP = function() private$..globalP$value,
+        globalPKeep = function() private$..globalPKeep$value,
         addStars = function() private$..addStars$value,
         starsShowCi = function() private$..starsShowCi$value,
         starsShowP = function() private$..starsShowP$value,
@@ -354,6 +368,7 @@ tblRegLogisticOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         ..digitsCoef = NA,
         ..confInt = NA,
         ..confLevel = NA,
+        ..ciMerge = NA,
         ..intercept = NA,
         ..addRefRowEstimate = NA,
         ..addN = NA,
@@ -366,6 +381,7 @@ tblRegLogisticOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         ..boldPvalue = NA,
         ..boldPvalueThreshold = NA,
         ..globalP = NA,
+        ..globalPKeep = NA,
         ..addStars = NA,
         ..starsShowCi = NA,
         ..starsShowP = NA,
@@ -443,6 +459,7 @@ tblRegLogisticBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #' @param digitsCoef .
 #' @param confInt .
 #' @param confLevel .
+#' @param ciMerge .
 #' @param intercept .
 #' @param addRefRowEstimate .
 #' @param addN .
@@ -455,6 +472,7 @@ tblRegLogisticBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #' @param boldPvalue .
 #' @param boldPvalueThreshold .
 #' @param globalP .
+#' @param globalPKeep .
 #' @param addStars .
 #' @param starsShowCi .
 #' @param starsShowP .
@@ -495,6 +513,7 @@ tblRegLogistic <- function(
     digitsCoef = "auto",
     confInt = TRUE,
     confLevel = 95,
+    ciMerge = FALSE,
     intercept = FALSE,
     addRefRowEstimate = FALSE,
     addN = FALSE,
@@ -507,6 +526,7 @@ tblRegLogistic <- function(
     boldPvalue = FALSE,
     boldPvalueThreshold = 0.05,
     globalP = FALSE,
+    globalPKeep = FALSE,
     addStars = FALSE,
     starsShowCi = FALSE,
     starsShowP = FALSE,
@@ -551,6 +571,7 @@ tblRegLogistic <- function(
         digitsCoef = digitsCoef,
         confInt = confInt,
         confLevel = confLevel,
+        ciMerge = ciMerge,
         intercept = intercept,
         addRefRowEstimate = addRefRowEstimate,
         addN = addN,
@@ -563,6 +584,7 @@ tblRegLogistic <- function(
         boldPvalue = boldPvalue,
         boldPvalueThreshold = boldPvalueThreshold,
         globalP = globalP,
+        globalPKeep = globalPKeep,
         addStars = addStars,
         starsShowCi = starsShowCi,
         starsShowP = starsShowP,

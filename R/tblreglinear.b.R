@@ -84,6 +84,11 @@ tblRegLinearClass <- R6::R6Class(
         collector = collector
       )
 
+      table <- pipeCiMergeReg(
+        table,
+        options = self$options
+      )
+
       table <- pipeAddGlance(
         table,
         options = self$options,

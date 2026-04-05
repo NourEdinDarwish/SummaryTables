@@ -100,6 +100,11 @@ tblUniRegLogisticClass <- R6::R6Class(
         collector = collector
       )
 
+      table <- pipeCiMergeReg(
+        table,
+        options = self$options
+      )
+
       # Text formatting -----------------------------------------------------
       table <- applyTextFormatting(
         table,
