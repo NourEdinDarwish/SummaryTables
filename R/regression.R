@@ -175,12 +175,13 @@ buildUniRegTable <- function(
 #' @param collector Collector environment from newCollector()
 #' @return The table with global p-values (or unchanged)
 pipeAddGlobalP <- function(table, options, collector) {
-  if (!options$globalP) {
+  if (!options$globalP || options$addStars ||
+      options$journal == "qjecon") {
     return(table)
   }
 
   runSafe(
-    gtsummary::add_global_p(table),
+    gtsummary::add_global_p(table, keep = options$globalPKeep),
     collector
   )
 }
@@ -281,7 +282,8 @@ pipeAddNEvent <- function(table, options, collector) {
 #' @param collector Collector environment from newCollector()
 #' @return The table with significance stars (or unchanged)
 pipeAddSignificanceStars <- function(table, options, collector) {
-  if (!options$addStars) {
+  if (!options$addStars || options$globalP ||
+      options$journal %in% c("jama", "qjecon")) {
     return(table)
   }
 
@@ -320,4 +322,61 @@ pipeAddGlance <- function(table, options, collector) {
   }
 
   runSafe(glanceFn(table), collector)
+}
+
+
+# pipeCiMergeReg ------------------------------------------------------------
+
+#' Merge coefficient and CI columns in a regression table
+#'
+#' Combines the estimate and confidence interval columns into a single cell
+#' using modify_column_merge(). The CI separator respects the active gtsummary
+#' theme (e.g. JAMA uses " to ", default uses ", "). Wrapped in tryCatch so
+#' that unexpected column layouts fail silently.
+#'
+#' @param table A tbl_regression or tbl_uvregression object
+#' @param options Jamovi options object (must have ciMerge, confInt)
+#' @return The table with merged columns (or unchanged on error)
+pipeCiMergeReg <- function(table, options) {
+  if (!options$ciMerge || !options$confInt ||
+      options$journal %in% c("jama", "qjecon")) {
+    return(table)
+  }
+
+  tryCatch(
+    {
+      ciSep <- gtsummary:::get_theme_element(
+        "pkgwide-str:ci.sep",
+        default = ", "
+      )
+
+      hasStars <- "stars" %in% names(table$table_body)
+
+      new_header_text <- paste0(
+        table$table_styling$header |>
+          dplyr::filter(.data$column == "estimate") |>
+          dplyr::pull("label"),
+        " **(", 
+        gtsummary::style_number(table$inputs$conf.level, scale = 100),
+        "% CI)**"
+      )
+
+      pattern <- paste0(
+        "{estimate} ({conf.low}", ciSep, "{conf.high})",
+        if (hasStars) "{stars}" else ""
+      )
+
+      table |>
+        gtsummary::modify_column_merge(
+          rows = !!rlang::expr(
+            .data$variable %in% !!table$table_body$variable &
+              !is.na(.data$estimate) &
+              !.data$reference_row %in% TRUE
+          ),
+          pattern = pattern
+        ) |>
+        gtsummary::modify_header(estimate = new_header_text)
+    },
+    error = function(e) table
+  )
 }

@@ -128,6 +128,12 @@ tblSummaryClass <- R6::R6Class(
         collector = collector
       )
 
+      table <- pipeCiMergeDiff(
+        table,
+        hasGroupVar = hasGroupVar,
+        options = self$options
+      )
+
       table <- pipeAddP(
         table,
         varsCont = varsCont,

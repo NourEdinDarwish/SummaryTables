@@ -265,6 +265,57 @@ pipeAddDifference <- function(
 }
 
 
+# pipeCiMergeDiff -----------------------------------------------------------
+
+#' Merge estimate and CI columns for add_difference tables
+#'
+#' Follows the same pattern as gtsummary's JAMA theme
+#' (`add_difference-fn:addnl-fn-to-run`). Reads the CI header from the
+#' conf.low column label and the separator from the active theme.
+#'
+#' @param table A gtsummary table with add_difference columns
+#' @param hasGroupVar Logical: TRUE when a grouping variable is present
+#' @param options Jamovi options object (must have diffCiMerge, addDifference)
+#' @return The table with merged columns (or unchanged on error)
+pipeCiMergeDiff <- function(table, hasGroupVar, options) {
+  if (!options$diffCiMerge || !options$addDifference || !hasGroupVar ||
+      options$journal == "jama") {
+    return(table)
+  }
+
+  tryCatch(
+    {
+      ciSep <- gtsummary:::get_theme_element(
+        "pkgwide-str:ci.sep",
+        default = ", "
+      )
+
+      new_header_text <- paste0(
+        table$table_styling$header |>
+          dplyr::filter(.data$column == "estimate") |>
+          dplyr::pull("label"),
+        " **(**",
+        table$table_styling$header |>
+          dplyr::filter(.data$column == "conf.low") |>
+          dplyr::pull("label"),
+        "**)**"
+      )
+
+      table |>
+        gtsummary::modify_column_merge(
+          rows = !!rlang::expr(
+            .data$variable %in% !!table$table_body$variable &
+              !is.na(.data$estimate)
+          ),
+          pattern = paste0("{estimate} ({conf.low}", ciSep, "{conf.high})")
+        ) |>
+        gtsummary::modify_header(estimate = new_header_text)
+    },
+    error = function(e) table
+  )
+}
+
+
 # pipeAddCi -----------------------------------------------------------------
 
 #' Add confidence intervals to a gtsummary table
@@ -320,7 +371,7 @@ pipeAddCi <- function(
   )
   useSquareBrackets <- any(selectedStats %in% statsWithParens)
 
-  ciPattern <- if (options$ciCombine) {
+  ciPattern <- if (options$ciMerge) {
     if (useSquareBrackets) "{stat} [{ci}]" else "{stat} ({ci})"
   }
 

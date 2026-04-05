@@ -35,6 +35,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             percent = "column",
             addDifference = FALSE,
             diffConfLevel = 95,
+            diffCiMerge = FALSE,
             diffDigitsPvalue = "auto",
             boldDiffPvalue = FALSE,
             boldDiffPvalueThreshold = 0.05,
@@ -61,7 +62,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             boldQThreshold = 0.05,
             addCi = FALSE,
             confLevel = 95,
-            ciCombine = FALSE,
+            ciMerge = FALSE,
             ciContDefault = "t.test",
             ciContSpecific = NULL,
             ciDigitsCont = "auto",
@@ -316,6 +317,10 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 min=50,
                 max=99.9,
                 default=95)
+            private$..diffCiMerge <- jmvcore::OptionBool$new(
+                "diffCiMerge",
+                diffCiMerge,
+                default=FALSE)
             private$..diffDigitsPvalue <- jmvcore::OptionList$new(
                 "diffDigitsPvalue",
                 diffDigitsPvalue,
@@ -559,9 +564,9 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 min=50,
                 max=99.9,
                 default=95)
-            private$..ciCombine <- jmvcore::OptionBool$new(
-                "ciCombine",
-                ciCombine,
+            private$..ciMerge <- jmvcore::OptionBool$new(
+                "ciMerge",
+                ciMerge,
                 default=FALSE)
             private$..ciContDefault <- jmvcore::OptionList$new(
                 "ciContDefault",
@@ -677,6 +682,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..percent)
             self$.addOption(private$..addDifference)
             self$.addOption(private$..diffConfLevel)
+            self$.addOption(private$..diffCiMerge)
             self$.addOption(private$..diffDigitsPvalue)
             self$.addOption(private$..boldDiffPvalue)
             self$.addOption(private$..boldDiffPvalueThreshold)
@@ -703,7 +709,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..boldQThreshold)
             self$.addOption(private$..addCi)
             self$.addOption(private$..confLevel)
-            self$.addOption(private$..ciCombine)
+            self$.addOption(private$..ciMerge)
             self$.addOption(private$..ciContDefault)
             self$.addOption(private$..ciContSpecific)
             self$.addOption(private$..ciDigitsCont)
@@ -741,6 +747,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         percent = function() private$..percent$value,
         addDifference = function() private$..addDifference$value,
         diffConfLevel = function() private$..diffConfLevel$value,
+        diffCiMerge = function() private$..diffCiMerge$value,
         diffDigitsPvalue = function() private$..diffDigitsPvalue$value,
         boldDiffPvalue = function() private$..boldDiffPvalue$value,
         boldDiffPvalueThreshold = function() private$..boldDiffPvalueThreshold$value,
@@ -767,7 +774,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         boldQThreshold = function() private$..boldQThreshold$value,
         addCi = function() private$..addCi$value,
         confLevel = function() private$..confLevel$value,
-        ciCombine = function() private$..ciCombine$value,
+        ciMerge = function() private$..ciMerge$value,
         ciContDefault = function() private$..ciContDefault$value,
         ciContSpecific = function() private$..ciContSpecific$value,
         ciDigitsCont = function() private$..ciDigitsCont$value,
@@ -804,6 +811,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..percent = NA,
         ..addDifference = NA,
         ..diffConfLevel = NA,
+        ..diffCiMerge = NA,
         ..diffDigitsPvalue = NA,
         ..boldDiffPvalue = NA,
         ..boldDiffPvalueThreshold = NA,
@@ -830,7 +838,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..boldQThreshold = NA,
         ..addCi = NA,
         ..confLevel = NA,
-        ..ciCombine = NA,
+        ..ciMerge = NA,
         ..ciContDefault = NA,
         ..ciContSpecific = NA,
         ..ciDigitsCont = NA,
@@ -919,6 +927,7 @@ tblSummaryBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param percent .
 #' @param addDifference .
 #' @param diffConfLevel .
+#' @param diffCiMerge .
 #' @param diffDigitsPvalue .
 #' @param boldDiffPvalue .
 #' @param boldDiffPvalueThreshold .
@@ -945,7 +954,7 @@ tblSummaryBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param boldQThreshold .
 #' @param addCi .
 #' @param confLevel .
-#' @param ciCombine .
+#' @param ciMerge .
 #' @param ciContDefault .
 #' @param ciContSpecific .
 #' @param ciDigitsCont .
@@ -996,6 +1005,7 @@ tblSummary <- function(
     percent = "column",
     addDifference = FALSE,
     diffConfLevel = 95,
+    diffCiMerge = FALSE,
     diffDigitsPvalue = "auto",
     boldDiffPvalue = FALSE,
     boldDiffPvalueThreshold = 0.05,
@@ -1022,7 +1032,7 @@ tblSummary <- function(
     boldQThreshold = 0.05,
     addCi = FALSE,
     confLevel = 95,
-    ciCombine = FALSE,
+    ciMerge = FALSE,
     ciContDefault = "t.test",
     ciContSpecific,
     ciDigitsCont = "auto",
@@ -1076,6 +1086,7 @@ tblSummary <- function(
         percent = percent,
         addDifference = addDifference,
         diffConfLevel = diffConfLevel,
+        diffCiMerge = diffCiMerge,
         diffDigitsPvalue = diffDigitsPvalue,
         boldDiffPvalue = boldDiffPvalue,
         boldDiffPvalueThreshold = boldDiffPvalueThreshold,
@@ -1102,7 +1113,7 @@ tblSummary <- function(
         boldQThreshold = boldQThreshold,
         addCi = addCi,
         confLevel = confLevel,
-        ciCombine = ciCombine,
+        ciMerge = ciMerge,
         ciContDefault = ciContDefault,
         ciContSpecific = ciContSpecific,
         ciDigitsCont = ciDigitsCont,

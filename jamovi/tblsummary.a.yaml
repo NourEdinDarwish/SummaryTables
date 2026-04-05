@@ -341,6 +341,11 @@ options:
     max: 99.9
     default: 95
 
+  - name: diffCiMerge
+    title: Merge CI with difference column
+    type: Bool
+    default: false
+
   - name: diffDigitsPvalue
     title: Decimal places (large p-values)
     type: List
@@ -675,7 +680,7 @@ options:
     max: 99.9
     default: 95
 
-  - name: ciCombine
+  - name: ciMerge
     title: Merge with statistic column
     type: Bool
     default: false

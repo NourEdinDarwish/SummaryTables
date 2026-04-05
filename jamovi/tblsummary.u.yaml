@@ -214,6 +214,9 @@ children:
                 suffix: "%"
                 format: number
                 enable: ({return !!ui['groupVar'].value() && ui['addDifference'].value();})
+          - type: CheckBox
+            name: diffCiMerge
+            enable: ({return !!ui['groupVar'].value() && ui['addDifference'].value() && ui['journal'].value() !== 'jama';})
           - type: LayoutBox
             margin: none
             children:
@@ -428,7 +431,7 @@ children:
                 format: number
                 enable: (addCi)
           - type: CheckBox
-            name: ciCombine
+            name: ciMerge
             enable: (addCi)
       - type: Label
         label: Continuous Variables
