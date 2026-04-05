@@ -97,7 +97,7 @@ children:
                     children:
                       - type: CheckBox
                         name: starsShowCi
-                        enable: (addStars && !globalP && !(journal:jama) && !(journal:qjecon))
+                        enable: (addStars && !globalP && confInt && !ciMerge && !(journal:jama) && !(journal:qjecon))
                       - type: CheckBox
                         name: starsShowP
                         enable: (addStars && !globalP && !(journal:jama) && !(journal:qjecon))
