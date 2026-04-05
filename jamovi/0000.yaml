@@ -1,12 +1,12 @@
 ---
 title: Publication-Ready Summary Tables
 name: SummaryTables
-version: 0.7.0
+version: 0.7.1
 jms: '1.0'
 authors:
   - Nour Edin Darwish
 maintainer: Nour Edin Darwish <nouredindarwish@gmail.com>
-date: '2026-04-04'
+date: '2026-04-05'
 type: R
 description: >-
   A comprehensive module for creating publication-ready summary and regression
