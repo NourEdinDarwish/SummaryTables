@@ -320,7 +320,7 @@ pipeAddCi <- function(
   )
   useSquareBrackets <- any(selectedStats %in% statsWithParens)
 
-  ciPattern <- if (options$ciCombine) {
+  ciPattern <- if (options$ciMerge) {
     if (useSquareBrackets) "{stat} [{ci}]" else "{stat} ({ci})"
   }
 

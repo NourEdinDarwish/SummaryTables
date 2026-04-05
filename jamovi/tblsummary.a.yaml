@@ -675,7 +675,7 @@ options:
     max: 99.9
     default: 95
 
-  - name: ciCombine
+  - name: ciMerge
     title: Merge with statistic column
     type: Bool
     default: false
