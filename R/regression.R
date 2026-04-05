@@ -203,6 +203,9 @@ pipeAddVif <- function(table, options, collector) {
     return(table)
   }
 
+  # runtime fix for non-syntactic variable names
+  .patchArdCarVif()
+
   runSafe(gtsummary::add_vif(table), collector)
 }
 
