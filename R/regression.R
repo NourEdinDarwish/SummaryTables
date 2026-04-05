@@ -175,12 +175,13 @@ buildUniRegTable <- function(
 #' @param collector Collector environment from newCollector()
 #' @return The table with global p-values (or unchanged)
 pipeAddGlobalP <- function(table, options, collector) {
-  if (!options$globalP) {
+  if (!options$globalP || options$addStars ||
+      options$journal == "qjecon") {
     return(table)
   }
 
   runSafe(
-    gtsummary::add_global_p(table),
+    gtsummary::add_global_p(table, keep = options$globalPKeep),
     collector
   )
 }
@@ -281,7 +282,8 @@ pipeAddNEvent <- function(table, options, collector) {
 #' @param collector Collector environment from newCollector()
 #' @return The table with significance stars (or unchanged)
 pipeAddSignificanceStars <- function(table, options, collector) {
-  if (!options$addStars) {
+  if (!options$addStars || options$globalP ||
+      options$journal %in% c("jama", "qjecon")) {
     return(table)
   }
 

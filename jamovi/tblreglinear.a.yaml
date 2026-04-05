@@ -151,6 +151,11 @@ options:
     type: Bool
     default: false
 
+  - name: globalPKeep
+    title: Keep individual p-values
+    type: Bool
+    default: false
+
   - name: addStars
     title: Significance stars
     type: Bool
