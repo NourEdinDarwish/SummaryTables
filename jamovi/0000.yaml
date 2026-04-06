@@ -89,6 +89,19 @@ analyses:
       intervals, and p-values. Includes global p-values, event counts, variance
       inflation factors, model fit statistics, significance stars, and p-value
       adjustments.
+  - title: Multivariable Cox Regression
+    name: tblRegCox
+    ns: SummaryTables
+    menuGroup: Summary Tables
+    menuSubgroup: Multivariable Regression
+    menuTitle: Cox Regression
+    category: analyses
+    description: >-
+      Fit a multivariable Cox proportional hazards model and display a
+      publication-ready coefficient table with hazard ratios, confidence
+      intervals, and p-values. Includes global p-values, event counts, variance
+      inflation factors, model fit statistics, significance stars, and p-value
+      adjustments.
   - title: Univariable Linear Regression
     name: tblUniRegLinear
     ns: SummaryTables
