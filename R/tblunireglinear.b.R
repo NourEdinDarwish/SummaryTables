@@ -50,7 +50,7 @@ tblUniRegLinearClass <- R6::R6Class(
       table <- runSafe(
         buildUniRegTable(
           data = data,
-          dep = dep,
+          y = jmvcore::composeTerm(dep),
           include = allVars,
           method = lm,
           options = self$options
