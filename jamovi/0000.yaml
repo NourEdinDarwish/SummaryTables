@@ -1,12 +1,12 @@
 ---
 title: Publication-Ready Summary Tables
 name: SummaryTables
-version: 0.8.0
+version: 0.9.0
 jms: '1.0'
 authors:
   - Nour Edin Darwish
 maintainer: Nour Edin Darwish <nouredindarwish@gmail.com>
-date: '2026-04-06'
+date: '2026-04-07'
 type: R
 description: >-
   A comprehensive module for creating publication-ready summary and regression
@@ -89,6 +89,19 @@ analyses:
       intervals, and p-values. Includes global p-values, event counts, variance
       inflation factors, model fit statistics, significance stars, and p-value
       adjustments.
+  - title: Multivariable Cox Regression
+    name: tblRegCox
+    ns: SummaryTables
+    menuGroup: Summary Tables
+    menuSubgroup: Multivariable Regression
+    menuTitle: Cox Regression
+    category: analyses
+    description: >-
+      Fit a multivariable Cox proportional hazards model and display a
+      publication-ready coefficient table with hazard ratios, confidence
+      intervals, and p-values. Includes global p-values, event counts, variance
+      inflation factors, model fit statistics, significance stars, and p-value
+      adjustments.
   - title: Univariable Linear Regression
     name: tblUniRegLinear
     ns: SummaryTables
@@ -114,6 +127,19 @@ analyses:
       against a binary outcome and display a publication-ready table with odds
       ratios, confidence intervals, and p-values. Includes global p-values,
       event counts, significance stars, and p-value adjustments.
+  - title: Univariable Cox Regression
+    name: tblUniRegCox
+    ns: SummaryTables
+    menuGroup: Summary Tables
+    menuSubgroup: Univariable Regression
+    menuTitle: Cox Regression
+    category: analyses
+    description: >-
+      Run separate univariable Cox proportional hazards models for each
+      predictor against a time-to-event outcome and display a publication-ready
+      table with hazard ratios, confidence intervals, and p-values. Includes
+      global p-values, event counts, significance stars, and p-value
+      adjustments.
 usesNative: true
 minApp: 1.0.8
 

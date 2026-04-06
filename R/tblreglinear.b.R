@@ -43,7 +43,7 @@ tblRegLinearClass <- R6::R6Class(
       )
 
       # Formula and model ---------------------------------------------------
-      formula <- buildFormula(dep, terms)
+      formula <- buildFormula(jmvcore::composeTerm(dep), terms)
       model <- lm(formula, data = data)
 
       # Regression table ----------------------------------------------------

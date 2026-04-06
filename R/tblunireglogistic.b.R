@@ -59,7 +59,7 @@ tblUniRegLogisticClass <- R6::R6Class(
       table <- runSafe(
         buildUniRegTable(
           data = data,
-          dep = dep,
+          y = jmvcore::composeTerm(dep),
           include = allVars,
           method = glm,
           method.args = list(family = binomial),

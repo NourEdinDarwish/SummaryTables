@@ -1,22 +1,25 @@
-tblRegLogisticClass <- R6::R6Class(
-  "tblRegLogisticClass",
-  inherit = tblRegLogisticBase,
+tblUniRegCoxClass <- R6::R6Class(
+  "tblUniRegCoxClass",
+  inherit = tblUniRegCoxBase,
   private = list(
     .run = function() {
       on.exit(self$results$status$setVisible(FALSE), add = TRUE)
       # Guard ---------------------------------------------------------------
-      dep <- self$options$dep
-      terms <- self$options$modelTerms
+      elapsed <- self$options$elapsed
+      event <- self$options$event
+      covs <- self$options$covs
+      factors <- self$options$factors
 
-      if (is.null(dep) || length(terms) == 0) {
+      if (is.null(elapsed) || is.null(event) ||
+          (length(covs) == 0 && length(factors) == 0)) {
         renderPlaceholder(
-          "Add a dependent variable and at least one term to generate the table", #nolint
+          "Add a time variable, an event variable, and at least one covariate or factor to generate the table", #nolint
           self$results$tbl
         )
         return()
       }
 
-      validateVarNames(c(self$options$covs, self$options$factors))
+      validateVarNames(c(covs, factors))
 
       # Collector -----------------------------------------------------------
       collector <- newCollector()
@@ -31,33 +34,45 @@ tblRegLogisticClass <- R6::R6Class(
 
       # Data prep -----------------------------------------------------------
       data <- self$data
-      data[[dep]] <- as.factor(data[[dep]])
 
-      if (length(levels(data[[dep]])) != 2) {
-        jmvcore::reject(
-          jmvcore::format(
-            "The dependent variable '{}' must have exactly two levels for binomial logistic regression", # nolint
-            dep
-          )
+      # Convert event variable to 0/1 numeric
+      if (is.numeric(data[[event]])) {
+        data[[event]] <- jmvcore::toNumeric(data[[event]])
+      } else {
+        data[[event]] <- ifelse(
+          data[[event]] == self$options$eventLevel, 1, 0
         )
       }
 
-      data[self$options$covs] <- lapply(
-        data[self$options$covs],
-        jmvcore::toNumeric
-      )
-      data[self$options$factors] <- lapply(
-        data[self$options$factors],
-        as.factor
-      )
+      data[[elapsed]] <- jmvcore::toNumeric(data[[elapsed]])
 
-      # Formula and model ---------------------------------------------------
-      formula <- buildFormula(jmvcore::composeTerm(dep), terms)
-      model <- glm(formula, data = data, family = binomial)
+      data[covs] <- lapply(data[covs], jmvcore::toNumeric)
+      data[factors] <- lapply(data[factors], as.factor)
+
+      # Variable ordering (cross-listbox) -----------------------------------
+      orderState <- trackVariableOrder(
+        savedState = self$results$tbl$state,
+        factors,
+        covs
+      )
+      allVars <- orderState$vars
+      self$results$tbl$setState(orderState)
 
       # Regression table ----------------------------------------------------
+      survY <- str2lang(sprintf(
+        "survival::Surv(%s, %s)",
+        jmvcore::composeTerm(elapsed),
+        jmvcore::composeTerm(event)
+      ))
+
       table <- runSafe(
-        buildMultiRegTable(model, self$options),
+        buildUniRegTable(
+          data = data,
+          y = survY,
+          include = allVars,
+          method = survival::coxph,
+          options = self$options
+        ),
         collector
       )
 
@@ -71,12 +86,6 @@ tblRegLogisticClass <- R6::R6Class(
       table <- pipeAddQ(
         table,
         hasPvalue = TRUE,
-        options = self$options,
-        collector = collector
-      )
-
-      table <- pipeAddVif(
-        table,
         options = self$options,
         collector = collector
       )
@@ -104,12 +113,6 @@ tblRegLogisticClass <- R6::R6Class(
         options = self$options
       )
 
-      table <- pipeAddGlance(
-        table,
-        options = self$options,
-        collector = collector
-      )
-
       # Text formatting -----------------------------------------------------
       table <- applyTextFormatting(
         table,
@@ -117,8 +120,13 @@ tblRegLogisticClass <- R6::R6Class(
         options = self$options
       )
 
-      # Render --------------------------------------------------------------
+      # Render and export ---------------------------------------------------
       renderHtml(table, self$results$tbl)
+
+      if (self$options$export) {
+        path <- resolveExportPath(self$options$path)
+        exportDocx(table, path, self$options, self$results)
+      }
 
       # Notices -------------------------------------------------------------
       displayNotices(collector, self$options, self$results)

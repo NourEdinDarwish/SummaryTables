@@ -30,17 +30,20 @@ validateVarNames <- function(vars) {
 
 # buildFormula --------------------------------------------------------------
 
-#' Build a model formula from jamovi options
+#' Build a model formula from a pre-formatted LHS and jamovi model terms
 #'
-#' Shared helper for all regression types (linear, logistic, etc).
+#' Shared helper for all regression types (linear, logistic, Cox, etc).
+#' The caller is responsible for formatting the left-hand side, e.g.
+#' `jmvcore::composeTerm(dep)` for standard regression or
+#' `sprintf("survival::Surv(%s, %s)", ...)` for Cox regression.
 #'
-#' @param dep Dependent variable name
+#' @param y Pre-formatted left-hand side string
 #' @param terms modelTerms list from self$options$modelTerms
 #' @return A formula object
-buildFormula <- function(dep, terms) {
+buildFormula <- function(y, terms) {
   as.formula(
     paste(
-      jmvcore::composeTerm(dep),
+      y,
       "~",
       paste(jmvcore::composeTerms(terms), collapse = " + ")
     )
@@ -89,7 +92,7 @@ buildMultiRegTable <- function(model, options) {
   args$exponentiate <- optTrue(options$exponentiate)
   args$conf.int <- options$confInt
   args$conf.level <- options$confLevel / 100
-  args$intercept <- options$intercept
+  args$intercept <- optTrue(options$intercept)
 
   args$add_estimate_to_reference_rows <- options$addRefRowEstimate
 
@@ -117,9 +120,12 @@ buildMultiRegTable <- function(model, options) {
 #' table directly. Each predictor is regressed individually against the outcome.
 #'
 #' @param data Data frame
-#' @param dep Dependent variable name (string)
+#' @param y Pre-formatted outcome (string or call). For standard regression
+#'   pass a string from `composeTerm(dep)` (e.g. `"age"` or `` "`T Stage`" ``).
+#'   For Cox regression pass a call object from
+#'   `str2lang("survival::Surv(time, event)")`.
 #' @param include Character vector of predictor variable names
-#' @param method Regression function (e.g. lm, glm)
+#' @param method Regression function (e.g. lm, glm, survival::coxph)
 #' @param method.args Named list of additional arguments passed to method
 #'   (e.g. `list(family = binomial)`). Captured via `substitute()` so that
 #'   tbl_uvregression's internal NSE works through `do.call()`.
@@ -127,7 +133,7 @@ buildMultiRegTable <- function(model, options) {
 #' @return A tbl_uvregression object
 buildUniRegTable <- function(
   data,
-  dep,
+  y,
   include,
   method,
   method.args = list(),
@@ -136,7 +142,7 @@ buildUniRegTable <- function(
   args <- list(
     data = data,
     method = method,
-    y = jmvcore::composeTerm(dep),
+    y = y,
     include = include,
     method.args = substitute(method.args),
     hide_n = TRUE

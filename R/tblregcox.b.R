@@ -1,16 +1,17 @@
-tblRegLogisticClass <- R6::R6Class(
-  "tblRegLogisticClass",
-  inherit = tblRegLogisticBase,
+tblRegCoxClass <- R6::R6Class(
+  "tblRegCoxClass",
+  inherit = tblRegCoxBase,
   private = list(
     .run = function() {
       on.exit(self$results$status$setVisible(FALSE), add = TRUE)
       # Guard ---------------------------------------------------------------
-      dep <- self$options$dep
+      elapsed <- self$options$elapsed
+      event <- self$options$event
       terms <- self$options$modelTerms
 
-      if (is.null(dep) || length(terms) == 0) {
+      if (is.null(elapsed) || is.null(event) || length(terms) == 0) {
         renderPlaceholder(
-          "Add a dependent variable and at least one term to generate the table", #nolint
+          "Add a time variable, an event variable, and at least one term to generate the table", #nolint
           self$results$tbl
         )
         return()
@@ -31,16 +32,17 @@ tblRegLogisticClass <- R6::R6Class(
 
       # Data prep -----------------------------------------------------------
       data <- self$data
-      data[[dep]] <- as.factor(data[[dep]])
 
-      if (length(levels(data[[dep]])) != 2) {
-        jmvcore::reject(
-          jmvcore::format(
-            "The dependent variable '{}' must have exactly two levels for binomial logistic regression", # nolint
-            dep
-          )
+      # Convert event variable to 0/1 numeric
+      if (is.numeric(data[[event]])) {
+        data[[event]] <- jmvcore::toNumeric(data[[event]])
+      } else {
+        data[[event]] <- ifelse(
+          data[[event]] == self$options$eventLevel, 1, 0
         )
       }
+
+      data[[elapsed]] <- jmvcore::toNumeric(data[[elapsed]])
 
       data[self$options$covs] <- lapply(
         data[self$options$covs],
@@ -52,8 +54,13 @@ tblRegLogisticClass <- R6::R6Class(
       )
 
       # Formula and model ---------------------------------------------------
-      formula <- buildFormula(jmvcore::composeTerm(dep), terms)
-      model <- glm(formula, data = data, family = binomial)
+      survLHS <- sprintf(
+        "survival::Surv(%s, %s)",
+        jmvcore::composeTerm(elapsed),
+        jmvcore::composeTerm(event)
+      )
+      formula <- buildFormula(survLHS, terms)
+      model <- survival::coxph(formula, data = data, model = TRUE)
 
       # Regression table ----------------------------------------------------
       table <- runSafe(
@@ -117,8 +124,13 @@ tblRegLogisticClass <- R6::R6Class(
         options = self$options
       )
 
-      # Render --------------------------------------------------------------
+      # Render and export ---------------------------------------------------
       renderHtml(table, self$results$tbl)
+
+      if (self$options$export) {
+        path <- resolveExportPath(self$options$path)
+        exportDocx(table, path, self$options, self$results)
+      }
 
       # Notices -------------------------------------------------------------
       displayNotices(collector, self$options, self$results)
