@@ -114,6 +114,19 @@ analyses:
       against a binary outcome and display a publication-ready table with odds
       ratios, confidence intervals, and p-values. Includes global p-values,
       event counts, significance stars, and p-value adjustments.
+  - title: Univariable Cox Regression
+    name: tblUniRegCox
+    ns: SummaryTables
+    menuGroup: Summary Tables
+    menuSubgroup: Univariable Regression
+    menuTitle: Cox Regression
+    category: analyses
+    description: >-
+      Run separate univariable Cox proportional hazards models for each
+      predictor against a time-to-event outcome and display a publication-ready
+      table with hazard ratios, confidence intervals, and p-values. Includes
+      global p-values, event counts, significance stars, and p-value
+      adjustments.
 usesNative: true
 minApp: 1.0.8
 
