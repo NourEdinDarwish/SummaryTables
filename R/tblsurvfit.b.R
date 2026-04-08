@@ -117,11 +117,32 @@ tblSurvfitClass <- R6::R6Class(
         tblArgs$label <- as.list(setNames(strata, strataClean))
       }
 
+      # Label header -----------------------------------------------------------
+      headers <- buildSurvfitHeader(
+        statistic = self$options$statistic,
+        type      = self$options$type,
+        confLevel = self$options$confLevel,
+        timeUnit  = self$options$timeUnit,
+        nTimes    = length(timesVec)
+      )
+      tblArgs$label_header <- headers$label_header
+
       # Core table -----------------------------------------------------------
       table <- runSafe(
         do.call(gtsummary::tbl_survfit, tblArgs),
         collector
       )
+
+      # Spanning header for multiple time points
+      if (!is.null(headers$spanning_header)) {
+        table <- runSafe(
+          gtsummary::modify_spanning_header(
+            table,
+            gtsummary::all_stat_cols() ~ headers$spanning_header
+          ),
+          collector
+        )
+      }
 
       # Pipeline: add_n and add_nevent ---------------------------------------
       if (self$options$addN) {

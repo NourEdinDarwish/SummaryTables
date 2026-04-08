@@ -63,3 +63,63 @@ buildSurvfitList <- function(data, elapsed, event, strataClean, confInt) {
 
   fits
 }
+
+
+# buildSurvfitHeader ---------------------------------------------------------
+
+#' Build descriptive label and spanning headers for tbl_survfit
+#'
+#' Returns a list with `label_header` (per-column glue template) and optionally
+#' `spanning_header` for multi-time-point tables. The CI portion uses the same
+#' dynamic formatting as the regression analysis.
+#'
+#' @param statistic `"times"` or `"median"`
+#' @param type `"survival"`, `"risk"`, or `"cumhaz"`
+#' @param confLevel Numeric confidence level as percentage (e.g. 95)
+#' @param timeUnit Character label for the time unit (e.g. "Months", "-Year")
+#' @param nTimes Number of time points (used only when statistic == "times")
+#' @return A list with `label_header` and `spanning_header` (NULL if not needed)
+buildSurvfitHeader <- function(
+  statistic,
+  type,
+  confLevel,
+  timeUnit,
+  nTimes = 1
+) {
+  ciPart <- paste0(
+    " (",
+    gtsummary::style_number(confLevel),
+    "% CI)"
+  )
+
+  typePart <- switch(
+    type,
+    "survival" = "Survival",
+    "risk" = "Cumulative Incidence",
+    "cumhaz" = "Cumulative Hazard"
+  )
+
+  # No space before unit if it starts with a hyphen (e.g. "-Year" → "5-Year")
+  sep <- if (startsWith(timeUnit, "-")) "" else " "
+  timeGlue <- paste0("{time}", sep, timeUnit)
+
+  if (statistic == "median") {
+    return(list(
+      label_header = paste0("**Median Survival", ciPart, "**"),
+      spanning_header = NULL
+    ))
+  }
+
+  # statistic == "times"
+  if (nTimes >= 2) {
+    list(
+      label_header = paste0("**", timeGlue, "**"),
+      spanning_header = paste0("**", typePart, ciPart, "**")
+    )
+  } else {
+    list(
+      label_header = paste0("**", typePart, " at ", timeGlue, ciPart, "**"),
+      spanning_header = NULL
+    )
+  }
+}

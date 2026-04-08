@@ -55,6 +55,11 @@ options:
     type: String
     default: "12, 24"
 
+  - name: timeUnit
+    title: "Unit"
+    type: String
+    default: "Months"
+
   - name: type
     title: Estimate type
     type: List
