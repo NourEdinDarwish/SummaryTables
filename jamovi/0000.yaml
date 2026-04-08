@@ -63,6 +63,17 @@ analyses:
     description: >-
       Display response distributions for ordered categorical (Likert-type) items
       with per-item statistics and counts.
+  - title: Survival Table
+    name: tblSurvfit
+    ns: SummaryTables
+    menuGroup: Summary Tables
+    menuTitle: Survival Table
+    category: analyses
+    description: >-
+      Create a Kaplan-Meier survival table showing survival probabilities at
+      specific times or survival quantiles (e.g., median survival). Supports
+      stratification by one or more grouping variables, with optional N and
+      event N columns.
   - title: Multivariable Linear Regression
     name: tblRegLinear
     ns: SummaryTables

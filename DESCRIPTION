@@ -34,7 +34,9 @@ Imports:
     jmvcore (>= 0.8.5),
     parameters,
     R6,
-    smd
+    rlang,
+    smd,
+    survival
 Remotes: 
     ddsjoberg/gtsummary@952b665,
     insightsengineering/cards@v0.7.1,

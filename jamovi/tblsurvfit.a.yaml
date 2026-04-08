@@ -1,0 +1,198 @@
+name: tblSurvfit
+title: Survival Table
+menuGroup: Summary Tables
+menuTitle: Survival Table
+version: "1.0.0"
+jas: "1.2"
+
+options:
+  - name: data
+    type: Data
+
+  - name: elapsed
+    title: Time Elapsed
+    type: Variable
+    suggested:
+      - continuous
+    permitted:
+      - numeric
+
+  - name: event
+    title: Event
+    type: Variable
+    suggested:
+      - continuous
+      - nominal
+    permitted:
+      - factor
+      - numeric
+
+  - name: eventLevel
+    title: Event level
+    type: Level
+    variable: (event)
+
+  - name: strata
+    title: Stratifying Variables
+    type: Variables
+    suggested:
+      - nominal
+    permitted:
+      - factor
+
+  - name: statistic
+    title: Statistic
+    type: List
+    options:
+      - title: "Estimates at specific times"
+        name: times
+      - title: "Survival time quantiles (e.g., median)"
+        name: probs
+    default: times
+
+  - name: times
+    title: "Time points"
+    type: String
+    default: "12, 24"
+
+  - name: type
+    title: Estimate type
+    type: List
+    options:
+      - title: "Survival probability"
+        name: survival
+      - title: "Cumulative incidence (1 − S)"
+        name: risk
+      - title: "Cumulative hazard (−log(S))"
+        name: cumhaz
+    default: survival
+
+  - name: probs
+    title: "Percentiles"
+    type: String
+    default: "50"
+
+  - name: digitsEstimate
+    title: Decimal places
+    type: List
+    options:
+      - title: Auto
+        name: auto
+      - title: "0"
+        name: "0"
+      - title: "1"
+        name: "1"
+      - title: "2"
+        name: "2"
+      - title: "3"
+        name: "3"
+      - title: "4"
+        name: "4"
+      - title: "5"
+        name: "5"
+    default: auto
+
+  - name: confLevel
+    title: Confidence level
+    type: Number
+    min: 50
+    max: 99.9
+    default: 95
+
+  - name: addN
+    title: Add N column
+    type: Bool
+    default: false
+
+  - name: addNEvent
+    title: Add event N column
+    type: Bool
+    default: false
+
+  - name: journal
+    title: Theme
+    type: List
+    options:
+      - title: Default
+        name: default
+      - title: JAMA
+        name: jama
+      - title: The Lancet
+        name: lancet
+      - title: The New England Journal of Medicine
+        name: nejm
+      - title: The Quarterly Journal of Economics
+        name: qjecon
+    default: default
+
+  - name: compact
+    title: Compact
+    type: Bool
+    default: false
+
+  - name: language
+    title: Language
+    type: List
+    options:
+      - title: Chinese (Simplified)
+        name: zh-cn
+      - title: Chinese (Traditional)
+        name: zh-tw
+      - title: Dutch
+        name: nl
+      - title: English
+        name: en
+      - title: French
+        name: fr
+      - title: German
+        name: de
+      - title: Gujarati
+        name: gu
+      - title: Hindi
+        name: hi
+      - title: Icelandic
+        name: is
+      - title: Japanese
+        name: ja
+      - title: Korean
+        name: kr
+      - title: Marathi
+        name: mr
+      - title: Norwegian
+        name: no
+      - title: Portuguese
+        name: pt
+      - title: Spanish
+        name: es
+      - title: Swedish
+        name: se
+    default: en
+
+  - name: boldLabels
+    title: Bold labels
+    type: Bool
+    default: false
+
+  - name: boldLevels
+    title: Bold levels
+    type: Bool
+    default: false
+
+  - name: italicizeLabels
+    title: Italicize labels
+    type: Bool
+    default: false
+
+  - name: italicizeLevels
+    title: Italicize levels
+    type: Bool
+    default: false
+
+  - name: path
+    title: Path
+    type: String
+    default: ~/Desktop/Survival Table.docx
+
+  - name: export
+    title: Save
+    type: Action
