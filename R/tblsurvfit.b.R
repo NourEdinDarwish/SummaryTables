@@ -122,7 +122,7 @@ tblSurvfitClass <- R6::R6Class(
         statistic = self$options$statistic,
         type      = self$options$type,
         confLevel = self$options$confLevel,
-        timeUnit  = self$options$timeUnit,
+        timeSuffix = self$options$timeSuffix,
         nTimes    = length(timesVec)
       )
       tblArgs$label_header <- headers$label_header

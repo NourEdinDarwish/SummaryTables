@@ -12,7 +12,7 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             strata = NULL,
             statistic = "times",
             times = "12, 24",
-            timeUnit = "Months",
+            timeSuffix = "-Month",
             type = "survival",
             digitsEstimate = "auto",
             confLevel = 95,
@@ -72,10 +72,10 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 "times",
                 times,
                 default="12, 24")
-            private$..timeUnit <- jmvcore::OptionString$new(
-                "timeUnit",
-                timeUnit,
-                default="Months")
+            private$..timeSuffix <- jmvcore::OptionString$new(
+                "timeSuffix",
+                timeSuffix,
+                default="-Month")
             private$..type <- jmvcore::OptionList$new(
                 "type",
                 type,
@@ -175,7 +175,7 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..strata)
             self$.addOption(private$..statistic)
             self$.addOption(private$..times)
-            self$.addOption(private$..timeUnit)
+            self$.addOption(private$..timeSuffix)
             self$.addOption(private$..type)
             self$.addOption(private$..digitsEstimate)
             self$.addOption(private$..confLevel)
@@ -198,7 +198,7 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         strata = function() private$..strata$value,
         statistic = function() private$..statistic$value,
         times = function() private$..times$value,
-        timeUnit = function() private$..timeUnit$value,
+        timeSuffix = function() private$..timeSuffix$value,
         type = function() private$..type$value,
         digitsEstimate = function() private$..digitsEstimate$value,
         confLevel = function() private$..confLevel$value,
@@ -220,7 +220,7 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..strata = NA,
         ..statistic = NA,
         ..times = NA,
-        ..timeUnit = NA,
+        ..timeSuffix = NA,
         ..type = NA,
         ..digitsEstimate = NA,
         ..confLevel = NA,
@@ -293,7 +293,7 @@ tblSurvfitBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param strata .
 #' @param statistic .
 #' @param times .
-#' @param timeUnit .
+#' @param timeSuffix .
 #' @param type .
 #' @param digitsEstimate .
 #' @param confLevel .
@@ -329,7 +329,7 @@ tblSurvfit <- function(
     strata,
     statistic = "times",
     times = "12, 24",
-    timeUnit = "Months",
+    timeSuffix = "-Month",
     type = "survival",
     digitsEstimate = "auto",
     confLevel = 95,
@@ -367,7 +367,7 @@ tblSurvfit <- function(
         strata = strata,
         statistic = statistic,
         times = times,
-        timeUnit = timeUnit,
+        timeSuffix = timeSuffix,
         type = type,
         digitsEstimate = digitsEstimate,
         confLevel = confLevel,

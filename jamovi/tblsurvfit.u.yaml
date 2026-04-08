@@ -54,7 +54,7 @@ children:
                       row: 0
                       column: 0
                   - type: TextBox
-                    name: timeUnit
+                    name: timeSuffix
                     format: string
                     width: large
                     enable: (statistic:times)

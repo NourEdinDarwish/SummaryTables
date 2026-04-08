@@ -76,14 +76,15 @@ buildSurvfitList <- function(data, elapsed, event, strataClean, confInt) {
 #' @param statistic `"times"` or `"median"`
 #' @param type `"survival"`, `"risk"`, or `"cumhaz"`
 #' @param confLevel Numeric confidence level as percentage (e.g. 95)
-#' @param timeUnit Character label for the time unit (e.g. "Months", "-Year")
+#' @param timeSuffix Character label appended to time values (e.g. "-Month",
+#'   "-Year")
 #' @param nTimes Number of time points (used only when statistic == "times")
 #' @return A list with `label_header` and `spanning_header` (NULL if not needed)
 buildSurvfitHeader <- function(
   statistic,
   type,
   confLevel,
-  timeUnit,
+  timeSuffix,
   nTimes = 1
 ) {
   ciPart <- paste0(
@@ -99,9 +100,7 @@ buildSurvfitHeader <- function(
     "cumhaz" = "Cumulative Hazard"
   )
 
-  # No space before unit if it starts with a hyphen (e.g. "-Year" → "5-Year")
-  sep <- if (startsWith(timeUnit, "-")) "" else " "
-  timeGlue <- paste0("{time}", sep, timeUnit)
+  timeGlue <- paste0("{time}", timeSuffix)
 
   if (statistic == "median") {
     return(list(
@@ -118,7 +117,7 @@ buildSurvfitHeader <- function(
     )
   } else {
     list(
-      label_header = paste0("**", typePart, " at ", timeGlue, ciPart, "**"),
+      label_header = paste0("**", timeGlue, " ", typePart, ciPart, "**"),
       spanning_header = NULL
     )
   }

@@ -44,31 +44,31 @@ options:
     title: Statistic
     type: List
     options:
-      - title: "Estimates at specific times"
+      - title: Estimates at specific times
         name: times
-      - title: "Median survival time"
+      - title: Median survival time
         name: median
     default: times
 
   - name: times
-    title: "Time points"
+    title: Time points
     type: String
     default: "12, 24"
 
-  - name: timeUnit
-    title: "Unit"
+  - name: timeSuffix
+    title: Suffix
     type: String
-    default: "Months"
+    default: "-Month"
 
   - name: type
     title: Estimate type
     type: List
     options:
-      - title: "Survival probability"
+      - title: Survival probability
         name: survival
       - title: "Cumulative incidence (1 − S)"
         name: risk
-      - title: "Cumulative hazard (−log(S))"
+      - title: "Cumulative hazard (−log S)"
         name: cumhaz
     default: survival
 
