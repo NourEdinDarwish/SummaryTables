@@ -46,8 +46,8 @@ options:
     options:
       - title: "Estimates at specific times"
         name: times
-      - title: "Survival time quantiles (e.g., median)"
-        name: probs
+      - title: "Median survival time"
+        name: median
     default: times
 
   - name: times
@@ -66,11 +66,6 @@ options:
       - title: "Cumulative hazard (−log(S))"
         name: cumhaz
     default: survival
-
-  - name: probs
-    title: "Percentiles"
-    type: String
-    default: "50"
 
   - name: digitsEstimate
     title: Decimal places

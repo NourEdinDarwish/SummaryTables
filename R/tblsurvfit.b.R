@@ -58,7 +58,7 @@ tblSurvfitClass <- R6::R6Class(
         timesVec <- parseCommaNumeric(self$options$times)
         probsVec <- NULL
       } else {
-        probsVec <- parseCommaNumeric(self$options$probs) / 100
+        probsVec <- 0.5
         timesVec <- NULL
       }
 

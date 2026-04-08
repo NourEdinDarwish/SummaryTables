@@ -13,7 +13,6 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             statistic = "times",
             times = "12, 24",
             type = "survival",
-            probs = "50",
             digitsEstimate = "auto",
             confLevel = 95,
             addN = FALSE,
@@ -66,7 +65,7 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 statistic,
                 options=list(
                     "times",
-                    "probs"),
+                    "median"),
                 default="times")
             private$..times <- jmvcore::OptionString$new(
                 "times",
@@ -80,10 +79,6 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "risk",
                     "cumhaz"),
                 default="survival")
-            private$..probs <- jmvcore::OptionString$new(
-                "probs",
-                probs,
-                default="50")
             private$..digitsEstimate <- jmvcore::OptionList$new(
                 "digitsEstimate",
                 digitsEstimate,
@@ -176,7 +171,6 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..statistic)
             self$.addOption(private$..times)
             self$.addOption(private$..type)
-            self$.addOption(private$..probs)
             self$.addOption(private$..digitsEstimate)
             self$.addOption(private$..confLevel)
             self$.addOption(private$..addN)
@@ -199,7 +193,6 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         statistic = function() private$..statistic$value,
         times = function() private$..times$value,
         type = function() private$..type$value,
-        probs = function() private$..probs$value,
         digitsEstimate = function() private$..digitsEstimate$value,
         confLevel = function() private$..confLevel$value,
         addN = function() private$..addN$value,
@@ -221,7 +214,6 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..statistic = NA,
         ..times = NA,
         ..type = NA,
-        ..probs = NA,
         ..digitsEstimate = NA,
         ..confLevel = NA,
         ..addN = NA,
@@ -294,7 +286,6 @@ tblSurvfitBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param statistic .
 #' @param times .
 #' @param type .
-#' @param probs .
 #' @param digitsEstimate .
 #' @param confLevel .
 #' @param addN .
@@ -330,7 +321,6 @@ tblSurvfit <- function(
     statistic = "times",
     times = "12, 24",
     type = "survival",
-    probs = "50",
     digitsEstimate = "auto",
     confLevel = 95,
     addN = FALSE,
@@ -368,7 +358,6 @@ tblSurvfit <- function(
         statistic = statistic,
         times = times,
         type = type,
-        probs = probs,
         digitsEstimate = digitsEstimate,
         confLevel = confLevel,
         addN = addN,

@@ -51,22 +51,17 @@ children:
                 name: type
                 enable: (statistic:times)
           - type: RadioButton
-            name: statistic_probs
+            name: statistic_median
             optionName: statistic
-            optionPart: probs
-            children:
-              - type: TextBox
-                name: probs
-                format: string
-                suffix: "%"
-                width: large
-                enable: (statistic:probs)
-      - type: ComboBox
-        name: digitsEstimate
-      - type: TextBox
-        name: confLevel
-        suffix: "%"
-        format: number
+            optionPart: median
+      - type: LayoutBox
+        children:
+          - type: ComboBox
+            name: digitsEstimate
+          - type: TextBox
+            name: confLevel
+            suffix: "%"
+            format: number
       - type: CheckBox
         name: addN
       - type: CheckBox
