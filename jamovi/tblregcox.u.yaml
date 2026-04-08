@@ -44,7 +44,7 @@ children:
         persistentItems: true
         stretchFactor: 1
         format: term
-        higherOrders: false
+        higherOrders: true
         children:
           - type: TargetLayoutBox
             transferAction: interactions
