@@ -143,6 +143,38 @@ children:
               ui['boldPvalue'].value();})
 
   - type: CollapseBox
+    label: Q-value (P-value Adjustment)
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: CheckBox
+        name: addQ
+        enable: >
+          ({return (ui['strata'].value() || []).length > 0 &&
+          ui['addPvalue'].value();})
+      - type: ComboBox
+        name: qMethod
+        enable: >
+          ({return (ui['strata'].value() || []).length > 0 &&
+          ui['addPvalue'].value() &&
+          ui['addQ'].value();})
+      - type: CheckBox
+        name: boldQ
+        enable: >
+          ({return (ui['strata'].value() || []).length > 0 &&
+          ui['addPvalue'].value() &&
+          ui['addQ'].value();})
+        children:
+          - type: TextBox
+            name: boldQThreshold
+            format: number
+            enable: >
+              ({return (ui['strata'].value() || []).length > 0 &&
+              ui['addPvalue'].value() &&
+              ui['addQ'].value() &&
+              ui['boldQ'].value();})
+
+  - type: CollapseBox
     label: Appearance
     collapsed: true
     stretchFactor: 1

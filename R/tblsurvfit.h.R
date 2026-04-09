@@ -24,6 +24,10 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             digitsPvalue = "auto",
             boldPvalue = FALSE,
             boldPvalueThreshold = 0.05,
+            addQ = FALSE,
+            qMethod = "BH",
+            boldQ = FALSE,
+            boldQThreshold = 0.05,
             journal = "default",
             compact = FALSE,
             language = "en",
@@ -172,6 +176,32 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 min=0,
                 max=1,
                 default=0.05)
+            private$..addQ <- jmvcore::OptionBool$new(
+                "addQ",
+                addQ,
+                default=FALSE)
+            private$..qMethod <- jmvcore::OptionList$new(
+                "qMethod",
+                qMethod,
+                options=list(
+                    "BH",
+                    "BY",
+                    "bonferroni",
+                    "holm",
+                    "hochberg",
+                    "hommel",
+                    "none"),
+                default="BH")
+            private$..boldQ <- jmvcore::OptionBool$new(
+                "boldQ",
+                boldQ,
+                default=FALSE)
+            private$..boldQThreshold <- jmvcore::OptionNumber$new(
+                "boldQThreshold",
+                boldQThreshold,
+                min=0,
+                max=1,
+                default=0.05)
             private$..journal <- jmvcore::OptionList$new(
                 "journal",
                 journal,
@@ -249,6 +279,10 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..digitsPvalue)
             self$.addOption(private$..boldPvalue)
             self$.addOption(private$..boldPvalueThreshold)
+            self$.addOption(private$..addQ)
+            self$.addOption(private$..qMethod)
+            self$.addOption(private$..boldQ)
+            self$.addOption(private$..boldQThreshold)
             self$.addOption(private$..journal)
             self$.addOption(private$..compact)
             self$.addOption(private$..language)
@@ -278,6 +312,10 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         digitsPvalue = function() private$..digitsPvalue$value,
         boldPvalue = function() private$..boldPvalue$value,
         boldPvalueThreshold = function() private$..boldPvalueThreshold$value,
+        addQ = function() private$..addQ$value,
+        qMethod = function() private$..qMethod$value,
+        boldQ = function() private$..boldQ$value,
+        boldQThreshold = function() private$..boldQThreshold$value,
         journal = function() private$..journal$value,
         compact = function() private$..compact$value,
         language = function() private$..language$value,
@@ -306,6 +344,10 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..digitsPvalue = NA,
         ..boldPvalue = NA,
         ..boldPvalueThreshold = NA,
+        ..addQ = NA,
+        ..qMethod = NA,
+        ..boldQ = NA,
+        ..boldQThreshold = NA,
         ..journal = NA,
         ..compact = NA,
         ..language = NA,
@@ -385,6 +427,10 @@ tblSurvfitBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param digitsPvalue .
 #' @param boldPvalue .
 #' @param boldPvalueThreshold .
+#' @param addQ .
+#' @param qMethod .
+#' @param boldQ .
+#' @param boldQThreshold .
 #' @param journal .
 #' @param compact .
 #' @param language .
@@ -427,6 +473,10 @@ tblSurvfit <- function(
     digitsPvalue = "auto",
     boldPvalue = FALSE,
     boldPvalueThreshold = 0.05,
+    addQ = FALSE,
+    qMethod = "BH",
+    boldQ = FALSE,
+    boldQThreshold = 0.05,
     journal = "default",
     compact = FALSE,
     language = "en",
@@ -471,6 +521,10 @@ tblSurvfit <- function(
         digitsPvalue = digitsPvalue,
         boldPvalue = boldPvalue,
         boldPvalueThreshold = boldPvalueThreshold,
+        addQ = addQ,
+        qMethod = qMethod,
+        boldQ = boldQ,
+        boldQThreshold = boldQThreshold,
         journal = journal,
         compact = compact,
         language = language,

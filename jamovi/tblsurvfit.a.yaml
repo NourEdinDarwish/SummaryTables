@@ -185,6 +185,43 @@ options:
     max: 1
     default: 0.05
 
+  - name: addQ
+    title: Add q-value (requires p-value)
+    type: Bool
+    default: false
+
+  - name: qMethod
+    title: Method
+    type: List
+    options:
+      - title: Benjamini-Hochberg
+        name: BH
+      - title: Benjamini-Yekutieli
+        name: BY
+      - title: Bonferroni
+        name: bonferroni
+      - title: Holm
+        name: holm
+      - title: Hochberg
+        name: hochberg
+      - title: Hommel
+        name: hommel
+      - title: None
+        name: none
+    default: BH
+
+  - name: boldQ
+    title: Bold significant q-values
+    type: Bool
+    default: false
+
+  - name: boldQThreshold
+    title: Significance threshold
+    type: Number
+    min: 0
+    max: 1
+    default: 0.05
+
   - name: journal
     title: Theme
     type: List

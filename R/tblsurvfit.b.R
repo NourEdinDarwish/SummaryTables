@@ -62,7 +62,7 @@ tblSurvfitClass <- R6::R6Class(
         timesVec <- NULL
       }
 
-      # Build survfit objects ------------------------------------------------
+      # Build survfit objects -----------------------------------------------
       confInt <- self$options$confLevel / 100
 
       fits <- buildSurvfitList(
@@ -73,9 +73,10 @@ tblSurvfitClass <- R6::R6Class(
         confInt = confInt
       )
 
-      # Build tbl_survfit args -----------------------------------------------
+      # Build arguments -----------------------------------------------------
       estimateFun <- NULL
 
+      # Rounding Numbers
       if (self$options$digitsEstimate != "auto") {
         d <- as.integer(self$options$digitsEstimate)
         if (
@@ -117,7 +118,7 @@ tblSurvfitClass <- R6::R6Class(
         tblArgs$label <- as.list(setNames(strata, strataClean))
       }
 
-      # Label header -----------------------------------------------------------
+
       headers <- buildSurvfitHeader(
         statistic = self$options$statistic,
         type      = self$options$type,
@@ -127,7 +128,7 @@ tblSurvfitClass <- R6::R6Class(
       )
       tblArgs$label_header <- headers$label_header
 
-      # Core table -----------------------------------------------------------
+      # Core table ----------------------------------------------------------
       table <- runSafe(
         do.call(gtsummary::tbl_survfit, tblArgs),
         collector
@@ -144,7 +145,7 @@ tblSurvfitClass <- R6::R6Class(
         )
       }
 
-      # Pipeline: add_n and add_nevent ---------------------------------------
+      # Pipeline ------------------------------------------------------------
       if (self$options$addN) {
         table <- runSafe(gtsummary::add_n(table), collector)
       }
@@ -153,7 +154,6 @@ tblSurvfitClass <- R6::R6Class(
         table <- runSafe(gtsummary::add_nevent(table), collector)
       }
 
-      # Pipeline: add_p -------------------------------------------------------
       table <- pipeAddPSurvfit(
         table,
         strata    = strataClean,
@@ -161,14 +161,23 @@ tblSurvfitClass <- R6::R6Class(
         collector = collector
       )
 
-      # Text formatting ------------------------------------------------------
+      hasPvalue <- self$options$addPvalue && length(strata) > 0
+
+      table <- pipeAddQ(
+        table,
+        hasPvalue = hasPvalue,
+        options = self$options,
+        collector = collector
+      )
+
+      # Text formatting -----------------------------------------------------
       table <- applyTextFormatting(
         table,
-        hasPvalue = self$options$addPvalue && length(strata) > 0,
+        hasPvalue = hasPvalue,
         options = self$options
       )
 
-      # Render and export ----------------------------------------------------
+      # Render and export ---------------------------------------------------
       renderHtml(table, self$results$tbl)
 
       if (self$options$export) {
@@ -176,7 +185,7 @@ tblSurvfitClass <- R6::R6Class(
         exportDocx(table, path, self$options, self$results)
       }
 
-      # Notices --------------------------------------------------------------
+      # Notices -------------------------------------------------------------
       displayNotices(collector, self$options, self$results)
     }
   )
