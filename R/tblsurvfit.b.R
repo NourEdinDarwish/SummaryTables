@@ -156,7 +156,7 @@ tblSurvfitClass <- R6::R6Class(
       # Pipeline: add_p -------------------------------------------------------
       table <- pipeAddPSurvfit(
         table,
-        strata    = strata,
+        strata    = strataClean,
         options   = self$options,
         collector = collector
       )

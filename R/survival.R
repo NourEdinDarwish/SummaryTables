@@ -145,24 +145,25 @@ pipeAddPSurvfit <- function(table, strata, options, collector) {
   }
 
   addPArgs <- list(x = table)
-  testArguments <- list()
 
-  # Default test
-  defaultTest <- options$testDefault
-  if (defaultTest != "logrank") {
-    testArguments <- c(testArguments, list(~ defaultTest))
-  }
+  # Assign default test to every stratum, then override specific ones.
+  # Unlike tbl_summary/tbl_continuous, assign_tests.tbl_survfit has no
+  # internal defaults — a named list must cover ALL strata or it crashes
+  # (fill_formula_selectors breaks with partial coverage).
+  testArguments <- stats::setNames(
+    rep(list(options$testDefault), length(strata)),
+    strata
+  )
 
-  # Per-variable overrides
+  # Per-variable overrides from UI; make.names() converts original labels
+  # (e.g. "Tumor Response") to R-safe keys matching strataClean.
   for (item in options$testSpecific) {
-    if (item$test != "useDefault" && item$var %in% strata) {
-      testArguments[[item$var]] <- item$test
+    if (item$test != "useDefault") {
+      testArguments[[make.names(item$var, unique = TRUE)]] <- item$test
     }
   }
 
-  if (length(testArguments) > 0) {
-    addPArgs$test <- testArguments
-  }
+  addPArgs$test <- testArguments
 
   # P-value digits
   pvDigits <- options$digitsPvalue
