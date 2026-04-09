@@ -18,6 +18,12 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             confLevel = 95,
             addN = FALSE,
             addNEvent = FALSE,
+            addPvalue = FALSE,
+            testDefault = "logrank",
+            testSpecific = NULL,
+            digitsPvalue = "auto",
+            boldPvalue = FALSE,
+            boldPvalueThreshold = 0.05,
             journal = "default",
             compact = FALSE,
             language = "en",
@@ -110,6 +116,62 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 "addNEvent",
                 addNEvent,
                 default=FALSE)
+            private$..addPvalue <- jmvcore::OptionBool$new(
+                "addPvalue",
+                addPvalue,
+                default=FALSE)
+            private$..testDefault <- jmvcore::OptionList$new(
+                "testDefault",
+                testDefault,
+                options=list(
+                    "logrank",
+                    "petopeto_gehanwilcoxon",
+                    "tarone",
+                    "coxph_lrt",
+                    "coxph_wald",
+                    "coxph_score"),
+                default="logrank")
+            private$..testSpecific <- jmvcore::OptionArray$new(
+                "testSpecific",
+                testSpecific,
+                template=jmvcore::OptionGroup$new(
+                    "testSpecific",
+                    NULL,
+                    elements=list(
+                        jmvcore::OptionVariable$new(
+                            "var",
+                            NULL),
+                        jmvcore::OptionList$new(
+                            "test",
+                            NULL,
+                            options=list(
+                                "useDefault",
+                                "logrank",
+                                "petopeto_gehanwilcoxon",
+                                "tarone",
+                                "coxph_lrt",
+                                "coxph_wald",
+                                "coxph_score"),
+                            default="useDefault"))))
+            private$..digitsPvalue <- jmvcore::OptionList$new(
+                "digitsPvalue",
+                digitsPvalue,
+                options=list(
+                    "auto",
+                    "1",
+                    "2",
+                    "3"),
+                default="auto")
+            private$..boldPvalue <- jmvcore::OptionBool$new(
+                "boldPvalue",
+                boldPvalue,
+                default=FALSE)
+            private$..boldPvalueThreshold <- jmvcore::OptionNumber$new(
+                "boldPvalueThreshold",
+                boldPvalueThreshold,
+                min=0,
+                max=1,
+                default=0.05)
             private$..journal <- jmvcore::OptionList$new(
                 "journal",
                 journal,
@@ -181,6 +243,12 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..confLevel)
             self$.addOption(private$..addN)
             self$.addOption(private$..addNEvent)
+            self$.addOption(private$..addPvalue)
+            self$.addOption(private$..testDefault)
+            self$.addOption(private$..testSpecific)
+            self$.addOption(private$..digitsPvalue)
+            self$.addOption(private$..boldPvalue)
+            self$.addOption(private$..boldPvalueThreshold)
             self$.addOption(private$..journal)
             self$.addOption(private$..compact)
             self$.addOption(private$..language)
@@ -204,6 +272,12 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         confLevel = function() private$..confLevel$value,
         addN = function() private$..addN$value,
         addNEvent = function() private$..addNEvent$value,
+        addPvalue = function() private$..addPvalue$value,
+        testDefault = function() private$..testDefault$value,
+        testSpecific = function() private$..testSpecific$value,
+        digitsPvalue = function() private$..digitsPvalue$value,
+        boldPvalue = function() private$..boldPvalue$value,
+        boldPvalueThreshold = function() private$..boldPvalueThreshold$value,
         journal = function() private$..journal$value,
         compact = function() private$..compact$value,
         language = function() private$..language$value,
@@ -226,6 +300,12 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..confLevel = NA,
         ..addN = NA,
         ..addNEvent = NA,
+        ..addPvalue = NA,
+        ..testDefault = NA,
+        ..testSpecific = NA,
+        ..digitsPvalue = NA,
+        ..boldPvalue = NA,
+        ..boldPvalueThreshold = NA,
         ..journal = NA,
         ..compact = NA,
         ..language = NA,
@@ -299,6 +379,12 @@ tblSurvfitBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param confLevel .
 #' @param addN .
 #' @param addNEvent .
+#' @param addPvalue .
+#' @param testDefault .
+#' @param testSpecific .
+#' @param digitsPvalue .
+#' @param boldPvalue .
+#' @param boldPvalueThreshold .
 #' @param journal .
 #' @param compact .
 #' @param language .
@@ -335,6 +421,12 @@ tblSurvfit <- function(
     confLevel = 95,
     addN = FALSE,
     addNEvent = FALSE,
+    addPvalue = FALSE,
+    testDefault = "logrank",
+    testSpecific,
+    digitsPvalue = "auto",
+    boldPvalue = FALSE,
+    boldPvalueThreshold = 0.05,
     journal = "default",
     compact = FALSE,
     language = "en",
@@ -373,6 +465,12 @@ tblSurvfit <- function(
         confLevel = confLevel,
         addN = addN,
         addNEvent = addNEvent,
+        addPvalue = addPvalue,
+        testDefault = testDefault,
+        testSpecific = testSpecific,
+        digitsPvalue = digitsPvalue,
+        boldPvalue = boldPvalue,
+        boldPvalueThreshold = boldPvalueThreshold,
         journal = journal,
         compact = compact,
         language = language,

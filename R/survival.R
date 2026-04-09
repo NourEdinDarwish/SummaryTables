@@ -14,7 +14,7 @@ parseCommaNumeric <- function(text) {
 }
 
 
-# buildSurvfitList -----------------------------------------------------------
+# buildSurvfitList ----------------------------------------------------------
 
 #' Build a list of survfit objects for tbl_survfit
 #'
@@ -65,7 +65,7 @@ buildSurvfitList <- function(data, elapsed, event, strataClean, confInt) {
 }
 
 
-# buildSurvfitHeader ---------------------------------------------------------
+# buildSurvfitHeader --------------------------------------------------------
 
 #' Build descriptive label and spanning headers for tbl_survfit
 #'
@@ -121,4 +121,56 @@ buildSurvfitHeader <- function(
       spanning_header = NULL
     )
   }
+}
+
+
+# pipeAddPSurvfit -----------------------------------------------------------
+
+#' Add p-values to a tbl_survfit table
+#'
+#' Pipeline step. Calls gtsummary::add_p() on a tbl_survfit using the
+#' test names from add_p.tbl_survfit: "logrank", "tarone", "survdiff",
+#' "petopeto_gehanwilcoxon", "coxph_lrt", "coxph_wald", "coxph_score".
+#'
+#' Option names match gtsummary test names directly — no alias mapping needed.
+#'
+#' @param table A gtsummary tbl_survfit table
+#' @param strata Character vector of original strata variable names
+#' @param options Jamovi options object
+#' @param collector Collector environment from newCollector()
+#' @return The table with p-values added (or unchanged)
+pipeAddPSurvfit <- function(table, strata, options, collector) {
+  if (!options$addPvalue || length(strata) == 0) {
+    return(table)
+  }
+
+  addPArgs <- list(x = table)
+  testArguments <- list()
+
+  # Default test
+  defaultTest <- options$testDefault
+  if (defaultTest != "logrank") {
+    testArguments <- c(testArguments, list(~ defaultTest))
+  }
+
+  # Per-variable overrides
+  for (item in options$testSpecific) {
+    if (item$test != "useDefault" && item$var %in% strata) {
+      testArguments[[item$var]] <- item$test
+    }
+  }
+
+  if (length(testArguments) > 0) {
+    addPArgs$test <- testArguments
+  }
+
+  # P-value digits
+  pvDigits <- options$digitsPvalue
+  if (pvDigits != "auto") {
+    addPArgs$pvalue_fun <- gtsummary::label_style_pvalue(
+      digits = as.integer(pvDigits)
+    )
+  }
+
+  runSafe(do.call(gtsummary::add_p, addPArgs), collector)
 }

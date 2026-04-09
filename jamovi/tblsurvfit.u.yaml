@@ -87,6 +87,62 @@ children:
             name: addNEvent
 
   - type: CollapseBox
+    label: P-value
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: CheckBox
+        name: addPvalue
+        enable: ({return (ui['strata'].value() || []).length > 0;})
+      - type: LayoutBox
+        margin: none
+        children:
+          - type: ComboBox
+            name: testDefault
+            enable: >
+              ({return (ui['strata'].value() || []).length > 0 &&
+              ui['addPvalue'].value();})
+      - type: ListBox
+        name: testSpecific
+        showColumnHeaders: true
+        fullRowSelect: true
+        stretchFactor: 1
+        height: large
+        columns:
+          - name: var
+            label: Variable
+            selectable: false
+            stretchFactor: 1
+            maxWidth: 300
+            template:
+              type: VariableLabel
+          - name: test
+            label: Test
+            selectable: false
+            stretchFactor: 1
+            template:
+              type: ComboBox
+              label: ""
+      - type: ComboBox
+        name: digitsPvalue
+        enable: >
+          ({return (ui['strata'].value() || []).length > 0 &&
+          ui['addPvalue'].value();})
+      - type: CheckBox
+        name: boldPvalue
+        enable: >
+          ({return (ui['strata'].value() || []).length > 0 &&
+          ui['addPvalue'].value();})
+        children:
+          - type: TextBox
+            name: boldPvalueThreshold
+            format: number
+            enable: >
+              ({return (ui['strata'].value() || []).length > 0 &&
+              ui['addPvalue'].value() &&
+              ui['boldPvalue'].value();})
+
+  - type: CollapseBox
     label: Appearance
     collapsed: true
     stretchFactor: 1

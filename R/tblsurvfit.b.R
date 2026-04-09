@@ -153,10 +153,18 @@ tblSurvfitClass <- R6::R6Class(
         table <- runSafe(gtsummary::add_nevent(table), collector)
       }
 
+      # Pipeline: add_p -------------------------------------------------------
+      table <- pipeAddPSurvfit(
+        table,
+        strata    = strata,
+        options   = self$options,
+        collector = collector
+      )
+
       # Text formatting ------------------------------------------------------
       table <- applyTextFormatting(
         table,
-        hasPvalue = FALSE,
+        hasPvalue = self$options$addPvalue && length(strata) > 0,
         options = self$options
       )
 
