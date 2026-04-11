@@ -194,17 +194,6 @@ children:
               row: 1
               column: 1
   - type: CollapseBox
-    label: Save to Word
-    collapsed: true
-    stretchFactor: 1
-    children:
-      - type: TextBox
-        name: path
-        format: string
-        stretchFactor: 1
-      - type: ActionButton
-        name: export
-  - type: CollapseBox
     label: Help
     collapsed: true
     stretchFactor: 1

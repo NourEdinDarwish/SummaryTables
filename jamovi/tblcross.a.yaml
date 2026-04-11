@@ -234,12 +234,3 @@ options:
     title: Show p-value as source note
     type: Bool
     default: false
-
-  - name: path
-    title: Path
-    type: String
-    default: ~/Desktop/Cross Table.docx
-
-  - name: export
-    title: Save
-    type: Action

@@ -324,11 +324,3 @@ options:
     max: 1
     default: 0.05
 
-  - name: path
-    title: Path
-    type: String
-    default: ~/Desktop/Multivariable Cox Regression.docx
-
-  - name: export
-    title: Save
-    type: Action

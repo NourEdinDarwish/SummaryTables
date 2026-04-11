@@ -804,12 +804,3 @@ options:
       - title: "5"
         name: "5"
     default: auto
-
-  - name: path
-    title: Path
-    type: String
-    default: ~/Desktop/Summary Table.docx
-
-  - name: export
-    title: Save
-    type: Action

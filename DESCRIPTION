@@ -19,8 +19,8 @@ Description: A comprehensive module for creating publication-ready summary
     'Multivariable Regression' fits multivariable linear, logistic, or Cox
     regression models. 'Univariable Regression' runs separate univariable
     linear, logistic, or Cox regression models for each predictor.
-    Features include direct export to Word (.docx), 16 languages, and
-    pre-built formatting for major journals.
+    Features include 16 languages and pre-built formatting for major
+    journals.
 License: GPL (>= 2)
 URL: https://github.com/NourEdinDarwish/SummaryTables
 BugReports: https://github.com/NourEdinDarwish/SummaryTables/issues
@@ -32,7 +32,6 @@ Imports:
     cli,
     dplyr,
     effectsize,
-    flextable,
     forcats,
     gt,
     gtsummary (>= 2.5.0.9001),
