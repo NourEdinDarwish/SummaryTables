@@ -22,9 +22,9 @@ description: >-
   and median survival times.</li> <li><b>Multivariable Regression:</b> Fit
   multivariable linear, logistic, or Cox regression models.</li>
   <li><b>Univariable Regression:</b> Run separate univariable linear, logistic,
-  or Cox regression models for each predictor.</li> </ul> Features include
-  direct export to <b>Word (.docx)</b>, 16 languages, and pre-built formatting
-  for major journals (JAMA, The Lancet, NEJM, QJE).
+  or Cox regression models for each predictor.</li> </ul> Features include 16
+  languages and pre-built formatting for major journals (JAMA, The Lancet, NEJM
+  , QJE).
 analyses:
   - title: Summary Table
     name: tblSummary
