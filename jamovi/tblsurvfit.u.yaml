@@ -94,6 +94,24 @@ children:
       - type: CheckBox
         name: addPvalue
         enable: ({return (ui['strata'].value() || []).length > 0;})
+      - type: ComboBox
+        name: digitsPvalue
+        enable: >
+          ({return (ui['strata'].value() || []).length > 0 &&
+          ui['addPvalue'].value();})
+      - type: CheckBox
+        name: boldPvalue
+        enable: >
+          ({return (ui['strata'].value() || []).length > 0 &&
+          ui['addPvalue'].value();})
+        children:
+          - type: TextBox
+            name: boldPvalueThreshold
+            format: number
+            enable: >
+              ({return (ui['strata'].value() || []).length > 0 &&
+              ui['addPvalue'].value() &&
+              ui['boldPvalue'].value();})
       - type: LayoutBox
         margin: none
         children:
@@ -123,24 +141,6 @@ children:
             template:
               type: ComboBox
               label: ""
-      - type: ComboBox
-        name: digitsPvalue
-        enable: >
-          ({return (ui['strata'].value() || []).length > 0 &&
-          ui['addPvalue'].value();})
-      - type: CheckBox
-        name: boldPvalue
-        enable: >
-          ({return (ui['strata'].value() || []).length > 0 &&
-          ui['addPvalue'].value();})
-        children:
-          - type: TextBox
-            name: boldPvalueThreshold
-            format: number
-            enable: >
-              ({return (ui['strata'].value() || []).length > 0 &&
-              ui['addPvalue'].value() &&
-              ui['boldPvalue'].value();})
 
   - type: CollapseBox
     label: Q-value (P-value Adjustment)

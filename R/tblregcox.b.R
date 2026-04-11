@@ -35,6 +35,7 @@ tblRegCoxClass <- R6::R6Class(
 
       # Convert event variable to 0/1 numeric
       if (is.numeric(data[[event]])) {
+        validateEventNumeric(data, event)
         data[[event]] <- jmvcore::toNumeric(data[[event]])
       } else {
         data[[event]] <- ifelse(

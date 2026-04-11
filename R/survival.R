@@ -1,3 +1,31 @@
+# validateEventNumeric ------------------------------------------------------
+
+#' Validate a numeric event variable for survival analysis
+#'
+#' Checks that a numeric event column contains only valid event coding:
+#' `{0, 1}` (0 = censored, 1 = event) or `{1, 2}` (1 = censored, 2 = event).
+#' Both conventions are supported natively by [survival::Surv()].
+#'
+#' @param data Data frame containing the variable
+#' @param event Character: column name of the event variable
+validateEventNumeric <- function(data, event) {
+  unique_vals <- unique(data[[event]][!is.na(data[[event]])])
+  valid_01 <- all(unique_vals %in% c(0, 1))
+  valid_12 <- all(unique_vals %in% c(1, 2))
+  if (!valid_01 && !valid_12) {
+    jmvcore::reject(
+      paste0(
+        "Invalid values in the Event variable. It must be coded using ",
+        "0/1 (0 = censored, 1 = event) or ",
+        "1/2 (1 = censored, 2 = event). ",
+        "Found values: ",
+        paste(sort(unique_vals), collapse = ", ")
+      )
+    )
+  }
+}
+
+
 # parseCommaNumeric ---------------------------------------------------------
 
 #' Parse a comma-separated string of numbers
@@ -6,11 +34,25 @@
 #' Non-numeric tokens (typos) are silently dropped.
 #'
 #' @param text Character string, e.g. "12, 24, 60"
-#' @return Numeric vector (may be empty if all tokens are invalid)
+#' @return Numeric vector of valid, non-negative time points
 parseCommaNumeric <- function(text) {
   tokens <- trimws(strsplit(text, ",")[[1]])
   values <- suppressWarnings(as.numeric(tokens))
-  values[!is.na(values)]
+  values <- values[!is.na(values)]
+
+  if (length(values) == 0) {
+    jmvcore::reject(
+      "Please enter one or more comma-separated numeric time points (e.g. 12 or 12, 24, 60)" # nolint
+    )
+  }
+
+  if (any(values < 0)) {
+    jmvcore::reject(
+      "Time points must be non-negative numbers"
+    )
+  }
+
+  values
 }
 
 
