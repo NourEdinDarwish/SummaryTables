@@ -1,0 +1,243 @@
+name: tblSurvfit
+title: Survival Table
+jus: "3.0"
+stage: 0
+compilerMode: tame
+children:
+  - type: VariableSupplier
+    persistentItems: false
+    stretchFactor: 1
+    children:
+      - type: TargetLayoutBox
+        children:
+          - type: VariablesListBox
+            name: elapsed
+            maxItemCount: 1
+            isTarget: true
+      - type: TargetLayoutBox
+        children:
+          - type: VariablesListBox
+            name: event
+            maxItemCount: 1
+            isTarget: true
+          - type: LevelSelector
+            name: eventLevel
+      - type: TargetLayoutBox
+        label: Stratifying Variables
+        children:
+          - type: VariablesListBox
+            name: strata
+            isTarget: true
+
+  - type: CollapseBox
+    label: Options
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: Label
+        label: Statistic
+        children:
+          - type: RadioButton
+            name: statistic_times
+            optionName: statistic
+            optionPart: times
+            children:
+              - type: LayoutBox
+                fitToGrid: true
+                children:
+                  - type: TextBox
+                    name: times
+                    format: string
+                    width: large
+                    enable: (statistic:times)
+                    cell:
+                      row: 0
+                      column: 0
+                  - type: TextBox
+                    name: timeSuffix
+                    format: string
+                    width: large
+                    enable: (statistic:times)
+                    cell:
+                      row: 0
+                      column: 1
+              - type: LayoutBox
+                children:
+                  - type: ComboBox
+                    name: type
+                    enable: (statistic:times)
+          - type: RadioButton
+            name: statistic_median
+            optionName: statistic
+            optionPart: median
+      - type: LayoutBox
+        margin: large
+        children:
+          - type: LayoutBox
+            children:
+              - type: ComboBox
+                name: digitsEstimate
+              - type: TextBox
+                name: confLevel
+                suffix: "%"
+                format: number
+          - type: CheckBox
+            name: addN
+          - type: CheckBox
+            name: addNEvent
+
+  - type: CollapseBox
+    label: P-value
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: CheckBox
+        name: addPvalue
+        enable: ({return (ui['strata'].value() || []).length > 0;})
+      - type: LayoutBox
+        margin: none
+        children:
+          - type: ComboBox
+            name: testDefault
+            enable: >
+              ({return (ui['strata'].value() || []).length > 0 &&
+              ui['addPvalue'].value();})
+      - type: ListBox
+        name: testSpecific
+        showColumnHeaders: true
+        fullRowSelect: true
+        stretchFactor: 1
+        height: large
+        columns:
+          - name: var
+            label: Variable
+            selectable: false
+            stretchFactor: 1
+            maxWidth: 300
+            template:
+              type: VariableLabel
+          - name: test
+            label: Test
+            selectable: false
+            stretchFactor: 1
+            template:
+              type: ComboBox
+              label: ""
+      - type: ComboBox
+        name: digitsPvalue
+        enable: >
+          ({return (ui['strata'].value() || []).length > 0 &&
+          ui['addPvalue'].value();})
+      - type: CheckBox
+        name: boldPvalue
+        enable: >
+          ({return (ui['strata'].value() || []).length > 0 &&
+          ui['addPvalue'].value();})
+        children:
+          - type: TextBox
+            name: boldPvalueThreshold
+            format: number
+            enable: >
+              ({return (ui['strata'].value() || []).length > 0 &&
+              ui['addPvalue'].value() &&
+              ui['boldPvalue'].value();})
+
+  - type: CollapseBox
+    label: Q-value (P-value Adjustment)
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: CheckBox
+        name: addQ
+        enable: >
+          ({return (ui['strata'].value() || []).length > 0 &&
+          ui['addPvalue'].value();})
+      - type: ComboBox
+        name: qMethod
+        enable: >
+          ({return (ui['strata'].value() || []).length > 0 &&
+          ui['addPvalue'].value() &&
+          ui['addQ'].value();})
+      - type: CheckBox
+        name: boldQ
+        enable: >
+          ({return (ui['strata'].value() || []).length > 0 &&
+          ui['addPvalue'].value() &&
+          ui['addQ'].value();})
+        children:
+          - type: TextBox
+            name: boldQThreshold
+            format: number
+            enable: >
+              ({return (ui['strata'].value() || []).length > 0 &&
+              ui['addPvalue'].value() &&
+              ui['addQ'].value() &&
+              ui['boldQ'].value();})
+
+  - type: CollapseBox
+    label: Appearance
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: ComboBox
+        name: journal
+      - type: CheckBox
+        name: compact
+      - type: ComboBox
+        name: language
+      - type: LayoutBox
+        fitToGrid: true
+        children:
+          - type: CheckBox
+            name: boldLabels
+            cell:
+              row: 0
+              column: 0
+          - type: CheckBox
+            name: boldLevels
+            cell:
+              row: 0
+              column: 1
+          - type: CheckBox
+            name: italicizeLabels
+            cell:
+              row: 1
+              column: 0
+          - type: CheckBox
+            name: italicizeLevels
+            cell:
+              row: 1
+              column: 1
+
+  - type: CollapseBox
+    label: Save to Word
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: TextBox
+        name: path
+        format: string
+        stretchFactor: 1
+      - type: ActionButton
+        name: export
+
+  - type: CollapseBox
+    label: Help
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: Label
+        label: Documentation coming soon.
+        heading: true
+      - type: Label
+        label: This module is actively being developed.
+        heading: false
+      - type: Label
+        label: "If you encounter any issues, have a question, or have ideas for new features,"
+        heading: false
+      - type: Label
+        label: please open an issue at github.com/NourEdinDarwish/SummaryTables/issues
+        heading: false
+      - type: Label
+        label: or send an email at nouredindarwish@gmail.com
+        heading: false

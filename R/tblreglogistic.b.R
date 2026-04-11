@@ -53,7 +53,7 @@ tblRegLogisticClass <- R6::R6Class(
 
       # Formula and model ---------------------------------------------------
       formula <- buildFormula(jmvcore::composeTerm(dep), terms)
-      model <- glm(formula, data = data, family = binomial)
+      model <- runSafe(glm(formula, data = data, family = binomial), collector)
 
       # Regression table ----------------------------------------------------
       table <- runSafe(
@@ -122,7 +122,6 @@ tblRegLogisticClass <- R6::R6Class(
 
       # Notices -------------------------------------------------------------
       displayNotices(collector, self$options, self$results)
-
     }
   )
 )

@@ -44,7 +44,7 @@ tblRegLinearClass <- R6::R6Class(
 
       # Formula and model ---------------------------------------------------
       formula <- buildFormula(jmvcore::composeTerm(dep), terms)
-      model <- lm(formula, data = data)
+      model <- runSafe(lm(formula, data = data), collector)
 
       # Regression table ----------------------------------------------------
       table <- runSafe(
@@ -107,7 +107,6 @@ tblRegLinearClass <- R6::R6Class(
 
       # Notices -------------------------------------------------------------
       displayNotices(collector, self$options, self$results)
-
     }
   )
 )

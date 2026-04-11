@@ -17,12 +17,14 @@ description: >-
   variables with automatic statistical testing and p-value adjustments.</li>
   <li><b>Cross Table:</b> Summarize the association between two categorical
   variables using cross-tabulations with automatic statistical testing.</li>
-  <li><b>Likert Table:</b> Summarize Likert scale items.</li>
-  <li><b>Multivariable Regression:</b> Fit multivariable linear or logistic
-  regression models.</li> <li><b>Univariable Regression:</b> Run separate
-  univariable linear or logistic regression models for each predictor.</li>
-  </ul> Features include 16 languages and pre-built formatting for major
-  journals (JAMA, The Lancet, NEJM, QJE).
+  <li><b>Likert Table:</b> Summarize Likert scale items.</li> <li><b>Survival
+  Table:</b> Create Kaplan-Meier survival tables showing survival probabilities
+  and median survival times.</li> <li><b>Multivariable Regression:</b> Fit
+  multivariable linear, logistic, or Cox regression models.</li>
+  <li><b>Univariable Regression:</b> Run separate univariable linear, logistic,
+  or Cox regression models for each predictor.</li> </ul> Features include 16
+  languages and pre-built formatting for major journals (JAMA, The Lancet, NEJM
+  , QJE).
 analyses:
   - title: Summary Table
     name: tblSummary
@@ -63,6 +65,16 @@ analyses:
     description: >-
       Display response distributions for ordered categorical (Likert-type) items
       with per-item statistics and counts.
+  - title: Survival Table
+    name: tblSurvfit
+    ns: SummaryTables
+    menuGroup: Summary Tables
+    menuTitle: Survival Table
+    category: analyses
+    description: >-
+      Create a Kaplan-Meier survival table showing survival probabilities at
+      specific times or median survival times. Supports stratification by one or
+      more grouping variables, with optional N and event N columns.
   - title: Multivariable Linear Regression
     name: tblRegLinear
     ns: SummaryTables
