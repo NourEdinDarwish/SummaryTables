@@ -179,13 +179,8 @@ tblSurvfitClass <- R6::R6Class(
         options = self$options
       )
 
-      # Render and export ---------------------------------------------------
+      # Render --------------------------------------------------------------
       renderHtml(table, self$results$tbl)
-
-      if (self$options$export) {
-        path <- resolveExportPath(self$options$path)
-        exportDocx(table, path, self$options, self$results)
-      }
 
       # Notices -------------------------------------------------------------
       displayNotices(collector, self$options, self$results)
