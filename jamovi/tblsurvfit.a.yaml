@@ -110,7 +110,7 @@ options:
     default: false
 
   - name: addPvalue
-    title: Add p-value (requires Stratifying Variable)
+    title: Add p-value (requires Stratifying Variables)
     type: Bool
     default: false
 
@@ -122,13 +122,11 @@ options:
         name: logrank
       - title: Peto & Peto
         name: petopeto_gehanwilcoxon
-      - title: Tarone-Ware
-        name: tarone
       - title: Cox regression (likelihood ratio)
         name: coxph_lrt
       - title: Cox regression (Wald)
         name: coxph_wald
-      - title: Cox regression (Score)
+      - title: Cox regression (score)
         name: coxph_score
     default: logrank
 
@@ -149,13 +147,11 @@ options:
               name: logrank
             - title: Peto & Peto
               name: petopeto_gehanwilcoxon
-            - title: Tarone-Ware
-              name: tarone
             - title: Cox regression (likelihood ratio)
               name: coxph_lrt
             - title: Cox regression (Wald)
               name: coxph_wald
-            - title: Cox regression (Score)
+            - title: Cox regression (score)
               name: coxph_score
           default: useDefault
 

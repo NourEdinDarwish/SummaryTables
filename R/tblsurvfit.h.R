@@ -130,7 +130,6 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 options=list(
                     "logrank",
                     "petopeto_gehanwilcoxon",
-                    "tarone",
                     "coxph_lrt",
                     "coxph_wald",
                     "coxph_score"),
@@ -152,7 +151,6 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                                 "useDefault",
                                 "logrank",
                                 "petopeto_gehanwilcoxon",
-                                "tarone",
                                 "coxph_lrt",
                                 "coxph_wald",
                                 "coxph_score"),

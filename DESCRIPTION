@@ -14,11 +14,13 @@ Description: A comprehensive module for creating publication-ready summary
     testing and p-value adjustments. 'Cross Table' summarizes the
     association between two categorical variables using cross-tabulations,
     including automatic statistical testing. 'Likert Table' summarizes
-    Likert scale items. 'Multivariable Regression' fits multivariable
-    linear or logistic regression models. 'Univariable Regression' runs
-    separate univariable linear or logistic regression models for each
-    predictor. Features include direct export to Word (.docx), 16
-    languages, and pre-built formatting for major journals.
+    Likert scale items. 'Survival Table' creates Kaplan-Meier survival
+    tables showing survival probabilities and median survival times.
+    'Multivariable Regression' fits multivariable linear, logistic, or Cox
+    regression models. 'Univariable Regression' runs separate univariable
+    linear, logistic, or Cox regression models for each predictor.
+    Features include direct export to Word (.docx), 16 languages, and
+    pre-built formatting for major journals.
 License: GPL (>= 2)
 URL: https://github.com/NourEdinDarwish/SummaryTables
 BugReports: https://github.com/NourEdinDarwish/SummaryTables/issues

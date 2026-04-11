@@ -26,9 +26,11 @@ and regression tables, powered by
 - **Cross Table:** Summarize the association between two categorical
   variables using cross-tabulations with automatic statistical testing.
 - **Likert Table:** Summarize Likert scale items.
-- **Multivariable Regression:** Fit multivariable linear or logistic
+- **Survival Table:** Create Kaplan-Meier survival tables showing survival
+  probabilities and median survival times.
+- **Multivariable Regression:** Fit multivariable linear, logistic, or Cox
   regression models.
-- **Univariable Regression:** Run separate univariable linear or logistic
+- **Univariable Regression:** Run separate univariable linear, logistic, or Cox
   regression models for each predictor.
 
 ## Features
