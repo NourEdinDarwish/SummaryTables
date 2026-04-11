@@ -37,6 +37,7 @@ tblSurvfitClass <- R6::R6Class(
       data <- self$data
 
       if (is.numeric(data[[event]])) {
+        validateEventNumeric(data, event)
         data[[event]] <- jmvcore::toNumeric(data[[event]])
       } else {
         data[[event]] <- ifelse(

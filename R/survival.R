@@ -1,3 +1,31 @@
+# validateEventNumeric ------------------------------------------------------
+
+#' Validate a numeric event variable for survival analysis
+#'
+#' Checks that a numeric event column contains only valid event coding:
+#' `{0, 1}` (0 = censored, 1 = event) or `{1, 2}` (1 = censored, 2 = event).
+#' Both conventions are supported natively by [survival::Surv()].
+#'
+#' @param data Data frame containing the variable
+#' @param event Character: column name of the event variable
+validateEventNumeric <- function(data, event) {
+  unique_vals <- unique(data[[event]][!is.na(data[[event]])])
+  valid_01 <- all(unique_vals %in% c(0, 1))
+  valid_12 <- all(unique_vals %in% c(1, 2))
+  if (!valid_01 && !valid_12) {
+    jmvcore::reject(
+      paste0(
+        "Invalid values in the Event variable. It must be coded using ",
+        "0/1 (0 = censored, 1 = event) or ",
+        "1/2 (1 = censored, 2 = event). ",
+        "Found values: ",
+        paste(sort(unique_vals), collapse = ", ")
+      )
+    )
+  }
+}
+
+
 # parseCommaNumeric ---------------------------------------------------------
 
 #' Parse a comma-separated string of numbers
