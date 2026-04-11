@@ -102,6 +102,7 @@ children:
                 children:
                   - type: CheckBox
                     name: addVif
+                    enable: ({return (ui['modelTerms'].value() || []).length > 1;})
                   - type: ComboBox
                     name: modelFit
           - type: LayoutBox

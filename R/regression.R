@@ -206,7 +206,7 @@ pipeAddGlobalP <- function(table, options, collector) {
 #' @param collector Collector environment from newCollector()
 #' @return The table with VIF column added (or unchanged)
 pipeAddVif <- function(table, options, collector) {
-  if (!options$addVif) {
+  if (!options$addVif || length(options$modelTerms) < 2) {
     return(table)
   }
 
