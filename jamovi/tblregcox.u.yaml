@@ -152,6 +152,25 @@ children:
                         enable: (addStars && !globalP && !(journal:jama) && !(journal:qjecon))
 
   - type: CollapseBox
+    label: Q-value (P-value Adjustment)
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: CheckBox
+        name: addQ
+      - type: ComboBox
+        name: qMethod
+        enable: (addQ)
+      - type: CheckBox
+        name: boldQ
+        enable: (addQ)
+        children:
+          - type: TextBox
+            name: boldQThreshold
+            format: number
+            enable: (addQ && boldQ)
+
+  - type: CollapseBox
     label: Appearance
     collapsed: true
     stretchFactor: 1
@@ -185,25 +204,6 @@ children:
             cell:
               row: 1
               column: 1
-
-  - type: CollapseBox
-    label: Q-value (P-value Adjustment)
-    collapsed: true
-    stretchFactor: 1
-    children:
-      - type: CheckBox
-        name: addQ
-      - type: ComboBox
-        name: qMethod
-        enable: (addQ)
-      - type: CheckBox
-        name: boldQ
-        enable: (addQ)
-        children:
-          - type: TextBox
-            name: boldQThreshold
-            format: number
-            enable: (addQ && boldQ)
 
   - type: CollapseBox
     label: Save to Word

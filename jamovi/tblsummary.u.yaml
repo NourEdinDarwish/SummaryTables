@@ -25,7 +25,7 @@ children:
             maxItemCount: 1
             isTarget: true
   - type: CollapseBox
-    label: General
+    label: Options
     collapsed: true
     stretchFactor: 1
     children:
@@ -58,40 +58,6 @@ children:
           - type: ComboBox
             name: missingStat
             enable: (!(missing:no))
-  - type: CollapseBox
-    label: Appearance
-    collapsed: true
-    stretchFactor: 1
-    children:
-      - type: ComboBox
-        name: journal
-      - type: CheckBox
-        name: compact
-      - type: ComboBox
-        name: language
-      - type: LayoutBox
-        fitToGrid: true
-        children:
-          - type: CheckBox
-            name: boldLabels
-            cell:
-              row: 0
-              column: 0
-          - type: CheckBox
-            name: boldLevels
-            cell:
-              row: 0
-              column: 1
-          - type: CheckBox
-            name: italicizeLabels
-            cell:
-              row: 1
-              column: 0
-          - type: CheckBox
-            name: italicizeLevels
-            cell:
-              row: 1
-              column: 1
   - type: CollapseBox
     label: Level Order
     collapsed: true
@@ -195,6 +161,89 @@ children:
               - type: ComboBox
                 name: percent
                 enable: ({return !!ui['groupVar'].value();})
+  - type: CollapseBox
+    label: Confidence Interval
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: LayoutBox
+        margin: large
+        children:
+          - type: CheckBox
+            name: addCi
+          - type: LayoutBox
+            margin: none
+            children:
+              - type: TextBox
+                name: confLevel
+                suffix: "%"
+                format: number
+                enable: (addCi)
+          - type: CheckBox
+            name: ciMerge
+            enable: (addCi)
+      - type: Label
+        label: Continuous Variables
+        stretchFactor: 1
+        children:
+          - type: ComboBox
+            name: ciContDefault
+            enable: (addCi)
+          - type: ListBox
+            name: ciContSpecific
+            showColumnHeaders: true
+            fullRowSelect: true
+            stretchFactor: 1
+            height: large
+            columns:
+              - name: var
+                label: Variable
+                selectable: false
+                stretchFactor: 1
+                maxWidth: 300
+                template:
+                  type: VariableLabel
+              - name: method
+                label: Method
+                selectable: false
+                stretchFactor: 1
+                template:
+                  type: ComboBox
+                  label: ""
+          - type: ComboBox
+            name: ciDigitsCont
+            enable: (addCi)
+      - type: Label
+        label: Categorical Variables
+        stretchFactor: 1
+        children:
+          - type: ComboBox
+            name: ciCatDefault
+            enable: (addCi)
+          - type: ListBox
+            name: ciCatSpecific
+            showColumnHeaders: true
+            fullRowSelect: true
+            stretchFactor: 1
+            height: large
+            columns:
+              - name: var
+                label: Variable
+                selectable: false
+                stretchFactor: 1
+                maxWidth: 300
+                template:
+                  type: VariableLabel
+              - name: method
+                label: Method
+                selectable: false
+                stretchFactor: 1
+                template:
+                  type: ComboBox
+                  label: ""
+          - type: ComboBox
+            name: ciDigitsCat
+            enable: (addCi)
   - type: CollapseBox
     label: Difference
     collapsed: true
@@ -413,88 +462,39 @@ children:
             format: number
             enable: ({return !!ui['groupVar'].value() && (ui['addPvalue'].value() || ui['addDifference'].value()) && ui['addQ'].value() && ui['boldQ'].value();})
   - type: CollapseBox
-    label: Confidence Interval
+    label: Appearance
     collapsed: true
     stretchFactor: 1
     children:
+      - type: ComboBox
+        name: journal
+      - type: CheckBox
+        name: compact
+      - type: ComboBox
+        name: language
       - type: LayoutBox
-        margin: large
+        fitToGrid: true
         children:
           - type: CheckBox
-            name: addCi
-          - type: LayoutBox
-            margin: none
-            children:
-              - type: TextBox
-                name: confLevel
-                suffix: "%"
-                format: number
-                enable: (addCi)
+            name: boldLabels
+            cell:
+              row: 0
+              column: 0
           - type: CheckBox
-            name: ciMerge
-            enable: (addCi)
-      - type: Label
-        label: Continuous Variables
-        stretchFactor: 1
-        children:
-          - type: ComboBox
-            name: ciContDefault
-            enable: (addCi)
-          - type: ListBox
-            name: ciContSpecific
-            showColumnHeaders: true
-            fullRowSelect: true
-            stretchFactor: 1
-            height: large
-            columns:
-              - name: var
-                label: Variable
-                selectable: false
-                stretchFactor: 1
-                maxWidth: 300
-                template:
-                  type: VariableLabel
-              - name: method
-                label: Method
-                selectable: false
-                stretchFactor: 1
-                template:
-                  type: ComboBox
-                  label: ""
-          - type: ComboBox
-            name: ciDigitsCont
-            enable: (addCi)
-      - type: Label
-        label: Categorical Variables
-        stretchFactor: 1
-        children:
-          - type: ComboBox
-            name: ciCatDefault
-            enable: (addCi)
-          - type: ListBox
-            name: ciCatSpecific
-            showColumnHeaders: true
-            fullRowSelect: true
-            stretchFactor: 1
-            height: large
-            columns:
-              - name: var
-                label: Variable
-                selectable: false
-                stretchFactor: 1
-                maxWidth: 300
-                template:
-                  type: VariableLabel
-              - name: method
-                label: Method
-                selectable: false
-                stretchFactor: 1
-                template:
-                  type: ComboBox
-                  label: ""
-          - type: ComboBox
-            name: ciDigitsCat
-            enable: (addCi)
+            name: boldLevels
+            cell:
+              row: 0
+              column: 1
+          - type: CheckBox
+            name: italicizeLabels
+            cell:
+              row: 1
+              column: 0
+          - type: CheckBox
+            name: italicizeLevels
+            cell:
+              row: 1
+              column: 1
   - type: CollapseBox
     label: Save to Word
     collapsed: true

@@ -26,7 +26,7 @@ children:
             maxItemCount: 1
             isTarget: true
   - type: CollapseBox
-    label: General
+    label: Options
     collapsed: true
     stretchFactor: 1
     children:
@@ -37,40 +37,6 @@ children:
           - type: CheckBox
             name: addOverallLast
             enable: ({return !!ui['groupVar'].value() && ui['addOverall'].value();})
-  - type: CollapseBox
-    label: Appearance
-    collapsed: true
-    stretchFactor: 1
-    children:
-      - type: ComboBox
-        name: journal
-      - type: CheckBox
-        name: compact
-      - type: ComboBox
-        name: language
-      - type: LayoutBox
-        fitToGrid: true
-        children:
-          - type: CheckBox
-            name: boldLabels
-            cell:
-              row: 0
-              column: 0
-          - type: CheckBox
-            name: boldLevels
-            cell:
-              row: 0
-              column: 1
-          - type: CheckBox
-            name: italicizeLabels
-            cell:
-              row: 1
-              column: 0
-          - type: CheckBox
-            name: italicizeLevels
-            cell:
-              row: 1
-              column: 1
   - type: CollapseBox
     label: Level Order
     collapsed: true
@@ -136,6 +102,17 @@ children:
     children:
       - type: CheckBox
         name: addPvalue
+      - type: ComboBox
+        name: digitsPvalue
+        enable: (addPvalue)
+      - type: CheckBox
+        name: boldPvalue
+        enable: (addPvalue)
+        children:
+          - type: TextBox
+            name: boldPvalueThreshold
+            format: number
+            enable: (addPvalue && boldPvalue)
       - type: LayoutBox
         margin: none
         children:
@@ -163,17 +140,6 @@ children:
             template:
               type: ComboBox
               label: ""
-      - type: ComboBox
-        name: digitsPvalue
-        enable: (addPvalue)
-      - type: CheckBox
-        name: boldPvalue
-        enable: (addPvalue)
-        children:
-          - type: TextBox
-            name: boldPvalueThreshold
-            format: number
-            enable: (addPvalue && boldPvalue)
   - type: CollapseBox
     label: Q-value (P-value Adjustment)
     collapsed: true
@@ -193,6 +159,40 @@ children:
             name: boldQThreshold
             format: number
             enable: (addPvalue && addQ && boldQ)
+  - type: CollapseBox
+    label: Appearance
+    collapsed: true
+    stretchFactor: 1
+    children:
+      - type: ComboBox
+        name: journal
+      - type: CheckBox
+        name: compact
+      - type: ComboBox
+        name: language
+      - type: LayoutBox
+        fitToGrid: true
+        children:
+          - type: CheckBox
+            name: boldLabels
+            cell:
+              row: 0
+              column: 0
+          - type: CheckBox
+            name: boldLevels
+            cell:
+              row: 0
+              column: 1
+          - type: CheckBox
+            name: italicizeLabels
+            cell:
+              row: 1
+              column: 0
+          - type: CheckBox
+            name: italicizeLevels
+            cell:
+              row: 1
+              column: 1
   - type: CollapseBox
     label: Save to Word
     collapsed: true

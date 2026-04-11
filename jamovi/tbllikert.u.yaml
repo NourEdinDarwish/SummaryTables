@@ -14,7 +14,7 @@ children:
             name: vars
             isTarget: true
   - type: CollapseBox
-    label: General
+    label: Options
     collapsed: true
     stretchFactor: 1
     children:
