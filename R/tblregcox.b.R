@@ -38,7 +38,9 @@ tblRegCoxClass <- R6::R6Class(
         data[[event]] <- jmvcore::toNumeric(data[[event]])
       } else {
         data[[event]] <- ifelse(
-          data[[event]] == self$options$eventLevel, 1, 0
+          data[[event]] == self$options$eventLevel,
+          1,
+          0
         )
       }
 
@@ -60,7 +62,10 @@ tblRegCoxClass <- R6::R6Class(
         jmvcore::composeTerm(event)
       )
       formula <- buildFormula(survLHS, terms)
-      model <- survival::coxph(formula, data = data, model = TRUE)
+      model <- runSafe(
+        survival::coxph(formula, data = data, model = TRUE),
+        collector
+      )
 
       # Regression table ----------------------------------------------------
       table <- runSafe(
@@ -134,7 +139,6 @@ tblRegCoxClass <- R6::R6Class(
 
       # Notices -------------------------------------------------------------
       displayNotices(collector, self$options, self$results)
-
     }
   )
 )

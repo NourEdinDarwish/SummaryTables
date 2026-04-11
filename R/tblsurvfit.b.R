@@ -65,12 +65,15 @@ tblSurvfitClass <- R6::R6Class(
       # Build survfit objects -----------------------------------------------
       confInt <- self$options$confLevel / 100
 
-      fits <- buildSurvfitList(
-        data = data,
-        elapsed = elapsed,
-        event = event,
-        strataClean = strataClean,
-        confInt = confInt
+      fits <- runSafe(
+        buildSurvfitList(
+          data = data,
+          elapsed = elapsed,
+          event = event,
+          strataClean = strataClean,
+          confInt = confInt
+        ),
+        collector
       )
 
       # Build arguments -----------------------------------------------------
@@ -118,13 +121,12 @@ tblSurvfitClass <- R6::R6Class(
         tblArgs$label <- as.list(setNames(strata, strataClean))
       }
 
-
       headers <- buildSurvfitHeader(
         statistic = self$options$statistic,
-        type      = self$options$type,
+        type = self$options$type,
         confLevel = self$options$confLevel,
         timeSuffix = self$options$timeSuffix,
-        nTimes    = length(timesVec)
+        nTimes = length(timesVec)
       )
       tblArgs$label_header <- headers$label_header
 
@@ -156,8 +158,8 @@ tblSurvfitClass <- R6::R6Class(
 
       table <- pipeAddPSurvfit(
         table,
-        strata    = strataClean,
-        options   = self$options,
+        strata = strataClean,
+        options = self$options,
         collector = collector
       )
 
