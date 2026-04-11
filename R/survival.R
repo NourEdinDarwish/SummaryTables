@@ -6,11 +6,25 @@
 #' Non-numeric tokens (typos) are silently dropped.
 #'
 #' @param text Character string, e.g. "12, 24, 60"
-#' @return Numeric vector (may be empty if all tokens are invalid)
+#' @return Numeric vector of valid, non-negative time points
 parseCommaNumeric <- function(text) {
   tokens <- trimws(strsplit(text, ",")[[1]])
   values <- suppressWarnings(as.numeric(tokens))
-  values[!is.na(values)]
+  values <- values[!is.na(values)]
+
+  if (length(values) == 0) {
+    jmvcore::reject(
+      "Please enter one or more comma-separated numeric time points (e.g. 12 or 12, 24, 60)" # nolint
+    )
+  }
+
+  if (any(values < 0)) {
+    jmvcore::reject(
+      "Time points must be non-negative numbers"
+    )
+  }
+
+  values
 }
 
 
