@@ -27,6 +27,7 @@ runSafe <- function(expr, collector) {
     expr,
     warning = function(w) {
       msg <- w$message
+      msg <- gsub("were returned during :", "occurred:", msg, fixed = TRUE)
       if (!grepl("C:/Rtools/home/builder", msg, fixed = TRUE)) {
         collector$warnings <- c(collector$warnings, trimws(msg))
       }
@@ -34,6 +35,7 @@ runSafe <- function(expr, collector) {
     },
     message = function(m) {
       msg <- m$message
+      msg <- gsub("were returned during :", "occurred:", msg, fixed = TRUE)
       collector$messages <- c(collector$messages, trimws(msg))
       invokeRestart("muffleMessage")
     }
@@ -55,7 +57,7 @@ runSafe <- function(expr, collector) {
 displayNotices <- function(collector, options, results) {
   # Messages (INFO) — stat test feedback from cards
   if (length(collector$messages) > 0) {
-    msgContent <- paste(collector$messages, collapse = "\n")
+    msgContent <- paste(collector$messages, collapse = "\n\n")
 
     msgNotice <- jmvcore::Notice$new(
       options = options,
@@ -68,7 +70,7 @@ displayNotices <- function(collector, options, results) {
 
   # Warnings (WARNING) — direct R warnings
   if (length(collector$warnings) > 0) {
-    warnContent <- paste(collector$warnings, collapse = "\n")
+    warnContent <- paste(collector$warnings, collapse = "\n\n")
 
     warnNotice <- jmvcore::Notice$new(
       options = options,
