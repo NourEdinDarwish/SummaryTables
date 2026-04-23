@@ -20,3 +20,7 @@
       - title: Tarone-Ware
         name: tarone
 ```
+
+## Non-syntactic names in survfit
+
+The `survival` package version 3.8-7 now supports non-syntactic names. In the future, I need to deprecate the usage of `make.names` and instead use the actual column names. This might require a modified version of `validateVarNames`—for instance, I might only need to check for backslashes (`\\`), or perhaps no manual checks will be needed at all. I will implement and validate this once jamovi updates its bundled version of the `survival` package.
