@@ -57,12 +57,12 @@ build/
 build*/
 
 # other files / folders
+.venv/
+site/
 temp/
 man/
 .DS_Store
 npm-debug.log
 inst/doc
 tests/testthat/Rplots.pdf
-.sisyphus/
-
 trial.omv
