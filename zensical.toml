@@ -29,6 +29,9 @@ site_author = "Nour Edin Darwish"
 # Read more: https://zensical.org/docs/setup/basics/#site_url
 site_url = "https://NourEdinDarwish.github.io/SummaryTables/"
 
+repo_name = "NourEdinDarwish/SummaryTables"
+repo_url = "https://github.com/NourEdinDarwish/SummaryTables"
+
 # The copyright notice appears in the page footer and can contain an HTML
 # fragment.
 #
@@ -44,10 +47,20 @@ Copyright &copy; 2026 The authors
 # can be defined using TOML syntax.
 #
 # Read more: https://zensical.org/docs/setup/navigation/
-# nav = [
-#   { "Get started" = "index.md" },
-#   { "Markdown in 5min" = "markdown.md" },
-# ]
+nav = [
+  { "Home" = "index.md" },
+  { "Analyses" = [
+    { "Summary Table" = "analyses/summary-table.md" },
+    { "Continuous Table" = "analyses/continuous-table.md" },
+    { "Cross Table" = "analyses/cross-table.md" },
+    { "Likert Table" = "analyses/likert-table.md" },
+    { "Survival Table" = "analyses/survival-table.md" },
+    { "Multivariable Regression" = "analyses/multivariable-regression.md" },
+    { "Univariable Regression" = "analyses/univariable-regression.md" }
+  ] },
+  { "Tutorials" = "tutorials/index.md" },
+  { "Changelog" = "changelog.md" }
+]
 
 # With the "extra_css" option you can add your own CSS styling to customize
 # your Zensical project according to your needs. You can add any number of
@@ -93,7 +106,7 @@ Copyright &copy; 2026 The authors
 # - https://zensical.org/docs/setup/logo-and-icons/#favicon
 # - https://developer.mozilla.org/en-US/docs/Glossary/Favicon
 #
-#favicon = "images/favicon.png"
+favicon = "assets/logo.svg"
 
 # Zensical supports more than 60 different languages. This means that the
 # labels and tooltips that Zensical's templates produce are translated.
@@ -200,7 +213,7 @@ features = [
     # When navigation paths are activated, a breadcrumb navigation is rendered
     # above the title of each page
     # https://zensical.org/docs/setup/navigation/#navigation-path
-    "navigation.path",
+    #"navigation.path",
 
     # When pruning is enabled, only the visible navigation items are included
     # in the rendered HTML, reducing the size of the built site by 33% or more.
@@ -215,12 +228,12 @@ features = [
     # When tabs are enabled, top-level sections are rendered in a menu layer
     # below the header for viewports above 1220px, but remain as-is on mobile.
     # https://zensical.org/docs/setup/navigation/#navigation-tabs
-    #"navigation.tabs",
+    "navigation.tabs",
 
     # When sticky tabs are enabled, navigation tabs will lock below the header
     # and always remain visible when scrolling down.
     # https://zensical.org/docs/setup/navigation/#sticky-navigation-tabs
-    #"navigation.tabs.sticky",
+    "navigation.tabs.sticky",
 
     # A back-to-top button can be shown when the user, after scrolling down,
     # starts to scroll up again.
@@ -254,7 +267,7 @@ features = [
 # option in the "theme" subsection. The logo must be a relative path to a file
 # in your "docs_dir", e.g., to use `docs/assets/logo.png` you would set:
 # ----------------------------------------------------------------------------
-#logo = "assets/logo.png"
+logo = "assets/logo.svg"
 
 # ----------------------------------------------------------------------------
 # If you don't have a dedicated project logo, you can use a built-in icon from
@@ -288,21 +301,32 @@ features = [
 # - https://zensical.org/docs/setup/colors/
 # ----------------------------------------------------------------------------
 [[project.theme.palette]]
+media = "(prefers-color-scheme)"
+toggle.icon = "lucide/sun-moon"
+toggle.name = "Switch to light mode"
+
+[[project.theme.palette]]
+media = "(prefers-color-scheme: light)"
 scheme = "default"
 toggle.icon = "lucide/sun"
 toggle.name = "Switch to dark mode"
 
 [[project.theme.palette]]
+media = "(prefers-color-scheme: dark)"
 scheme = "slate"
-toggle.icon = "lucide/moon"
-toggle.name = "Switch to light mode"
+toggle.icon = "lucide/moon-star"
+toggle.name = "Switch to system preference"
 
 # ----------------------------------------------------------------------------
 # The "extra" section contains miscellaneous settings.
 # ----------------------------------------------------------------------------
-#[[project.extra.social]]
-#icon = "fontawesome/brands/github"
-#link = "https://github.com/user/repo"
+[[project.extra.social]]
+icon = "fontawesome/brands/github"
+link = "https://github.com/NourEdinDarwish/SummaryTables"
+
+[[project.extra.social]]
+icon = "fontawesome/solid/envelope"
+link = "mailto:nouredindarwish@gmail.com"
 
 # ----------------------------------------------------------------------------
 # In this section you can configure the Markdown extensions that are used when
