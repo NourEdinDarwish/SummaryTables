@@ -1,3 +1,7 @@
+---
+title: Changelog
+---
+
 # Changelog
 
-(Version history coming soon...)
+--8<-- "NEWS.md"
