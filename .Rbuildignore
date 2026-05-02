@@ -5,8 +5,13 @@
 ^\.agent$
 ^.*\.jmo$
 ^.*\.code-workspace$
-^\.sisyphus$
-
 ^trial\.omv$
 ^LICENSE\.md$
 ^NOTES\.md$
+^\.venv$
+^site$
+^docs$
+^zensical\.toml$
+^\.github$
+^CITATION\.cff$
+^analysis-summarytables\.svg$
