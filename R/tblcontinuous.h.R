@@ -32,9 +32,7 @@ tblContinuousOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
             addQ = FALSE,
             qMethod = "BH",
             boldQ = FALSE,
-            boldQThreshold = 0.05,
-            path = "~/Desktop/Continuous Table.docx",
-            export = FALSE, ...) {
+            boldQThreshold = 0.05, ...) {
 
             super$initialize(
                 package="SummaryTables",
@@ -276,13 +274,6 @@ tblContinuousOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
                 min=0,
                 max=1,
                 default=0.05)
-            private$..path <- jmvcore::OptionString$new(
-                "path",
-                path,
-                default="~/Desktop/Continuous Table.docx")
-            private$..export <- jmvcore::OptionAction$new(
-                "export",
-                export)
 
             self$.addOption(private$..contVar)
             self$.addOption(private$..varsCat)
@@ -311,8 +302,6 @@ tblContinuousOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
             self$.addOption(private$..qMethod)
             self$.addOption(private$..boldQ)
             self$.addOption(private$..boldQThreshold)
-            self$.addOption(private$..path)
-            self$.addOption(private$..export)
         }),
     active = list(
         contVar = function() private$..contVar$value,
@@ -341,9 +330,7 @@ tblContinuousOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
         addQ = function() private$..addQ$value,
         qMethod = function() private$..qMethod$value,
         boldQ = function() private$..boldQ$value,
-        boldQThreshold = function() private$..boldQThreshold$value,
-        path = function() private$..path$value,
-        export = function() private$..export$value),
+        boldQThreshold = function() private$..boldQThreshold$value),
     private = list(
         ..contVar = NA,
         ..varsCat = NA,
@@ -371,9 +358,7 @@ tblContinuousOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
         ..addQ = NA,
         ..qMethod = NA,
         ..boldQ = NA,
-        ..boldQThreshold = NA,
-        ..path = NA,
-        ..export = NA)
+        ..boldQThreshold = NA)
 )
 
 tblContinuousResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -453,8 +438,6 @@ tblContinuousBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param qMethod .
 #' @param boldQ .
 #' @param boldQThreshold .
-#' @param path .
-#' @param export .
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$status} \tab \tab \tab \tab \tab a table \cr
@@ -496,9 +479,7 @@ tblContinuous <- function(
     addQ = FALSE,
     qMethod = "BH",
     boldQ = FALSE,
-    boldQThreshold = 0.05,
-    path = "~/Desktop/Continuous Table.docx",
-    export = FALSE) {
+    boldQThreshold = 0.05) {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
         stop("tblContinuous requires jmvcore to be installed (restart may be required)")
@@ -543,9 +524,7 @@ tblContinuous <- function(
         addQ = addQ,
         qMethod = qMethod,
         boldQ = boldQ,
-        boldQThreshold = boldQThreshold,
-        path = path,
-        export = export)
+        boldQThreshold = boldQThreshold)
 
     analysis <- tblContinuousClass$new(
         options = options,

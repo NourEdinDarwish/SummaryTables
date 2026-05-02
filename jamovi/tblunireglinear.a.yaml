@@ -265,12 +265,3 @@ options:
     min: 0
     max: 1
     default: 0.05
-
-  - name: path
-    title: Path
-    type: String
-    default: ~/Desktop/Univariable Linear Regression.docx
-
-  - name: export
-    title: Save
-    type: Action

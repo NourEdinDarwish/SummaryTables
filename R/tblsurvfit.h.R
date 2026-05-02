@@ -34,9 +34,7 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             boldLabels = FALSE,
             boldLevels = FALSE,
             italicizeLabels = FALSE,
-            italicizeLevels = FALSE,
-            path = "~/Desktop/Survival Table.docx",
-            export = FALSE, ...) {
+            italicizeLevels = FALSE, ...) {
 
             super$initialize(
                 package="SummaryTables",
@@ -251,13 +249,6 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 "italicizeLevels",
                 italicizeLevels,
                 default=FALSE)
-            private$..path <- jmvcore::OptionString$new(
-                "path",
-                path,
-                default="~/Desktop/Survival Table.docx")
-            private$..export <- jmvcore::OptionAction$new(
-                "export",
-                export)
 
             self$.addOption(private$..elapsed)
             self$.addOption(private$..event)
@@ -288,8 +279,6 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..boldLevels)
             self$.addOption(private$..italicizeLabels)
             self$.addOption(private$..italicizeLevels)
-            self$.addOption(private$..path)
-            self$.addOption(private$..export)
         }),
     active = list(
         elapsed = function() private$..elapsed$value,
@@ -320,9 +309,7 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         boldLabels = function() private$..boldLabels$value,
         boldLevels = function() private$..boldLevels$value,
         italicizeLabels = function() private$..italicizeLabels$value,
-        italicizeLevels = function() private$..italicizeLevels$value,
-        path = function() private$..path$value,
-        export = function() private$..export$value),
+        italicizeLevels = function() private$..italicizeLevels$value),
     private = list(
         ..elapsed = NA,
         ..event = NA,
@@ -352,9 +339,7 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..boldLabels = NA,
         ..boldLevels = NA,
         ..italicizeLabels = NA,
-        ..italicizeLevels = NA,
-        ..path = NA,
-        ..export = NA)
+        ..italicizeLevels = NA)
 )
 
 tblSurvfitResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -436,8 +421,6 @@ tblSurvfitBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param boldLevels .
 #' @param italicizeLabels .
 #' @param italicizeLevels .
-#' @param path .
-#' @param export .
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$status} \tab \tab \tab \tab \tab a table \cr
@@ -481,9 +464,7 @@ tblSurvfit <- function(
     boldLabels = FALSE,
     boldLevels = FALSE,
     italicizeLabels = FALSE,
-    italicizeLevels = FALSE,
-    path = "~/Desktop/Survival Table.docx",
-    export = FALSE) {
+    italicizeLevels = FALSE) {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
         stop("tblSurvfit requires jmvcore to be installed (restart may be required)")
@@ -529,9 +510,7 @@ tblSurvfit <- function(
         boldLabels = boldLabels,
         boldLevels = boldLevels,
         italicizeLabels = italicizeLabels,
-        italicizeLevels = italicizeLevels,
-        path = path,
-        export = export)
+        italicizeLevels = italicizeLevels)
 
     analysis <- tblSurvfitClass$new(
         options = options,

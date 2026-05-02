@@ -163,12 +163,3 @@ options:
     title: Italicize labels
     type: Bool
     default: false
-
-  - name: path
-    title: Path
-    type: String
-    default: ~/Desktop/Likert Table.docx
-
-  - name: export
-    title: Save
-    type: Action
