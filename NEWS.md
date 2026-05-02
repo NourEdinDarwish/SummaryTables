@@ -2,6 +2,10 @@
 
 * (Future updates will be added here)
 
+## SummaryTables 1.0.2
+
+* Replaced the module's help sections with a direct link to the official documentation website.
+
 ## SummaryTables 1.0.1
 
 * Improved the readability of error and warning messages.

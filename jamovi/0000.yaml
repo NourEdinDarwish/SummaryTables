@@ -1,12 +1,12 @@
 ---
 title: Publication-Ready Summary Tables
 name: SummaryTables
-version: 1.0.1.9000
+version: 1.0.2
 jms: '1.0'
 authors:
   - Nour Edin Darwish
 maintainer: Nour Edin Darwish <nouredindarwish@gmail.com>
-date: '2026-04-23'
+date: '2026-05-02'
 type: R
 description: >-
   A comprehensive module for creating publication-ready summary and regression
@@ -24,7 +24,10 @@ description: >-
   <li><b>Univariable Regression:</b> Run separate univariable linear, logistic,
   or Cox regression models for each predictor.</li> </ul> Features include
   direct export to <b>Word (.docx)</b>, 16 languages, and pre-built formatting
-  for major journals (JAMA, The Lancet, NEJM, QJE).
+  for major journals (JAMA, The Lancet, NEJM, QJE).<br><br> <b>For
+  documentation, tutorials, and support, please visit:</b> <a
+  href="https://nouredindarwish.github.io/SummaryTables/"
+  target="_blank">nouredindarwish.github.io/SummaryTables</a>
 analyses:
   - title: Summary Table
     name: tblSummary
