@@ -9,6 +9,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             varsCont = NULL,
             varsCat = NULL,
             groupVar = NULL,
+            varOrder = list(),
             manualRun = FALSE,
             run = FALSE,
             addN = FALSE,
@@ -103,6 +104,14 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "ordinal"),
                 permitted=list(
                     "factor"))
+            private$..varOrder <- jmvcore::OptionArray$new(
+                "varOrder",
+                varOrder,
+                hidden=TRUE,
+                default=list(),
+                template=jmvcore::OptionString$new(
+                    "varOrder",
+                    NULL))
             private$..manualRun <- jmvcore::OptionBool$new(
                 "manualRun",
                 manualRun,
@@ -674,6 +683,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..varsCont)
             self$.addOption(private$..varsCat)
             self$.addOption(private$..groupVar)
+            self$.addOption(private$..varOrder)
             self$.addOption(private$..manualRun)
             self$.addOption(private$..run)
             self$.addOption(private$..addN)
@@ -743,6 +753,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         varsCont = function() private$..varsCont$value,
         varsCat = function() private$..varsCat$value,
         groupVar = function() private$..groupVar$value,
+        varOrder = function() private$..varOrder$value,
         manualRun = function() private$..manualRun$value,
         run = function() private$..run$value,
         addN = function() private$..addN$value,
@@ -811,6 +822,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..varsCont = NA,
         ..varsCat = NA,
         ..groupVar = NA,
+        ..varOrder = NA,
         ..manualRun = NA,
         ..run = NA,
         ..addN = NA,
@@ -931,6 +943,7 @@ tblSummaryBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param varsCont .
 #' @param varsCat .
 #' @param groupVar .
+#' @param varOrder .
 #' @param manualRun .
 #' @param run .
 #' @param addN .
@@ -1013,6 +1026,7 @@ tblSummary <- function(
     varsCont,
     varsCat,
     groupVar,
+    varOrder = list(),
     manualRun = FALSE,
     run = FALSE,
     addN = FALSE,
@@ -1098,6 +1112,7 @@ tblSummary <- function(
         varsCont = varsCont,
         varsCat = varsCat,
         groupVar = groupVar,
+        varOrder = varOrder,
         manualRun = manualRun,
         run = run,
         addN = addN,

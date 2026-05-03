@@ -35,6 +35,14 @@ options:
     permitted:
       - factor
 
+  - name: varOrder
+    title: Variable Order
+    type: Array
+    hidden: true
+    default: []
+    template:
+      type: String
+
   - name: manualRun
     title: Run manually
     type: Bool

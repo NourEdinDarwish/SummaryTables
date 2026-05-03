@@ -51,7 +51,7 @@ tblUniRegLinearClass <- R6::R6Class(
       data[covs] <- lapply(data[covs], jmvcore::toNumeric)
       data[factors] <- lapply(data[factors], as.factor)
 
-      allVars <- c(covs, factors)
+      allVars <- self$options$varOrder
 
       # Regression table ----------------------------------------------------
       table <- runSafe(

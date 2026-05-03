@@ -48,7 +48,7 @@ tblSummaryClass <- R6::R6Class(
       # Data prep -----------------------------------------------------------
       data <- self$data
 
-      allVars <- c(varsCat, varsCont)
+      allVars <- self$options$varOrder
 
       groupVar <- self$options$groupVar
       hasGroupVar <- !is.null(groupVar)

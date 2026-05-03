@@ -11,6 +11,7 @@ tblUniRegCoxOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             eventLevel = NULL,
             covs = NULL,
             factors = NULL,
+            varOrder = list(),
             manualRun = FALSE,
             run = FALSE,
             exponentiate = TRUE,
@@ -87,6 +88,14 @@ tblUniRegCoxOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                     "nominal"),
                 permitted=list(
                     "factor"))
+            private$..varOrder <- jmvcore::OptionArray$new(
+                "varOrder",
+                varOrder,
+                hidden=TRUE,
+                default=list(),
+                template=jmvcore::OptionString$new(
+                    "varOrder",
+                    NULL))
             private$..manualRun <- jmvcore::OptionBool$new(
                 "manualRun",
                 manualRun,
@@ -285,6 +294,7 @@ tblUniRegCoxOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             self$.addOption(private$..eventLevel)
             self$.addOption(private$..covs)
             self$.addOption(private$..factors)
+            self$.addOption(private$..varOrder)
             self$.addOption(private$..manualRun)
             self$.addOption(private$..run)
             self$.addOption(private$..exponentiate)
@@ -326,6 +336,7 @@ tblUniRegCoxOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
         eventLevel = function() private$..eventLevel$value,
         covs = function() private$..covs$value,
         factors = function() private$..factors$value,
+        varOrder = function() private$..varOrder$value,
         manualRun = function() private$..manualRun$value,
         run = function() private$..run$value,
         exponentiate = function() private$..exponentiate$value,
@@ -366,6 +377,7 @@ tblUniRegCoxOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
         ..eventLevel = NA,
         ..covs = NA,
         ..factors = NA,
+        ..varOrder = NA,
         ..manualRun = NA,
         ..run = NA,
         ..exponentiate = NA,
@@ -458,6 +470,7 @@ tblUniRegCoxBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param eventLevel .
 #' @param covs .
 #' @param factors .
+#' @param varOrder .
 #' @param manualRun .
 #' @param run .
 #' @param exponentiate .
@@ -512,6 +525,7 @@ tblUniRegCox <- function(
     eventLevel,
     covs,
     factors,
+    varOrder = list(),
     manualRun = FALSE,
     run = FALSE,
     exponentiate = TRUE,
@@ -570,6 +584,7 @@ tblUniRegCox <- function(
         eventLevel = eventLevel,
         covs = covs,
         factors = factors,
+        varOrder = varOrder,
         manualRun = manualRun,
         run = run,
         exponentiate = exponentiate,
