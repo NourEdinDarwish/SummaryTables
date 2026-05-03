@@ -9,6 +9,9 @@ tblUniRegLogisticOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             dep = NULL,
             covs = NULL,
             factors = NULL,
+            varOrder = list(),
+            manualRun = FALSE,
+            run = FALSE,
             exponentiate = TRUE,
             digitsCoef = "auto",
             confInt = TRUE,
@@ -68,6 +71,21 @@ tblUniRegLogisticOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                     "nominal"),
                 permitted=list(
                     "factor"))
+            private$..varOrder <- jmvcore::OptionArray$new(
+                "varOrder",
+                varOrder,
+                hidden=TRUE,
+                default=list(),
+                template=jmvcore::OptionString$new(
+                    "varOrder",
+                    NULL))
+            private$..manualRun <- jmvcore::OptionBool$new(
+                "manualRun",
+                manualRun,
+                default=FALSE)
+            private$..run <- jmvcore::OptionAction$new(
+                "run",
+                run)
             private$..exponentiate <- jmvcore::OptionBool$new(
                 "exponentiate",
                 exponentiate,
@@ -250,6 +268,9 @@ tblUniRegLogisticOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
             self$.addOption(private$..dep)
             self$.addOption(private$..covs)
             self$.addOption(private$..factors)
+            self$.addOption(private$..varOrder)
+            self$.addOption(private$..manualRun)
+            self$.addOption(private$..run)
             self$.addOption(private$..exponentiate)
             self$.addOption(private$..digitsCoef)
             self$.addOption(private$..confInt)
@@ -285,6 +306,9 @@ tblUniRegLogisticOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
         dep = function() private$..dep$value,
         covs = function() private$..covs$value,
         factors = function() private$..factors$value,
+        varOrder = function() private$..varOrder$value,
+        manualRun = function() private$..manualRun$value,
+        run = function() private$..run$value,
         exponentiate = function() private$..exponentiate$value,
         digitsCoef = function() private$..digitsCoef$value,
         confInt = function() private$..confInt$value,
@@ -319,6 +343,9 @@ tblUniRegLogisticOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
         ..dep = NA,
         ..covs = NA,
         ..factors = NA,
+        ..varOrder = NA,
+        ..manualRun = NA,
+        ..run = NA,
         ..exponentiate = NA,
         ..digitsCoef = NA,
         ..confInt = NA,
@@ -368,14 +395,14 @@ tblUniRegLogisticResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                 options=options,
                 name="status",
                 title="Generating Table\u2026",
+                visible="(manualRun == FALSE || run)",
                 columns=list()))
             self$add(jmvcore::Html$new(
                 options=options,
                 name="tbl",
                 refs=list(
                     "SummaryTables",
-                    "gtsummary"),
-                clearWith=list()))}))
+                    "gtsummary")))}))
 
 tblUniRegLogisticBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "tblUniRegLogisticBase",
@@ -405,6 +432,9 @@ tblUniRegLogisticBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
 #' @param dep .
 #' @param covs .
 #' @param factors .
+#' @param varOrder .
+#' @param manualRun .
+#' @param run .
 #' @param exponentiate .
 #' @param digitsCoef .
 #' @param confInt .
@@ -453,6 +483,9 @@ tblUniRegLogistic <- function(
     dep,
     covs,
     factors,
+    varOrder = list(),
+    manualRun = FALSE,
+    run = FALSE,
     exponentiate = TRUE,
     digitsCoef = "auto",
     confInt = TRUE,
@@ -504,6 +537,9 @@ tblUniRegLogistic <- function(
         dep = dep,
         covs = covs,
         factors = factors,
+        varOrder = varOrder,
+        manualRun = manualRun,
+        run = run,
         exponentiate = exponentiate,
         digitsCoef = digitsCoef,
         confInt = confInt,

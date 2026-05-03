@@ -8,6 +8,8 @@ tblCrossOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         initialize = function(
             row = NULL,
             col = NULL,
+            manualRun = FALSE,
+            run = FALSE,
             statistic = "nPercent",
             percent = "column",
             digits = "auto",
@@ -51,6 +53,13 @@ tblCrossOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "ordinal"),
                 permitted=list(
                     "factor"))
+            private$..manualRun <- jmvcore::OptionBool$new(
+                "manualRun",
+                manualRun,
+                default=FALSE)
+            private$..run <- jmvcore::OptionAction$new(
+                "run",
+                run)
             private$..statistic <- jmvcore::OptionList$new(
                 "statistic",
                 statistic,
@@ -194,6 +203,8 @@ tblCrossOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 
             self$.addOption(private$..row)
             self$.addOption(private$..col)
+            self$.addOption(private$..manualRun)
+            self$.addOption(private$..run)
             self$.addOption(private$..statistic)
             self$.addOption(private$..percent)
             self$.addOption(private$..digits)
@@ -218,6 +229,8 @@ tblCrossOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     active = list(
         row = function() private$..row$value,
         col = function() private$..col$value,
+        manualRun = function() private$..manualRun$value,
+        run = function() private$..run$value,
         statistic = function() private$..statistic$value,
         percent = function() private$..percent$value,
         digits = function() private$..digits$value,
@@ -241,6 +254,8 @@ tblCrossOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     private = list(
         ..row = NA,
         ..col = NA,
+        ..manualRun = NA,
+        ..run = NA,
         ..statistic = NA,
         ..percent = NA,
         ..digits = NA,
@@ -280,6 +295,7 @@ tblCrossResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 options=options,
                 name="status",
                 title="Generating Table\u2026",
+                visible="(manualRun == FALSE || run)",
                 columns=list()))
             self$add(jmvcore::Html$new(
                 options=options,
@@ -315,6 +331,8 @@ tblCrossBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param data .
 #' @param row .
 #' @param col .
+#' @param manualRun .
+#' @param run .
 #' @param statistic .
 #' @param percent .
 #' @param digits .
@@ -352,6 +370,8 @@ tblCross <- function(
     data,
     row,
     col,
+    manualRun = FALSE,
+    run = FALSE,
     statistic = "nPercent",
     percent = "column",
     digits = "auto",
@@ -390,6 +410,8 @@ tblCross <- function(
     options <- tblCrossOptions$new(
         row = row,
         col = col,
+        manualRun = manualRun,
+        run = run,
         statistic = statistic,
         percent = percent,
         digits = digits,

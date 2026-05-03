@@ -2,15 +2,26 @@ tblLikertClass <- R6::R6Class(
   "tblLikertClass",
   inherit = tblLikertBase,
   private = list(
-    .run = function() {
-      on.exit(self$results$status$setVisible(FALSE), add = TRUE)
-      # Guard ---------------------------------------------------------------
+    .init = function() {
       vars <- self$options$vars
       if (length(vars) == 0) {
         renderPlaceholder(
           "Add Likert scale variables to generate the table",
           self$results$tbl
         )
+        self$results$status$setVisible(FALSE)
+      }
+    },
+
+    .run = function() {
+      on.exit(self$results$status$setVisible(FALSE), add = TRUE)
+      # Guard ---------------------------------------------------------------
+      if (self$options$manualRun && !self$options$run) {
+        return()
+      }
+
+      vars <- self$options$vars
+      if (length(vars) == 0) {
         return()
       }
 

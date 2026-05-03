@@ -35,6 +35,23 @@ options:
     permitted:
       - factor
 
+  - name: varOrder
+    title: Variable Order
+    type: Array
+    hidden: true
+    default: []
+    template:
+      type: String
+
+  - name: manualRun
+    title: Run manually
+    type: Bool
+    default: false
+
+  - name: run
+    title: Run
+    type: Action
+
   - name: digitsCoef
     title: Decimal places (coefficient & CI)
     type: List

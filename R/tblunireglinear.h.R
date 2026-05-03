@@ -9,6 +9,9 @@ tblUniRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             dep = NULL,
             covs = NULL,
             factors = NULL,
+            varOrder = list(),
+            manualRun = FALSE,
+            run = FALSE,
             digitsCoef = "auto",
             confInt = TRUE,
             confLevel = 95,
@@ -65,6 +68,21 @@ tblUniRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                     "nominal"),
                 permitted=list(
                     "factor"))
+            private$..varOrder <- jmvcore::OptionArray$new(
+                "varOrder",
+                varOrder,
+                hidden=TRUE,
+                default=list(),
+                template=jmvcore::OptionString$new(
+                    "varOrder",
+                    NULL))
+            private$..manualRun <- jmvcore::OptionBool$new(
+                "manualRun",
+                manualRun,
+                default=FALSE)
+            private$..run <- jmvcore::OptionAction$new(
+                "run",
+                run)
             private$..digitsCoef <- jmvcore::OptionList$new(
                 "digitsCoef",
                 digitsCoef,
@@ -231,6 +249,9 @@ tblUniRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             self$.addOption(private$..dep)
             self$.addOption(private$..covs)
             self$.addOption(private$..factors)
+            self$.addOption(private$..varOrder)
+            self$.addOption(private$..manualRun)
+            self$.addOption(private$..run)
             self$.addOption(private$..digitsCoef)
             self$.addOption(private$..confInt)
             self$.addOption(private$..confLevel)
@@ -263,6 +284,9 @@ tblUniRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
         dep = function() private$..dep$value,
         covs = function() private$..covs$value,
         factors = function() private$..factors$value,
+        varOrder = function() private$..varOrder$value,
+        manualRun = function() private$..manualRun$value,
+        run = function() private$..run$value,
         digitsCoef = function() private$..digitsCoef$value,
         confInt = function() private$..confInt$value,
         confLevel = function() private$..confLevel$value,
@@ -294,6 +318,9 @@ tblUniRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
         ..dep = NA,
         ..covs = NA,
         ..factors = NA,
+        ..varOrder = NA,
+        ..manualRun = NA,
+        ..run = NA,
         ..digitsCoef = NA,
         ..confInt = NA,
         ..confLevel = NA,
@@ -340,14 +367,14 @@ tblUniRegLinearResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                 options=options,
                 name="status",
                 title="Generating Table\u2026",
+                visible="(manualRun == FALSE || run)",
                 columns=list()))
             self$add(jmvcore::Html$new(
                 options=options,
                 name="tbl",
                 refs=list(
                     "SummaryTables",
-                    "gtsummary"),
-                clearWith=list()))}))
+                    "gtsummary")))}))
 
 tblUniRegLinearBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "tblUniRegLinearBase",
@@ -377,6 +404,9 @@ tblUniRegLinearBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
 #' @param dep .
 #' @param covs .
 #' @param factors .
+#' @param varOrder .
+#' @param manualRun .
+#' @param run .
 #' @param digitsCoef .
 #' @param confInt .
 #' @param confLevel .
@@ -422,6 +452,9 @@ tblUniRegLinear <- function(
     dep,
     covs,
     factors,
+    varOrder = list(),
+    manualRun = FALSE,
+    run = FALSE,
     digitsCoef = "auto",
     confInt = TRUE,
     confLevel = 95,
@@ -469,6 +502,9 @@ tblUniRegLinear <- function(
         dep = dep,
         covs = covs,
         factors = factors,
+        varOrder = varOrder,
+        manualRun = manualRun,
+        run = run,
         digitsCoef = digitsCoef,
         confInt = confInt,
         confLevel = confLevel,

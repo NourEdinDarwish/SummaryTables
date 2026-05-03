@@ -9,6 +9,9 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             varsCont = NULL,
             varsCat = NULL,
             groupVar = NULL,
+            varOrder = list(),
+            manualRun = FALSE,
+            run = FALSE,
             addN = FALSE,
             addNLast = FALSE,
             addNFootnote = TRUE,
@@ -99,6 +102,21 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "ordinal"),
                 permitted=list(
                     "factor"))
+            private$..varOrder <- jmvcore::OptionArray$new(
+                "varOrder",
+                varOrder,
+                hidden=TRUE,
+                default=list(),
+                template=jmvcore::OptionString$new(
+                    "varOrder",
+                    NULL))
+            private$..manualRun <- jmvcore::OptionBool$new(
+                "manualRun",
+                manualRun,
+                default=FALSE)
+            private$..run <- jmvcore::OptionAction$new(
+                "run",
+                run)
             private$..addN <- jmvcore::OptionBool$new(
                 "addN",
                 addN,
@@ -656,6 +674,9 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..varsCont)
             self$.addOption(private$..varsCat)
             self$.addOption(private$..groupVar)
+            self$.addOption(private$..varOrder)
+            self$.addOption(private$..manualRun)
+            self$.addOption(private$..run)
             self$.addOption(private$..addN)
             self$.addOption(private$..addNLast)
             self$.addOption(private$..addNFootnote)
@@ -721,6 +742,9 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         varsCont = function() private$..varsCont$value,
         varsCat = function() private$..varsCat$value,
         groupVar = function() private$..groupVar$value,
+        varOrder = function() private$..varOrder$value,
+        manualRun = function() private$..manualRun$value,
+        run = function() private$..run$value,
         addN = function() private$..addN$value,
         addNLast = function() private$..addNLast$value,
         addNFootnote = function() private$..addNFootnote$value,
@@ -785,6 +809,9 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..varsCont = NA,
         ..varsCat = NA,
         ..groupVar = NA,
+        ..varOrder = NA,
+        ..manualRun = NA,
+        ..run = NA,
         ..addN = NA,
         ..addNLast = NA,
         ..addNFootnote = NA,
@@ -864,14 +891,14 @@ tblSummaryResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 options=options,
                 name="status",
                 title="Generating Table\u2026",
+                visible="(manualRun == FALSE || run)",
                 columns=list()))
             self$add(jmvcore::Html$new(
                 options=options,
                 name="tbl",
                 refs=list(
                     "SummaryTables",
-                    "gtsummary"),
-                clearWith=list()))}))
+                    "gtsummary")))}))
 
 tblSummaryBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "tblSummaryBase",
@@ -901,6 +928,9 @@ tblSummaryBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param varsCont .
 #' @param varsCat .
 #' @param groupVar .
+#' @param varOrder .
+#' @param manualRun .
+#' @param run .
 #' @param addN .
 #' @param addNLast .
 #' @param addNFootnote .
@@ -979,6 +1009,9 @@ tblSummary <- function(
     varsCont,
     varsCat,
     groupVar,
+    varOrder = list(),
+    manualRun = FALSE,
+    run = FALSE,
     addN = FALSE,
     addNLast = FALSE,
     addNFootnote = TRUE,
@@ -1060,6 +1093,9 @@ tblSummary <- function(
         varsCont = varsCont,
         varsCat = varsCat,
         groupVar = groupVar,
+        varOrder = varOrder,
+        manualRun = manualRun,
+        run = run,
         addN = addN,
         addNLast = addNLast,
         addNFootnote = addNFootnote,

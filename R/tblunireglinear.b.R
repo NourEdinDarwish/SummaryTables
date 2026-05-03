@@ -2,9 +2,7 @@ tblUniRegLinearClass <- R6::R6Class(
   "tblUniRegLinearClass",
   inherit = tblUniRegLinearBase,
   private = list(
-    .run = function() {
-      on.exit(self$results$status$setVisible(FALSE), add = TRUE)
-      # Guard ---------------------------------------------------------------
+    .init = function() {
       dep <- self$options$dep
       covs <- self$options$covs
       factors <- self$options$factors
@@ -14,6 +12,22 @@ tblUniRegLinearClass <- R6::R6Class(
           "Add a dependent variable and at least one covariate or factor to generate the table", #nolint
           self$results$tbl
         )
+        self$results$status$setVisible(FALSE)
+      }
+    },
+
+    .run = function() {
+      on.exit(self$results$status$setVisible(FALSE), add = TRUE)
+      # Guard ---------------------------------------------------------------
+      if (self$options$manualRun && !self$options$run) {
+        return()
+      }
+
+      dep <- self$options$dep
+      covs <- self$options$covs
+      factors <- self$options$factors
+
+      if (is.null(dep) || (length(covs) == 0 && length(factors) == 0)) {
         return()
       }
 
@@ -37,14 +51,7 @@ tblUniRegLinearClass <- R6::R6Class(
       data[covs] <- lapply(data[covs], jmvcore::toNumeric)
       data[factors] <- lapply(data[factors], as.factor)
 
-      # Variable ordering (cross-listbox) -----------------------------------
-      orderState <- trackVariableOrder(
-        savedState = self$results$tbl$state,
-        factors,
-        covs
-      )
-      allVars <- orderState$vars
-      self$results$tbl$setState(orderState)
+      allVars <- self$options$varOrder
 
       # Regression table ----------------------------------------------------
       table <- runSafe(

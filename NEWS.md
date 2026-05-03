@@ -1,6 +1,7 @@
-## SummaryTables (development version)
+## SummaryTables 1.1.0
 
-* (Future updates will be added here)
+* Added Manual Run mode across all analyses.
+* General bug fixes and improvements.
 
 ## SummaryTables 1.0.2
 

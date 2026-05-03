@@ -34,6 +34,23 @@ options:
     permitted:
       - factor
 
+  - name: varOrder
+    title: Variable Order
+    type: Array
+    hidden: true
+    default: []
+    template:
+      type: String
+
+  - name: manualRun
+    title: Run manually
+    type: Bool
+    default: false
+
+  - name: run
+    title: Run
+    type: Action
+
   - name: addN
     title: Add N column
     type: Bool

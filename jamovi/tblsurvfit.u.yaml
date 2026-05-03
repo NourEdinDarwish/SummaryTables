@@ -28,6 +28,12 @@ children:
           - type: VariablesListBox
             name: strata
             isTarget: true
+  - type: CheckBox
+    name: manualRun
+    children:
+      - type: ActionButton
+        name: run
+        enable: (manualRun)
 
   - type: CollapseBox
     label: Options

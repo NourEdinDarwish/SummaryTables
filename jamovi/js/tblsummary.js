@@ -1,4 +1,5 @@
 const sync = require("./sync");
+const reorder = require("./reorder");
 const enable = require("./enable");
 
 module.exports = {
@@ -22,6 +23,7 @@ module.exports = {
     sync.sync(ui.varsCont, ui.testContSpecific, "var", "test", "useDefault");
     sync.sync(ui.varsCont, ui.ciContSpecific, "var", "method", "useDefault");
     sync.sync(ui.varsCont, ui.diffContSpecific, "var", "method", "useDefault");
+    reorder.syncOrder([ui.varsCont, ui.varsCat], ui.varOrder);
   },
 
   // Fires when the user adds/removes variables in the Categorical slot
@@ -40,6 +42,7 @@ module.exports = {
       "method",
       "useDefault",
     );
+    reorder.syncOrder([ui.varsCont, ui.varsCat], ui.varOrder);
   },
 
   // Toggle ListBox enabled state when parent checkboxes change

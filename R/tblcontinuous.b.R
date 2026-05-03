@@ -2,9 +2,7 @@ tblContinuousClass <- R6::R6Class(
   "tblContinuousClass",
   inherit = tblContinuousBase,
   private = list(
-    .run = function() {
-      on.exit(self$results$status$setVisible(FALSE), add = TRUE)
-      # Guard ---------------------------------------------------------------
+    .init = function() {
       contVar <- self$options$contVar
       varsCat <- self$options$varsCat
 
@@ -13,6 +11,21 @@ tblContinuousClass <- R6::R6Class(
           "Add a continuous variable and at least one categorical variable to generate the table", # nolint
           self$results$tbl
         )
+        self$results$status$setVisible(FALSE)
+      }
+    },
+
+    .run = function() {
+      on.exit(self$results$status$setVisible(FALSE), add = TRUE)
+      # Guard ---------------------------------------------------------------
+      if (self$options$manualRun && !self$options$run) {
+        return()
+      }
+
+      contVar <- self$options$contVar
+      varsCat <- self$options$varsCat
+
+      if (is.null(contVar) || length(varsCat) == 0) {
         return()
       }
 

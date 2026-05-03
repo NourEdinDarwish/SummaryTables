@@ -2,9 +2,7 @@ tblCrossClass <- R6::R6Class(
   "tblCrossClass",
   inherit = tblCrossBase,
   private = list(
-    .run = function() {
-      on.exit(self$results$status$setVisible(FALSE), add = TRUE)
-      # Guard ---------------------------------------------------------------
+    .init = function() {
       row <- self$options$row
       col <- self$options$col
       if (is.null(row) || is.null(col)) {
@@ -12,6 +10,20 @@ tblCrossClass <- R6::R6Class(
           "Add a row variable and a column variable to generate the table",
           self$results$tbl
         )
+        self$results$status$setVisible(FALSE)
+      }
+    },
+
+    .run = function() {
+      on.exit(self$results$status$setVisible(FALSE), add = TRUE)
+      # Guard ---------------------------------------------------------------
+      if (self$options$manualRun && !self$options$run) {
+        return()
+      }
+
+      row <- self$options$row
+      col <- self$options$col
+      if (is.null(row) || is.null(col)) {
         return()
       }
 

@@ -2,9 +2,7 @@ tblSummaryClass <- R6::R6Class(
   "tblSummaryClass",
   inherit = tblSummaryBase,
   private = list(
-    .run = function() {
-      on.exit(self$results$status$setVisible(FALSE), add = TRUE)
-      # Guard ---------------------------------------------------------------
+    .init = function() {
       varsCont <- self$options$varsCont
       varsCat <- self$options$varsCat
       hasCont <- length(varsCont) > 0
@@ -15,6 +13,23 @@ tblSummaryClass <- R6::R6Class(
           "Add continuous or categorical variables to generate the table",
           self$results$tbl
         )
+        self$results$status$setVisible(FALSE)
+      }
+    },
+
+    .run = function() {
+      on.exit(self$results$status$setVisible(FALSE), add = TRUE)
+      # Guard ---------------------------------------------------------------
+      if (self$options$manualRun && !self$options$run) {
+        return()
+      }
+
+      varsCont <- self$options$varsCont
+      varsCat <- self$options$varsCat
+      hasCont <- length(varsCont) > 0
+      hasCat <- length(varsCat) > 0
+
+      if (!hasCont && !hasCat) {
         return()
       }
 
@@ -33,13 +48,7 @@ tblSummaryClass <- R6::R6Class(
       # Data prep -----------------------------------------------------------
       data <- self$data
 
-      orderState <- trackVariableOrder(
-        savedState = self$results$tbl$state,
-        varsCat,
-        varsCont
-      )
-      allVars <- orderState$vars
-      self$results$tbl$setState(orderState)
+      allVars <- self$options$varOrder
 
       groupVar <- self$options$groupVar
       hasGroupVar <- !is.null(groupVar)
