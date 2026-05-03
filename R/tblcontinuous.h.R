@@ -9,6 +9,8 @@ tblContinuousOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
             contVar = NULL,
             varsCat = NULL,
             groupVar = NULL,
+            manualRun = FALSE,
+            run = FALSE,
             addOverall = FALSE,
             addOverallLast = FALSE,
             journal = "default",
@@ -65,6 +67,13 @@ tblContinuousOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
                     "ordinal"),
                 permitted=list(
                     "factor"))
+            private$..manualRun <- jmvcore::OptionBool$new(
+                "manualRun",
+                manualRun,
+                default=FALSE)
+            private$..run <- jmvcore::OptionAction$new(
+                "run",
+                run)
             private$..addOverall <- jmvcore::OptionBool$new(
                 "addOverall",
                 addOverall,
@@ -287,6 +296,8 @@ tblContinuousOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
             self$.addOption(private$..contVar)
             self$.addOption(private$..varsCat)
             self$.addOption(private$..groupVar)
+            self$.addOption(private$..manualRun)
+            self$.addOption(private$..run)
             self$.addOption(private$..addOverall)
             self$.addOption(private$..addOverallLast)
             self$.addOption(private$..journal)
@@ -318,6 +329,8 @@ tblContinuousOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
         contVar = function() private$..contVar$value,
         varsCat = function() private$..varsCat$value,
         groupVar = function() private$..groupVar$value,
+        manualRun = function() private$..manualRun$value,
+        run = function() private$..run$value,
         addOverall = function() private$..addOverall$value,
         addOverallLast = function() private$..addOverallLast$value,
         journal = function() private$..journal$value,
@@ -348,6 +361,8 @@ tblContinuousOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
         ..contVar = NA,
         ..varsCat = NA,
         ..groupVar = NA,
+        ..manualRun = NA,
+        ..run = NA,
         ..addOverall = NA,
         ..addOverallLast = NA,
         ..journal = NA,
@@ -393,6 +408,7 @@ tblContinuousResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
                 options=options,
                 name="status",
                 title="Generating Table\u2026",
+                visible="(manualRun == FALSE || run)",
                 columns=list()))
             self$add(jmvcore::Html$new(
                 options=options,
@@ -429,6 +445,8 @@ tblContinuousBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param contVar .
 #' @param varsCat .
 #' @param groupVar .
+#' @param manualRun .
+#' @param run .
 #' @param addOverall .
 #' @param addOverallLast .
 #' @param journal .
@@ -473,6 +491,8 @@ tblContinuous <- function(
     contVar,
     varsCat,
     groupVar,
+    manualRun = FALSE,
+    run = FALSE,
     addOverall = FALSE,
     addOverallLast = FALSE,
     journal = "default",
@@ -520,6 +540,8 @@ tblContinuous <- function(
         contVar = contVar,
         varsCat = varsCat,
         groupVar = groupVar,
+        manualRun = manualRun,
+        run = run,
         addOverall = addOverall,
         addOverallLast = addOverallLast,
         journal = journal,

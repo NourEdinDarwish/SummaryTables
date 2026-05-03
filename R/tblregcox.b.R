@@ -2,9 +2,7 @@ tblRegCoxClass <- R6::R6Class(
   "tblRegCoxClass",
   inherit = tblRegCoxBase,
   private = list(
-    .run = function() {
-      on.exit(self$results$status$setVisible(FALSE), add = TRUE)
-      # Guard ---------------------------------------------------------------
+    .init = function() {
       elapsed <- self$options$elapsed
       event <- self$options$event
       terms <- self$options$modelTerms
@@ -14,6 +12,22 @@ tblRegCoxClass <- R6::R6Class(
           "Add a time variable, an event variable, and at least one term to generate the table", #nolint
           self$results$tbl
         )
+        self$results$status$setVisible(FALSE)
+      }
+    },
+
+    .run = function() {
+      on.exit(self$results$status$setVisible(FALSE), add = TRUE)
+      # Guard ---------------------------------------------------------------
+      if (self$options$manualRun && !self$options$run) {
+        return()
+      }
+
+      elapsed <- self$options$elapsed
+      event <- self$options$event
+      terms <- self$options$modelTerms
+
+      if (is.null(elapsed) || is.null(event) || length(terms) == 0) {
         return()
       }
 

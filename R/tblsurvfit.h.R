@@ -10,6 +10,8 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             event = NULL,
             eventLevel = NULL,
             strata = NULL,
+            manualRun = FALSE,
+            run = FALSE,
             statistic = "times",
             times = "12, 24",
             timeSuffix = "-Month",
@@ -71,6 +73,13 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "nominal"),
                 permitted=list(
                     "factor"))
+            private$..manualRun <- jmvcore::OptionBool$new(
+                "manualRun",
+                manualRun,
+                default=FALSE)
+            private$..run <- jmvcore::OptionAction$new(
+                "run",
+                run)
             private$..statistic <- jmvcore::OptionList$new(
                 "statistic",
                 statistic,
@@ -263,6 +272,8 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..event)
             self$.addOption(private$..eventLevel)
             self$.addOption(private$..strata)
+            self$.addOption(private$..manualRun)
+            self$.addOption(private$..run)
             self$.addOption(private$..statistic)
             self$.addOption(private$..times)
             self$.addOption(private$..timeSuffix)
@@ -296,6 +307,8 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         event = function() private$..event$value,
         eventLevel = function() private$..eventLevel$value,
         strata = function() private$..strata$value,
+        manualRun = function() private$..manualRun$value,
+        run = function() private$..run$value,
         statistic = function() private$..statistic$value,
         times = function() private$..times$value,
         timeSuffix = function() private$..timeSuffix$value,
@@ -328,6 +341,8 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..event = NA,
         ..eventLevel = NA,
         ..strata = NA,
+        ..manualRun = NA,
+        ..run = NA,
         ..statistic = NA,
         ..times = NA,
         ..timeSuffix = NA,
@@ -374,6 +389,7 @@ tblSurvfitResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 options=options,
                 name="status",
                 title="Generating Table\u2026",
+                visible="(manualRun == FALSE || run)",
                 columns=list()))
             self$add(jmvcore::Html$new(
                 options=options,
@@ -411,6 +427,8 @@ tblSurvfitBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param event .
 #' @param eventLevel .
 #' @param strata .
+#' @param manualRun .
+#' @param run .
 #' @param statistic .
 #' @param times .
 #' @param timeSuffix .
@@ -457,6 +475,8 @@ tblSurvfit <- function(
     event,
     eventLevel,
     strata,
+    manualRun = FALSE,
+    run = FALSE,
     statistic = "times",
     times = "12, 24",
     timeSuffix = "-Month",
@@ -505,6 +525,8 @@ tblSurvfit <- function(
         event = event,
         eventLevel = eventLevel,
         strata = strata,
+        manualRun = manualRun,
+        run = run,
         statistic = statistic,
         times = times,
         timeSuffix = timeSuffix,

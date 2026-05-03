@@ -9,6 +9,8 @@ tblRegLogisticOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             dep = NULL,
             covs = NULL,
             factors = NULL,
+            manualRun = FALSE,
+            run = FALSE,
             modelTerms = NULL,
             exponentiate = TRUE,
             digitsCoef = "auto",
@@ -74,6 +76,13 @@ tblRegLogisticOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                     "nominal"),
                 permitted=list(
                     "factor"))
+            private$..manualRun <- jmvcore::OptionBool$new(
+                "manualRun",
+                manualRun,
+                default=FALSE)
+            private$..run <- jmvcore::OptionAction$new(
+                "run",
+                run)
             private$..modelTerms <- jmvcore::OptionTerms$new(
                 "modelTerms",
                 modelTerms)
@@ -282,6 +291,8 @@ tblRegLogisticOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$.addOption(private$..dep)
             self$.addOption(private$..covs)
             self$.addOption(private$..factors)
+            self$.addOption(private$..manualRun)
+            self$.addOption(private$..run)
             self$.addOption(private$..modelTerms)
             self$.addOption(private$..exponentiate)
             self$.addOption(private$..digitsCoef)
@@ -323,6 +334,8 @@ tblRegLogisticOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         dep = function() private$..dep$value,
         covs = function() private$..covs$value,
         factors = function() private$..factors$value,
+        manualRun = function() private$..manualRun$value,
+        run = function() private$..run$value,
         modelTerms = function() private$..modelTerms$value,
         exponentiate = function() private$..exponentiate$value,
         digitsCoef = function() private$..digitsCoef$value,
@@ -363,6 +376,8 @@ tblRegLogisticOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         ..dep = NA,
         ..covs = NA,
         ..factors = NA,
+        ..manualRun = NA,
+        ..run = NA,
         ..modelTerms = NA,
         ..exponentiate = NA,
         ..digitsCoef = NA,
@@ -418,6 +433,7 @@ tblRegLogisticResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 options=options,
                 name="status",
                 title="Generating Table\u2026",
+                visible="(manualRun == FALSE || run)",
                 columns=list()))
             self$add(jmvcore::Html$new(
                 options=options,
@@ -454,6 +470,8 @@ tblRegLogisticBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #' @param dep .
 #' @param covs .
 #' @param factors .
+#' @param manualRun .
+#' @param run .
 #' @param modelTerms .
 #' @param exponentiate .
 #' @param digitsCoef .
@@ -508,6 +526,8 @@ tblRegLogistic <- function(
     dep,
     covs,
     factors,
+    manualRun = FALSE,
+    run = FALSE,
     modelTerms,
     exponentiate = TRUE,
     digitsCoef = "auto",
@@ -566,6 +586,8 @@ tblRegLogistic <- function(
         dep = dep,
         covs = covs,
         factors = factors,
+        manualRun = manualRun,
+        run = run,
         modelTerms = modelTerms,
         exponentiate = exponentiate,
         digitsCoef = digitsCoef,

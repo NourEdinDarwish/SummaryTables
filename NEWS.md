@@ -1,6 +1,7 @@
 ## SummaryTables (development version)
 
-* (Future updates will be added here)
+* Added a "Manual run" option to all analyses. This allows to pause automatic updates, making it much faster to build large tables and models.
+* Improved how variables are ordered and added to the tables.
 
 ## SummaryTables 1.0.2
 

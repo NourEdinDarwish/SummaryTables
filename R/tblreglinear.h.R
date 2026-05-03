@@ -9,6 +9,8 @@ tblRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             dep = NULL,
             covs = NULL,
             factors = NULL,
+            manualRun = FALSE,
+            run = FALSE,
             modelTerms = NULL,
             digitsCoef = "auto",
             confInt = TRUE,
@@ -71,6 +73,13 @@ tblRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                     "nominal"),
                 permitted=list(
                     "factor"))
+            private$..manualRun <- jmvcore::OptionBool$new(
+                "manualRun",
+                manualRun,
+                default=FALSE)
+            private$..run <- jmvcore::OptionAction$new(
+                "run",
+                run)
             private$..modelTerms <- jmvcore::OptionTerms$new(
                 "modelTerms",
                 modelTerms)
@@ -263,6 +272,8 @@ tblRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             self$.addOption(private$..dep)
             self$.addOption(private$..covs)
             self$.addOption(private$..factors)
+            self$.addOption(private$..manualRun)
+            self$.addOption(private$..run)
             self$.addOption(private$..modelTerms)
             self$.addOption(private$..digitsCoef)
             self$.addOption(private$..confInt)
@@ -301,6 +312,8 @@ tblRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
         dep = function() private$..dep$value,
         covs = function() private$..covs$value,
         factors = function() private$..factors$value,
+        manualRun = function() private$..manualRun$value,
+        run = function() private$..run$value,
         modelTerms = function() private$..modelTerms$value,
         digitsCoef = function() private$..digitsCoef$value,
         confInt = function() private$..confInt$value,
@@ -338,6 +351,8 @@ tblRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
         ..dep = NA,
         ..covs = NA,
         ..factors = NA,
+        ..manualRun = NA,
+        ..run = NA,
         ..modelTerms = NA,
         ..digitsCoef = NA,
         ..confInt = NA,
@@ -390,6 +405,7 @@ tblRegLinearResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                 options=options,
                 name="status",
                 title="Generating Table\u2026",
+                visible="(manualRun == FALSE || run)",
                 columns=list()))
             self$add(jmvcore::Html$new(
                 options=options,
@@ -426,6 +442,8 @@ tblRegLinearBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param dep .
 #' @param covs .
 #' @param factors .
+#' @param manualRun .
+#' @param run .
 #' @param modelTerms .
 #' @param digitsCoef .
 #' @param confInt .
@@ -477,6 +495,8 @@ tblRegLinear <- function(
     dep,
     covs,
     factors,
+    manualRun = FALSE,
+    run = FALSE,
     modelTerms,
     digitsCoef = "auto",
     confInt = TRUE,
@@ -531,6 +551,8 @@ tblRegLinear <- function(
         dep = dep,
         covs = covs,
         factors = factors,
+        manualRun = manualRun,
+        run = run,
         modelTerms = modelTerms,
         digitsCoef = digitsCoef,
         confInt = confInt,

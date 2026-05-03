@@ -7,6 +7,8 @@ tblLikertOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     public = list(
         initialize = function(
             vars = NULL,
+            manualRun = FALSE,
+            run = FALSE,
             statistic = "nPercent",
             statSpecific = NULL,
             digits = "auto",
@@ -35,6 +37,13 @@ tblLikertOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "ordinal"),
                 permitted=list(
                     "factor"))
+            private$..manualRun <- jmvcore::OptionBool$new(
+                "manualRun",
+                manualRun,
+                default=FALSE)
+            private$..run <- jmvcore::OptionAction$new(
+                "run",
+                run)
             private$..statistic <- jmvcore::OptionList$new(
                 "statistic",
                 statistic,
@@ -145,6 +154,8 @@ tblLikertOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 export)
 
             self$.addOption(private$..vars)
+            self$.addOption(private$..manualRun)
+            self$.addOption(private$..run)
             self$.addOption(private$..statistic)
             self$.addOption(private$..statSpecific)
             self$.addOption(private$..digits)
@@ -162,6 +173,8 @@ tblLikertOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         }),
     active = list(
         vars = function() private$..vars$value,
+        manualRun = function() private$..manualRun$value,
+        run = function() private$..run$value,
         statistic = function() private$..statistic$value,
         statSpecific = function() private$..statSpecific$value,
         digits = function() private$..digits$value,
@@ -178,6 +191,8 @@ tblLikertOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         export = function() private$..export$value),
     private = list(
         ..vars = NA,
+        ..manualRun = NA,
+        ..run = NA,
         ..statistic = NA,
         ..statSpecific = NA,
         ..digits = NA,
@@ -211,6 +226,7 @@ tblLikertResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 options=options,
                 name="status",
                 title="Generating Table\u2026",
+                visible="(manualRun == FALSE || run)",
                 columns=list()))
             self$add(jmvcore::Html$new(
                 options=options,
@@ -245,6 +261,8 @@ tblLikertBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' 
 #' @param data .
 #' @param vars .
+#' @param manualRun .
+#' @param run .
 #' @param statistic .
 #' @param statSpecific .
 #' @param digits .
@@ -275,6 +293,8 @@ tblLikertBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 tblLikert <- function(
     data,
     vars,
+    manualRun = FALSE,
+    run = FALSE,
     statistic = "nPercent",
     statSpecific,
     digits = "auto",
@@ -303,6 +323,8 @@ tblLikert <- function(
 
     options <- tblLikertOptions$new(
         vars = vars,
+        manualRun = manualRun,
+        run = run,
         statistic = statistic,
         statSpecific = statSpecific,
         digits = digits,

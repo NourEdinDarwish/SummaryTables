@@ -2,9 +2,7 @@ tblSurvfitClass <- R6::R6Class(
   "tblSurvfitClass",
   inherit = tblSurvfitBase,
   private = list(
-    .run = function() {
-      on.exit(self$results$status$setVisible(FALSE), add = TRUE)
-      # Guard ---------------------------------------------------------------
+    .init = function() {
       elapsed <- self$options$elapsed
       event <- self$options$event
 
@@ -13,6 +11,21 @@ tblSurvfitClass <- R6::R6Class(
           "Add a time variable and an event variable to generate the table",
           self$results$tbl
         )
+        self$results$status$setVisible(FALSE)
+      }
+    },
+
+    .run = function() {
+      on.exit(self$results$status$setVisible(FALSE), add = TRUE)
+      # Guard ---------------------------------------------------------------
+      if (self$options$manualRun && !self$options$run) {
+        return()
+      }
+
+      elapsed <- self$options$elapsed
+      event <- self$options$event
+
+      if (is.null(elapsed) || is.null(event)) {
         return()
       }
 

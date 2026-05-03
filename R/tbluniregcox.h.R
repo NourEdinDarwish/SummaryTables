@@ -11,6 +11,8 @@ tblUniRegCoxOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             eventLevel = NULL,
             covs = NULL,
             factors = NULL,
+            manualRun = FALSE,
+            run = FALSE,
             exponentiate = TRUE,
             digitsCoef = "auto",
             confInt = TRUE,
@@ -85,6 +87,13 @@ tblUniRegCoxOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                     "nominal"),
                 permitted=list(
                     "factor"))
+            private$..manualRun <- jmvcore::OptionBool$new(
+                "manualRun",
+                manualRun,
+                default=FALSE)
+            private$..run <- jmvcore::OptionAction$new(
+                "run",
+                run)
             private$..exponentiate <- jmvcore::OptionBool$new(
                 "exponentiate",
                 exponentiate,
@@ -276,6 +285,8 @@ tblUniRegCoxOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             self$.addOption(private$..eventLevel)
             self$.addOption(private$..covs)
             self$.addOption(private$..factors)
+            self$.addOption(private$..manualRun)
+            self$.addOption(private$..run)
             self$.addOption(private$..exponentiate)
             self$.addOption(private$..digitsCoef)
             self$.addOption(private$..confInt)
@@ -315,6 +326,8 @@ tblUniRegCoxOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
         eventLevel = function() private$..eventLevel$value,
         covs = function() private$..covs$value,
         factors = function() private$..factors$value,
+        manualRun = function() private$..manualRun$value,
+        run = function() private$..run$value,
         exponentiate = function() private$..exponentiate$value,
         digitsCoef = function() private$..digitsCoef$value,
         confInt = function() private$..confInt$value,
@@ -353,6 +366,8 @@ tblUniRegCoxOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
         ..eventLevel = NA,
         ..covs = NA,
         ..factors = NA,
+        ..manualRun = NA,
+        ..run = NA,
         ..exponentiate = NA,
         ..digitsCoef = NA,
         ..confInt = NA,
@@ -404,14 +419,14 @@ tblUniRegCoxResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                 options=options,
                 name="status",
                 title="Generating Table\u2026",
+                visible="(manualRun == FALSE || run)",
                 columns=list()))
             self$add(jmvcore::Html$new(
                 options=options,
                 name="tbl",
                 refs=list(
                     "SummaryTables",
-                    "gtsummary"),
-                clearWith=list()))}))
+                    "gtsummary")))}))
 
 tblUniRegCoxBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
     "tblUniRegCoxBase",
@@ -443,6 +458,8 @@ tblUniRegCoxBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param eventLevel .
 #' @param covs .
 #' @param factors .
+#' @param manualRun .
+#' @param run .
 #' @param exponentiate .
 #' @param digitsCoef .
 #' @param confInt .
@@ -495,6 +512,8 @@ tblUniRegCox <- function(
     eventLevel,
     covs,
     factors,
+    manualRun = FALSE,
+    run = FALSE,
     exponentiate = TRUE,
     digitsCoef = "auto",
     confInt = TRUE,
@@ -551,6 +570,8 @@ tblUniRegCox <- function(
         eventLevel = eventLevel,
         covs = covs,
         factors = factors,
+        manualRun = manualRun,
+        run = run,
         exponentiate = exponentiate,
         digitsCoef = digitsCoef,
         confInt = confInt,

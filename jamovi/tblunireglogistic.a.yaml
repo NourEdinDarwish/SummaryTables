@@ -36,6 +36,15 @@ options:
     permitted:
       - factor
 
+  - name: manualRun
+    title: Run manually
+    type: Bool
+    default: false
+
+  - name: run
+    title: Run
+    type: Action
+
   - name: exponentiate
     title: Odds ratio (exponentiate coefficients)
     type: Bool

@@ -6,6 +6,7 @@ items:
   - name: status
     type: Table
     title: Generating Table…
+    visible: (manualRun == FALSE || run)
     columns: []
 
   - name: tbl

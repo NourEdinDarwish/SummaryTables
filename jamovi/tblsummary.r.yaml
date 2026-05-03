@@ -6,6 +6,7 @@ items:
   - name: status
     type: Table
     title: Generating Table…
+    visible: (manualRun == FALSE || run)
     columns: []
 
   - name: tbl
@@ -13,4 +14,3 @@ items:
     refs:
       - SummaryTables
       - gtsummary
-    clearWith: []
