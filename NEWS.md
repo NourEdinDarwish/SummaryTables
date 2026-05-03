@@ -1,7 +1,7 @@
-## SummaryTables (development version)
+## SummaryTables 1.1.0
 
-* Added a "Run Manually" option to all analyses. This allows to pause automatic updates, making it much faster to build large tables and models.
-* Variables are now ordered exactly as they are inserted in the UI across both continuous and categorical variable lists in the Summary Table and all Univariable Regressions.
+* Added Manual Run mode across all analyses.
+* General bug fixes and improvements.
 
 ## SummaryTables 1.0.2
 
