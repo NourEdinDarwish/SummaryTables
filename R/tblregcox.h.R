@@ -45,9 +45,7 @@ tblRegCoxOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             addQ = FALSE,
             qMethod = "BH",
             boldQ = FALSE,
-            boldQThreshold = 0.05,
-            path = "~/Desktop/Multivariable Cox Regression.docx",
-            export = FALSE, ...) {
+            boldQThreshold = 0.05, ...) {
 
             super$initialize(
                 package="SummaryTables",
@@ -290,13 +288,6 @@ tblRegCoxOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 min=0,
                 max=1,
                 default=0.05)
-            private$..path <- jmvcore::OptionString$new(
-                "path",
-                path,
-                default="~/Desktop/Multivariable Cox Regression.docx")
-            private$..export <- jmvcore::OptionAction$new(
-                "export",
-                export)
 
             self$.addOption(private$..elapsed)
             self$.addOption(private$..event)
@@ -338,8 +329,6 @@ tblRegCoxOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..qMethod)
             self$.addOption(private$..boldQ)
             self$.addOption(private$..boldQThreshold)
-            self$.addOption(private$..path)
-            self$.addOption(private$..export)
         }),
     active = list(
         elapsed = function() private$..elapsed$value,
@@ -381,9 +370,7 @@ tblRegCoxOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         addQ = function() private$..addQ$value,
         qMethod = function() private$..qMethod$value,
         boldQ = function() private$..boldQ$value,
-        boldQThreshold = function() private$..boldQThreshold$value,
-        path = function() private$..path$value,
-        export = function() private$..export$value),
+        boldQThreshold = function() private$..boldQThreshold$value),
     private = list(
         ..elapsed = NA,
         ..event = NA,
@@ -424,9 +411,7 @@ tblRegCoxOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..addQ = NA,
         ..qMethod = NA,
         ..boldQ = NA,
-        ..boldQThreshold = NA,
-        ..path = NA,
-        ..export = NA)
+        ..boldQThreshold = NA)
 )
 
 tblRegCoxResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -520,8 +505,6 @@ tblRegCoxBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param qMethod .
 #' @param boldQ .
 #' @param boldQThreshold .
-#' @param path .
-#' @param export .
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$status} \tab \tab \tab \tab \tab a table \cr
@@ -576,9 +559,7 @@ tblRegCox <- function(
     addQ = FALSE,
     qMethod = "BH",
     boldQ = FALSE,
-    boldQThreshold = 0.05,
-    path = "~/Desktop/Multivariable Cox Regression.docx",
-    export = FALSE) {
+    boldQThreshold = 0.05) {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
         stop("tblRegCox requires jmvcore to be installed (restart may be required)")
@@ -638,9 +619,7 @@ tblRegCox <- function(
         addQ = addQ,
         qMethod = qMethod,
         boldQ = boldQ,
-        boldQThreshold = boldQThreshold,
-        path = path,
-        export = export)
+        boldQThreshold = boldQThreshold)
 
     analysis <- tblRegCoxClass$new(
         options = options,

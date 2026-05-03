@@ -44,9 +44,7 @@ tblRegLogisticOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             addQ = FALSE,
             qMethod = "BH",
             boldQ = FALSE,
-            boldQThreshold = 0.05,
-            path = "~/Desktop/Multivariable Logistic Regression.docx",
-            export = FALSE, ...) {
+            boldQThreshold = 0.05, ...) {
 
             super$initialize(
                 package="SummaryTables",
@@ -280,13 +278,6 @@ tblRegLogisticOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 min=0,
                 max=1,
                 default=0.05)
-            private$..path <- jmvcore::OptionString$new(
-                "path",
-                path,
-                default="~/Desktop/Multivariable Logistic Regression.docx")
-            private$..export <- jmvcore::OptionAction$new(
-                "export",
-                export)
 
             self$.addOption(private$..dep)
             self$.addOption(private$..covs)
@@ -327,8 +318,6 @@ tblRegLogisticOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
             self$.addOption(private$..qMethod)
             self$.addOption(private$..boldQ)
             self$.addOption(private$..boldQThreshold)
-            self$.addOption(private$..path)
-            self$.addOption(private$..export)
         }),
     active = list(
         dep = function() private$..dep$value,
@@ -369,9 +358,7 @@ tblRegLogisticOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         addQ = function() private$..addQ$value,
         qMethod = function() private$..qMethod$value,
         boldQ = function() private$..boldQ$value,
-        boldQThreshold = function() private$..boldQThreshold$value,
-        path = function() private$..path$value,
-        export = function() private$..export$value),
+        boldQThreshold = function() private$..boldQThreshold$value),
     private = list(
         ..dep = NA,
         ..covs = NA,
@@ -411,9 +398,7 @@ tblRegLogisticOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
         ..addQ = NA,
         ..qMethod = NA,
         ..boldQ = NA,
-        ..boldQThreshold = NA,
-        ..path = NA,
-        ..export = NA)
+        ..boldQThreshold = NA)
 )
 
 tblRegLogisticResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -506,8 +491,6 @@ tblRegLogisticBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 #' @param qMethod .
 #' @param boldQ .
 #' @param boldQThreshold .
-#' @param path .
-#' @param export .
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$status} \tab \tab \tab \tab \tab a table \cr
@@ -561,9 +544,7 @@ tblRegLogistic <- function(
     addQ = FALSE,
     qMethod = "BH",
     boldQ = FALSE,
-    boldQThreshold = 0.05,
-    path = "~/Desktop/Multivariable Logistic Regression.docx",
-    export = FALSE) {
+    boldQThreshold = 0.05) {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
         stop("tblRegLogistic requires jmvcore to be installed (restart may be required)")
@@ -621,9 +602,7 @@ tblRegLogistic <- function(
         addQ = addQ,
         qMethod = qMethod,
         boldQ = boldQ,
-        boldQThreshold = boldQThreshold,
-        path = path,
-        export = export)
+        boldQThreshold = boldQThreshold)
 
     analysis <- tblRegLogisticClass$new(
         options = options,
