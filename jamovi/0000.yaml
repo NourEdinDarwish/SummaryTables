@@ -1,7 +1,7 @@
 ---
 title: Publication-Ready Summary Tables
 name: SummaryTables
-version: 1.1.0
+version: 1.1.1
 jms: '1.0'
 authors:
   - Nour Edin Darwish
@@ -155,6 +155,6 @@ analyses:
       global p-values, event counts, significance stars, and p-value
       adjustments.
 usesNative: true
-minApp: 1.0.8
+minApp: 2.7.12
 
 ...

@@ -1,7 +1,11 @@
+## SummaryTables 1.1.1
+
+* General bug-fixes and improvements.
+
 ## SummaryTables 1.1.0
 
 * Added Manual Run mode across all analyses.
-* General bug fixes and improvements.
+* General bug-fixes and improvements.
 
 ## SummaryTables 1.0.2
 
@@ -17,16 +21,19 @@
 * Fixed formatting artifacts when exporting tables to Word.
 * Improved UI layout consistency across all analyses.
 * Added validation checks to ensure survival variables are coded correctly.
+* General bug-fixes and improvements.
 
 ## SummaryTables 0.9.0
 
 * **New Analyses:** Added Multivariable and Univariable Cox proportional hazards regression.
+* General bug-fixes and improvements.
 
 ## SummaryTables 0.8.0
 
 * Added an option to merge Confidence Interval (CI) columns into a single column.
 * Added an option to display individual p-values alongside global p-values.
 * Improved UI logic to prevent conflicts between p-values and significance stars.
+* General bug-fixes and improvements.
 
 ## SummaryTables 0.7.1
 
@@ -35,6 +42,7 @@
 ## SummaryTables 0.7.0
 
 * **New Analyses:** Added Linear and Logistic Regression (both Univariable and Multivariable).
+* General bug-fixes and improvements.
 
 ## SummaryTables 0.3.2
 
