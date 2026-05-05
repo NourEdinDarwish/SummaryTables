@@ -35,7 +35,6 @@ and regression tables, powered by
 
 ## Features
 
-- **Word export:** Save any table directly as a .docx file
 - **Journal formatting:** JAMA, The Lancet, NEJM, Quarterly Journal
   of Economics
 - **16 languages:** English, French, German, Spanish, Chinese, Japanese,
