@@ -1,3 +1,9 @@
+## SummaryTables 1.2.0
+
+* Regression and Survival analyses now fully support any variable name, including those with spaces or special characters.
+* Added a helpful error message when attempting to use polynomial terms on categorical variables.
+* General bug-fixes and improvements.
+
 ## SummaryTables 1.1.1
 
 * General bug-fixes and improvements.
