@@ -31,105 +31,112 @@ tblUniRegLogisticClass <- R6::R6Class(
         return()
       }
 
-      validateVarNames(c(covs, factors))
+      # B64 encoding map ----------------------------------------------------
+      b64Map <- buildB64Map(names(self$data))
 
-      # Collector -----------------------------------------------------------
-      collector <- newCollector()
+      tryCatch(
+        {
+          # Collector -----------------------------------------------------------
+          collector <- newCollector()
 
-      # Theme ---------------------------------------------------------------
-      on.exit(gtsummary::reset_gtsummary_theme(), add = TRUE)
-      applyTheme(
-        journalOption = self$options$journal,
-        languageOption = self$options$language,
-        compactOption = self$options$compact
-      )
-
-      # Data prep -----------------------------------------------------------
-      data <- self$data
-      data[[dep]] <- as.factor(data[[dep]])
-
-      if (length(levels(data[[dep]])) != 2) {
-        jmvcore::reject(
-          jmvcore::format(
-            "The dependent variable '{}' must have exactly two levels for binomial logistic regression", # nolint
-            dep
+          # Theme ---------------------------------------------------------------
+          on.exit(gtsummary::reset_gtsummary_theme(), add = TRUE)
+          applyTheme(
+            journalOption = self$options$journal,
+            languageOption = self$options$language,
+            compactOption = self$options$compact
           )
-        )
-      }
 
-      data[covs] <- lapply(data[covs], jmvcore::toNumeric)
-      data[factors] <- lapply(data[factors], as.factor)
+          # Data prep -----------------------------------------------------------
+          data <- self$data
+          data[[dep]] <- as.factor(data[[dep]])
 
-      allVars <- self$options$varOrder
+          if (length(levels(data[[dep]])) != 2) {
+            jmvcore::reject(
+              jmvcore::format(
+                "The dependent variable '{}' must have exactly two levels for binomial logistic regression", # nolint
+                dep
+              )
+            )
+          }
 
-      # Regression table ----------------------------------------------------
-      table <- runSafe(
-        buildUniRegTable(
-          data = data,
-          y = jmvcore::composeTerm(dep),
-          include = allVars,
-          method = glm,
-          method.args = list(family = binomial),
-          options = self$options
-        ),
-        collector
+          data[covs] <- lapply(data[covs], jmvcore::toNumeric)
+          data[factors] <- lapply(data[factors], as.factor)
+
+          # Encode data to B64
+          data <- encodeB64(data)
+          depB64 <- jmvcore::toB64(dep)
+
+          # Regression table ----------------------------------------------------
+          table <- runSafe(
+            buildUniRegTable(
+              data = data,
+              y = depB64,
+              include = jmvcore::toB64(self$options$varOrder),
+              method = glm,
+              method.args = list(family = binomial),
+              options = self$options
+            ),
+            collector
+          )
+
+          # Pipeline ------------------------------------------------------------
+          table <- pipeAddGlobalP(
+            table,
+            options = self$options,
+            collector = collector
+          )
+
+          table <- pipeAddQ(
+            table,
+            hasPvalue = TRUE,
+            options = self$options,
+            collector = collector
+          )
+
+          table <- pipeAddNReg(
+            table,
+            options = self$options,
+            collector = collector
+          )
+
+          table <- pipeAddNEvent(
+            table,
+            options = self$options,
+            collector = collector
+          )
+
+          table <- pipeAddSignificanceStars(
+            table,
+            options = self$options,
+            collector = collector
+          )
+
+          table <- pipeCiMergeReg(
+            table,
+            options = self$options
+          )
+
+          # Text formatting -----------------------------------------------------
+          table <- applyTextFormatting(
+            table,
+            hasPvalue = TRUE,
+            options = self$options
+          )
+
+          # Render and export ---------------------------------------------------
+          renderHtml(table, self$results$tbl)
+
+          if (self$options$export) {
+            path <- resolveExportPath(self$options$path)
+            exportDocx(table, path, self$options, self$results)
+          }
+
+          # Notices -------------------------------------------------------------
+          displayNotices(collector, self$options, self$results, b64Map)
+        },
+        error = function(e) decodeB64Error(e, b64Map)
       )
-
-      # Pipeline ------------------------------------------------------------
-      table <- pipeAddGlobalP(
-        table,
-        options = self$options,
-        collector = collector
-      )
-
-      table <- pipeAddQ(
-        table,
-        hasPvalue = TRUE,
-        options = self$options,
-        collector = collector
-      )
-
-      table <- pipeAddNReg(
-        table,
-        options = self$options,
-        collector = collector
-      )
-
-      table <- pipeAddNEvent(
-        table,
-        options = self$options,
-        collector = collector
-      )
-
-      table <- pipeAddSignificanceStars(
-        table,
-        options = self$options,
-        collector = collector
-      )
-
-      table <- pipeCiMergeReg(
-        table,
-        options = self$options
-      )
-
-      # Text formatting -----------------------------------------------------
-      table <- applyTextFormatting(
-        table,
-        hasPvalue = TRUE,
-        options = self$options
-      )
-
-      # Render and export ---------------------------------------------------
-      renderHtml(table, self$results$tbl)
-
-      if (self$options$export) {
-        path <- resolveExportPath(self$options$path)
-        exportDocx(table, path, self$options, self$results)
-      }
-
-      # Notices -------------------------------------------------------------
-      displayNotices(collector, self$options, self$results)
-
     }
   )
 )
