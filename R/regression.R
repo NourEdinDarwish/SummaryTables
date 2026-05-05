@@ -1,28 +1,24 @@
-# validateVarNames ----------------------------------------------------------
+# validateFactorPolynomials -------------------------------------------------
 
-#' Validate variable names for unsupported special characters
+#' Validate that polynomial terms are not applied to factors
 #'
-#' Checks covariate and factor names for characters that break R formula
-#' parsing or the broom.helpers pipeline. Currently rejects: backslash
-#' (which also catches \\n and \\t), backtick, and colon.
-#'
-#' @param vars Character vector of variable names to validate
-validateVarNames <- function(vars) {
-  bad <- list(
-    "\\" = "backslash (\\)",
-    "`"  = "backtick (`)",
-    ":"  = "colon (:)"
-  )
+#' @param data Data frame containing the variables
+#' @param terms modelTerms list from self$options$modelTerms
+#' @return NULL (stops with an error if validation fails)
+validateFactorPolynomials <- function(data, terms) {
+  for (term in terms) {
+    counts <- table(term)
+    polys <- names(counts)[counts > 1]
 
-  for (char in names(bad)) {
-    affected <- vars[grepl(char, vars, fixed = TRUE)]
-    if (length(affected) > 0) {
-      jmvcore::reject(
-        jmvcore::format(
-          "Variable name '{}' contains a {} character which is not supported in regression analysis. Please rename the variable.", # nolint
-          affected[1], bad[[char]]
-        )
-      )
+    if (length(polys) > 0) {
+      for (poly_var in polys) {
+        if (is.factor(data[[poly_var]])) {
+          stop(sprintf(
+            "Polynomial terms cannot be applied to Factors. Please remove the polynomial term for '%s'.", # nolint
+            poly_var
+          ))
+        }
+      }
     }
   }
 }
@@ -56,38 +52,53 @@ buildFormula <- function(y, terms) {
 #' Build a multivariable tbl_regression table
 #'
 #' Constructs tbl_regression() arguments from jamovi options and returns the
-#' table directly.
+#' table directly. Expects a model fitted with B64-encoded column names;
+#' labels on the data columns drive the display names in the table.
 #'
 #' @param model A fitted model object (lm, glm, etc.)
 #' @param options Jamovi options object
+#' @param b64Map Named character vector from `buildB64Map()` (B64 → original)
 #' @return A tbl_regression object
-buildMultiRegTable <- function(model, options) {
+buildMultiRegTable <- function(model, options, b64Map) {
   args <- list(x = model)
 
-  # Preserve user's UI term order. Steps:
-  # 1. composeTerms maps UI arrays to R names (e.g. c("age","age") → "I(age^2)")
-  # 2. .clean_backticks strips `` `T Stage` `` → "T Stage"
-  # 3. Match user terms to model's own term labels, handling R's
-  #    interaction reordering (e.g. user: "Patient Died:Grade"
-  #    but model stores "Grade:Patient Died").
-  user_terms <- broom.helpers::.clean_backticks(
-    jmvcore::composeTerms(options$modelTerms),
-    variable_names = names(model$model)
+  # Main Goal: Preserve the user's UI term row order in the gtsummary table. By
+  # default, R's lm/glm forces all interaction terms to the very bottom of the
+  # output table, ignoring the order the user specified them in the jamovi UI.
+  # To override this, we explicitly define the `include` argument for gtsummary
+  # using the exact order from the UI (`user_terms`).
+  #
+  # Technical Hurdle: R reorders the variables *inside* an interaction term
+  # based on the order the main effects first appeared in the formula (e.g., UI
+  # sends "Age:BMI", but R might store it as "BMI:Age"). If we pass the exact UI
+  # spelling, gtsummary crashes because it can't find it. Therefore, we loop
+  # through the UI terms and match them against the model's actual terms. If an
+  # exact match fails, we split by ":" and sort the pieces to find the reordered
+  # equivalent, guaranteeing gtsummary finds the correct term and prints the row
+  # in the user's requested order.
+  termsB64 <- lapply(options$modelTerms, jmvcore::toB64)
+  user_terms <- jmvcore::composeTerms(termsB64)
+  model_terms <- labels(model$terms)
+
+  args$include <- vapply(
+    user_terms,
+    function(ut) {
+      if (ut %in% model_terms) {
+        return(ut)
+      }
+      # Interaction components may be in different order — match by sorted parts
+      ut_parts <- sort(strsplit(ut, ":")[[1]])
+      for (mt in model_terms) {
+        if (!grepl(":", mt, fixed = TRUE)) {
+          next
+        }
+        if (identical(ut_parts, sort(strsplit(mt, ":")[[1]]))) return(mt)
+      }
+      ut
+    },
+    character(1),
+    USE.NAMES = FALSE
   )
-  model_labels <- broom.helpers::.clean_backticks(
-    labels(model$terms),
-    variable_names = names(model$model)
-  )
-  args$include <- vapply(user_terms, function(ut) {
-    if (ut %in% model_labels) return(ut)
-    # Interaction components may be in different order — match by sorted parts
-    ut_parts <- sort(strsplit(ut, ":")[[1]])
-    for (ml in model_labels) {
-      if (!grepl(":", ml, fixed = TRUE)) next
-      if (identical(ut_parts, sort(strsplit(ml, ":")[[1]]))) return(ml)
-    }
-    ut
-  }, character(1), USE.NAMES = FALSE)
 
   args$exponentiate <- optTrue(options$exponentiate)
   args$conf.int <- options$confInt
@@ -108,7 +119,12 @@ buildMultiRegTable <- function(model, options) {
     )
   }
 
-  do.call(gtsummary::tbl_regression, args)
+  tbl <- do.call(gtsummary::tbl_regression, args)
+
+  # Fix I(b64^N) polynomial labels → "Original Name²" etc.
+  tbl <- fixPolynomialLabels(tbl, b64Map)
+
+  tbl
 }
 
 
@@ -181,8 +197,7 @@ buildUniRegTable <- function(
 #' @param collector Collector environment from newCollector()
 #' @return The table with global p-values (or unchanged)
 pipeAddGlobalP <- function(table, options, collector) {
-  if (!options$globalP || options$addStars ||
-      options$journal == "qjecon") {
+  if (!options$globalP || options$addStars || options$journal == "qjecon") {
     return(table)
   }
 
@@ -209,10 +224,6 @@ pipeAddVif <- function(table, options, collector) {
   if (!options$addVif || length(options$modelTerms) < 2) {
     return(table)
   }
-
-  # runtime fix for non-syntactic variable names
-  .patchArdCarVif()
-
   runSafe(gtsummary::add_vif(table), collector)
 }
 
@@ -288,8 +299,11 @@ pipeAddNEvent <- function(table, options, collector) {
 #' @param collector Collector environment from newCollector()
 #' @return The table with significance stars (or unchanged)
 pipeAddSignificanceStars <- function(table, options, collector) {
-  if (!options$addStars || options$globalP ||
-      options$journal %in% c("jama", "qjecon")) {
+  if (
+    !options$addStars ||
+      options$globalP ||
+      options$journal %in% c("jama", "qjecon")
+  ) {
     return(table)
   }
 
@@ -344,8 +358,11 @@ pipeAddGlance <- function(table, options, collector) {
 #' @param options Jamovi options object (must have ciMerge, confInt)
 #' @return The table with merged columns (or unchanged on error)
 pipeCiMergeReg <- function(table, options) {
-  if (!options$ciMerge || !options$confInt ||
-      options$journal %in% c("jama", "qjecon")) {
+  if (
+    !options$ciMerge ||
+      !options$confInt ||
+      options$journal %in% c("jama", "qjecon")
+  ) {
     return(table)
   }
 
@@ -362,20 +379,23 @@ pipeCiMergeReg <- function(table, options) {
         table$table_styling$header |>
           dplyr::filter(.data$column == "estimate") |>
           dplyr::pull("label"),
-        " **(", 
+        " **(",
         gtsummary::style_number(table$inputs$conf.level, scale = 100),
         "% CI)**"
       )
 
       pattern <- paste0(
-        "{estimate} ({conf.low}", ciSep, "{conf.high})",
+        "{estimate} ({conf.low}",
+        ciSep,
+        "{conf.high})",
         if (hasStars) "{stars}" else ""
       )
 
       table |>
         gtsummary::modify_column_merge(
           rows = !!rlang::expr(
-            .data$variable %in% !!table$table_body$variable &
+            .data$variable %in%
+              !!table$table_body$variable &
               !is.na(.data$estimate) &
               !.data$reference_row %in% TRUE
           ),

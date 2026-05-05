@@ -51,13 +51,22 @@ runSafe <- function(expr, collector) {
 #' re-emitting statistical test warnings (e.g., "cannot compute exact p-value
 #' with ties") via cli_inform().
 #'
+#' When `b64Map` is supplied, any B64-encoded variable names in the text
+#' are decoded back to their original human-readable names before display.
+#'
 #' @param collector Environment with `$warnings` and `$messages` vectors
 #' @param options jamovi options for Notice creation
 #' @param results jamovi results group to insert Notices into
-displayNotices <- function(collector, options, results) {
+#' @param b64Map Optional named character vector from `buildB64Map()`.
+#'   When provided, B64 tokens in notice text are replaced with originals.
+displayNotices <- function(collector, options, results, b64Map = NULL) {
   # Messages (INFO) — stat test feedback from cards
   if (length(collector$messages) > 0) {
-    msgContent <- paste(collector$messages, collapse = "\n\n")
+    msgs <- collector$messages
+    if (length(b64Map) > 0) {
+      msgs <- decodeB64(msgs, b64Map)
+    }
+    msgContent <- paste(msgs, collapse = "\n\n")
 
     msgNotice <- jmvcore::Notice$new(
       options = options,
@@ -70,7 +79,11 @@ displayNotices <- function(collector, options, results) {
 
   # Warnings (WARNING) — direct R warnings
   if (length(collector$warnings) > 0) {
-    warnContent <- paste(collector$warnings, collapse = "\n\n")
+    warns <- collector$warnings
+    if (length(b64Map) > 0) {
+      warns <- decodeB64(warns, b64Map)
+    }
+    warnContent <- paste(warns, collapse = "\n\n")
 
     warnNotice <- jmvcore::Notice$new(
       options = options,

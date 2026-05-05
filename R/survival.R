@@ -65,18 +65,17 @@ parseCommaNumeric <- function(text) {
 #' survfit call, which is required for add_n() and add_nevent() to re-extract
 #' them later (see ?tbl_survfit_errors).
 #'
-#' @param data Data frame
-#' @param elapsed Character: name of the time variable
-#' @param event Character: name of the event variable
-#' @param strataClean Character vector of cleaned stratifying variable names
+#' Expects B64-encoded column names (elapsed, event, strata). Since B64 names
+#' are syntactically valid R identifiers, no backtick quoting is needed.
+#'
+#' @param data Data frame with B64-encoded column names
+#' @param elapsedB64 B64-encoded name of the time variable
+#' @param eventB64 B64-encoded name of the event variable
+#' @param strataB64 Character vector of B64-encoded stratifying variable names
 #' @param confInt Numeric: confidence level as a proportion (e.g. 0.95)
 #' @return A list of survfit objects (overall first, then one per stratum)
-buildSurvfitList <- function(data, elapsed, event, strataClean, confInt) {
-  survLHS <- sprintf(
-    "survival::Surv(%s, %s)",
-    jmvcore::composeTerm(elapsed),
-    jmvcore::composeTerm(event)
-  )
+buildSurvfitList <- function(data, elapsedB64, eventB64, strataB64, confInt) {
+  survLHS <- sprintf("survival::Surv(%s, %s)", elapsedB64, eventB64)
 
   # Overall
   overallF <- reformulate("1", response = survLHS)
@@ -89,7 +88,7 @@ buildSurvfitList <- function(data, elapsed, event, strataClean, confInt) {
   )
 
   # One fit per stratifying variable (each analyzed independently)
-  for (s in strataClean) {
+  for (s in strataB64) {
     stratumF <- reformulate(s, response = survLHS)
     fits <- c(
       fits,
@@ -192,16 +191,17 @@ pipeAddPSurvfit <- function(table, strata, options, collector) {
   # Unlike tbl_summary/tbl_continuous, assign_tests.tbl_survfit has no
   # internal defaults — a named list must cover ALL strata or it crashes
   # (fill_formula_selectors breaks with partial coverage).
+  # `strata` are B64-encoded names matching the table's variable column.
   testArguments <- stats::setNames(
     rep(list(options$testDefault), length(strata)),
     strata
   )
 
-  # Per-variable overrides from UI; make.names() converts original labels
-  # (e.g. "Tumor Response") to R-safe keys matching strataClean.
+  # Per-variable overrides from UI; item$var is the original name —
+  # convert to B64 to match the strata keys.
   for (item in options$testSpecific) {
     if (item$test != "useDefault") {
-      testArguments[[make.names(item$var, unique = TRUE)]] <- item$test
+      testArguments[[jmvcore::toB64(item$var)]] <- item$test
     }
   }
 
