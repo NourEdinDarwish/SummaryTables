@@ -67,6 +67,8 @@ tblRegLogisticClass <- R6::R6Class(
             as.factor
           )
 
+          validateFactorPolynomials(data, terms)
+
           # Encode data to B64
           data <- encodeB64(data)
           depB64 <- jmvcore::toB64(dep)

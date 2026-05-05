@@ -1,3 +1,29 @@
+# validateFactorPolynomials -------------------------------------------------
+
+#' Validate that polynomial terms are not applied to factors
+#'
+#' @param data Data frame containing the variables
+#' @param terms modelTerms list from self$options$modelTerms
+#' @return NULL (stops with an error if validation fails)
+validateFactorPolynomials <- function(data, terms) {
+  for (term in terms) {
+    counts <- table(term)
+    polys <- names(counts)[counts > 1]
+
+    if (length(polys) > 0) {
+      for (poly_var in polys) {
+        if (is.factor(data[[poly_var]])) {
+          stop(sprintf(
+            "Polynomial terms cannot be applied to Factors. Please remove the polynomial term for '%s'.", # nolint
+            poly_var
+          ))
+        }
+      }
+    }
+  }
+}
+
+
 # buildFormula --------------------------------------------------------------
 
 #' Build a model formula from a pre-formatted LHS and jamovi model terms
@@ -96,7 +122,7 @@ buildMultiRegTable <- function(model, options, b64Map) {
   tbl <- do.call(gtsummary::tbl_regression, args)
 
   # Fix I(b64^N) polynomial labels → "Original Name²" etc.
-  tbl <- fixPowerLabels(tbl, b64Map)
+  tbl <- fixPolynomialLabels(tbl, b64Map)
 
   tbl
 }

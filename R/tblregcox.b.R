@@ -72,6 +72,8 @@ tblRegCoxClass <- R6::R6Class(
             as.factor
           )
 
+          validateFactorPolynomials(data, terms)
+
           # Encode data to B64
           data <- encodeB64(data)
           elapsedB64 <- jmvcore::toB64(elapsed)

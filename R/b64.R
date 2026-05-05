@@ -79,9 +79,9 @@ decodeB64Error <- function(err, b64Map) {
 }
 
 
-# fixPowerLabels ------------------------------------------------------------
+# fixPolynomialLabels -------------------------------------------------------
 
-#' Fix labels for power terms in a gtsummary table
+#' Fix labels for polynomial terms in a gtsummary table
 #'
 #' Detects `I(b64name^N)` patterns in the `variable` column of
 #' `table_body` and locates the translated name inside the existing label
@@ -91,13 +91,13 @@ decodeB64Error <- function(err, b64Map) {
 #'
 #' @param tbl A gtsummary table object
 #' @param b64Map Named character vector from `buildB64Map()`
-#' @return The table with corrected power labels
-fixPowerLabels <- function(tbl, b64Map) {
+#' @return The table with corrected polynomial labels
+fixPolynomialLabels <- function(tbl, b64Map) {
   gtsummary::modify_table_body(tbl, function(body) {
     for (i in seq_len(nrow(body))) {
       var <- body$variable[i]
 
-      # Extract ALL power terms from the variable string natively
+      # Extract ALL polynomial terms from the variable string natively
       # gregexpr finds all matches of I(something^digits)
       m <- regmatches(var, gregexpr("I\\([^\\^]+\\^\\d+\\)", var))[[1]]
 
