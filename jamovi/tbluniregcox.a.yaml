@@ -56,7 +56,7 @@ options:
     hidden: true
     default: []
     template:
-      type: String
+      type: Variable
 
   - name: manualRun
     title: Run manually

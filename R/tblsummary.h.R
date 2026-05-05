@@ -109,7 +109,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 varOrder,
                 hidden=TRUE,
                 default=list(),
-                template=jmvcore::OptionString$new(
+                template=jmvcore::OptionVariable$new(
                     "varOrder",
                     NULL))
             private$..manualRun <- jmvcore::OptionBool$new(
