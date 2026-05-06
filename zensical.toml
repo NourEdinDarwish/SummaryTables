@@ -49,17 +49,8 @@ Copyright &copy; 2026 The authors
 # Read more: https://zensical.org/docs/setup/navigation/
 nav = [
   { "Home" = "index.md" },
-  { "Analyses" = [
-    { "Summary Table" = "analyses/summary-table.md" },
-    { "Continuous Table" = "analyses/continuous-table.md" },
-    { "Cross Table" = "analyses/cross-table.md" },
-    { "Likert Table" = "analyses/likert-table.md" },
-    { "Survival Table" = "analyses/survival-table.md" },
-    { "Multivariable Regression" = "analyses/multivariable-regression.md" },
-    { "Univariable Regression" = "analyses/univariable-regression.md" }
-  ] },
-  { "Tutorials" = "tutorials/index.md" },
-  { "Changelog" = "changelog.md" }
+  { "User Guide" = "user-guide.md" },
+  { "Release Notes" = "release-notes.md" }
 ]
 
 # With the "extra_css" option you can add your own CSS styling to customize
