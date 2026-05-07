@@ -13,6 +13,8 @@ A [jamovi](https://www.jamovi.org) module for publication-ready summary
 and regression tables, powered by
 [gtsummary](https://www.danieldsjoberg.com/gtsummary/).
 
+**[📖 Read the Documentation](https://nouredindarwish.github.io/SummaryTables/)**
+
 </div>
 
 ## Analyses
