@@ -13,6 +13,8 @@ A [jamovi](https://www.jamovi.org) module for publication-ready summary
 and regression tables, powered by
 [gtsummary](https://www.danieldsjoberg.com/gtsummary/).
 
+**[📖 Read the Documentation](https://nouredindarwish.github.io/SummaryTables/)**
+
 </div>
 
 ## Analyses
@@ -39,3 +41,15 @@ and regression tables, powered by
   of Economics
 - **16 languages:** English, French, German, Spanish, Chinese, Japanese,
   Korean, and more
+
+## Help & Support
+
+This module is actively being developed! If you encounter any issues, have a question, or have ideas for new features:
+
+- 💬 Please [open an issue on GitHub](https://github.com/NourEdinDarwish/SummaryTables/issues)
+- ✉️ Or send an email to [nouredindarwish@gmail.com](mailto:nouredindarwish@gmail.com)
+
+## Citation & Star
+
+If you find this module helpful for your research or work, please don't forget to **cite us** and drop a star ⭐️ on our [GitHub repository](https://github.com/NourEdinDarwish/SummaryTables)! It helps a lot and motivates further development.
+
