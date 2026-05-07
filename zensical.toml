@@ -17,7 +17,7 @@ site_name = "SummaryTables"
 # meaningful description of the site content for use by search engines.
 #
 # Read more: https://zensical.org/docs/setup/basics/#site_description
-site_description = "A powerful Jamovi module for creating Table 1 and regression summaries."
+site_description = "Publication-Ready Summary Tables module for jamovi. Easily create comprehensive data summaries, cross-tabulations, survival analyses, and regression tables."
 
 # The site_author attribute. This is used in the HTML head element.
 #

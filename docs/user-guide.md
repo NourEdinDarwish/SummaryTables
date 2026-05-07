@@ -1,61 +1,153 @@
+---
+hide:
+  - navigation
+---
+
 # User Guide
 
-This guide covers the core features, default settings, and options available when using SummaryTables.
+This guide highlights important notes, default behaviors, and specific options you should be aware of when using SummaryTables.
 
-## 1. Manual Run Mode
+## Which Table Should I Use?
 
-When adding multiple variables or making several option changes concurrently, calculating the tables can sometimes cause accumulating lag. To prevent this, you can enable **Manual Run Mode**.
+A quick reference guide for choosing the right table based on your data and goals:
 
-![Run Manually UI](assets/run-manually.png)
+* **Table 1 / Main Summary:** Use the **Summary Table** without a grouping variable for a general overview.
+* **Categorical Outcome:** Use the **Summary Table** with your outcome assigned to the **Grouping Variable**.
+* **Continuous Outcome:** Use the **Continuous Table**.
+* **Only Two Categorical Variables:** Use the **Cross Table** for a straightforward cross-tabulation.
+* **Likert Scale Data:** Use the **Likert Table**.
+* **Survival Analysis:** Use the **Survival Table** for Kaplan-Meier estimates and survival statistics.
+* **Regression Models:** Use **Univariable Regression** (fits a separate model for each variable) or **Multivariable Regression** (fits a single combined model).
 
-* **Why use it?** It prevents the module from recalculating after every single click or variable addition. It is especially useful when building complex multivariable regression models or working with very large datasets.
-* **How to use it:** Check the "Run Manually" option. A "Calculate" button will appear. Make all your desired variable assignments and option changes, then click "Calculate" once to generate the final table.
+---
 
-## 2. Rounding (Auto vs Fixed)
+## General Behaviors & Features
 
-SummaryTables provides flexible rounding options for your data:
+### Manual Run Mode
 
-* **Auto (Default):** Uses intelligent relative rounding based on the data's scale. This leverages `gtsummary`'s styling functions to present publication-ready numbers (e.g., smaller percentages get more decimal places, while large ones get fewer).
-* **Fixed Digits:** If you require strict consistency across all values (e.g., exactly 2 decimal places for all numbers, regardless of their magnitude), you can select the fixed digit option from the drop-down menu.
+By default, jamovi automatically runs an analysis every time you change a setting. Because SummaryTables does not cache or save any previous outputs, it must build the entire table from scratch on every single run. 
 
-## 3. P-Value Rounding
+This creates a severe cumulative calculation overhead. Any individual action triggers a full run. For example, when using **Univariable Regression**:
 
-To ensure standard scientific formatting, p-values are rounded using specific criteria:
+* If you drag and drop 10 variables *one by one*, jamovi triggers 10 separate runs. The 1st run fits 1 model to build the first table. When you add the second variable, it doesn't just add a model to the existing table; the old table is discarded, and it builds a new table from scratch by fitting the first model again *and* the new second model. The 3rd run fits 3 models from zero, and so on. By the time you add the 10th variable, the module has needlessly fitted a total of *55 models* (1+2+3+...+10).
+* The same applies to options: changing 5 different checkboxes one after another triggers 5 complete recalculations of the entire table.
 
-* Extremely small p-values are formatted as `<0.001`.
-* Large p-values are typically rounded to 1 or 2 decimal places (e.g., `>0.9` or `0.25`).
-* For the exact rounding thresholds, see the [style_pvalue](https://www.danieldsjoberg.com/gtsummary/reference/style_pvalue.html) documentation in `gtsummary`.
+To prevent this snowballing delay, you can enable *Manual Run Mode*.
 
-## 4. Statistical Tests
+<figure markdown="span">
+  ![Screenshot showing the Run manually option](assets/run-manually.png){ loading=lazy width="500" }
+</figure>
 
-The module automatically selects appropriate statistical tests based on your data types and group sizes:
+Checking the **"Run manually"** option disables the auto-run behavior and activates the **"Run"** button. This allows you to add all 10 variables at once and set all your options without triggering any calculations. Once everything is set up, click **"Run"** to calculate the final table exactly once—fitting just the *10 models* you actually need. This saves a huge amount of time, especially for computationally heavy tables like regressions.
 
-* **Continuous Variables (Summary & Continuous Tables):**
-    * **Parametric:** Uses the independent t-test (for 2 groups) or One-way ANOVA (for >2 groups). If a grouping variable is supplied in the continuous table, a Two-way ANOVA is used by default.
-    * **Non-parametric:** Uses the Wilcoxon rank-sum test (for 2 groups) or Kruskal-Wallis rank-sum test (for >2 groups).
-* **Categorical Variables (Summary & Cross Tables):**
-    * Uses **Pearson's Chi-square test** if all expected cell counts are ≥ 5.
-    * Automatically falls back to **Fisher's exact test** if any expected cell count is < 5.
+### Save to Word
 
-## 5. Standardized Mean Difference (SMD)
+SummaryTables allows you to save any table directly as a `.docx` file for easy inclusion in manuscripts. To use this feature, simply type the complete folder location where you want to save the file, followed immediately by your desired file name ending in `.docx` into the **Path** text box, and then click the **Save** button. The module produces *native Word tables* and accurately *preserves the styling and formatting* of the table.
 
-In the Summary Table, you can calculate the Standardized Mean Difference (SMD) by checking the "Difference" option. 
+<figure markdown="span">
+  ![Screenshot showing the Save to Word option](assets/save-word.png){ loading=lazy width="500" }
+</figure>
 
-* The SMD is calculated under the hood using the [`smd` R package](https://bsaul.github.io/smd/index.html).
-* This provides a standardized effect size measure to assess the magnitude of difference between groups, regardless of the underlying units.
+!!! warning "Overwriting Files"
+    When saving a table, if you type a filename that already exists in your chosen folder, the module will *silently overwrite the entire existing Word file* without a warning prompt. Please double-check your folder path and filename before clicking **Save** to avoid accidentally deleting an older document.
 
-## 6. Exporting to Word
+!!! info "Cloud Limitation"
+    Please note that the "Save to Word" feature is *not available on the cloud version of jamovi* due to security limitations.
 
-SummaryTables allows you to export any table directly as a `.docx` file for easy inclusion in manuscripts.
+### Rounding
 
-⚠️ **Warning: Overwriting Files**
-When exporting a table, if you select a filename that already exists in the chosen folder, the module will **silently overwrite the existing file** without a warning prompt. Please double-check your filenames before saving.
+SummaryTables provides two distinct sets of rounding options: one for general statistics, and one specifically tailored for p-values.
 
-![Word Export](assets/word-export.png)
+#### General Statistics
 
-## 7. Survival & Cox Regression Variables
+You can independently set the rounding rules for various elements in your tables (such as summary statistics, coefficients, and confidence intervals) using the **Decimal places** dropdowns.
 
-When running Survival analyses or Cox regression models, the **Event variable** must be formatted correctly:
+<figure markdown="span">
+  ![The Decimal places selection dropdown showing Auto and fixed numerical options](assets/stats-digits.png){ loading=lazy width="500" }
+</figure>
 
-* **If continuous:** It must be recoded strictly as `0` for censored and `1` for the event. Any other numeric values (like 1 and 2) will cause an error.
-* **If categorical/factor:** You can map custom text levels (e.g., "Alive" / "Dead") by choosing the specific level that represents the event in the UI.
+* **Auto (Default):** Typically uses adaptive decimal places, though certain themes may affect this behavior.
+* **Fixed (0 to 5):** Uses a fixed number of decimal places.
+
+#### P-Values
+
+The p-value dropdown controls the rounding of *large* p-values, while precision automatically increases as p-values get smaller.
+
+<figure markdown="span">
+  ![The large p-value decimal places selection dropdown showing Auto and numerical precision options](assets/pvalue-digits.png){ loading=lazy width="500" }
+</figure>
+
+* **Auto (Default):** Depends on the theme (the default theme uses **"1"**).
+* **1:** Large p-values are rounded to one decimal place. Precision increases as p-values decrease, and very small values are shown as `<0.001`.
+* **2:** Large p-values are rounded to two decimal places. Precision increases as p-values decrease, and very small values are shown as `<0.001`.
+* **3:** Large p-values are rounded to three decimal places. Precision increases as p-values decrease, and very small values are shown as `<0.001`.
+
+### Statistical Tests
+
+The module automatically selects appropriate statistical tests based on your data types and the number of groups across the **Summary Table**, **Continuous Table**, and **Cross Table**. You can configure this behavior in the **Default test** dropdowns:
+
+#### Continuous Variables
+
+<figure markdown="span">
+  ![Screenshot showing the default test dropdown for continuous variables with parametric and non-parametric options](assets/default-test-continuous.png){ loading=lazy width="500" }
+</figure>
+
+* **Parametric (Default):** Uses the independent t-test (not assuming equal variance) for 2 groups, or one-way ANOVA (not assuming equal variance) for >2 groups.
+* **Non-parametric:** Uses the Wilcoxon rank-sum test for 2 groups, or Kruskal-Wallis rank-sum test for >2 groups.
+
+!!! info "Grouping Variable in the Continuous Table"
+    If you assign a **Grouping Variable** in the **Continuous Table**, the module automatically calculates p-values using a two-way ANOVA. In this specific configuration, no other statistical tests can be applied.
+
+#### Categorical Variables
+
+<figure markdown="span">
+  ![Screenshot showing the default test dropdown for categorical variables with auto, chi-square, and fisher's exact test options](assets/default-test-categorical.png){ loading=lazy width="500" }
+</figure>
+
+* **Auto (Default):** Uses Pearson's Chi-square test (without continuity correction) if all expected cell counts are ≥ 5. It automatically falls back to Fisher's exact test if any expected cell count is < 5.
+
+#### Variable-Specific Tests
+
+<figure markdown="span">
+  ![Screenshot showing the per-variable test dropdown for selecting specific tests like Wilcoxon or ANOVA](assets/per-variable-tests.png){ loading=lazy width="500" }
+</figure>
+
+If you want specific tests for specific variables, you can manually select a different test for individual variables. For example, if your default is set to **Parametric (t-test / ANOVA)**, you can manually set a specific variable to use the **Wilcoxon rank-sum** test.
+
+---
+
+## Table-Specific Notes
+
+### Summary Table: Difference
+
+!!! info "SMD Method Calculation"
+    When you select the **SMD** option as your **Difference** method, the values are calculated using the [`smd` R package](https://bsaul.github.io/smd/index.html).
+
+    <figure markdown="span">
+      ![Jamovi interface showing the SMD method selected under the Difference options](assets/difference-smd.png){ loading=lazy width="500" }
+    </figure>
+
+!!! failure "Multiple P-Value Columns Error"
+    If you select a **Difference** method that generates a p-value and you also check **Add p-value** under the general **P-value** section, an error will occur. The table cannot display multiple p-value columns simultaneously.
+
+    <figure markdown="span">
+      ![Error message displayed in jamovi when attempting to add multiple p-value columns](assets/multiple-pvalues-error.png){ loading=lazy width="500" }
+    </figure>
+
+### Regression Tables: Univariable vs. Multivariable
+
+It is important to understand the fundamental difference in how the **Univariable Regression** and **Multivariable Regression** tables are constructed:
+
+* **Univariable Regression:** Fits *one separate model per predictor*. If you add 5 variables across the **Covariates** and **Factors** lists, the module will fit 5 distinct simple regression models (each predicting the dependent variable using just that one predictor) and combine the results into a single table.
+* **Multivariable Regression:** Fits *one single model containing all predictors*. If you add 5 variables across the **Covariates** and **Factors** lists, the module will fit a single model where all 5 variables are included simultaneously, adjusting for each other.
+
+### Survival and Cox Regression: Event Variable Coding
+
+When using the **Survival Table** or **Cox Regression** analyses, the **Event variable** must be coded correctly:
+
+<figure markdown="span">
+  ![Jamovi interface showing the Event variable assignment and Event level selection](assets/event-variable-options.png){ loading=lazy width="500" }
+</figure>
+
+* **If continuous:** You can use either `0` and `1` (0 = censored, 1 = event) OR `1` and `2` (1 = censored, 2 = event). Any other numeric values will cause an error.
+* **If categorical:** You must select the specific level that represents the event from the **Event level** dropdown.
