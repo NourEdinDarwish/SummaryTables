@@ -128,5 +128,5 @@ buildDigitsArgsCont <- function(options) {
   if (options$digitsCont == "auto") {
     return(NULL)
   }
-  as.numeric(options$digitsCont)
+  ~ as.numeric(options$digitsCont)
 }

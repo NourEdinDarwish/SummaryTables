@@ -1,3 +1,7 @@
+## SummaryTables 1.2.1
+
+* Fixed an issue that caused an error when customizing the number of decimal places in the Continuous Table.
+
 ## SummaryTables 1.2.0
 
 * Regression and Survival analyses now fully support any variable name, including those with spaces or special characters.
