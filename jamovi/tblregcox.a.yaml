@@ -94,7 +94,7 @@ options:
     default: true
 
   - name: confLevel
-    title: Confidence level
+    title: Level
     type: Number
     min: 50
     max: 99.9
@@ -106,7 +106,7 @@ options:
     default: false
 
   - name: addRefRowEstimate
-    title: Reference level value
+    title: Reference level coefficient
     type: Bool
     default: false
 
