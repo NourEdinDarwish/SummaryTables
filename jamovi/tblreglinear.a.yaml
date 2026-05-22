@@ -74,7 +74,7 @@ options:
     default: auto
 
   - name: confInt
-    title: Show confidence interval
+    title: Confidence interval
     type: Bool
     default: true
 
@@ -91,17 +91,17 @@ options:
     default: false
 
   - name: intercept
-    title: Show intercept
+    title: Intercept row
     type: Bool
     default: false
 
   - name: addRefRowEstimate
-    title: Show reference value
+    title: Reference level value
     type: Bool
     default: false
 
   - name: addN
-    title: Add N column
+    title: N column
     type: Bool
     default: false
 
@@ -176,17 +176,17 @@ options:
     default: false
 
   - name: starsShowCi
-    title: Show confidence interval
+    title: Confidence interval
     type: Bool
     default: false
 
   - name: starsShowP
-    title: Show p-value
+    title: P-value
     type: Bool
     default: false
 
   - name: starsShowSe
-    title: Show standard error
+    title: Standard error
     type: Bool
     default: true
 
@@ -270,7 +270,7 @@ options:
     default: false
 
   - name: addQ
-    title: Add q-value
+    title: Q-value
     type: Bool
     default: false
 

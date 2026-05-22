@@ -80,7 +80,7 @@ options:
     default: auto
 
   - name: margin
-    title: Show
+    title: Totals
     type: List
     options:
       - title: Row & Column
@@ -195,7 +195,7 @@ options:
     default: false
 
   - name: addPvalue
-    title: Add p-value
+    title: P-value
     type: Bool
     default: false
 
@@ -240,7 +240,7 @@ options:
     default: 0.05
 
   - name: sourceNote
-    title: Show p-value as source note
+    title: P-value as source note
     type: Bool
     default: false
 

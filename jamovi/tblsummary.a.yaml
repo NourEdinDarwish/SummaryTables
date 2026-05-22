@@ -52,7 +52,7 @@ options:
     type: Action
 
   - name: addN
-    title: Add N column
+    title: N column
     type: Bool
     default: false
 
@@ -62,12 +62,12 @@ options:
     default: false
 
   - name: addNFootnote
-    title: Show footnote
+    title: Footnote
     type: Bool
     default: true
 
   - name: addOverall
-    title: Add overall column (requires Grouping Variable)
+    title: Overall column (requires Grouping Variable)
     type: Bool
     default: false
 
@@ -347,7 +347,7 @@ options:
     default: column
 
   - name: addDifference
-    title: Add difference (requires Grouping Variable with exactly 2 levels)
+    title: Difference (requires Grouping Variable with exactly 2 levels)
     type: Bool
     default: false
 
@@ -529,7 +529,7 @@ options:
     default: auto
 
   - name: addPvalue
-    title: Add p-value (requires Grouping Variable)
+    title: P-value (requires Grouping Variable)
     type: Bool
     default: false
 
@@ -649,7 +649,7 @@ options:
           default: useDefault
 
   - name: addQ
-    title: Add q-value (requires p-value)
+    title: Q-value (requires p-value)
     type: Bool
     default: false
 
@@ -686,7 +686,7 @@ options:
     default: 0.05
 
   - name: addCi
-    title: Add confidence interval
+    title: Confidence interval
     type: Bool
     default: false
 
