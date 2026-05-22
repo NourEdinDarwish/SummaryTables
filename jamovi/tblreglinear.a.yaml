@@ -49,7 +49,7 @@ options:
     type: Terms
 
   - name: standardize
-    title: Standardized coefficients
+    title: Standardized coefficient
     type: Bool
     default: false
 

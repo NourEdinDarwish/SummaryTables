@@ -50,7 +50,7 @@ options:
     type: Terms
 
   - name: exponentiate
-    title: Odds ratio (exponentiate coefficients)
+    title: Odds ratio (exponentiated coefficient)
     type: Bool
     default: true
 

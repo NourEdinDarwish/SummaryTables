@@ -68,7 +68,7 @@ options:
     type: Action
 
   - name: exponentiate
-    title: Hazard ratio (exponentiate coefficients)
+    title: Hazard ratio (exponentiated coefficient)
     type: Bool
     default: true
 
