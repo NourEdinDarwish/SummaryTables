@@ -52,6 +52,11 @@ options:
     title: Run
     type: Action
 
+  - name: standardize
+    title: Standardized coefficients
+    type: Bool
+    default: false
+
   - name: digitsCoef
     title: Decimal places (coefficient & CI)
     type: List

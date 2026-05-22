@@ -48,6 +48,11 @@ options:
     title: Model Terms
     type: Terms
 
+  - name: standardize
+    title: Standardized coefficients
+    type: Bool
+    default: false
+
   - name: digitsCoef
     title: Decimal places (coefficient & CI)
     type: List

@@ -12,6 +12,7 @@ tblRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             manualRun = FALSE,
             run = FALSE,
             modelTerms = NULL,
+            standardize = FALSE,
             digitsCoef = "auto",
             confInt = TRUE,
             confLevel = 95,
@@ -83,6 +84,10 @@ tblRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             private$..modelTerms <- jmvcore::OptionTerms$new(
                 "modelTerms",
                 modelTerms)
+            private$..standardize <- jmvcore::OptionBool$new(
+                "standardize",
+                standardize,
+                default=FALSE)
             private$..digitsCoef <- jmvcore::OptionList$new(
                 "digitsCoef",
                 digitsCoef,
@@ -275,6 +280,7 @@ tblRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             self$.addOption(private$..manualRun)
             self$.addOption(private$..run)
             self$.addOption(private$..modelTerms)
+            self$.addOption(private$..standardize)
             self$.addOption(private$..digitsCoef)
             self$.addOption(private$..confInt)
             self$.addOption(private$..confLevel)
@@ -315,6 +321,7 @@ tblRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
         manualRun = function() private$..manualRun$value,
         run = function() private$..run$value,
         modelTerms = function() private$..modelTerms$value,
+        standardize = function() private$..standardize$value,
         digitsCoef = function() private$..digitsCoef$value,
         confInt = function() private$..confInt$value,
         confLevel = function() private$..confLevel$value,
@@ -354,6 +361,7 @@ tblRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
         ..manualRun = NA,
         ..run = NA,
         ..modelTerms = NA,
+        ..standardize = NA,
         ..digitsCoef = NA,
         ..confInt = NA,
         ..confLevel = NA,
@@ -445,6 +453,7 @@ tblRegLinearBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param manualRun .
 #' @param run .
 #' @param modelTerms .
+#' @param standardize .
 #' @param digitsCoef .
 #' @param confInt .
 #' @param confLevel .
@@ -498,6 +507,7 @@ tblRegLinear <- function(
     manualRun = FALSE,
     run = FALSE,
     modelTerms,
+    standardize = FALSE,
     digitsCoef = "auto",
     confInt = TRUE,
     confLevel = 95,
@@ -554,6 +564,7 @@ tblRegLinear <- function(
         manualRun = manualRun,
         run = run,
         modelTerms = modelTerms,
+        standardize = standardize,
         digitsCoef = digitsCoef,
         confInt = confInt,
         confLevel = confLevel,
