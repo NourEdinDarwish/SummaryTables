@@ -1,3 +1,10 @@
+## SummaryTables 1.3.0
+
+* Added Standardized Coefficients for Linear Regression analyses (both Univariable and Multivariable).
+* Added a rounding option for 16 decimal places across all analyses.
+* Enhanced UI labels.
+* General bug-fixes and improvements.
+
 ## SummaryTables 1.2.1
 
 * Fixed an issue that caused an error when customizing the number of decimal places in the Continuous Table.
