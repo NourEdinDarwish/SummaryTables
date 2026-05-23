@@ -112,7 +112,8 @@ tblRegCoxOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "2",
                     "3",
                     "4",
-                    "5"),
+                    "5",
+                    "16"),
                 default="auto")
             private$..confInt <- jmvcore::OptionBool$new(
                 "confInt",

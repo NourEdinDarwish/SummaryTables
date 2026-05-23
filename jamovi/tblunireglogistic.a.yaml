@@ -54,7 +54,7 @@ options:
     type: Action
 
   - name: exponentiate
-    title: Odds ratio (exponentiate coefficients)
+    title: Odds ratio (exponentiated coefficient)
     type: Bool
     default: true
 
@@ -76,15 +76,17 @@ options:
         name: "4"
       - title: "5"
         name: "5"
+      - title: "16"
+        name: "16"
     default: auto
 
   - name: confInt
-    title: Show confidence interval
+    title: Confidence interval
     type: Bool
     default: true
 
   - name: confLevel
-    title: Confidence level
+    title: Level
     type: Number
     min: 50
     max: 99.9
@@ -96,12 +98,12 @@ options:
     default: false
 
   - name: addRefRowEstimate
-    title: Show reference value
+    title: Reference level coefficient
     type: Bool
     default: false
 
   - name: addN
-    title: Add N column
+    title: N column
     type: Bool
     default: true
 
@@ -118,7 +120,7 @@ options:
     default: label
 
   - name: addNEvent
-    title: Add event N column
+    title: Event N column
     type: Bool
     default: false
 
@@ -176,17 +178,17 @@ options:
     default: false
 
   - name: starsShowCi
-    title: Show confidence interval
+    title: Confidence interval
     type: Bool
     default: false
 
   - name: starsShowP
-    title: Show p-value
+    title: P-value
     type: Bool
     default: false
 
   - name: starsShowSe
-    title: Show standard error
+    title: Standard error
     type: Bool
     default: true
 
@@ -270,7 +272,7 @@ options:
     default: false
 
   - name: addQ
-    title: Add q-value
+    title: Q-value
     type: Bool
     default: false
 

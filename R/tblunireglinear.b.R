@@ -58,16 +58,26 @@ tblUniRegLinearClass <- R6::R6Class(
           depB64 <- jmvcore::toB64(dep)
 
           # Regression table ----------------------------------------------------
+          method <- if (self$options$standardize) lmStd else stats::lm
           table <- runSafe(
             buildUniRegTable(
               data = data,
               y = depB64,
               include = jmvcore::toB64(self$options$varOrder),
-              method = lm,
+              method = method,
               options = self$options
             ),
             collector
           )
+
+          # Change header -------------------------------------------------------
+          coefHeader <- if (self$options$standardize) {
+            "**Standardized Coefficient**"
+          } else {
+            "**Coefficient**"
+          }
+          table <- table |>
+            gtsummary::modify_header(estimate = coefHeader)
 
           # Pipeline ------------------------------------------------------------
           table <- pipeAddGlobalP(

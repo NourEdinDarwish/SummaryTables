@@ -12,6 +12,7 @@ tblUniRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             varOrder = list(),
             manualRun = FALSE,
             run = FALSE,
+            standardize = FALSE,
             digitsCoef = "auto",
             confInt = TRUE,
             confLevel = 95,
@@ -83,6 +84,10 @@ tblUniRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             private$..run <- jmvcore::OptionAction$new(
                 "run",
                 run)
+            private$..standardize <- jmvcore::OptionBool$new(
+                "standardize",
+                standardize,
+                default=FALSE)
             private$..digitsCoef <- jmvcore::OptionList$new(
                 "digitsCoef",
                 digitsCoef,
@@ -93,7 +98,8 @@ tblUniRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
                     "2",
                     "3",
                     "4",
-                    "5"),
+                    "5",
+                    "16"),
                 default="auto")
             private$..confInt <- jmvcore::OptionBool$new(
                 "confInt",
@@ -252,6 +258,7 @@ tblUniRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
             self$.addOption(private$..varOrder)
             self$.addOption(private$..manualRun)
             self$.addOption(private$..run)
+            self$.addOption(private$..standardize)
             self$.addOption(private$..digitsCoef)
             self$.addOption(private$..confInt)
             self$.addOption(private$..confLevel)
@@ -287,6 +294,7 @@ tblUniRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
         varOrder = function() private$..varOrder$value,
         manualRun = function() private$..manualRun$value,
         run = function() private$..run$value,
+        standardize = function() private$..standardize$value,
         digitsCoef = function() private$..digitsCoef$value,
         confInt = function() private$..confInt$value,
         confLevel = function() private$..confLevel$value,
@@ -321,6 +329,7 @@ tblUniRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6C
         ..varOrder = NA,
         ..manualRun = NA,
         ..run = NA,
+        ..standardize = NA,
         ..digitsCoef = NA,
         ..confInt = NA,
         ..confLevel = NA,
@@ -407,6 +416,7 @@ tblUniRegLinearBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
 #' @param varOrder .
 #' @param manualRun .
 #' @param run .
+#' @param standardize .
 #' @param digitsCoef .
 #' @param confInt .
 #' @param confLevel .
@@ -455,6 +465,7 @@ tblUniRegLinear <- function(
     varOrder = list(),
     manualRun = FALSE,
     run = FALSE,
+    standardize = FALSE,
     digitsCoef = "auto",
     confInt = TRUE,
     confLevel = 95,
@@ -505,6 +516,7 @@ tblUniRegLinear <- function(
         varOrder = varOrder,
         manualRun = manualRun,
         run = run,
+        standardize = standardize,
         digitsCoef = digitsCoef,
         confInt = confInt,
         confLevel = confLevel,

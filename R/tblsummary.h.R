@@ -276,7 +276,8 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "2",
                     "3",
                     "4",
-                    "5"),
+                    "5",
+                    "16"),
                 default="auto")
             private$..statCatDefault <- jmvcore::OptionList$new(
                 "statCatDefault",
@@ -315,7 +316,8 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "2",
                     "3",
                     "4",
-                    "5"),
+                    "5",
+                    "16"),
                 default="auto")
             private$..percent <- jmvcore::OptionList$new(
                 "percent",
@@ -405,7 +407,8 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "2",
                     "3",
                     "4",
-                    "5"),
+                    "5",
+                    "16"),
                 default="auto")
             private$..diffDichotDefault <- jmvcore::OptionList$new(
                 "diffDichotDefault",
@@ -442,7 +445,8 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "2",
                     "3",
                     "4",
-                    "5"),
+                    "5",
+                    "16"),
                 default="auto")
             private$..diffDigitsCat <- jmvcore::OptionList$new(
                 "diffDigitsCat",
@@ -454,7 +458,8 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "2",
                     "3",
                     "4",
-                    "5"),
+                    "5",
+                    "16"),
                 default="auto")
             private$..addPvalue <- jmvcore::OptionBool$new(
                 "addPvalue",
@@ -621,7 +626,8 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "2",
                     "3",
                     "4",
-                    "5"),
+                    "5",
+                    "16"),
                 default="auto")
             private$..ciCatDefault <- jmvcore::OptionList$new(
                 "ciCatDefault",
@@ -668,7 +674,8 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "2",
                     "3",
                     "4",
-                    "5"),
+                    "5",
+                    "16"),
                 default="auto")
 
             self$.addOption(private$..varsCont)

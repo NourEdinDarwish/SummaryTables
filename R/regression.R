@@ -37,7 +37,7 @@ validateFactorPolynomials <- function(data, terms) {
 #' @param terms modelTerms list from self$options$modelTerms
 #' @return A formula object
 buildFormula <- function(y, terms) {
-  as.formula(
+  stats::as.formula(
     paste(
       y,
       "~",
@@ -125,6 +125,54 @@ buildMultiRegTable <- function(model, options, b64Map) {
   tbl <- fixPolynomialLabels(tbl, b64Map)
 
   tbl
+}
+
+
+# lmStd ---------------------------------------------------------------------
+
+#' Fit standard linear regression model on standardized variables
+#'
+#' @param formula Model formula
+#' @param data Data frame
+#' @param ... Extra arguments passed to lm
+#' @return An lm model object fitted on standardized complete cases
+lmStd <- function(formula, data, ...) {
+  # Goal: produce the same standardized coefficients (betas) as
+  # parameters::standardize_parameters(method = "refit").
+  #
+  # How standardize_parameters(method = "refit") works internally:
+  #   1. Extracts the model frame via insight::get_data(model, source = "mf"),
+  #      which is the data AFTER listwise deletion — rows with NA in ANY
+  #      variable used by the model (numeric OR factor) are already gone.
+
+  #   2. Standardizes that complete-case data with datawizard::standardize()
+  #      (factors are left untouched by default since force = FALSE).
+  #   3. Refits the model on the standardized complete-case data.
+  #
+  # Previously we used:
+  #   datawizard::standardize(data, select = select_vars, remove_na = "selected")
+  # This had a bug: with force = FALSE (default), datawizard internally
+  # excludes factor columns from the "selected" set, so remove_na = "selected"
+  # only checked numeric columns for NAs. Rows with NA in a factor (but not
+  # in any numeric column) were KEPT, meaning mean/SD was computed from MORE
+  # rows than lm() actually uses (lm() does its own listwise deletion).
+  # This produced different standardized coefficients than
+  # parameters::standardize_parameters(method = "refit").
+  #
+  # We also cannot use remove_na = "all" on the full data frame, because
+  # "all" checks EVERY column — including ones not in the formula. NAs in
+  # unrelated columns would incorrectly drop rows.
+  #
+  # Fix: subset to formula columns first (data[select_vars]), then use
+  # remove_na = "all". This performs listwise deletion on exactly the
+  # variables the model uses, matching what lm() and
+  # parameters::standardize_parameters(method = "refit") do.
+  select_vars <- all.vars(formula)
+  data <- datawizard::standardize(
+    data[select_vars],
+    remove_na = "all"
+  )
+  stats::lm(formula, data = data, ...)
 }
 
 

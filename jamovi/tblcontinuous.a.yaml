@@ -44,7 +44,7 @@ options:
     type: Action
 
   - name: addOverall
-    title: Add overall column (requires Grouping Variable)
+    title: Overall column (requires Grouping Variable)
     type: Bool
     default: false
 
@@ -222,10 +222,12 @@ options:
         name: "4"
       - title: "5"
         name: "5"
+      - title: "16"
+        name: "16"
     default: auto
 
   - name: addPvalue
-    title: Add p-value
+    title: P-value
     type: Bool
     default: false
 
@@ -305,7 +307,7 @@ options:
     default: 0.05
 
   - name: addQ
-    title: Add q-value (requires p-value)
+    title: Q-value (requires p-value)
     type: Bool
     default: false
 

@@ -52,7 +52,7 @@ options:
     type: Action
 
   - name: addN
-    title: Add N column
+    title: N column
     type: Bool
     default: false
 
@@ -62,12 +62,12 @@ options:
     default: false
 
   - name: addNFootnote
-    title: Show footnote
+    title: Footnote
     type: Bool
     default: true
 
   - name: addOverall
-    title: Add overall column (requires Grouping Variable)
+    title: Overall column (requires Grouping Variable)
     type: Bool
     default: false
 
@@ -278,6 +278,8 @@ options:
         name: "4"
       - title: "5"
         name: "5"
+      - title: "16"
+        name: "16"
     default: auto
 
   - name: statCatDefault
@@ -332,6 +334,8 @@ options:
         name: "4"
       - title: "5"
         name: "5"
+      - title: "16"
+        name: "16"
     default: auto
 
   - name: percent
@@ -347,7 +351,7 @@ options:
     default: column
 
   - name: addDifference
-    title: Add difference (requires Grouping Variable with exactly 2 levels)
+    title: Difference (requires Grouping Variable with exactly 2 levels)
     type: Bool
     default: false
 
@@ -457,6 +461,8 @@ options:
         name: "4"
       - title: "5"
         name: "5"
+      - title: "16"
+        name: "16"
     default: auto
 
   - name: diffDichotDefault
@@ -506,6 +512,8 @@ options:
         name: "4"
       - title: "5"
         name: "5"
+      - title: "16"
+        name: "16"
     default: auto
 
   - name: diffDigitsCat
@@ -526,10 +534,12 @@ options:
         name: "4"
       - title: "5"
         name: "5"
+      - title: "16"
+        name: "16"
     default: auto
 
   - name: addPvalue
-    title: Add p-value (requires Grouping Variable)
+    title: P-value (requires Grouping Variable)
     type: Bool
     default: false
 
@@ -649,7 +659,7 @@ options:
           default: useDefault
 
   - name: addQ
-    title: Add q-value (requires p-value)
+    title: Q-value (requires p-value)
     type: Bool
     default: false
 
@@ -686,7 +696,7 @@ options:
     default: 0.05
 
   - name: addCi
-    title: Add confidence interval
+    title: Confidence interval
     type: Bool
     default: false
 
@@ -698,7 +708,7 @@ options:
     default: 95
 
   - name: ciMerge
-    title: Merge with statistic column
+    title: Merge CI with statistic column
     type: Bool
     default: false
 
@@ -750,6 +760,8 @@ options:
         name: "4"
       - title: "5"
         name: "5"
+      - title: "16"
+        name: "16"
     default: auto
 
   - name: ciCatDefault
@@ -820,4 +832,6 @@ options:
         name: "4"
       - title: "5"
         name: "5"
+      - title: "16"
+        name: "16"
     default: auto

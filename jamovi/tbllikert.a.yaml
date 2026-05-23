@@ -77,6 +77,8 @@ options:
         name: "4"
       - title: "5"
         name: "5"
+      - title: "16"
+        name: "16"
     default: auto
 
   - name: levelOrder
@@ -90,7 +92,7 @@ options:
     default: asFirst
 
   - name: addN
-    title: Add N column
+    title: N column
     type: Bool
     default: false
 
@@ -100,7 +102,7 @@ options:
     default: false
 
   - name: addNFootnote
-    title: Show footnote
+    title: Footnote
     type: Bool
     default: true
 

@@ -99,6 +99,8 @@ options:
         name: "4"
       - title: "5"
         name: "5"
+      - title: "16"
+        name: "16"
     default: auto
 
   - name: confLevel
@@ -109,17 +111,17 @@ options:
     default: 95
 
   - name: addN
-    title: Add N column
+    title: N column
     type: Bool
     default: false
 
   - name: addNEvent
-    title: Add event N column
+    title: Event N column
     type: Bool
     default: false
 
   - name: addPvalue
-    title: Add p-value (requires Stratifying Variables)
+    title: P-value (requires Stratifying Variables)
     type: Bool
     default: false
 
@@ -191,7 +193,7 @@ options:
     default: 0.05
 
   - name: addQ
-    title: Add q-value (requires p-value)
+    title: Q-value (requires p-value)
     type: Bool
     default: false
 

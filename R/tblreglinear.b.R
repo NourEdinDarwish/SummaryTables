@@ -67,13 +67,57 @@ tblRegLinearClass <- R6::R6Class(
           # Formula and model ---------------------------------------------------
           termsB64 <- lapply(terms, jmvcore::toB64)
           formula <- buildFormula(depB64, termsB64)
-          model <- runSafe(lm(formula, data = data), collector)
+
+          if (self$options$standardize) {
+            # Goal: produce the same standardized coefficients (betas) as
+            # parameters::standardize_parameters(method = "refit").
+            #
+            # How standardize_parameters(method = "refit") works internally:
+            #   1. Extracts the model frame (data AFTER listwise deletion —
+            #      rows with NA in ANY variable, numeric OR factor, are gone).
+            #   2. Standardizes that complete-case data with
+            #      datawizard::standardize() (factors untouched, force = FALSE).
+            #   3. Refits the model on the standardized complete-case data.
+            #
+            # Previously we used:
+            #   standardize(data, select = ..., remove_na = "selected")
+            # Bug: with force = FALSE (default), datawizard excludes factors
+            # from the internal "selected" set, so remove_na = "selected" only
+            # checked numeric columns for NAs. Rows with NA in a factor (but
+            # not in any numeric) were KEPT, meaning mean/SD was computed from
+            # MORE rows than lm() actually uses — producing wrong betas.
+            #
+            # We also cannot use remove_na = "all" on the full data frame,
+            # because "all" checks EVERY column — including ones not in the
+            # formula. NAs in unrelated columns would incorrectly drop rows.
+            #
+            # Fix: subset to formula columns first (data[select_vars]), then
+            # use remove_na = "all". This performs listwise deletion on exactly
+            # the variables the model uses, matching what lm() and
+            # parameters::standardize_parameters(method = "refit") do.
+            select_vars <- all.vars(formula)
+            data <- datawizard::standardize(
+              data[select_vars],
+              remove_na = "all"
+            )
+          }
+
+          model <- runSafe(stats::lm(formula, data = data), collector)
 
           # Regression table ----------------------------------------------------
           table <- runSafe(
             buildMultiRegTable(model, self$options, b64Map),
             collector
           )
+
+          # Change header -------------------------------------------------------
+          coefHeader <- if (self$options$standardize) {
+            "**Standardized Coefficient**"
+          } else {
+            "**Coefficient**"
+          }
+          table <- table |>
+            gtsummary::modify_header(estimate = coefHeader)
 
           # Pipeline ------------------------------------------------------------
           table <- pipeAddGlobalP(

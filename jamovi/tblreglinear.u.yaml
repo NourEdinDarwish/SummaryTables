@@ -71,6 +71,8 @@ children:
               - type: Label
                 label: General
                 children:
+                  - type: CheckBox
+                    name: standardize
                   - type: ComboBox
                     name: digitsCoef
                   - type: CheckBox

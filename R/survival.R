@@ -78,7 +78,7 @@ buildSurvfitList <- function(data, elapsedB64, eventB64, strataB64, confInt) {
   survLHS <- sprintf("survival::Surv(%s, %s)", elapsedB64, eventB64)
 
   # Overall
-  overallF <- reformulate("1", response = survLHS)
+  overallF <- stats::reformulate("1", response = survLHS)
   fits <- list(
     rlang::inject(survival::survfit(
       !!overallF,
@@ -89,7 +89,7 @@ buildSurvfitList <- function(data, elapsedB64, eventB64, strataB64, confInt) {
 
   # One fit per stratifying variable (each analyzed independently)
   for (s in strataB64) {
-    stratumF <- reformulate(s, response = survLHS)
+    stratumF <- stats::reformulate(s, response = survLHS)
     fits <- c(
       fits,
       list(
