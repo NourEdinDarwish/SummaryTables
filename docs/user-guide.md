@@ -67,7 +67,7 @@ You can independently set the rounding rules for various elements in your tables
 </figure>
 
 * **Auto (Default):** Typically uses adaptive decimal places, though certain themes may affect this behavior.
-* **Fixed (0 to 5):** Uses a fixed number of decimal places.
+* **Fixed (0-5, 16):** Uses a fixed number of decimal places.
 
 #### P-Values
 

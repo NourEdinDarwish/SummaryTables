@@ -76,6 +76,8 @@ options:
         name: "4"
       - title: "5"
         name: "5"
+      - title: "16"
+        name: "16"
     default: auto
 
   - name: confInt

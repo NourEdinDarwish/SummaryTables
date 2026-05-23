@@ -278,6 +278,8 @@ options:
         name: "4"
       - title: "5"
         name: "5"
+      - title: "16"
+        name: "16"
     default: auto
 
   - name: statCatDefault
@@ -332,6 +334,8 @@ options:
         name: "4"
       - title: "5"
         name: "5"
+      - title: "16"
+        name: "16"
     default: auto
 
   - name: percent
@@ -457,6 +461,8 @@ options:
         name: "4"
       - title: "5"
         name: "5"
+      - title: "16"
+        name: "16"
     default: auto
 
   - name: diffDichotDefault
@@ -506,6 +512,8 @@ options:
         name: "4"
       - title: "5"
         name: "5"
+      - title: "16"
+        name: "16"
     default: auto
 
   - name: diffDigitsCat
@@ -526,6 +534,8 @@ options:
         name: "4"
       - title: "5"
         name: "5"
+      - title: "16"
+        name: "16"
     default: auto
 
   - name: addPvalue
@@ -698,7 +708,7 @@ options:
     default: 95
 
   - name: ciMerge
-    title: Merge with statistic column
+    title: Merge CI with statistic column
     type: Bool
     default: false
 
@@ -750,6 +760,8 @@ options:
         name: "4"
       - title: "5"
         name: "5"
+      - title: "16"
+        name: "16"
     default: auto
 
   - name: ciCatDefault
@@ -820,6 +832,8 @@ options:
         name: "4"
       - title: "5"
         name: "5"
+      - title: "16"
+        name: "16"
     default: auto
 
   - name: path
