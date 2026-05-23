@@ -124,11 +124,11 @@ If you want specific tests for specific variables, you can manually select a dif
     When you select the **SMD** option as your **Difference** method, the values are calculated using the [`smd` R package](https://bsaul.github.io/smd/index.html).
 
     <figure markdown="span">
-      ![Jamovi interface showing the SMD method selected under the Difference options](assets/difference-smd.png){ loading=lazy width="500" }
+      ![jamovi interface showing the SMD method selected under the Difference options](assets/difference-smd.png){ loading=lazy width="500" }
     </figure>
 
 !!! failure "Multiple P-Value Columns Error"
-    If you select a **Difference** method that generates a p-value and you also check **Add p-value** under the general **P-value** section, an error will occur. The table cannot display multiple p-value columns simultaneously.
+    If you select a **Difference** method that generates a p-value and you also check **P-value** under the general **P-value** section, an error will occur. The table cannot display multiple p-value columns simultaneously.
 
     <figure markdown="span">
       ![Error message displayed in jamovi when attempting to add multiple p-value columns](assets/multiple-pvalues-error.png){ loading=lazy width="500" }
@@ -141,12 +141,23 @@ It is important to understand the fundamental difference in how the **Univariabl
 * **Univariable Regression:** Fits *one separate model per predictor*. If you add 5 variables across the **Covariates** and **Factors** lists, the module will fit 5 distinct simple regression models (each predicting the dependent variable using just that one predictor) and combine the results into a single table.
 * **Multivariable Regression:** Fits *one single model containing all predictors*. If you add 5 variables across the **Covariates** and **Factors** lists, the module will fit a single model where all 5 variables are included simultaneously, adjusting for each other.
 
+### Regression Tables: Standardized Coefficients
+
+For linear regression models, SummaryTables allows you to report standardized coefficients.
+
+<figure markdown="span">
+  ![jamovi interface highlighting the Standardized Coefficients option in regression tables](assets/standardized-coefficients.png){ loading=lazy width="500" }
+</figure>
+
+!!! info "Difference from SPSS"
+    If you are coming from SPSS, your results might look different because SPSS standardizes all variables, whereas we do not standardize **Factors**. We only standardize continuous variables (including **Covariates** and the **Dependent Variable**). This approach—which is also used by jamovi's default linear regression and GAMLj—is comparable to the "refit" method in the [`parameters` R package](https://easystats.github.io/parameters/reference/standardize_parameters.html#details).
+
 ### Survival and Cox Regression: Event Variable Coding
 
 When using the **Survival Table** or **Cox Regression** analyses, the **Event variable** must be coded correctly:
 
 <figure markdown="span">
-  ![Jamovi interface showing the Event variable assignment and Event level selection](assets/event-variable-options.png){ loading=lazy width="500" }
+  ![jamovi interface showing the Event variable assignment and Event level selection](assets/event-variable-options.png){ loading=lazy width="500" }
 </figure>
 
 * **If continuous:** You can use either `0` and `1` (0 = censored, 1 = event) OR `1` and `2` (1 = censored, 2 = event). Any other numeric values will cause an error.
