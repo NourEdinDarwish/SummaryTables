@@ -11,13 +11,13 @@ This guide highlights important notes, default behaviors, and specific options y
 
 A quick reference guide for choosing the right table based on your data and goals:
 
-* **Table 1 / Main Summary:** Use the **Summary Table** without **Grouping Variable** for a general overview.
+* **Table 1 / Main Summary:** Use the **Summary Table** without the **Grouping Variable** for a general overview.
 * **Categorical Outcome:** Use the **Summary Table** with your outcome assigned to the **Grouping Variable**.
 * **Continuous Outcome:** Use the **Continuous Table**.
 * **Only Two Categorical Variables:** Use the **Cross Table** for a straightforward cross-tabulation.
 * **Likert Scale Data:** Use the **Likert Table**.
 * **Survival Analysis:** Use the **Survival Table** for Kaplan-Meier estimates and survival statistics.
-* **Regression Models:** Use **Univariable Regression** (fits a separate model for each variable) or **Multivariable Regression** (fits a single combined model).
+* **Regression Models:** Use the **Univariable Regression** (fits a separate model for each variable) or the **Multivariable Regression** (fits a single combined model).
 
 ---
 
@@ -27,7 +27,7 @@ A quick reference guide for choosing the right table based on your data and goal
 
 By default, jamovi automatically runs an analysis every time you change a setting. Because SummaryTables does not cache or save any previous outputs, it must build the entire table from scratch on every single run. 
 
-This creates a severe cumulative calculation overhead. Any individual action triggers a full run. For example, when using **Univariable Regression**:
+This creates a severe cumulative calculation overhead. Any individual action triggers a full run. For example, when using the **Univariable Regression**:
 
 * If you drag and drop 10 variables *one by one*, jamovi triggers 10 separate runs. The 1st run fits 1 model to build the first table. When you add the second variable, it doesn't just add a model to the existing table; the old table is discarded, and it builds a new table from scratch by fitting the first model again *and* the new second model. The 3rd run fits 3 models from zero, and so on. By the time you add the 10th variable, the module has needlessly fitted a total of *55 models* (1+2+3+...+10).
 * The same applies to options: changing 5 different checkboxes one after another triggers 5 complete recalculations of the entire table.
@@ -71,7 +71,7 @@ You can independently set the rounding rules for various elements in your tables
 
 #### P-Values
 
-The p-value dropdown controls the rounding of *large* p-values, while precision automatically increases as p-values get smaller.
+The **Decimal places (large p-values)** dropdown controls the rounding of *large* p-values, while precision automatically increases as p-values get smaller.
 
 <figure markdown="span">
   ![The large p-value decimal places selection dropdown showing Auto and numerical precision options](assets/pvalue-digits.png){ loading=lazy width="500" }
@@ -96,7 +96,7 @@ The module automatically selects appropriate statistical tests based on your dat
 * **Non-parametric:** Uses the Wilcoxon rank-sum test for 2 groups, or Kruskal-Wallis rank-sum test for >2 groups.
 
 !!! info "Grouping Variable in the Continuous Table"
-    If you assign a **Grouping Variable** in the **Continuous Table**, the module automatically calculates p-values using a two-way ANOVA. In this specific configuration, no other statistical tests can be applied.
+    If you use the **Grouping Variable** in the **Continuous Table**, the module automatically calculates p-values using a two-way ANOVA. In this specific configuration, no other statistical tests can be applied.
 
 #### Categorical Variables
 
@@ -128,7 +128,7 @@ If you want specific tests for specific variables, you can manually select a dif
     </figure>
 
 !!! failure "Multiple P-Value Columns Error"
-    If you select a **Difference** method that generates a p-value and you also check **P-value** under the general **P-value** section, an error will occur. The table cannot display multiple p-value columns simultaneously.
+    If you select a **Difference** method that generates a p-value and you also check the **P-value** option under the general **P-value** section, an error will occur. The table cannot display multiple p-value columns simultaneously.
 
     <figure markdown="span">
       ![Error message displayed in jamovi when attempting to add multiple p-value columns](assets/multiple-pvalues-error.png){ loading=lazy width="500" }
