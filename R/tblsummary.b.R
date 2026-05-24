@@ -10,7 +10,7 @@ tblSummaryClass <- R6::R6Class(
 
       if (!hasCont && !hasCat) {
         renderPlaceholder(
-          "Add continuous or categorical variables to generate the table",
+          "Add at least one Continuous or Categorical Variable to generate the table",
           self$results$tbl
         )
         self$results$status$setVisible(FALSE)

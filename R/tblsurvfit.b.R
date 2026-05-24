@@ -8,7 +8,7 @@ tblSurvfitClass <- R6::R6Class(
 
       if (is.null(elapsed) || is.null(event)) {
         renderPlaceholder(
-          "Add a time variable and an event variable to generate the table",
+          "Add a Time variable and an Event variable to generate the table",
           self$results$tbl
         )
         self$results$status$setVisible(FALSE)

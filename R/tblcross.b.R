@@ -7,7 +7,7 @@ tblCrossClass <- R6::R6Class(
       col <- self$options$col
       if (is.null(row) || is.null(col)) {
         renderPlaceholder(
-          "Add a row variable and a column variable to generate the table",
+          "Add a Row Variable and a Column Variable to generate the table",
           self$results$tbl
         )
         self$results$status$setVisible(FALSE)
