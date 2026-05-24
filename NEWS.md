@@ -1,3 +1,7 @@
+## SummaryTables 1.3.1
+
+* Improved the message shown when required variables are missing.
+
 ## SummaryTables 1.3.0
 
 * Added Standardized Coefficients for Linear Regression analyses (both Univariable and Multivariable).
