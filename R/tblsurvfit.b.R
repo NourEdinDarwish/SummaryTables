@@ -162,6 +162,17 @@ tblSurvfitClass <- R6::R6Class(
             )
           }
 
+          # Add translated CI abbreviation to table footer (source note)
+          # We use modify_abbreviation so it matches gtsummary's native
+          # translation behavior
+          table <- runSafe(
+            gtsummary::modify_abbreviation(
+              table,
+              gtsummary:::translate_string("CI = Confidence Interval")
+            ),
+            collector
+          )
+
           # Pipeline ------------------------------------------------------------
           if (self$options$addN) {
             table <- runSafe(gtsummary::add_n(table), collector)

@@ -131,7 +131,9 @@ buildSurvfitHeader <- function(
   ciPart <- paste0(
     " (",
     gtsummary::style_number(confLevel),
-    "% CI)"
+    "% ",
+    gtsummary:::translate_string("CI"),
+    ")"
   )
 
   typePart <- switch(
