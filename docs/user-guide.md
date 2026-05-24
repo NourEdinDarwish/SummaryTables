@@ -11,7 +11,7 @@ This guide highlights important notes, default behaviors, and specific options y
 
 A quick reference guide for choosing the right table based on your data and goals:
 
-* **Table 1 / Main Summary:** Use the **Summary Table** without a grouping variable for a general overview.
+* **Table 1 / Main Summary:** Use the **Summary Table** without **Grouping Variable** for a general overview.
 * **Categorical Outcome:** Use the **Summary Table** with your outcome assigned to the **Grouping Variable**.
 * **Continuous Outcome:** Use the **Continuous Table**.
 * **Only Two Categorical Variables:** Use the **Cross Table** for a straightforward cross-tabulation.
@@ -78,9 +78,9 @@ The p-value dropdown controls the rounding of *large* p-values, while precision 
 </figure>
 
 * **Auto (Default):** Depends on the theme (the default theme uses **"1"**).
-* **1:** Large p-values are rounded to one decimal place. Precision increases as p-values decrease, and very small values are shown as `<0.001`.
-* **2:** Large p-values are rounded to two decimal places. Precision increases as p-values decrease, and very small values are shown as `<0.001`.
-* **3:** Large p-values are rounded to three decimal places. Precision increases as p-values decrease, and very small values are shown as `<0.001`.
+* **1:** Large p-values are rounded to 1 decimal place. Precision automatically increases to 2, then 3 decimal places as values get smaller. Extremes are shown as `>0.9` and `<0.001`.
+* **2:** Large p-values are rounded to 2 decimal places. Precision automatically increases to 3 decimal places as values get smaller. Extremes are shown as `>0.99` and `<0.001`.
+* **3:** All p-values are rounded to 3 decimal places. Extremes are shown as `>0.999` and `<0.001`.
 
 ### Statistical Tests
 
