@@ -11,13 +11,13 @@ This guide highlights important notes, default behaviors, and specific options y
 
 A quick reference guide for choosing the right table based on your data and goals:
 
-* **Table 1 / Main Summary:** Use the **Summary Table** without the **Grouping Variable** for a general overview.
-* **Categorical Outcome:** Use the **Summary Table** with your outcome assigned to the **Grouping Variable**.
+* **Table 1 / Main Summary:** Use the **Summary Table** without adding a **Grouping Variable** for a general overview.
+* **Categorical Outcome:** Use the **Summary Table** with your outcome added to the **Grouping Variable**.
 * **Continuous Outcome:** Use the **Continuous Table**.
 * **Only Two Categorical Variables:** Use the **Cross Table** for a straightforward cross-tabulation.
 * **Likert Scale Data:** Use the **Likert Table**.
 * **Survival Analysis:** Use the **Survival Table** for Kaplan-Meier estimates and survival statistics.
-* **Regression Models:** Use the **Univariable Regression** (fits a separate model for each variable) or the **Multivariable Regression** (fits a single combined model).
+* **Regression Models:** Use **Univariable Regression** (fits a separate model for each variable) or **Multivariable Regression** (fits a single combined model).
 
 ---
 
@@ -27,7 +27,7 @@ A quick reference guide for choosing the right table based on your data and goal
 
 By default, jamovi automatically runs an analysis every time you change a setting. Because SummaryTables does not cache or save any previous outputs, it must build the entire table from scratch on every single run. 
 
-This creates a severe cumulative calculation overhead. Any individual action triggers a full run. For example, when using the **Univariable Regression**:
+This creates a severe cumulative calculation overhead. Any individual action triggers a full run. For example, when using **Univariable Regression**:
 
 * If you drag and drop 10 variables *one by one*, jamovi triggers 10 separate runs. The 1st run fits 1 model to build the first table. When you add the second variable, it doesn't just add a model to the existing table; the old table is discarded, and it builds a new table from scratch by fitting the first model again *and* the new second model. The 3rd run fits 3 models from zero, and so on. By the time you add the 10th variable, the module has needlessly fitted a total of *55 models* (1+2+3+...+10).
 * The same applies to options: changing 5 different checkboxes one after another triggers 5 complete recalculations of the entire table.
@@ -38,7 +38,7 @@ To prevent this snowballing delay, you can enable *Manual Run Mode*.
   ![Screenshot showing the Run manually option](assets/run-manually.png){ loading=lazy width="500" }
 </figure>
 
-Checking the **"Run manually"** option disables the auto-run behavior and activates the **"Run"** button. This allows you to add all 10 variables at once and set all your options without triggering any calculations. Once everything is set up, click **"Run"** to calculate the final table exactly once—fitting just the *10 models* you actually need. This saves a huge amount of time, especially for computationally heavy tables like regressions.
+Checking the **Run manually** option disables the auto-run behavior and activates the **Run** button. This allows you to add all 10 variables at once and set all your options without triggering any calculations. Once everything is set up, click **Run** to calculate the final table exactly once—fitting just the *10 models* you actually need. This saves a huge amount of time, especially for computationally heavy tables like regressions.
 
 ### Save to Word
 
@@ -71,7 +71,7 @@ You can independently set the rounding rules for various elements in your tables
 
 #### P-Values
 
-The **Decimal places (large p-values)** dropdown controls the rounding of *large* p-values, while precision automatically increases as p-values get smaller.
+The p-value **Decimal places** dropdown controls the rounding of *large* p-values, while precision automatically increases as p-values get smaller.
 
 <figure markdown="span">
   ![The large p-value decimal places selection dropdown showing Auto and numerical precision options](assets/pvalue-digits.png){ loading=lazy width="500" }
@@ -84,7 +84,7 @@ The **Decimal places (large p-values)** dropdown controls the rounding of *large
 
 ### Statistical Tests
 
-The module automatically selects appropriate statistical tests based on your data types and the number of groups across the **Summary Table**, **Continuous Table**, and **Cross Table**. You can configure this behavior in the **Default test** dropdowns:
+The module automatically selects appropriate statistical tests based on your data types and the number of groups across the **Summary Table**, **Continuous Table**, and **Cross Table**. You can configure this behavior using the **Default test** dropdowns:
 
 #### Continuous Variables
 
@@ -96,7 +96,7 @@ The module automatically selects appropriate statistical tests based on your dat
 * **Non-parametric:** Uses the Wilcoxon rank-sum test for 2 groups, or Kruskal-Wallis rank-sum test for >2 groups.
 
 !!! info "Grouping Variable in the Continuous Table"
-    If you use the **Grouping Variable** in the **Continuous Table**, the module automatically calculates p-values using a two-way ANOVA. In this specific configuration, no other statistical tests can be applied.
+    If you add a **Grouping Variable** in the **Continuous Table**, the module automatically calculates p-values using a two-way ANOVA. In this specific configuration, no other statistical tests can be applied.
 
 #### Categorical Variables
 
@@ -121,7 +121,7 @@ If you want specific tests for specific variables, you can manually select a dif
 ### Summary Table: Difference
 
 !!! info "SMD Method Calculation"
-    When you select the **SMD** option as your **Difference** method, the values are calculated using the [`smd` R package](https://bsaul.github.io/smd/index.html).
+    When you select **SMD** as your **Difference** method, the values are calculated using the [`smd` R package](https://bsaul.github.io/smd/index.html).
 
     <figure markdown="span">
       ![jamovi interface showing the SMD method selected under the Difference options](assets/difference-smd.png){ loading=lazy width="500" }
@@ -136,10 +136,10 @@ If you want specific tests for specific variables, you can manually select a dif
 
 ### Regression Tables: Univariable vs. Multivariable
 
-It is important to understand the fundamental difference in how the **Univariable Regression** and **Multivariable Regression** tables are constructed:
+It is important to understand the fundamental difference in how **Univariable Regression** and **Multivariable Regression** tables are constructed:
 
-* **Univariable Regression:** Fits *one separate model per predictor*. If you add 5 variables across the **Covariates** and **Factors** lists, the module will fit 5 distinct simple regression models (each predicting the dependent variable using just that one predictor) and combine the results into a single table.
-* **Multivariable Regression:** Fits *one single model containing all predictors*. If you add 5 variables across the **Covariates** and **Factors** lists, the module will fit a single model where all 5 variables are included simultaneously, adjusting for each other.
+* **Univariable Regression:** Fits *one separate model per predictor*. If you add 5 variables to **Covariates** and **Factors**, the module will fit 5 distinct simple regression models (each predicting the dependent variable using just that one predictor) and combine the results into a single table.
+* **Multivariable Regression:** Fits *one single model containing all predictors*. If you add 5 variables to **Covariates** and **Factors**, the module will fit a single model where all 5 variables are included simultaneously, adjusting for each other.
 
 ### Regression Tables: Standardized Coefficients
 
@@ -154,7 +154,7 @@ For linear regression models, SummaryTables allows you to report standardized co
 
 ### Survival and Cox Regression: Event Variable Coding
 
-When using the **Survival Table** or **Cox Regression** analyses, the **Event variable** must be coded correctly:
+When using the **Survival Table** or **Cox Regression** analyses, the **Event** variable must be coded correctly:
 
 <figure markdown="span">
   ![jamovi interface showing the Event variable assignment and Event level selection](assets/event-variable-options.png){ loading=lazy width="500" }
