@@ -101,7 +101,7 @@ buildMultiRegTable <- function(model, options, b64Map) {
   )
 
   args$exponentiate <- optTrue(options$exponentiate)
-  args$conf.int <- options$confInt
+  args$conf.int <- options$confInt && options$journal != "qjecon"
   args$conf.level <- options$confLevel / 100
   args$intercept <- optTrue(options$intercept)
 
@@ -213,7 +213,7 @@ buildUniRegTable <- function(
   )
 
   args$exponentiate <- optTrue(options$exponentiate)
-  args$conf.int <- options$confInt
+  args$conf.int <- options$confInt && options$journal != "qjecon"
   args$conf.level <- options$confLevel / 100
   args$add_estimate_to_reference_rows <- options$addRefRowEstimate
 
