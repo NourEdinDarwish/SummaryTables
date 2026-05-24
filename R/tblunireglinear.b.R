@@ -71,13 +71,7 @@ tblUniRegLinearClass <- R6::R6Class(
           )
 
           # Change header -------------------------------------------------------
-          coefHeader <- if (self$options$standardize) {
-            "**Standardized Coefficient**"
-          } else {
-            "**Coefficient**"
-          }
-          table <- table |>
-            gtsummary::modify_header(estimate = coefHeader)
+          table <- pipeOverrideEstimateHeader(table, self$options)
 
           # Pipeline ------------------------------------------------------------
           table <- pipeAddGlobalP(

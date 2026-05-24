@@ -101,7 +101,7 @@ buildMultiRegTable <- function(model, options, b64Map) {
   )
 
   args$exponentiate <- optTrue(options$exponentiate)
-  args$conf.int <- options$confInt
+  args$conf.int <- options$confInt && options$journal != "qjecon"
   args$conf.level <- options$confLevel / 100
   args$intercept <- optTrue(options$intercept)
 
@@ -213,7 +213,7 @@ buildUniRegTable <- function(
   )
 
   args$exponentiate <- optTrue(options$exponentiate)
-  args$conf.int <- options$confInt
+  args$conf.int <- options$confInt && options$journal != "qjecon"
   args$conf.level <- options$confLevel / 100
   args$add_estimate_to_reference_rows <- options$addRefRowEstimate
 
@@ -230,6 +230,33 @@ buildUniRegTable <- function(
   }
 
   do.call(gtsummary::tbl_uvregression, args)
+}
+
+
+# pipeOverrideEstimateHeader ------------------------------------------------
+
+#' Safely override the estimate column header in a regression table
+#'
+#' Replaces the base estimate header (e.g. "**Beta**") with a custom label while
+#' preserving any suffixes added by themes (like " (95% CI)" from JAMA).
+#'
+#' @param table A tbl_regression or tbl_uvregression object
+#' @param options Jamovi options object
+#' @return The table with the updated header
+pipeOverrideEstimateHeader <- function(table, options) {
+  coefHeader <- if (options$standardize) {
+    "**Standardized Coefficient**"
+  } else {
+    "**Coefficient**"
+  }
+
+  current_header <- table$table_styling$header$label[
+    table$table_styling$header$column == "estimate"
+  ]
+
+  new_header <- sub("^\\*\\*.*?\\*\\*", coefHeader, current_header)
+  table |>
+    gtsummary::modify_header(estimate = new_header)
 }
 
 
@@ -427,9 +454,11 @@ pipeCiMergeReg <- function(table, options) {
         table$table_styling$header |>
           dplyr::filter(.data$column == "estimate") |>
           dplyr::pull("label"),
-        " **(",
-        gtsummary::style_number(table$inputs$conf.level, scale = 100),
-        "% CI)**"
+        " **(**",
+        table$table_styling$header |>
+          dplyr::filter(.data$column == "conf.low") |>
+          dplyr::pull("label"),
+        "**)**"
       )
 
       pattern <- paste0(

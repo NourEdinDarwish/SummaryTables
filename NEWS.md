@@ -1,3 +1,10 @@
+## SummaryTables 1.3.2
+
+* Added the missing "CI = Confidence Interval" abbreviation source note to Survival Tables.
+* Fixed formatting issues with column headers and unnecessary abbreviation source notes in Regression Tables when applying specific Journal Themes.
+* Fixed translation bugs where Confidence Interval (CI) texts were being overridden by English text.
+* General bug-fixes and improvements.
+
 ## SummaryTables 1.3.1
 
 * Improved the message shown when required variables are missing.
