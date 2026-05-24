@@ -8,7 +8,7 @@ tblRegLinearClass <- R6::R6Class(
 
       if (is.null(dep) || length(terms) == 0) {
         renderPlaceholder(
-          "Add a dependent variable and at least one term to generate the table", #nolint
+          "Add a Dependent Variable and at least one Model Term to generate the table", #nolint
           self$results$tbl
         )
         self$results$status$setVisible(FALSE)

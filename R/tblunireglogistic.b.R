@@ -9,7 +9,7 @@ tblUniRegLogisticClass <- R6::R6Class(
 
       if (is.null(dep) || (length(covs) == 0 && length(factors) == 0)) {
         renderPlaceholder(
-          "Add a dependent variable and at least one covariate or factor to generate the table", #nolint
+          "Add a Dependent Variable and at least one Covariate or Factor to generate the table", #nolint
           self$results$tbl
         )
         self$results$status$setVisible(FALSE)

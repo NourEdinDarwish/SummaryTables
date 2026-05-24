@@ -6,7 +6,7 @@ tblLikertClass <- R6::R6Class(
       vars <- self$options$vars
       if (length(vars) == 0) {
         renderPlaceholder(
-          "Add Likert scale variables to generate the table",
+          "Add at least one Likert-scale Variable to generate the table",
           self$results$tbl
         )
         self$results$status$setVisible(FALSE)

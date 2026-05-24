@@ -8,7 +8,7 @@ tblContinuousClass <- R6::R6Class(
 
       if (is.null(contVar) || length(varsCat) == 0) {
         renderPlaceholder(
-          "Add a continuous variable and at least one categorical variable to generate the table", # nolint
+          "Add a Continuous Variable and at least one Categorical Variable to generate the table", # nolint
           self$results$tbl
         )
         self$results$status$setVisible(FALSE)
