@@ -1,6 +1,6 @@
 Type: Package
 Package: SummaryTables
-Title: Publication-Ready Summary Tables for Jamovi
+Title: Publication-Ready Summary Tables for jamovi
 Version: 1.3.2
 Authors@R: 
     person("Nour Edin", "Darwish", , "nouredindarwish@gmail.com", role = c("aut", "cre"),

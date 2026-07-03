@@ -4,7 +4,7 @@
 .jmvrefs <- list(
     `SummaryTables`=list(
         `type`="software", 
-        `title`="SummaryTables: Publication-Ready Summary Tables for Jamovi", 
+        `title`="SummaryTables: Publication-Ready Summary Tables for jamovi", 
         `author`="Darwish, N. E.", 
         `year`=2026, 
         `publisher`="https://doi.org/10.5281/zenodo.18902312", 
