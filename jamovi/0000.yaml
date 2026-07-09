@@ -155,6 +155,10 @@ analyses:
       table with hazard ratios, confidence intervals, and p-values. Includes
       global p-values, event counts, significance stars, and p-value
       adjustments.
+datasets:
+  - name: Trial
+    path: Trial.omv
+    description: A simulated dataset of 200 patients who received Drug A or Drug B.
 usesNative: true
 minApp: 2.7.12
 
