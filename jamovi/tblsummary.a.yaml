@@ -404,7 +404,7 @@ options:
     options:
       - title: t-test
         name: t.test
-      - title: t-test (equal variance)
+      - title: t-test (equal variances)
         name: t.test.equalVar
       - title: Wilcoxon rank-sum
         name: wilcox.test
@@ -431,7 +431,7 @@ options:
               name: useDefault
             - title: t-test
               name: t.test
-            - title: t-test (equal variance)
+            - title: t-test (equal variances)
               name: t.test.equalVar
             - title: Wilcoxon rank-sum
               name: wilcox.test
@@ -584,11 +584,11 @@ options:
         name: nonparametric
       - title: t-test
         name: t.test
-      - title: t-test (equal variance)
+      - title: t-test (equal variances)
         name: t.test.equalVar
       - title: ANOVA
         name: oneway.test
-      - title: ANOVA (equal variance)
+      - title: ANOVA (equal variances)
         name: oneway.test.equalVar
       - title: Wilcoxon rank-sum
         name: wilcox.test
@@ -611,11 +611,11 @@ options:
               name: useDefault
             - title: t-test
               name: t.test
-            - title: t-test (equal variance)
+            - title: t-test (equal variances)
               name: t.test.equalVar
             - title: ANOVA
               name: oneway.test
-            - title: ANOVA (equal variance)
+            - title: ANOVA (equal variances)
               name: oneway.test.equalVar
             - title: Wilcoxon rank-sum
               name: wilcox.test

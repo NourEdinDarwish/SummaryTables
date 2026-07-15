@@ -1,7 +1,7 @@
 Type: Package
 Package: SummaryTables
-Title: Publication-Ready Summary Tables for Jamovi
-Version: 1.3.2
+Title: Publication-Ready Summary Tables for jamovi
+Version: 1.3.3
 Authors@R: 
     person("Nour Edin", "Darwish", , "nouredindarwish@gmail.com", role = c("aut", "cre"),
            comment = c(ORCID = "0009-0009-5527-4539"))
@@ -27,29 +27,21 @@ BugReports: https://github.com/NourEdinDarwish/SummaryTables/issues
 Depends: 
     R (>= 4.1)
 Imports: 
-    broom.helpers (>= 1.22.0),
+    broom.helpers,
     car,
-    cards (>= 0.7.1),
-    cardx (>= 0.3.1),
-    cli,
+    cardx,
     datawizard,
     dplyr,
     effectsize,
     forcats,
     gt,
-    gtsummary (>= 2.5.0.9001),
+    gtsummary,
     jmvcore (>= 0.8.5),
     parameters,
     R6,
     rlang,
     smd,
-    survival,
-    tidyr
-Remotes: 
-    larmarange/broom.helpers@96d2cae,
-    insightsengineering/cards@v0.7.1,
-    insightsengineering/cardx@v0.3.1,
-    ddsjoberg/gtsummary@952b665
+    survival
 Config/roxygen2/version: 8.0.0
 Encoding: UTF-8
 LazyData: true

@@ -1,3 +1,11 @@
+## SummaryTables 1.3.3
+
+* Added the Trial dataset to jamovi's Data Library.
+* Improved variable selection in Cross Table and Likert Table.
+* Fixed an issue with Confidence Interval (CI) formatting.
+* Improved statistical test labels.
+* General bug-fixes and improvements.
+
 ## SummaryTables 1.3.2
 
 * Added the missing "CI = Confidence Interval" abbreviation source note to Survival Tables.

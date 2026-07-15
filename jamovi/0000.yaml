@@ -1,12 +1,12 @@
 ---
 title: Publication-Ready Summary Tables
 name: SummaryTables
-version: 1.3.2
+version: 1.3.3
 jms: '1.0'
 authors:
   - Nour Edin Darwish
 maintainer: Nour Edin Darwish <nouredindarwish@gmail.com>
-date: '2026-05-24'
+date: '2026-07-15'
 type: R
 description: >-
   A comprehensive module for creating publication-ready summary and regression
@@ -154,6 +154,10 @@ analyses:
       table with hazard ratios, confidence intervals, and p-values. Includes
       global p-values, event counts, significance stars, and p-value
       adjustments.
+datasets:
+  - name: Trial
+    path: Trial.omv
+    description: A simulated dataset of 200 patients who received Drug A or Drug B.
 usesNative: true
 minApp: 2.7.12
 

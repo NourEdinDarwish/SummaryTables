@@ -363,11 +363,30 @@ pipeAddCi <- function(
 
   # Pattern -----------------------------------------------------------------
   statsWithParens <- c("meanSd", "medianIqr", "medianRange", "nPercent", "eda")
+
+  effectiveContStats <- stats::setNames(
+    rep(options$statContDefault, length(varsCont)),
+    varsCont
+  )
+  for (item in options$statContSpecific) {
+    if (item$stat != "useDefault") {
+      effectiveContStats[[item$var]] <- item$stat
+    }
+  }
+
+  effectiveCatStats <- stats::setNames(
+    rep(options$statCatDefault, length(varsCat)),
+    varsCat
+  )
+  for (item in options$statCatSpecific) {
+    if (item$stat != "useDefault") {
+      effectiveCatStats[[item$var]] <- item$stat
+    }
+  }
+
   selectedStats <- c(
-    options$statContDefault,
-    options$statCatDefault,
-    vapply(options$statContSpecific, \(x) x$stat, character(1)),
-    vapply(options$statCatSpecific, \(x) x$stat, character(1))
+    effectiveContStats,
+    effectiveCatStats
   )
   useSquareBrackets <- any(selectedStats %in% statsWithParens)
 
