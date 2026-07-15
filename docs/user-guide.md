@@ -92,7 +92,7 @@ The module automatically selects appropriate statistical tests based on your dat
   ![Screenshot showing the default test dropdown for continuous variables with parametric and non-parametric options](assets/default-test-continuous.png){ loading=lazy width="500" }
 </figure>
 
-* **Parametric (Default):** Uses the independent t-test (not assuming equal variance) for 2 groups, or one-way ANOVA (not assuming equal variance) for >2 groups.
+* **Parametric (Default):** Uses the independent t-test (not assuming equal variances) for 2 groups, or one-way ANOVA (not assuming equal variances) for >2 groups.
 * **Non-parametric:** Uses the Wilcoxon rank-sum test for 2 groups, or Kruskal-Wallis rank-sum test for >2 groups.
 
 !!! info "Grouping Variable in the Continuous Table"
