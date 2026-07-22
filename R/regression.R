@@ -365,15 +365,44 @@ pipeAddNEvent <- function(table, options, collector) {
 
 #' Add significance stars to a regression table
 #'
-#' Shared pipeline step. Appends star annotations to coefficient estimates
-#' based on p-value thresholds. Can optionally hide CI, p-value, and SE
-#' columns.
+#' Shared pipeline step. Warns when exponentiated coefficients are shown with
+#' SE, including under the QJE theme, then appends star annotations based on
+#' p-value thresholds. Can optionally hide CI, p-value, and SE columns.
 #'
 #' @param table A tbl_regression object
 #' @param options Jamovi options object
 #' @param collector Collector environment from newCollector()
+#' @param ratioName Optional character value: `"odds"` or `"hazard"`.
+#'   Used to warn when exponentiated coefficients are shown with standard
+#'   errors from the unexponentiated model.
 #' @return The table with significance stars (or unchanged)
-pipeAddSignificanceStars <- function(table, options, collector) {
+pipeAddSignificanceStars <- function(
+  table,
+  options,
+  collector,
+  ratioName = NULL
+) {
+  showsSe <- options$journal == "qjecon" ||
+    (options$addStars &&
+      options$starsShowSe &&
+      !options$globalP &&
+      options$journal != "jama")
+
+  if (showsSe && optTrue(options$exponentiate)) {
+    runSafe(
+      warning(
+        paste(
+          "Standard errors (SE) correspond to the unexponentiated",
+          "coefficients, not the displayed",
+          ratioName,
+          "ratios."
+        ),
+        call. = FALSE
+      ),
+      collector
+    )
+  }
+
   if (
     !options$addStars ||
       options$globalP ||

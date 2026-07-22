@@ -133,7 +133,8 @@ tblRegCoxClass <- R6::R6Class(
           table <- pipeAddSignificanceStars(
             table,
             options = self$options,
-            collector = collector
+            collector = collector,
+            ratioName = "hazard"
           )
 
           table <- pipeCiMergeReg(

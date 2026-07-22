@@ -122,7 +122,8 @@ tblRegLogisticClass <- R6::R6Class(
           table <- pipeAddSignificanceStars(
             table,
             options = self$options,
-            collector = collector
+            collector = collector,
+            ratioName = "odds"
           )
 
           table <- pipeCiMergeReg(
