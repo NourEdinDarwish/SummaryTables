@@ -2,12 +2,10 @@
 ^\.Rproj\.user$
 ^build$
 ^jamovi$
-^\.agent$
 ^.*\.jmo$
+^dev$
 ^.*\.code-workspace$
-^trial\.omv$
 ^LICENSE\.md$
-^NOTES\.md$
 ^\.venv$
 ^site$
 ^docs$
@@ -15,3 +13,5 @@
 ^\.github$
 ^CITATION\.cff$
 ^analysis-summarytables\.svg$
+^[.]?air[.]toml$
+^\.vscode$

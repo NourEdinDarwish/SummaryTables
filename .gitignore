@@ -20,10 +20,6 @@
 # RStudio files
 .Rproj.user/
 
-# VS code files
-*.code-workspace
-.agent
-
 # produced vignettes
 vignettes/*.html
 vignettes/*.pdf
@@ -57,12 +53,12 @@ build/
 build*/
 
 # other files / folders
-.venv/
-site/
 temp/
 man/
 .DS_Store
 npm-debug.log
 inst/doc
 tests/testthat/Rplots.pdf
-/trial.omv
+.venv/
+site/
+*.code-workspace
