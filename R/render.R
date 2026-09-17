@@ -8,6 +8,31 @@
 #' @param htmlContent Character: raw HTML string (from gt::as_raw_html())
 #' @param resultsHtml A jmvcore::Html object with `$setContent()` method
 setHtmlResult <- function(htmlContent, resultsHtml) {
+  # gt::as_raw_html() uses juicyjuice to inline CSS and to add legacy HTML
+  # presentation attributes for older clients. For a transparent background,
+  # this produces both the valid CSS declaration
+  #
+  #   style="background-color: rgba(255, 255, 255, 0)"
+  #
+  # and the legacy attribute
+  #
+  #   bgcolor="rgba(255, 255, 255, 0)"
+  #
+  # The latter is not a valid bgcolor value. The attribute predates CSS
+  # transparency and can provide only a solid fallback colour, so it cannot
+  # represent an rgba() value. LibreOffice interprets the value through the
+  # legacy HTML colour algorithm as #00BA25, resulting in a bright green table
+  # when content is copied from jamovi. Remove only this exact invalid fallback
+  # while retaining the valid CSS transparency. Clients that do not support
+  # CSS require no explicit fallback: without bgcolor, the table uses its
+  # normal unfilled background and the document background shows through.
+  htmlContent <- gsub(
+    'bgcolor="rgba(255, 255, 255, 0)"',
+    "",
+    htmlContent,
+    fixed = TRUE
+  )
+
   # Jamovi hardcodes .jmv-results-html { width: 500px }.
   # Override to max-content: this sizes to the table's intrinsic width and,
   # critically, does NOT change when the iframe viewport is resized by the
