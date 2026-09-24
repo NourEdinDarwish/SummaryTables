@@ -26,7 +26,7 @@ runSafe <- function(expr, collector) {
   withCallingHandlers(
     expr,
     warning = function(w) {
-      msg <- w$message
+      msg <- conditionMessage(w)
       msg <- gsub("were returned during :", "occurred:", msg, fixed = TRUE)
       if (!grepl("C:/Rtools/home/builder", msg, fixed = TRUE)) {
         collector$warnings <- c(collector$warnings, trimws(msg))
@@ -34,9 +34,12 @@ runSafe <- function(expr, collector) {
       invokeRestart("muffleWarning")
     },
     message = function(m) {
-      msg <- m$message
+      msg <- conditionMessage(m)
       msg <- gsub("were returned during :", "occurred:", msg, fixed = TRUE)
-      collector$messages <- c(collector$messages, trimws(msg))
+      # Package startup output is dependency-loading noise, not analysis feedback.
+      if (!inherits(m, "packageStartupMessage")) {
+        collector$messages <- c(collector$messages, trimws(msg))
+      }
       invokeRestart("muffleMessage")
     }
   )
