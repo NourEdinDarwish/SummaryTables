@@ -1,0 +1,7 @@
+# Detect text files and normalize their stored line endings.
+* text=auto
+
+# Keep files regenerated during installation consistent with the compiler's LF output.
+R/*.h.R text eol=lf
+R/00jmv.R text eol=lf
+jamovi/0000.yaml text eol=lf
