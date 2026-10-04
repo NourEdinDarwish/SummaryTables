@@ -85,7 +85,6 @@ children:
         name: italicizeLabels
   - type: LayoutBox
     margin: large
-    fitToGrid: true
     children:
       - type: ActionButton
         name: saveDocx

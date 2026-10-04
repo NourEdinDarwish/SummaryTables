@@ -146,7 +146,6 @@ children:
       - type: ComboBox
         name: language
       - type: LayoutBox
-        fitToGrid: true
         children:
           - type: CheckBox
             name: boldLabels
@@ -171,7 +170,6 @@ children:
 
   - type: LayoutBox
     margin: large
-    fitToGrid: true
     children:
       - type: ActionButton
         name: saveDocx
