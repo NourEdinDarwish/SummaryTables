@@ -246,11 +246,12 @@ options:
     type: Bool
     default: false
 
-  - name: path
-    title: Path
-    type: String
-    default: ~/Desktop/Cross Table.docx
-
-  - name: export
-    title: Save
+  - name: saveDocx
+    title: Save as Word File
     type: Action
+    action: export
+
+  - name: openDocx
+    title: Open in Word
+    type: Action
+    action: openExternal

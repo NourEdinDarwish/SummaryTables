@@ -83,14 +83,17 @@ children:
         name: boldLabels
       - type: CheckBox
         name: italicizeLabels
-  - type: CollapseBox
-    label: Save to Word
-    collapsed: true
-    stretchFactor: 1
+  - type: LayoutBox
+    margin: large
+    fitToGrid: true
     children:
-      - type: TextBox
-        name: path
-        format: string
-        stretchFactor: 1
       - type: ActionButton
-        name: export
+        name: saveDocx
+        cell:
+          row: 0
+          column: 0
+      - type: ActionButton
+        name: openDocx
+        cell:
+          row: 0
+          column: 1

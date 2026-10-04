@@ -11,13 +11,13 @@ This guide highlights important notes, default behaviors, and specific options y
 
 A quick reference guide for choosing the right table based on your data and goals:
 
-* **Table 1 / Main Summary:** Use the **Summary Table** without adding a **Grouping Variable** for a general overview.
-* **Categorical Outcome:** Use the **Summary Table** with your outcome added to the **Grouping Variable**.
-* **Continuous Outcome:** Use the **Continuous Table**.
-* **Only Two Categorical Variables:** Use the **Cross Table** for a straightforward cross-tabulation.
-* **Likert Scale Data:** Use the **Likert Table**.
-* **Survival Analysis:** Use the **Survival Table** for Kaplan-Meier estimates and survival statistics.
-* **Regression Models:** Use **Univariable Regression** (fits a separate model for each variable) or **Multivariable Regression** (fits a single combined model).
+- **Table 1 / Main Summary:** Use the **Summary Table** without adding a **Grouping Variable** for a general overview.
+- **Categorical Outcome:** Use the **Summary Table** with your outcome added to the **Grouping Variable**.
+- **Continuous Outcome:** Use the **Continuous Table**.
+- **Only Two Categorical Variables:** Use the **Cross Table** for a straightforward cross-tabulation.
+- **Likert Scale Data:** Use the **Likert Table**.
+- **Survival Analysis:** Use the **Survival Table** for Kaplan-Meier estimates and survival statistics.
+- **Regression Models:** Use **Univariable Regression** (fits a separate model for each variable) or **Multivariable Regression** (fits a single combined model).
 
 ---
 
@@ -25,34 +25,37 @@ A quick reference guide for choosing the right table based on your data and goal
 
 ### Manual Run Mode
 
-By default, jamovi automatically runs an analysis every time you change a setting. Because SummaryTables does not cache or save any previous outputs, it must build the entire table from scratch on every single run. 
+By default, jamovi automatically runs an analysis every time you change a setting. Because SummaryTables does not cache or save any previous outputs, it must build the entire table from scratch on every single run.
 
 This creates a severe cumulative calculation overhead. Any individual action triggers a full run. For example, when using **Univariable Regression**:
 
-* If you drag and drop 10 variables *one by one*, jamovi triggers 10 separate runs. The 1st run fits 1 model to build the first table. When you add the second variable, it doesn't just add a model to the existing table; the old table is discarded, and it builds a new table from scratch by fitting the first model again *and* the new second model. The 3rd run fits 3 models from zero, and so on. By the time you add the 10th variable, the module has needlessly fitted a total of *55 models* (1+2+3+...+10).
-* The same applies to options: changing 5 different checkboxes one after another triggers 5 complete recalculations of the entire table.
+- If you drag and drop 10 variables _one by one_, jamovi triggers 10 separate runs. The 1st run fits 1 model to build the first table. When you add the second variable, it doesn't just add a model to the existing table; the old table is discarded, and it builds a new table from scratch by fitting the first model again _and_ the new second model. The 3rd run fits 3 models from zero, and so on. By the time you add the 10th variable, the module has needlessly fitted a total of _55 models_ (1+2+3+...+10).
+- The same applies to options: changing 5 different checkboxes one after another triggers 5 complete recalculations of the entire table.
 
-To prevent this snowballing delay, you can enable *Manual Run Mode*.
+To prevent this snowballing delay, you can enable _Manual Run Mode_.
 
 <figure markdown="span">
   ![Screenshot showing the Run manually option](assets/run-manually.png){ loading=lazy width="500" }
 </figure>
 
-Checking the **Run manually** option disables the auto-run behavior and activates the **Run** button. This allows you to add all 10 variables at once and set all your options without triggering any calculations. Once everything is set up, click **Run** to calculate the final table exactly once—fitting just the *10 models* you actually need. This saves a huge amount of time, especially for computationally heavy tables like regressions.
+Checking the **Run manually** option disables the auto-run behavior and activates the **Run** button. This allows you to add all 10 variables at once and set all your options without triggering any calculations. Once everything is set up, click **Run** to calculate the final table exactly once—fitting just the _10 models_ you actually need. This saves a huge amount of time, especially for computationally heavy tables like regressions.
 
-### Save to Word
+### Export to Word
 
-SummaryTables allows you to save any table directly as a `.docx` file for easy inclusion in manuscripts. To use this feature, simply type the complete folder location where you want to save the file, followed immediately by your desired file name ending in `.docx` into the **Path** text box, and then click the **Save** button. The module produces *native Word tables* and accurately *preserves the styling and formatting* of the table.
+SummaryTables allows you to save any table directly as a `.docx` file for easy inclusion in manuscripts. The module produces _native Word tables_ and accurately _preserves the styling and formatting_ of the table. Use the buttons below **Appearance**:
+
+- **Save as Word File** lets you choose the file name and location for the Word document.
+- **Open in Word** opens a temporary Word document so you can review the table or copy it into your manuscript. To keep the document, save it from Word. The document opens in Word or your default app for Word files.
 
 <figure markdown="span">
-  ![Screenshot showing the Save to Word option](assets/save-word.png){ loading=lazy width="500" }
+  ![Screenshot showing the Save as Word File and Open in Word buttons](assets/save-word.png){ loading=lazy width="500" }
 </figure>
 
-!!! warning "Overwriting Files"
-    When saving a table, if you type a filename that already exists in your chosen folder, the module will *silently overwrite the entire existing Word file* without a warning prompt. Please double-check your folder path and filename before clicking **Save** to avoid accidentally deleting an older document.
+!!! info "jamovi Cloud"
 
-!!! info "Cloud Limitation"
-    Please note that the "Save to Word" feature is *not available on the cloud version of jamovi* due to security limitations.
+    In jamovi Cloud, both buttons download a Word document.
+
+You can also use jamovi's standard methods: copy the table from the results panel and paste it into Word, or right-click the table or analysis, choose **Export** from the relevant menu, and select **Word Document (.docx)**. These methods are convenient, but some table formatting may be lost. The SummaryTables buttons preserve styling and formatting in native Word tables.
 
 ### Rounding
 
@@ -66,21 +69,21 @@ You can independently set the rounding rules for various elements in your tables
   ![The Decimal places selection dropdown showing Auto and fixed numerical options](assets/stats-digits.png){ loading=lazy width="500" }
 </figure>
 
-* **Auto (Default):** Typically uses adaptive decimal places, though certain themes may affect this behavior.
-* **Fixed (0-5, 16):** Uses a fixed number of decimal places.
+- **Auto (Default):** Typically uses adaptive decimal places, though certain themes may affect this behavior.
+- **Fixed (0-5, 16):** Uses a fixed number of decimal places.
 
 #### P-Values
 
-The p-value **Decimal places** dropdown controls the rounding of *large* p-values, while precision automatically increases as p-values get smaller.
+The p-value **Decimal places** dropdown controls the rounding of _large_ p-values, while precision automatically increases as p-values get smaller.
 
 <figure markdown="span">
   ![The large p-value decimal places selection dropdown showing Auto and numerical precision options](assets/pvalue-digits.png){ loading=lazy width="500" }
 </figure>
 
-* **Auto (Default):** Depends on the theme (the default theme uses **"1"**).
-* **1:** Large p-values are rounded to 1 decimal place. Precision automatically increases to 2, then 3 decimal places as values get smaller. Extremes are shown as `>0.9` and `<0.001`.
-* **2:** Large p-values are rounded to 2 decimal places. Precision automatically increases to 3 decimal places as values get smaller. Extremes are shown as `>0.99` and `<0.001`.
-* **3:** All p-values are rounded to 3 decimal places. Extremes are shown as `>0.999` and `<0.001`.
+- **Auto (Default):** Depends on the theme (the default theme uses **"1"**).
+- **1:** Large p-values are rounded to 1 decimal place. Precision automatically increases to 2, then 3 decimal places as values get smaller. Extremes are shown as `>0.9` and `<0.001`.
+- **2:** Large p-values are rounded to 2 decimal places. Precision automatically increases to 3 decimal places as values get smaller. Extremes are shown as `>0.99` and `<0.001`.
+- **3:** All p-values are rounded to 3 decimal places. Extremes are shown as `>0.999` and `<0.001`.
 
 ### Statistical Tests
 
@@ -92,10 +95,11 @@ The module automatically selects appropriate statistical tests based on your dat
   ![Screenshot showing the default test dropdown for continuous variables with parametric and non-parametric options](assets/default-test-continuous.png){ loading=lazy width="500" }
 </figure>
 
-* **Parametric (Default):** Uses the independent t-test (not assuming equal variances) for 2 groups, or one-way ANOVA (not assuming equal variances) for >2 groups.
-* **Non-parametric:** Uses the Wilcoxon rank-sum test for 2 groups, or Kruskal-Wallis rank-sum test for >2 groups.
+- **Parametric (Default):** Uses the independent t-test (not assuming equal variances) for 2 groups, or one-way ANOVA (not assuming equal variances) for >2 groups.
+- **Non-parametric:** Uses the Wilcoxon rank-sum test for 2 groups, or Kruskal-Wallis rank-sum test for >2 groups.
 
 !!! info "Grouping Variable in the Continuous Table"
+
     If you add a **Grouping Variable** in the **Continuous Table**, the module automatically calculates p-values using a two-way ANOVA. In this specific configuration, no other statistical tests can be applied.
 
 #### Categorical Variables
@@ -104,7 +108,7 @@ The module automatically selects appropriate statistical tests based on your dat
   ![Screenshot showing the default test dropdown for categorical variables with auto, chi-square, and fisher's exact test options](assets/default-test-categorical.png){ loading=lazy width="500" }
 </figure>
 
-* **Auto (Default):** Uses Pearson's Chi-square test (without continuity correction) if all expected cell counts are ≥ 5. It automatically falls back to Fisher's exact test if any expected cell count is < 5.
+- **Auto (Default):** Uses Pearson's Chi-square test (without continuity correction) if all expected cell counts are ≥ 5. It automatically falls back to Fisher's exact test if any expected cell count is < 5.
 
 #### Variable-Specific Tests
 
@@ -121,6 +125,7 @@ If you want specific tests for specific variables, you can manually select a dif
 ### Summary Table: Difference
 
 !!! info "SMD Method Calculation"
+
     When you select **SMD** as your **Difference** method, the values are calculated using the [`smd` R package](https://bsaul.github.io/smd/index.html).
 
     <figure markdown="span">
@@ -128,6 +133,7 @@ If you want specific tests for specific variables, you can manually select a dif
     </figure>
 
 !!! failure "Multiple P-Value Columns Error"
+
     If you select a **Difference** method that generates a p-value and you also check the **P-value** option under the general **P-value** section, an error will occur. The table cannot display multiple p-value columns simultaneously.
 
     <figure markdown="span">
@@ -138,8 +144,8 @@ If you want specific tests for specific variables, you can manually select a dif
 
 It is important to understand the fundamental difference in how **Univariable Regression** and **Multivariable Regression** tables are constructed:
 
-* **Univariable Regression:** Fits *one separate model per predictor*. If you add 5 variables to **Covariates** and **Factors**, the module will fit 5 distinct simple regression models (each predicting the dependent variable using just that one predictor) and combine the results into a single table.
-* **Multivariable Regression:** Fits *one single model containing all predictors*. If you add 5 variables to **Covariates** and **Factors**, the module will fit a single model where all 5 variables are included simultaneously, adjusting for each other.
+- **Univariable Regression:** Fits _one separate model per predictor_. If you add 5 variables to **Covariates** and **Factors**, the module will fit 5 distinct simple regression models (each predicting the dependent variable using just that one predictor) and combine the results into a single table.
+- **Multivariable Regression:** Fits _one single model containing all predictors_. If you add 5 variables to **Covariates** and **Factors**, the module will fit a single model where all 5 variables are included simultaneously, adjusting for each other.
 
 ### Regression Tables: Standardized Coefficients
 
@@ -150,6 +156,7 @@ For linear regression models, SummaryTables allows you to report standardized co
 </figure>
 
 !!! info "Difference from SPSS"
+
     If you are coming from SPSS, your results might look different because SPSS standardizes all variables, whereas we do not standardize **Factors**. We only standardize continuous variables (including **Covariates** and the **Dependent Variable**). This approach—which is also used by jamovi's default linear regression and GAMLj—is comparable to the "refit" method in the [`parameters` R package](https://easystats.github.io/parameters/reference/standardize_parameters.html#details).
 
 ### Survival and Cox Regression: Event Variable Coding
@@ -160,5 +167,5 @@ When using the **Survival Table** or **Cox Regression** analyses, the **Event** 
   ![jamovi interface showing the Event variable assignment and Event level selection](assets/event-variable-options.png){ loading=lazy width="500" }
 </figure>
 
-* **If continuous:** You can use either `0` and `1` (0 = censored, 1 = event) OR `1` and `2` (1 = censored, 2 = event). Any other numeric values will cause an error.
-* **If categorical:** You must select the specific level that represents the event from the **Event level** dropdown.
+- **If continuous:** You can use either `0` and `1` (0 = censored, 1 = event) OR `1` and `2` (1 = censored, 2 = event). Any other numeric values will cause an error.
+- **If categorical:** You must select the specific level that represents the event from the **Event level** dropdown.

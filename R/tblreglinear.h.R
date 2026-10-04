@@ -43,8 +43,8 @@ tblRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             qMethod = "BH",
             boldQ = FALSE,
             boldQThreshold = 0.05,
-            path = "~/Desktop/Multivariable Linear Regression.docx",
-            export = FALSE, ...) {
+            saveDocx = FALSE,
+            openDocx = FALSE, ...) {
 
             super$initialize(
                 package="SummaryTables",
@@ -267,13 +267,14 @@ tblRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                 min=0,
                 max=1,
                 default=0.05)
-            private$..path <- jmvcore::OptionString$new(
-                "path",
-                path,
-                default="~/Desktop/Multivariable Linear Regression.docx")
-            private$..export <- jmvcore::OptionAction$new(
-                "export",
-                export)
+            private$..saveDocx <- jmvcore::OptionAction$new(
+                "saveDocx",
+                saveDocx,
+                action="export")
+            private$..openDocx <- jmvcore::OptionAction$new(
+                "openDocx",
+                openDocx,
+                action="openExternal")
 
             self$.addOption(private$..dep)
             self$.addOption(private$..covs)
@@ -312,8 +313,8 @@ tblRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             self$.addOption(private$..qMethod)
             self$.addOption(private$..boldQ)
             self$.addOption(private$..boldQThreshold)
-            self$.addOption(private$..path)
-            self$.addOption(private$..export)
+            self$.addOption(private$..saveDocx)
+            self$.addOption(private$..openDocx)
         }),
     active = list(
         dep = function() private$..dep$value,
@@ -353,8 +354,8 @@ tblRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
         qMethod = function() private$..qMethod$value,
         boldQ = function() private$..boldQ$value,
         boldQThreshold = function() private$..boldQThreshold$value,
-        path = function() private$..path$value,
-        export = function() private$..export$value),
+        saveDocx = function() private$..saveDocx$value,
+        openDocx = function() private$..openDocx$value),
     private = list(
         ..dep = NA,
         ..covs = NA,
@@ -393,8 +394,8 @@ tblRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
         ..qMethod = NA,
         ..boldQ = NA,
         ..boldQThreshold = NA,
-        ..path = NA,
-        ..export = NA)
+        ..saveDocx = NA,
+        ..openDocx = NA)
 )
 
 tblRegLinearResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -414,7 +415,7 @@ tblRegLinearResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                 options=options,
                 name="status",
                 title="Generating Table\u2026",
-                visible="(manualRun == FALSE || run)",
+                visible="(manualRun == FALSE || run || saveDocx || openDocx)",
                 columns=list()))
             self$add(jmvcore::Html$new(
                 options=options,
@@ -485,8 +486,8 @@ tblRegLinearBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param qMethod .
 #' @param boldQ .
 #' @param boldQThreshold .
-#' @param path .
-#' @param export .
+#' @param saveDocx .
+#' @param openDocx .
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$status} \tab \tab \tab \tab \tab a table \cr
@@ -539,8 +540,8 @@ tblRegLinear <- function(
     qMethod = "BH",
     boldQ = FALSE,
     boldQThreshold = 0.05,
-    path = "~/Desktop/Multivariable Linear Regression.docx",
-    export = FALSE) {
+    saveDocx = FALSE,
+    openDocx = FALSE) {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
         stop("tblRegLinear requires jmvcore to be installed (restart may be required)")
@@ -596,8 +597,8 @@ tblRegLinear <- function(
         qMethod = qMethod,
         boldQ = boldQ,
         boldQThreshold = boldQThreshold,
-        path = path,
-        export = export)
+        saveDocx = saveDocx,
+        openDocx = openDocx)
 
     analysis <- tblRegLinearClass$new(
         options = options,

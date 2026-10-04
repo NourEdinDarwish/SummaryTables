@@ -21,8 +21,8 @@ tblLikertOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             language = "en",
             boldLabels = FALSE,
             italicizeLabels = FALSE,
-            path = "~/Desktop/Likert Table.docx",
-            export = FALSE, ...) {
+            saveDocx = FALSE,
+            openDocx = FALSE, ...) {
 
             super$initialize(
                 package="SummaryTables",
@@ -146,13 +146,14 @@ tblLikertOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 "italicizeLabels",
                 italicizeLabels,
                 default=FALSE)
-            private$..path <- jmvcore::OptionString$new(
-                "path",
-                path,
-                default="~/Desktop/Likert Table.docx")
-            private$..export <- jmvcore::OptionAction$new(
-                "export",
-                export)
+            private$..saveDocx <- jmvcore::OptionAction$new(
+                "saveDocx",
+                saveDocx,
+                action="export")
+            private$..openDocx <- jmvcore::OptionAction$new(
+                "openDocx",
+                openDocx,
+                action="openExternal")
 
             self$.addOption(private$..vars)
             self$.addOption(private$..manualRun)
@@ -169,8 +170,8 @@ tblLikertOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..language)
             self$.addOption(private$..boldLabels)
             self$.addOption(private$..italicizeLabels)
-            self$.addOption(private$..path)
-            self$.addOption(private$..export)
+            self$.addOption(private$..saveDocx)
+            self$.addOption(private$..openDocx)
         }),
     active = list(
         vars = function() private$..vars$value,
@@ -188,8 +189,8 @@ tblLikertOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         language = function() private$..language$value,
         boldLabels = function() private$..boldLabels$value,
         italicizeLabels = function() private$..italicizeLabels$value,
-        path = function() private$..path$value,
-        export = function() private$..export$value),
+        saveDocx = function() private$..saveDocx$value,
+        openDocx = function() private$..openDocx$value),
     private = list(
         ..vars = NA,
         ..manualRun = NA,
@@ -206,8 +207,8 @@ tblLikertOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..language = NA,
         ..boldLabels = NA,
         ..italicizeLabels = NA,
-        ..path = NA,
-        ..export = NA)
+        ..saveDocx = NA,
+        ..openDocx = NA)
 )
 
 tblLikertResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -227,7 +228,7 @@ tblLikertResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 options=options,
                 name="status",
                 title="Generating Table\u2026",
-                visible="(manualRun == FALSE || run)",
+                visible="(manualRun == FALSE || run || saveDocx || openDocx)",
                 columns=list()))
             self$add(jmvcore::Html$new(
                 options=options,
@@ -276,8 +277,8 @@ tblLikertBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param language .
 #' @param boldLabels .
 #' @param italicizeLabels .
-#' @param path .
-#' @param export .
+#' @param saveDocx .
+#' @param openDocx .
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$status} \tab \tab \tab \tab \tab a table \cr
@@ -308,8 +309,8 @@ tblLikert <- function(
     language = "en",
     boldLabels = FALSE,
     italicizeLabels = FALSE,
-    path = "~/Desktop/Likert Table.docx",
-    export = FALSE) {
+    saveDocx = FALSE,
+    openDocx = FALSE) {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
         stop("tblLikert requires jmvcore to be installed (restart may be required)")
@@ -338,8 +339,8 @@ tblLikert <- function(
         language = language,
         boldLabels = boldLabels,
         italicizeLabels = italicizeLabels,
-        path = path,
-        export = export)
+        saveDocx = saveDocx,
+        openDocx = openDocx)
 
     analysis <- tblLikertClass$new(
         options = options,

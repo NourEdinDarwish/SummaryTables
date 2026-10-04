@@ -160,6 +160,6 @@ datasets:
     path: Trial.omv
     description: A simulated dataset of 200 patients who received Drug A or Drug B.
 usesNative: true
-minApp: 2.7.12
+minApp: 28.7.0
 
 ...

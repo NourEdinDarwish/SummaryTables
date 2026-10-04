@@ -20,7 +20,12 @@ tblSummaryClass <- R6::R6Class(
     .run = function() {
       on.exit(self$results$status$setVisible(FALSE), add = TRUE)
       # Guard ---------------------------------------------------------------
-      if (self$options$manualRun && !self$options$run) {
+      if (
+        self$options$manualRun &&
+          !self$options$run &&
+          !self$options$saveDocx &&
+          !self$options$openDocx
+      ) {
         return()
       }
 
@@ -190,14 +195,10 @@ tblSummaryClass <- R6::R6Class(
       # Render and export ---------------------------------------------------
       renderHtml(table, self$results$tbl)
 
-      if (self$options$export) {
-        path <- resolveExportPath(self$options$path)
-        exportDocx(table, path, self$options, self$results)
-      }
+      exportDocx(table, self$options, "Summary Table.docx")
 
       # Notices -------------------------------------------------------------
       displayNotices(collector, self$options, self$results)
-
     }
   )
 )

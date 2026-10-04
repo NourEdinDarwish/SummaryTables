@@ -30,8 +30,8 @@ tblCrossOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             boldPvalue = FALSE,
             boldPvalueThreshold = 0.05,
             sourceNote = FALSE,
-            path = "~/Desktop/Cross Table.docx",
-            export = FALSE, ...) {
+            saveDocx = FALSE,
+            openDocx = FALSE, ...) {
 
             super$initialize(
                 package="SummaryTables",
@@ -203,13 +203,14 @@ tblCrossOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 "sourceNote",
                 sourceNote,
                 default=FALSE)
-            private$..path <- jmvcore::OptionString$new(
-                "path",
-                path,
-                default="~/Desktop/Cross Table.docx")
-            private$..export <- jmvcore::OptionAction$new(
-                "export",
-                export)
+            private$..saveDocx <- jmvcore::OptionAction$new(
+                "saveDocx",
+                saveDocx,
+                action="export")
+            private$..openDocx <- jmvcore::OptionAction$new(
+                "openDocx",
+                openDocx,
+                action="openExternal")
 
             self$.addOption(private$..row)
             self$.addOption(private$..col)
@@ -235,8 +236,8 @@ tblCrossOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..boldPvalue)
             self$.addOption(private$..boldPvalueThreshold)
             self$.addOption(private$..sourceNote)
-            self$.addOption(private$..path)
-            self$.addOption(private$..export)
+            self$.addOption(private$..saveDocx)
+            self$.addOption(private$..openDocx)
         }),
     active = list(
         row = function() private$..row$value,
@@ -263,8 +264,8 @@ tblCrossOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         boldPvalue = function() private$..boldPvalue$value,
         boldPvalueThreshold = function() private$..boldPvalueThreshold$value,
         sourceNote = function() private$..sourceNote$value,
-        path = function() private$..path$value,
-        export = function() private$..export$value),
+        saveDocx = function() private$..saveDocx$value,
+        openDocx = function() private$..openDocx$value),
     private = list(
         ..row = NA,
         ..col = NA,
@@ -290,8 +291,8 @@ tblCrossOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..boldPvalue = NA,
         ..boldPvalueThreshold = NA,
         ..sourceNote = NA,
-        ..path = NA,
-        ..export = NA)
+        ..saveDocx = NA,
+        ..openDocx = NA)
 )
 
 tblCrossResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
@@ -311,7 +312,7 @@ tblCrossResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 options=options,
                 name="status",
                 title="Generating Table\u2026",
-                visible="(manualRun == FALSE || run)",
+                visible="(manualRun == FALSE || run || saveDocx || openDocx)",
                 columns=list()))
             self$add(jmvcore::Html$new(
                 options=options,
@@ -369,8 +370,8 @@ tblCrossBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param boldPvalue .
 #' @param boldPvalueThreshold .
 #' @param sourceNote .
-#' @param path .
-#' @param export .
+#' @param saveDocx .
+#' @param openDocx .
 #' @return A results object containing:
 #' \tabular{llllll}{
 #'   \code{results$status} \tab \tab \tab \tab \tab a table \cr
@@ -410,8 +411,8 @@ tblCross <- function(
     boldPvalue = FALSE,
     boldPvalueThreshold = 0.05,
     sourceNote = FALSE,
-    path = "~/Desktop/Cross Table.docx",
-    export = FALSE) {
+    saveDocx = FALSE,
+    openDocx = FALSE) {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
         stop("tblCross requires jmvcore to be installed (restart may be required)")
@@ -452,8 +453,8 @@ tblCross <- function(
         boldPvalue = boldPvalue,
         boldPvalueThreshold = boldPvalueThreshold,
         sourceNote = sourceNote,
-        path = path,
-        export = export)
+        saveDocx = saveDocx,
+        openDocx = openDocx)
 
     analysis <- tblCrossClass$new(
         options = options,
