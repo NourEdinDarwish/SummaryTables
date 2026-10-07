@@ -33,6 +33,15 @@ setHtmlResult <- function(htmlContent, resultsHtml) {
     fixed = TRUE
   )
 
+  # Update note: jamovi 28.8.0 (commit 5ec9db87, issue #1850) adds
+  # min-width: min-content, so the default box can grow beyond 500px
+  # but does not shrink below it. Relying on this fix would require
+  # minApp: 28.8.0.
+  #
+  # We still keep the override below so table-like output fits its
+  # content, including shorter output without unused space, while
+  # preserving our current minApp.
+  #
   # Jamovi hardcodes .jmv-results-html { width: 500px }.
   # Override to max-content: this sizes to the table's intrinsic width and,
   # critically, does NOT change when the iframe viewport is resized by the
