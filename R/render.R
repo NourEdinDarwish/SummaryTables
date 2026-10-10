@@ -33,28 +33,32 @@ setHtmlResult <- function(htmlContent, resultsHtml) {
     fixed = TRUE
   )
 
-  # Update note: jamovi 28.8.0 (commit 5ec9db87, issue #1850) adds
-  # min-width: min-content, so the default box can grow beyond 500px
-  # but does not shrink below it. Relying on this fix would require
-  # minApp: 28.8.0.
-  #
-  # We still keep the override below so table-like output fits its
+  # jamovi gives Html results a default width of 500px.
+  # jamovi 28.8.0 (commit 5ec9db87, issue #1850) adds min-width: min-content,
+  # allowing wider output to expand beyond 500px, while shorter output
+  # still retains the default 500px width. Relying on this change would
+  # require minApp: 28.8.0.
+  # We keep our scoped max-content override so table-like output fits its
   # content, including shorter output without unused space, while
-  # preserving our current minApp.
+  # preserving our minApp of 28.7.0.
   #
-  # Jamovi hardcodes .jmv-results-html { width: 500px }.
   # Override to max-content: this sizes to the table's intrinsic width and,
   # critically, does NOT change when the iframe viewport is resized by the
   # parent. This breaks the feedback loop where:
   #   content renders → ERDM fires → parent resizes iframe → viewport
   #   changes → content re-layouts → ERDM fires again (= stretching).
   # max-content is viewport-independent, so only ONE resize event fires.
+  #
+  # Our width override makes the result fit its content in jamovi, but
+  # this sizing does not carry over to HTML/PDF exports because they omit
+  # jamovi's outer container. To preserve the same sizing in exports,
+  # we give our existing summaryTable wrapper width: max-content.
   resultsHtml$setContent(
     paste0(
       "<style>
-        .jmv-results-html:has(.summaryTable) { width: max-content !important; }
+        .jmv-results-html:has(.summaryTable) { width: max-content; }
       </style>
-      <div class='summaryTable'>",
+      <div class='summaryTable' style='width: max-content;'>",
       htmlContent,
       "</div>"
     )
