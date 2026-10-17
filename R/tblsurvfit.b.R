@@ -40,10 +40,10 @@ tblSurvfitClass <- R6::R6Class(
 
       tryCatch(
         {
-          # Collector -----------------------------------------------------------
+          # Collector ----------------------------------------------------------
           collector <- newCollector()
 
-          # Theme ---------------------------------------------------------------
+          # Theme --------------------------------------------------------------
           on.exit(gtsummary::reset_gtsummary_theme(), add = TRUE)
           applyTheme(
             journalOption = self$options$journal,
@@ -51,7 +51,7 @@ tblSurvfitClass <- R6::R6Class(
             compactOption = self$options$compact
           )
 
-          # Data prep -----------------------------------------------------------
+          # Data prep ----------------------------------------------------------
           data <- self$data
 
           if (is.numeric(data[[event]])) {
@@ -78,7 +78,7 @@ tblSurvfitClass <- R6::R6Class(
             character(0)
           }
 
-          # Parse times / probs -------------------------------------------------
+          # Parse times / probs ------------------------------------------------
           if (self$options$statistic == "times") {
             timesVec <- parseCommaNumeric(self$options$times)
             probsVec <- NULL
@@ -87,7 +87,7 @@ tblSurvfitClass <- R6::R6Class(
             timesVec <- NULL
           }
 
-          # Build survfit objects -----------------------------------------------
+          # Build survfit objects ----------------------------------------------
           confInt <- self$options$confLevel / 100
 
           fits <- runSafe(
@@ -101,7 +101,7 @@ tblSurvfitClass <- R6::R6Class(
             collector
           )
 
-          # Build arguments -----------------------------------------------------
+          # Build arguments ----------------------------------------------------
           estimateFun <- NULL
 
           # Rounding Numbers
@@ -150,7 +150,7 @@ tblSurvfitClass <- R6::R6Class(
           )
           tblArgs$label_header <- headers$label_header
 
-          # Core table ----------------------------------------------------------
+          # Core table ---------------------------------------------------------
           table <- runSafe(
             do.call(gtsummary::tbl_survfit, tblArgs),
             collector
@@ -178,7 +178,7 @@ tblSurvfitClass <- R6::R6Class(
             collector
           )
 
-          # Pipeline ------------------------------------------------------------
+          # Pipeline -----------------------------------------------------------
           if (self$options$addN) {
             table <- runSafe(gtsummary::add_n(table), collector)
           }
@@ -203,19 +203,19 @@ tblSurvfitClass <- R6::R6Class(
             collector = collector
           )
 
-          # Text formatting -----------------------------------------------------
+          # Text formatting ----------------------------------------------------
           table <- applyTextFormatting(
             table,
             hasPvalue = hasPvalue,
             options = self$options
           )
 
-          # Render and export ---------------------------------------------------
+          # Render and export --------------------------------------------------
           renderHtml(table, self$results$tbl)
 
           exportDocx(table, self$options, "Survival Table.docx")
 
-          # Notices -------------------------------------------------------------
+          # Notices ------------------------------------------------------------
           displayNotices(collector, self$options, self$results, b64Map)
         },
         error = function(e) decodeB64Error(e, b64Map)

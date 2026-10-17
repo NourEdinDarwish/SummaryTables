@@ -150,7 +150,9 @@ lmStd <- function(formula, data, ...) {
   #   3. Refits the model on the standardized complete-case data.
   #
   # Previously we used:
-  #   datawizard::standardize(data, select = select_vars, remove_na = "selected")
+  #   datawizard::standardize(
+  #     data, select = select_vars, remove_na = "selected"
+  #   )
   # This had a bug: with force = FALSE (default), datawizard internally
   # excludes factor columns from the "selected" set, so remove_na = "selected"
   # only checked numeric columns for NAs. Rows with NA in a factor (but not

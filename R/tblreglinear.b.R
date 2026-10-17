@@ -39,10 +39,10 @@ tblRegLinearClass <- R6::R6Class(
 
       tryCatch(
         {
-          # Collector -----------------------------------------------------------
+          # Collector ----------------------------------------------------------
           collector <- newCollector()
 
-          # Theme ---------------------------------------------------------------
+          # Theme --------------------------------------------------------------
           on.exit(gtsummary::reset_gtsummary_theme(), add = TRUE)
           applyTheme(
             journalOption = self$options$journal,
@@ -50,7 +50,7 @@ tblRegLinearClass <- R6::R6Class(
             compactOption = self$options$compact
           )
 
-          # Data prep -----------------------------------------------------------
+          # Data prep ----------------------------------------------------------
           data <- self$data
           data[[dep]] <- jmvcore::toNumeric(data[[dep]])
 
@@ -69,7 +69,7 @@ tblRegLinearClass <- R6::R6Class(
           data <- encodeB64(data)
           depB64 <- jmvcore::toB64(dep)
 
-          # Formula and model ---------------------------------------------------
+          # Formula and model --------------------------------------------------
           termsB64 <- lapply(terms, jmvcore::toB64)
           formula <- buildFormula(depB64, termsB64)
 
@@ -109,16 +109,16 @@ tblRegLinearClass <- R6::R6Class(
 
           model <- runSafe(stats::lm(formula, data = data), collector)
 
-          # Regression table ----------------------------------------------------
+          # Regression table ---------------------------------------------------
           table <- runSafe(
             buildMultiRegTable(model, self$options, b64Map),
             collector
           )
 
-          # Change header -------------------------------------------------------
+          # Change header ------------------------------------------------------
           table <- pipeOverrideEstimateHeader(table, self$options)
 
-          # Pipeline ------------------------------------------------------------
+          # Pipeline -----------------------------------------------------------
           table <- pipeAddGlobalP(
             table,
             options = self$options,
@@ -161,14 +161,14 @@ tblRegLinearClass <- R6::R6Class(
             collector = collector
           )
 
-          # Text formatting -----------------------------------------------------
+          # Text formatting ----------------------------------------------------
           table <- applyTextFormatting(
             table,
             hasPvalue = TRUE,
             options = self$options
           )
 
-          # Render and export ---------------------------------------------------
+          # Render and export --------------------------------------------------
           renderHtml(table, self$results$tbl)
 
           exportDocx(
@@ -177,7 +177,7 @@ tblRegLinearClass <- R6::R6Class(
             "Multivariable Linear Regression.docx"
           )
 
-          # Notices -------------------------------------------------------------
+          # Notices ------------------------------------------------------------
           displayNotices(collector, self$options, self$results, b64Map)
         },
         error = function(e) decodeB64Error(e, b64Map)

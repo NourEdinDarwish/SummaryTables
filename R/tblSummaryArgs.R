@@ -102,7 +102,11 @@ buildStatArgs <- function(varsCont, varsCat, options, themeStrings) {
   )
 
   # Default continuous and categorical statistics
+  # defaultContinuousStat and defaultCategoricalStat are used in the
+  # formulas below, but codetools misses those references.
+  # nolint next: object_usage_linter.
   defaultContinuousStat <- statStrings$continuous[[options$statContDefault]]
+  # nolint next: object_usage_linter.
   defaultCategoricalStat <- statStrings$categorical[[options$statCatDefault]]
 
   statisticArguments <- list(
@@ -158,6 +162,8 @@ buildDigitsArgs <- function(options) {
       gtsummary::all_continuous() ~ as.numeric(options$digitsCont)
     )
   } else if (customPctDigits) {
+    # Used in the formulas below; codetools misses formula references.
+    # nolint next: object_usage_linter.
     d <- as.numeric(options$digitsCatPct)
     list(
       gtsummary::all_continuous() ~ list(p_miss = d),

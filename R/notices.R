@@ -36,7 +36,8 @@ runSafe <- function(expr, collector) {
     message = function(m) {
       msg <- conditionMessage(m)
       msg <- gsub("were returned during :", "occurred:", msg, fixed = TRUE)
-      # Package startup output is dependency-loading noise, not analysis feedback.
+      # Package startup output is dependency-loading noise,
+      # not analysis feedback.
       if (!inherits(m, "packageStartupMessage")) {
         collector$messages <- c(collector$messages, trimws(msg))
       }

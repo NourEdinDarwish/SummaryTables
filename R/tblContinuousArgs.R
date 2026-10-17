@@ -99,6 +99,8 @@ buildStatArgsCont <- function(varsCat, options, themeStrings) {
     median = "{median}"
   )
 
+  # Used in the formula below; codetools misses formula references.
+  # nolint next: object_usage_linter.
   defaultStat <- statStrings[[options$statDefault]]
 
   statisticArguments <- list(~defaultStat)

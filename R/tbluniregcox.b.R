@@ -51,10 +51,10 @@ tblUniRegCoxClass <- R6::R6Class(
 
       tryCatch(
         {
-          # Collector -----------------------------------------------------------
+          # Collector ----------------------------------------------------------
           collector <- newCollector()
 
-          # Theme ---------------------------------------------------------------
+          # Theme --------------------------------------------------------------
           on.exit(gtsummary::reset_gtsummary_theme(), add = TRUE)
           applyTheme(
             journalOption = self$options$journal,
@@ -62,7 +62,7 @@ tblUniRegCoxClass <- R6::R6Class(
             compactOption = self$options$compact
           )
 
-          # Data prep -----------------------------------------------------------
+          # Data prep ----------------------------------------------------------
           data <- self$data
 
           # Convert event variable to 0/1 numeric
@@ -86,7 +86,7 @@ tblUniRegCoxClass <- R6::R6Class(
           elapsedB64 <- jmvcore::toB64(elapsed)
           eventB64 <- jmvcore::toB64(event)
 
-          # Regression table ----------------------------------------------------
+          # Regression table ---------------------------------------------------
           survY <- str2lang(sprintf(
             "survival::Surv(%s, %s)",
             elapsedB64,
@@ -104,7 +104,7 @@ tblUniRegCoxClass <- R6::R6Class(
             collector
           )
 
-          # Pipeline ------------------------------------------------------------
+          # Pipeline -----------------------------------------------------------
           table <- pipeAddGlobalP(
             table,
             options = self$options,
@@ -142,19 +142,19 @@ tblUniRegCoxClass <- R6::R6Class(
             options = self$options
           )
 
-          # Text formatting -----------------------------------------------------
+          # Text formatting ----------------------------------------------------
           table <- applyTextFormatting(
             table,
             hasPvalue = TRUE,
             options = self$options
           )
 
-          # Render and export ---------------------------------------------------
+          # Render and export --------------------------------------------------
           renderHtml(table, self$results$tbl)
 
           exportDocx(table, self$options, "Univariable Cox Regression.docx")
 
-          # Notices -------------------------------------------------------------
+          # Notices ------------------------------------------------------------
           displayNotices(collector, self$options, self$results, b64Map)
         },
         error = function(e) decodeB64Error(e, b64Map)

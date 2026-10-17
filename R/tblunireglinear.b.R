@@ -41,10 +41,10 @@ tblUniRegLinearClass <- R6::R6Class(
 
       tryCatch(
         {
-          # Collector -----------------------------------------------------------
+          # Collector ----------------------------------------------------------
           collector <- newCollector()
 
-          # Theme ---------------------------------------------------------------
+          # Theme --------------------------------------------------------------
           on.exit(gtsummary::reset_gtsummary_theme(), add = TRUE)
           applyTheme(
             journalOption = self$options$journal,
@@ -52,7 +52,7 @@ tblUniRegLinearClass <- R6::R6Class(
             compactOption = self$options$compact
           )
 
-          # Data prep -----------------------------------------------------------
+          # Data prep ----------------------------------------------------------
           data <- self$data
           data[[dep]] <- jmvcore::toNumeric(data[[dep]])
           data[covs] <- lapply(data[covs], jmvcore::toNumeric)
@@ -62,7 +62,7 @@ tblUniRegLinearClass <- R6::R6Class(
           data <- encodeB64(data)
           depB64 <- jmvcore::toB64(dep)
 
-          # Regression table ----------------------------------------------------
+          # Regression table ---------------------------------------------------
           method <- if (self$options$standardize) lmStd else stats::lm
           table <- runSafe(
             buildUniRegTable(
@@ -75,10 +75,10 @@ tblUniRegLinearClass <- R6::R6Class(
             collector
           )
 
-          # Change header -------------------------------------------------------
+          # Change header ------------------------------------------------------
           table <- pipeOverrideEstimateHeader(table, self$options)
 
-          # Pipeline ------------------------------------------------------------
+          # Pipeline -----------------------------------------------------------
           table <- pipeAddGlobalP(
             table,
             options = self$options,
@@ -109,19 +109,19 @@ tblUniRegLinearClass <- R6::R6Class(
             options = self$options
           )
 
-          # Text formatting -----------------------------------------------------
+          # Text formatting ----------------------------------------------------
           table <- applyTextFormatting(
             table,
             hasPvalue = TRUE,
             options = self$options
           )
 
-          # Render and export ---------------------------------------------------
+          # Render and export --------------------------------------------------
           renderHtml(table, self$results$tbl)
 
           exportDocx(table, self$options, "Univariable Linear Regression.docx")
 
-          # Notices -------------------------------------------------------------
+          # Notices ------------------------------------------------------------
           displayNotices(collector, self$options, self$results, b64Map)
         },
         error = function(e) decodeB64Error(e, b64Map)

@@ -41,10 +41,10 @@ tblRegCoxClass <- R6::R6Class(
 
       tryCatch(
         {
-          # Collector -----------------------------------------------------------
+          # Collector ----------------------------------------------------------
           collector <- newCollector()
 
-          # Theme ---------------------------------------------------------------
+          # Theme --------------------------------------------------------------
           on.exit(gtsummary::reset_gtsummary_theme(), add = TRUE)
           applyTheme(
             journalOption = self$options$journal,
@@ -52,7 +52,7 @@ tblRegCoxClass <- R6::R6Class(
             compactOption = self$options$compact
           )
 
-          # Data prep -----------------------------------------------------------
+          # Data prep ----------------------------------------------------------
           data <- self$data
 
           # Convert event variable to 0/1 numeric
@@ -84,7 +84,7 @@ tblRegCoxClass <- R6::R6Class(
           elapsedB64 <- jmvcore::toB64(elapsed)
           eventB64 <- jmvcore::toB64(event)
 
-          # Formula and model ---------------------------------------------------
+          # Formula and model --------------------------------------------------
           survLHS <- sprintf(
             "survival::Surv(%s, %s)",
             elapsedB64,
@@ -97,13 +97,13 @@ tblRegCoxClass <- R6::R6Class(
             collector
           )
 
-          # Regression table ----------------------------------------------------
+          # Regression table ---------------------------------------------------
           table <- runSafe(
             buildMultiRegTable(model, self$options, b64Map),
             collector
           )
 
-          # Pipeline ------------------------------------------------------------
+          # Pipeline -----------------------------------------------------------
           table <- pipeAddGlobalP(
             table,
             options = self$options,
@@ -153,19 +153,19 @@ tblRegCoxClass <- R6::R6Class(
             collector = collector
           )
 
-          # Text formatting -----------------------------------------------------
+          # Text formatting ----------------------------------------------------
           table <- applyTextFormatting(
             table,
             hasPvalue = TRUE,
             options = self$options
           )
 
-          # Render and export ---------------------------------------------------
+          # Render and export --------------------------------------------------
           renderHtml(table, self$results$tbl)
 
           exportDocx(table, self$options, "Multivariable Cox Regression.docx")
 
-          # Notices -------------------------------------------------------------
+          # Notices ------------------------------------------------------------
           displayNotices(collector, self$options, self$results, b64Map)
         },
         error = function(e) decodeB64Error(e, b64Map)
