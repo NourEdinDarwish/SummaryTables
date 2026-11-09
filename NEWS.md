@@ -1,95 +1,105 @@
+## SummaryTables 1.4.0
+
+- Improved Word export across all analyses with buttons to save tables to a chosen location or open them directly in Word, replacing manual file path entry.
+- SummaryTables is now available on jamovi Cloud.
+- Added a warning clarifying that Standard Errors (SE) are on the unexponentiated scale when displayed alongside Odds Ratios or Hazard Ratios.
+- Fixed an issue where exporting to Word did not work when Manual Run mode was enabled.
+- Fixed an issue where copying tables from jamovi into LibreOffice resulted in a green table background.
+- Fixed table width sizing in HTML and PDF exports.
+- General bug-fixes and improvements.
+
 ## SummaryTables 1.3.3
 
-* Added the Trial dataset to jamovi's Data Library.
-* Improved variable selection in Cross Table and Likert Table.
-* Fixed an issue with Confidence Interval (CI) formatting.
-* Improved statistical test labels.
-* General bug-fixes and improvements.
+- Added the Trial dataset to jamovi's Data Library.
+- Improved variable selection in Cross Table and Likert Table.
+- Fixed an issue with Confidence Interval (CI) formatting.
+- Improved statistical test labels.
+- General bug-fixes and improvements.
 
 ## SummaryTables 1.3.2
 
-* Added the missing "CI = Confidence Interval" abbreviation source note to Survival Tables.
-* Fixed formatting issues with column headers and unnecessary abbreviation source notes in Regression Tables when applying specific Journal Themes.
-* Fixed translation bugs where Confidence Interval (CI) texts were being overridden by English text.
-* General bug-fixes and improvements.
+- Added the missing "CI = Confidence Interval" abbreviation source note to Survival Tables.
+- Fixed formatting issues with column headers and unnecessary abbreviation source notes in Regression Tables when applying specific Journal Themes.
+- Fixed translation bugs where Confidence Interval (CI) texts were being overridden by English text.
+- General bug-fixes and improvements.
 
 ## SummaryTables 1.3.1
 
-* Improved the message shown when required variables are missing.
+- Improved the message shown when required variables are missing.
 
 ## SummaryTables 1.3.0
 
-* Added Standardized Coefficients for Linear Regression analyses (both Univariable and Multivariable).
-* Added a rounding option for 16 decimal places across all analyses.
-* Enhanced UI labels.
-* General bug-fixes and improvements.
+- Added Standardized Coefficients for Linear Regression analyses (both Univariable and Multivariable).
+- Added a rounding option for 16 decimal places across all analyses.
+- Enhanced UI labels.
+- General bug-fixes and improvements.
 
 ## SummaryTables 1.2.1
 
-* Fixed an issue that caused an error when customizing the number of decimal places in the Continuous Table.
+- Fixed an issue that caused an error when customizing the number of decimal places in the Continuous Table.
 
 ## SummaryTables 1.2.0
 
-* Regression and Survival analyses now fully support any variable name, including those with spaces or special characters.
-* Added a helpful error message when attempting to use polynomial terms on categorical variables.
-* General bug-fixes and improvements.
+- Regression and Survival analyses now fully support any variable name, including those with spaces or special characters.
+- Added a helpful error message when attempting to use polynomial terms on categorical variables.
+- General bug-fixes and improvements.
 
 ## SummaryTables 1.1.1
 
-* General bug-fixes and improvements.
+- General bug-fixes and improvements.
 
 ## SummaryTables 1.1.0
 
-* Added Manual Run mode across all analyses.
-* General bug-fixes and improvements.
+- Added Manual Run mode across all analyses.
+- General bug-fixes and improvements.
 
 ## SummaryTables 1.0.2
 
-* Replaced the module's help sections with a direct link to the official documentation website.
+- Replaced the module's help sections with a direct link to the official documentation website.
 
 ## SummaryTables 1.0.1
 
-* Improved the readability of error and warning messages.
+- Improved the readability of error and warning messages.
 
 ## SummaryTables 1.0.0
 
-* **New Analysis:** Added Kaplan-Meier Survival Table.
-* Fixed formatting artifacts when exporting tables to Word.
-* Improved UI layout consistency across all analyses.
-* Added validation checks to ensure survival variables are coded correctly.
-* General bug-fixes and improvements.
+- **New Analysis:** Added Kaplan-Meier Survival Table.
+- Fixed formatting artifacts when exporting tables to Word.
+- Improved UI layout consistency across all analyses.
+- Added validation checks to ensure survival variables are coded correctly.
+- General bug-fixes and improvements.
 
 ## SummaryTables 0.9.0
 
-* **New Analyses:** Added Multivariable and Univariable Cox proportional hazards regression.
-* General bug-fixes and improvements.
+- **New Analyses:** Added Multivariable and Univariable Cox proportional hazards regression.
+- General bug-fixes and improvements.
 
 ## SummaryTables 0.8.0
 
-* Added an option to merge Confidence Interval (CI) columns into a single column.
-* Added an option to display individual p-values alongside global p-values.
-* Improved UI logic to prevent conflicts between p-values and significance stars.
-* General bug-fixes and improvements.
+- Added an option to merge Confidence Interval (CI) columns into a single column.
+- Added an option to display individual p-values alongside global p-values.
+- Improved UI logic to prevent conflicts between p-values and significance stars.
+- General bug-fixes and improvements.
 
 ## SummaryTables 0.7.1
 
-* Fixed an issue that caused errors when calculating Variance Inflation Factor (VIF) for variables with spaces in their names.
+- Fixed an issue that caused errors when calculating Variance Inflation Factor (VIF) for variables with spaces in their names.
 
 ## SummaryTables 0.7.0
 
-* **New Analyses:** Added Linear and Logistic Regression (both Univariable and Multivariable).
-* General bug-fixes and improvements.
+- **New Analyses:** Added Linear and Logistic Regression (both Univariable and Multivariable).
+- General bug-fixes and improvements.
 
 ## SummaryTables 0.3.2
 
-* Added a loading spinner indicator to show when tables are computing.
+- Added a loading spinner indicator to show when tables are computing.
 
 ## SummaryTables 0.3.1
 
-* Added helpful instructions when a table is empty.
-* Made table backgrounds transparent for better visual integration in jamovi.
+- Added helpful instructions when a table is empty.
+- Made table backgrounds transparent for better visual integration in jamovi.
 
 ## SummaryTables 0.3.0
 
-* Initial release of the SummaryTables module for jamovi.
-* **New Analyses:** Added Summary Table (Table 1), Continuous Table, Cross Table, and Likert Table.
+- Initial release of the SummaryTables module for jamovi.
+- **New Analyses:** Added Summary Table (Table 1), Continuous Table, Cross Table, and Likert Table.

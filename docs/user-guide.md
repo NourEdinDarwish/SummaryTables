@@ -44,8 +44,8 @@ Checking the **Run manually** option disables the auto-run behavior and activate
 
 SummaryTables allows you to save any table directly as a `.docx` file for easy inclusion in manuscripts. The module produces _native Word tables_ and accurately _preserves the styling and formatting_ of the table. Use the buttons below **Appearance**:
 
-- **Save as Word File** lets you choose the file name and location for the Word document.
-- **Open in Word** opens a temporary Word document so you can review the table or copy it into your manuscript. To keep the document, save it from Word. The document opens in Word or your default app for Word files.
+- **Save as Word File:** Lets you choose the file name and location for the Word document.
+- **Open in Word:** Opens a temporary Word document so you can review the table or copy it into your manuscript. To keep the document, save it from Word. The document opens in Word or your default app for Word files.
 
 <figure markdown="span">
   ![Screenshot showing the Save as Word File and Open in Word buttons](assets/save-word.png){ loading=lazy width="500" }
