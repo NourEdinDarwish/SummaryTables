@@ -33,12 +33,12 @@ repo_name = "NourEdinDarwish/SummaryTables"
 repo_url = "https://github.com/NourEdinDarwish/SummaryTables"
 
 # The copyright notice appears in the page footer and can contain an HTML
-# fragment.
+# fragment. Uncomment the setting below to show the notice again.
 #
 # Read more: https://zensical.org/docs/setup/basics/#copyright
-copyright = """
-Copyright &copy; 2026 The authors
-"""
+# copyright = """
+# Copyright &copy; 2026 The authors
+# """
 
 # Zensical supports both implicit navigation and explicitly defined navigation.
 # If you decide not to define a navigation here then Zensical will simply
@@ -311,6 +311,9 @@ toggle.name = "Switch to system preference"
 # ----------------------------------------------------------------------------
 # The "extra" section contains miscellaneous settings.
 # ----------------------------------------------------------------------------
+[project.extra]
+generator = false
+
 [[project.extra.social]]
 icon = "fontawesome/brands/github"
 link = "https://github.com/NourEdinDarwish/SummaryTables"
