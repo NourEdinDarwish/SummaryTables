@@ -79,59 +79,61 @@ decodeB64Error <- function(err, b64Map) {
 }
 
 
-# fixPolynomialLabels -------------------------------------------------------
+# labelModelFrame -----------------------------------------------------------
 
-#' Fix labels for polynomial terms in a gtsummary table
+#' Set display labels on saved model-frame columns
 #'
-#' Detects `I(b64name^N)` patterns in the `variable` column of
-#' `table_body` and locates the translated name inside the existing label
-#' to append a Unicode superscript digit (e.g. `"Patient Age"` becomes
-#' `"Patient Age\u00B2"`). This safely preserves gtsummary's native
-#' interaction formatting (e.g. `*`).
+#' Gives B64-encoded predictor columns their input variable names as labels
+#' and polynomial columns labels with superscript powers. gtsummary uses
+#' these labels when building the regression table, including interactions.
 #'
-#' @param tbl A gtsummary table object
+#' @param model A fitted model with a saved `model$model` frame
 #' @param b64Map Named character vector from `buildB64Map()`
-#' @return The table with corrected polynomial labels
-fixPolynomialLabels <- function(tbl, b64Map) {
-  gtsummary::modify_table_body(tbl, function(body) {
-    for (i in seq_len(nrow(body))) {
-      var <- body$variable[i]
+#' @return The model with labels on its saved model-frame columns
+labelModelFrame <- function(model, b64Map) {
+  # encodeB64() gives input columns safe B64 names and stores their original
+  # names as labels. Multivariable tables reapply those labels here after
+  # fitting, but univariable regression and survival tables still rely on
+  # the labels supplied by encodeB64(). Keep its encoding and labeling
+  # together: the small overlap here does not justify splitting that helper.
+  #
+  # model$model is the saved data frame used to fit the model. Restore its
+  # ordinary labels because newer survival versions can drop them.
+  # It also contains transformed columns such as I(age^2), including those
+  # used only in interactions. Give these columns labels such as "Age²"
+  # and let gtsummary build the interaction and factor-level labels.
+  #
+  # Previously, fixPolynomialLabels() replaced names in the finished table.
+  # Replacing "Age" with "Age²" also changed "Age Group" to "Age² Group".
+  # Labeling model-frame columns avoids changing unrelated names or levels.
+  superscriptDigits <- c(
+    "\u2070",
+    "\u00B9",
+    "\u00B2",
+    "\u00B3",
+    "\u2074",
+    "\u2075",
+    "\u2076",
+    "\u2077",
+    "\u2078",
+    "\u2079"
+  )
 
-      # Extract ALL polynomial terms from the variable string natively
-      # gregexpr finds all matches of I(something^digits)
-      m <- regmatches(var, gregexpr("I\\([^\\^]+\\^\\d+\\)", var))[[1]]
-
-      if (length(m) > 0) {
-        newLabel <- body$label[i]
-        newVarLabel <- body$var_label[i]
-
-        for (term in m) {
-          # term is exactly "I(b64Name^power)". Strip "I(" and ")"
-          clean_term <- substr(term, 3, nchar(term) - 1)
-
-          # Split at the "^" symbol
-          parts <- strsplit(clean_term, "^", fixed = TRUE)[[1]]
-
-          b64Name <- parts[1]
-          power <- parts[2]
-
-          origName <- b64Map[[b64Name]]
-          superscript <- chartr(
-            "0123456789",
-            "\u2070\u00B9\u00B2\u00B3\u2074\u2075\u2076\u2077\u2078\u2079",
-            power
-          )
-
-          # Safely inject the superscript into the existing labels independently
-          replacement <- paste0(origName, superscript)
-          newLabel <- gsub(origName, replacement, newLabel, fixed = TRUE)
-          newVarLabel <- gsub(origName, replacement, newVarLabel, fixed = TRUE)
-        }
-
-        body$label[i] <- newLabel
-        body$var_label[i] <- newVarLabel
-      }
+  for (columnName in names(model$model)) {
+    if (columnName %in% names(b64Map)) {
+      label <- b64Map[[columnName]]
+    } else if (grepl("^I\\([^\\^]+\\^\\d+\\)$", columnName)) {
+      # Extract b64Name^power from I(b64Name^power), then split name and power.
+      innerExpression <- substr(columnName, 3, nchar(columnName) - 1)
+      parts <- strsplit(innerExpression, "^", fixed = TRUE)[[1]]
+      digits <- as.integer(strsplit(parts[2], "", fixed = TRUE)[[1]])
+      superscript <- paste0(superscriptDigits[digits + 1L], collapse = "")
+      label <- paste0(b64Map[[parts[1]]], superscript)
+    } else {
+      next
     }
-    body
-  })
+    attr(model$model[[columnName]], "label") <- label
+  }
+
+  model
 }

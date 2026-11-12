@@ -53,14 +53,14 @@ buildFormula <- function(y, terms) {
 #'
 #' Constructs tbl_regression() arguments from jamovi options and returns the
 #' table directly. Expects a model fitted with B64-encoded column names;
-#' labels on the data columns drive the display names in the table.
+#' labels on the saved model-frame columns drive display names in the table.
 #'
 #' @param model A fitted model object (lm, glm, etc.)
 #' @param options Jamovi options object
 #' @param b64Map Named character vector from `buildB64Map()` (B64 → original)
 #' @return A tbl_regression object
 buildMultiRegTable <- function(model, options, b64Map) {
-  args <- list(x = model)
+  args <- list(x = labelModelFrame(model, b64Map))
 
   # Main Goal: Preserve the user's UI term row order in the gtsummary table. By
   # default, R's lm/glm forces all interaction terms to the very bottom of the
@@ -119,12 +119,7 @@ buildMultiRegTable <- function(model, options, b64Map) {
     )
   }
 
-  tbl <- do.call(gtsummary::tbl_regression, args)
-
-  # Fix I(b64^N) polynomial labels → "Original Name²" etc.
-  tbl <- fixPolynomialLabels(tbl, b64Map)
-
-  tbl
+  do.call(gtsummary::tbl_regression, args)
 }
 
 

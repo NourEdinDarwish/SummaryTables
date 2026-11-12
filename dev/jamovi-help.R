@@ -10,6 +10,5 @@ usethis::use_tidy_description()
 devtools::load_all()
 devtools::document()
 
-
 # Release to github
-usethis::use_github_release()
+# usethis::use_github_release()
