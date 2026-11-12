@@ -125,6 +125,19 @@ tblSummaryClass <- R6::R6Class(
         collector
       )
 
+      # Overall -------------------------------------------------------------
+      # Run pipeAddOverall() before the IQR label patch, which changes
+      # "Median (Q1 – Q3)" to "Median (IQR)" for journal themes.
+      # Otherwise, gtsummary::add_overall() finds different row labels in the
+      # existing and newly calculated overall tables and stops with an error.
+      # Also run it before pipeAddCi() so the overall column receives CIs.
+      table <- pipeAddOverall(
+        table,
+        hasGroupVar = hasGroupVar,
+        options = self$options,
+        collector = collector
+      )
+
       # IQR label patch -----------------------------------------------------
       if (themeStrings$iqrJournals) {
         table <- gtsummary::modify_table_body(table, function(tbl) {
@@ -180,13 +193,6 @@ tblSummaryClass <- R6::R6Class(
       )
 
       table <- pipeAddN(table, options = self$options, collector = collector)
-
-      table <- pipeAddOverall(
-        table,
-        hasGroupVar = hasGroupVar,
-        options = self$options,
-        collector = collector
-      )
 
       # Text formatting -----------------------------------------------------
       table <- applyTextFormatting(
