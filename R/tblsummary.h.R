@@ -46,7 +46,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             diffContDefault = "t.test",
             diffContSpecific = NULL,
             diffDigitsCont = "auto",
-            diffDichotDefault = "prop.test",
+            diffDichotDefault = "prop.test.no.correct",
             diffDichotSpecific = NULL,
             diffDigitsDichot = "auto",
             diffDigitsCat = "auto",
@@ -416,9 +416,10 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 "diffDichotDefault",
                 diffDichotDefault,
                 options=list(
+                    "prop.test.no.correct",
                     "prop.test",
                     "smd"),
-                default="prop.test")
+                default="prop.test.no.correct")
             private$..diffDichotSpecific <- jmvcore::OptionArray$new(
                 "diffDichotSpecific",
                 diffDichotSpecific,
@@ -434,6 +435,7 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                             NULL,
                             options=list(
                                 "useDefault",
+                                "prop.test.no.correct",
                                 "prop.test",
                                 "smd"),
                             default="useDefault"))))
@@ -1071,7 +1073,7 @@ tblSummary <- function(
     diffContDefault = "t.test",
     diffContSpecific,
     diffDigitsCont = "auto",
-    diffDichotDefault = "prop.test",
+    diffDichotDefault = "prop.test.no.correct",
     diffDichotSpecific,
     diffDigitsDichot = "auto",
     diffDigitsCat = "auto",

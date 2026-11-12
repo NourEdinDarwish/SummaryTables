@@ -1,3 +1,23 @@
+# resolveVarChoices ---------------------------------------------------------
+
+#' Resolve default and per-variable choices
+#'
+#' @param vars Character vector of selected variable names
+#' @param default The default choice
+#' @param specific Per-variable choices from jamovi options
+#' @param field Name of the choice field in each per-variable item
+#' @return Named list of final choices for the selected variables
+resolveVarChoices <- function(vars, default, specific, field) {
+  choices <- stats::setNames(rep(default, length(vars)), vars)
+  for (item in specific) {
+    if (item$var %in% vars && item[[field]] != "useDefault") {
+      choices[[item$var]] <- item[[field]]
+    }
+  }
+  as.list(choices)
+}
+
+
 # resolveTestAlias ----------------------------------------------------------
 
 #' Resolve jamovi test aliases to gtsummary test names
@@ -12,6 +32,7 @@ resolveTestAlias <- function(alias) {
     alias,
     t.test.equalVar = "t.test",
     oneway.test.equalVar = "oneway.test",
+    prop.test.no.correct = "prop.test",
     alias
   )
 }
@@ -161,41 +182,39 @@ pipeAddDifference <- function(
     return(table)
   }
 
-  diffTestArgs <- list()
-  diffTestArgsArgs <- list()
+  # Resolve each variable's final method before building test and test.args,
+  # so a variable-specific method never inherits the default's arguments
+  # (such as var.equal = TRUE).
 
   # Continuous methods ------------------------------------------------------
-  contDiffDefault <- options$diffContDefault
-  diffTestArgs <- c(
-    diffTestArgs,
-    list(gtsummary::all_continuous() ~ resolveTestAlias(contDiffDefault))
+  contMethods <- resolveVarChoices(
+    varsCont,
+    options$diffContDefault,
+    options$diffContSpecific,
+    field = "method"
   )
-  if (contDiffDefault == "t.test.equalVar") {
-    diffTestArgsArgs <- c(
-      diffTestArgsArgs,
-      list(gtsummary::all_continuous() ~ list(var.equal = TRUE))
-    )
-  }
 
-  for (item in options$diffContSpecific) {
-    if (item$var %in% varsCont && item$method != "useDefault") {
-      diffTestArgs[[item$var]] <- resolveTestAlias(item$method)
-      if (item$method == "t.test.equalVar") {
-        diffTestArgsArgs[[item$var]] <- list(var.equal = TRUE)
-      }
-    }
-  }
-
-  # Categorical methods -----------------------------------------------------
-  diffTestArgs <- c(
-    diffTestArgs,
-    list(gtsummary::all_dichotomous() ~ options$diffDichotDefault)
+  # Dichotomous methods -----------------------------------------------------
+  dichotMethods <- resolveVarChoices(
+    varsDichot,
+    options$diffDichotDefault,
+    options$diffDichotSpecific,
+    field = "method"
   )
-  for (item in options$diffDichotSpecific) {
-    # It is important to use here varsDichot and not varsCat
-    # as we keeping it for Dichotomous variables only
-    if (item$var %in% varsDichot && item$method != "useDefault") {
-      diffTestArgs[[item$var]] <- item$method
+
+  # Test configuration ------------------------------------------------------
+  # Keep test and test.args as plain named lists. Mixing selector formulas
+  # with named nested lists in test.args can cause gtsummary/cards to drop
+  # variable-specific arguments.
+  allMethods <- c(contMethods, dichotMethods)
+  diffTests <- lapply(allMethods, resolveTestAlias)
+  diffTestArgs <- list()
+  for (v in names(allMethods)) {
+    method <- allMethods[[v]]
+    if (method == "t.test.equalVar") {
+      diffTestArgs[[v]] <- list(var.equal = TRUE)
+    } else if (method == "prop.test.no.correct") {
+      diffTestArgs[[v]] <- list(correct = FALSE)
     }
   }
 
@@ -244,14 +263,14 @@ pipeAddDifference <- function(
   # Call add_difference -----------------------------------------------------
   addDiffArgs <- list(
     x = table,
-    test = diffTestArgs,
+    test = diffTests,
     conf.level = options$diffConfLevel / 100
   )
   if (length(diffEstFun) > 0) {
     addDiffArgs$estimate_fun <- diffEstFun
   }
-  if (length(diffTestArgsArgs) > 0) {
-    addDiffArgs$test.args <- diffTestArgsArgs
+  if (length(diffTestArgs) > 0) {
+    addDiffArgs$test.args <- diffTestArgs
   }
 
   diffPvDigits <- options$diffDigitsPvalue
@@ -278,8 +297,12 @@ pipeAddDifference <- function(
 #' @param options Jamovi options object (must have diffCiMerge, addDifference)
 #' @return The table with merged columns (or unchanged on error)
 pipeCiMergeDiff <- function(table, hasGroupVar, options) {
-  if (!options$diffCiMerge || !options$addDifference || !hasGroupVar ||
-      options$journal == "jama") {
+  if (
+    !options$diffCiMerge ||
+      !options$addDifference ||
+      !hasGroupVar ||
+      options$journal == "jama"
+  ) {
     return(table)
   }
 
@@ -304,7 +327,8 @@ pipeCiMergeDiff <- function(table, hasGroupVar, options) {
       table |>
         gtsummary::modify_column_merge(
           rows = !!rlang::expr(
-            .data$variable %in% !!table$table_body$variable &
+            .data$variable %in%
+              !!table$table_body$variable &
               !is.na(.data$estimate)
           ),
           pattern = paste0("{estimate} ({conf.low}", ciSep, "{conf.high})")

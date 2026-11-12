@@ -408,9 +408,9 @@ options:
         name: t.test.equalVar
       - title: Wilcoxon rank-sum
         name: wilcox.test
-      - title: "Cohen's D"
+      - title: "Cohen's d"
         name: cohens_d
-      - title: "Hedge's G"
+      - title: "Hedges' g"
         name: hedges_g
       - title: SMD
         name: smd
@@ -435,9 +435,9 @@ options:
               name: t.test.equalVar
             - title: Wilcoxon rank-sum
               name: wilcox.test
-            - title: "Cohen's D"
+            - title: "Cohen's d"
               name: cohens_d
-            - title: "Hedge's G"
+            - title: "Hedges' g"
               name: hedges_g
             - title: SMD
               name: smd
@@ -469,11 +469,13 @@ options:
     title: Default method
     type: List
     options:
-      - title: Z test (proportions)
+      - title: z-test (proportions)
+        name: prop.test.no.correct
+      - title: z-test (proportions, continuity correction)
         name: prop.test
       - title: SMD
         name: smd
-    default: prop.test
+    default: prop.test.no.correct
 
   - name: diffDichotSpecific
     title: Specific methods
@@ -488,7 +490,9 @@ options:
           options:
             - title: Same as default
               name: useDefault
-            - title: Z test (proportions)
+            - title: z-test (proportions)
+              name: prop.test.no.correct
+            - title: z-test (proportions, continuity correction)
               name: prop.test
             - title: SMD
               name: smd
