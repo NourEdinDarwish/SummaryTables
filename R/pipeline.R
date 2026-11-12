@@ -64,63 +64,60 @@ pipeAddP <- function(
     return(table)
   }
 
-  testArguments <- list()
-  testArgsArguments <- list()
+  # Resolve each variable's final test before building test.args,
+  # so a variable-specific test does not inherit arguments intended only for
+  # the default test (e.g. var.equal = TRUE when Welch's t-test is selected).
 
-  # Default continuous test
-  contDefault <- options$testContDefault
-  if (contDefault == "parametric") {
+  # Continuous tests --------------------------------------------------------
+  contTests <- resolveVarChoices(
+    varsCont,
+    options$testContDefault,
+    options$testContSpecific,
+    field = "test"
+  )
+  if (options$testContDefault == "parametric") {
     gtsummary::set_gtsummary_theme(list(
       "add_p.tbl_summary-attr:test.continuous_by2" = "t.test",
       "add_p.tbl_summary-attr:test.continuous" = "oneway.test"
     ))
-  } else if (contDefault != "nonparametric") {
-    testArguments <- c(
-      testArguments,
-      list(gtsummary::all_continuous() ~ resolveTestAlias(contDefault))
-    )
-    if (contDefault %in% c("t.test.equalVar", "oneway.test.equalVar")) {
-      testArgsArguments <- c(
-        testArgsArguments,
-        list(gtsummary::all_continuous() ~ list(var.equal = TRUE))
-      )
-    }
   }
 
-  # Per-variable continuous overrides
-  for (item in options$testContSpecific) {
-    if (item$var %in% varsCont && item$test != "useDefault") {
-      testArguments[[item$var]] <- resolveTestAlias(item$test)
-      if (item$test %in% c("t.test.equalVar", "oneway.test.equalVar")) {
-        testArgsArguments[[item$var]] <- list(var.equal = TRUE)
-      }
-    }
-  }
+  # Categorical tests -------------------------------------------------------
+  catTests <- resolveVarChoices(
+    varsCat,
+    options$testCatDefault,
+    options$testCatSpecific,
+    field = "test"
+  )
 
-  # Default categorical test
-  catDefault <- options$testCatDefault
-  if (catDefault != "auto") {
-    testArguments <- c(
-      testArguments,
-      list(gtsummary::all_categorical() ~ catDefault)
-    )
-  }
+  # Test configuration ------------------------------------------------------
+  # Keep test.args as a plain named list. Mixing selector formulas with
+  # named nested lists can cause gtsummary/cards to drop variable-specific
+  # arguments.
+  allTests <- c(contTests, catTests)
 
-  # Per-variable categorical overrides
-  for (item in options$testCatSpecific) {
-    if (item$var %in% varsCat && item$test != "useDefault") {
-      testArguments[[item$var]] <- item$test
+  # Omit automatic choices so gtsummary selects the tests.
+  allTests <- Filter(
+    function(test) !test %in% c("parametric", "nonparametric", "auto"),
+    allTests
+  )
+  tests <- lapply(allTests, resolveTestAlias)
+  testArgs <- list()
+  for (v in names(allTests)) {
+    test <- allTests[[v]]
+    if (test %in% c("t.test.equalVar", "oneway.test.equalVar")) {
+      testArgs[[v]] <- list(var.equal = TRUE)
     }
   }
 
   # Call add_p --------------------------------------------------------------
   pvDigits <- options$digitsPvalue
   addPArgs <- list(x = table)
-  if (length(testArguments) > 0) {
-    addPArgs$test <- testArguments
+  if (length(tests) > 0) {
+    addPArgs$test <- tests
   }
-  if (length(testArgsArguments) > 0) {
-    addPArgs$test.args <- testArgsArguments
+  if (length(testArgs) > 0) {
+    addPArgs$test.args <- testArgs
   }
   if (pvDigits != "auto") {
     addPArgs$pvalue_fun <- gtsummary::label_style_pvalue(
@@ -182,9 +179,9 @@ pipeAddDifference <- function(
     return(table)
   }
 
-  # Resolve each variable's final method before building test and test.args,
-  # so a variable-specific method never inherits the default's arguments
-  # (such as var.equal = TRUE).
+  # Resolve each variable's final method before building test.args,
+  # so a variable-specific method does not inherit arguments intended only for
+  # the default method (e.g. var.equal = TRUE when Welch's t-test is selected).
 
   # Continuous methods ------------------------------------------------------
   contMethods <- resolveVarChoices(
@@ -203,9 +200,9 @@ pipeAddDifference <- function(
   )
 
   # Test configuration ------------------------------------------------------
-  # Keep test and test.args as plain named lists. Mixing selector formulas
-  # with named nested lists in test.args can cause gtsummary/cards to drop
-  # variable-specific arguments.
+  # Keep test.args as a plain named list. Mixing selector formulas with
+  # named nested lists can cause gtsummary/cards to drop variable-specific
+  # arguments.
   allMethods <- c(contMethods, dichotMethods)
   diffTests <- lapply(allMethods, resolveTestAlias)
   diffTestArgs <- list()

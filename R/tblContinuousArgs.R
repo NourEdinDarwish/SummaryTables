@@ -18,49 +18,52 @@ pipeAddPCont <- function(table, hasGroupVar, options, collector) {
   }
 
   addPArgs <- list(x = table)
-  testArguments <- list()
-  testArgsArguments <- list()
+  tests <- list()
+  testArgs <- list()
 
   if (!hasGroupVar) {
-    # Without by: build test formulas from default + per-variable overrides
+    # Without by: resolve each variable's final test before building test.args,
+    # so a variable-specific test does not inherit arguments intended only for
+    # the default test (e.g. var.equal = TRUE when Welch's t-test is selected).
     # (With by: gtsummary defaults to anova_2way, no test argument needed)
+    contTests <- resolveVarChoices(
+      table$inputs$include,
+      options$testDefault,
+      options$testSpecific,
+      field = "test"
+    )
 
     if (options$testDefault == "parametric") {
       gtsummary::set_gtsummary_theme(list(
         "add_p.tbl_summary-attr:test.continuous_by2" = "t.test",
         "add_p.tbl_summary-attr:test.continuous" = "oneway.test"
       ))
-    } else if (options$testDefault != "nonparametric") {
-      testArguments <- c(
-        testArguments,
-        list(~ resolveTestAlias(options$testDefault))
-      )
-      if (
-        options$testDefault %in% c("t.test.equalVar", "oneway.test.equalVar")
-      ) {
-        testArgsArguments <- c(
-          testArgsArguments,
-          list(~ list(var.equal = TRUE))
-        )
-      }
     }
 
-    # Per-variable test overrides
-    for (item in options$testSpecific) {
-      if (item$test != "useDefault") {
-        testArguments[[item$var]] <- resolveTestAlias(item$test)
-        if (item$test %in% c("t.test.equalVar", "oneway.test.equalVar")) {
-          testArgsArguments[[item$var]] <- list(var.equal = TRUE)
-        }
+    # Test configuration ----------------------------------------------------
+    # Keep test.args as a plain named list. Mixing selector formulas with
+    # named nested lists can cause gtsummary/cards to drop variable-specific
+    # arguments.
+
+    # Omit automatic choices so gtsummary selects the tests.
+    contTests <- Filter(
+      function(test) !test %in% c("parametric", "nonparametric"),
+      contTests
+    )
+    tests <- lapply(contTests, resolveTestAlias)
+    for (v in names(contTests)) {
+      test <- contTests[[v]]
+      if (test %in% c("t.test.equalVar", "oneway.test.equalVar")) {
+        testArgs[[v]] <- list(var.equal = TRUE)
       }
     }
   }
 
-  if (length(testArguments) > 0) {
-    addPArgs$test <- testArguments
+  if (length(tests) > 0) {
+    addPArgs$test <- tests
   }
-  if (length(testArgsArguments) > 0) {
-    addPArgs$test.args <- testArgsArguments
+  if (length(testArgs) > 0) {
+    addPArgs$test.args <- testArgs
   }
 
   # P-value digits
