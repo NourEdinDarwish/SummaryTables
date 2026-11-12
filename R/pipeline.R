@@ -232,7 +232,7 @@ pipeAddDifference <- function(
   if (options$diffDigitsDichot != "auto") {
     d <- as.integer(options$diffDigitsDichot)
     for (v in varsDichot) {
-      if (options$diffDichotDefault == "smd") {
+      if (dichotMethods[[v]] == "smd") {
         # SMD is not a proportion — plain digits
         diffEstFun[[v]] <- gtsummary::label_style_number(digits = d)
       } else {
