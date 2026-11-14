@@ -7,6 +7,7 @@
 #'
 #' @param htmlContent Character: raw HTML string (from gt::as_raw_html())
 #' @param resultsHtml A jmvcore::Html object with `$setContent()` method
+#' @noRd
 setHtmlResult <- function(htmlContent, resultsHtml) {
   # gt::as_raw_html() uses juicyjuice to inline CSS and to add legacy HTML
   # presentation attributes for older clients. For a transparent background,
@@ -74,6 +75,7 @@ setHtmlResult <- function(htmlContent, resultsHtml) {
 #'
 #' @param table A gtsummary object (e.g., from tbl_summary(), tbl_cross(), etc.)
 #' @param resultsHtml A jmvcore::Html object with `$setContent()` method
+#' @noRd
 renderHtml <- function(table, resultsHtml) {
   htmlContent <- table |>
     gtsummary::as_gt() |>
@@ -96,6 +98,7 @@ renderHtml <- function(table, resultsHtml) {
 #'
 #' @param message Character: instruction text (e.g. what variables to add)
 #' @param resultsHtml A jmvcore::Html object with `$setContent()` method
+#' @noRd
 renderPlaceholder <- function(message, resultsHtml) {
   htmlContent <- data.frame(message = message) |>
     gt::gt() |>

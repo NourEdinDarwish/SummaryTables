@@ -1,6 +1,7 @@
 #' Create a new collector environment
 #'
 #' @return An environment with `warnings` and `messages` character vectors
+#' @noRd
 newCollector <- function() {
   collector <- new.env(parent = emptyenv())
   collector$warnings <- character()
@@ -22,6 +23,7 @@ newCollector <- function() {
 #' @return The evaluated result of `expr` (e.g., the generated `gtsummary` table
 #'   or statistical object). The `collector` environment is modified in-place
 #'   with intercepted strings.
+#' @noRd
 runSafe <- function(expr, collector) {
   withCallingHandlers(
     expr,
@@ -63,6 +65,7 @@ runSafe <- function(expr, collector) {
 #' @param results jamovi results group to insert Notices into
 #' @param b64Map Optional named character vector from `buildB64Map()`.
 #'   When provided, B64 tokens in notice text are replaced with originals.
+#' @noRd
 displayNotices <- function(collector, options, results, b64Map = NULL) {
   # Messages (INFO) — stat test feedback from cards
   if (length(collector$messages) > 0) {

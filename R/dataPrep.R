@@ -15,6 +15,7 @@
 #' @param options Jamovi options object with `sortCatDefault` and
 #'   `sortCatSpecific` entries
 #' @return The data frame with factor levels reordered where requested
+#' @noRd
 sortByFreq <- function(data, varsCat, options) {
   if (length(varsCat) == 0) {
     return(data)

@@ -12,6 +12,7 @@
 #' @param options Jamovi options object
 #' @param collector Collector environment from newCollector()
 #' @return The table with p-values added (or unchanged)
+#' @noRd
 pipeAddPCont <- function(table, hasGroupVar, options, collector) {
   if (!options$addPvalue) {
     return(table)
@@ -93,6 +94,7 @@ pipeAddPCont <- function(table, hasGroupVar, options, collector) {
 #' @param options Jamovi options object
 #' @param themeStrings Theme strings from getThemeStrings()
 #' @return A formula-list suitable for the `statistic` argument
+#' @noRd
 buildStatArgsCont <- function(varsCat, options, themeStrings) {
   statStrings <- list(
     meanSd = "{mean} ({sd})",
@@ -129,6 +131,7 @@ buildStatArgsCont <- function(varsCat, options, themeStrings) {
 #'
 #' @param options Jamovi options object
 #' @return A list suitable for the `digits` argument (or NULL)
+#' @noRd
 buildDigitsArgsCont <- function(options) {
   if (options$digitsCont == "auto") {
     return(NULL)

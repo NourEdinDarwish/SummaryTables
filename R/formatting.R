@@ -26,6 +26,7 @@
 #'   (from add_p(), add_difference(), or tbl_regression())
 #' @param options A jamovi options object (self$options)
 #' @return The formatted table
+#' @noRd
 applyTextFormatting <- function(table, hasPvalue, options) {
   # Labels and levels -------------------------------------------------------
   if (optTrue(options$boldLabels)) {

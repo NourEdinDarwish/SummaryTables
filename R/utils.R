@@ -14,6 +14,7 @@
 #' #   options$has("boldQ") && isTRUE(options$get("boldQ"))
 #' # Write:
 #' #   optTrue(options$boldQ)
+#' @noRd
 optTrue <- function(expr) {
   expr <- substitute(expr)
   obj  <- eval(expr[[2]], parent.frame())

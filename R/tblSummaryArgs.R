@@ -15,6 +15,7 @@
 #' @param hasGroupVar Logical: TRUE when a grouping variable is present
 #' @param options Jamovi options object
 #' @return Named list with `type` and `dichotValue` elements
+#' @noRd
 buildTypeArgs <- function(
   data,
   varsCont,
@@ -80,6 +81,7 @@ buildTypeArgs <- function(
 #' @param options Jamovi options object
 #' @param themeStrings Theme strings from getThemeStrings()
 #' @return A formula-list suitable for the `statistic` argument
+#' @noRd
 buildStatArgs <- function(varsCont, varsCat, options, themeStrings) {
   statStrings <- list(
     continuous = list(
@@ -140,6 +142,7 @@ buildStatArgs <- function(varsCont, varsCat, options, themeStrings) {
 #'
 #' @param options Jamovi options object
 #' @return A formula-list suitable for the `digits` argument
+#' @noRd
 buildDigitsArgs <- function(options) {
   customContDigits <- options$digitsCont != "auto"
   customPctDigits <- options$digitsCatPct != "auto"

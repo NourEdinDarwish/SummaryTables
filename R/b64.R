@@ -8,6 +8,7 @@
 #'
 #' @param data A data frame (typically `self$data`)
 #' @return The data frame with B64-encoded column names and label attributes
+#' @noRd
 encodeB64 <- function(data) {
   origNames <- names(data)
 
@@ -31,6 +32,7 @@ encodeB64 <- function(data) {
 #'
 #' @param origNames Character vector of original variable names
 #' @return Named character vector: `c(b64name = "Original Name", ...)`
+#' @noRd
 buildB64Map <- function(origNames) {
   stats::setNames(origNames, jmvcore::toB64(origNames))
 }
@@ -48,6 +50,7 @@ buildB64Map <- function(origNames) {
 #' @param text Character vector of strings to decode
 #' @param b64Map Named character vector from `buildB64Map()`
 #' @return Character vector with B64 tokens replaced
+#' @noRd
 decodeB64 <- function(text, b64Map) {
   if (length(text) == 0) {
     return(text)
@@ -73,6 +76,7 @@ decodeB64 <- function(text, b64Map) {
 #'
 #' @param err An error condition object
 #' @param b64Map Named character vector from `buildB64Map()`
+#' @noRd
 decodeB64Error <- function(err, b64Map) {
   err$message <- decodeB64(err$message, b64Map)
   stop(err)
@@ -90,6 +94,7 @@ decodeB64Error <- function(err, b64Map) {
 #' @param model A fitted model with a saved `model$model` frame
 #' @param b64Map Named character vector from `buildB64Map()`
 #' @return The model with labels on its saved model-frame columns
+#' @noRd
 labelModelFrame <- function(model, b64Map) {
   # encodeB64() gives input columns safe B64 names and stores their original
   # names as labels. Multivariable tables reapply those labels here after

@@ -11,8 +11,12 @@ hide:
 # SummaryTables
 
 <!-- badges: start -->
+
 [![DOI](https://img.shields.io/badge/DOI-10.5281%2Fzenodo.18902312-blue.svg)](https://doi.org/10.5281/zenodo.18902312)
 [![License: GPL ≥ 2](https://img.shields.io/badge/License-GPL%20%E2%89%A5%202-blue.svg)](https://www.gnu.org/licenses/old-licenses/gpl-2.0.en.html)
+[![R-CMD-check](https://github.com/NourEdinDarwish/SummaryTables/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/NourEdinDarwish/SummaryTables/actions/workflows/R-CMD-check.yaml)
+[![Codecov test coverage](https://codecov.io/gh/NourEdinDarwish/SummaryTables/graph/badge.svg)](https://app.codecov.io/gh/NourEdinDarwish/SummaryTables)
+
 <!-- badges: end -->
 
 A [jamovi](https://www.jamovi.org) module for publication-ready summary

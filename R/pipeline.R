@@ -7,6 +7,7 @@
 #' @param specific Per-variable choices from jamovi options
 #' @param field Name of the choice field in each per-variable item
 #' @return Named list of final choices for the selected variables
+#' @noRd
 resolveVarChoices <- function(vars, default, specific, field) {
   choices <- stats::setNames(rep(default, length(vars)), vars)
   for (item in specific) {
@@ -27,6 +28,7 @@ resolveVarChoices <- function(vars, default, specific, field) {
 #'
 #' @param alias Character: test alias from jamovi options
 #' @return Character: the resolved gtsummary test name
+#' @noRd
 resolveTestAlias <- function(alias) {
   switch(
     alias,
@@ -52,6 +54,7 @@ resolveTestAlias <- function(alias) {
 #' @param options Jamovi options object
 #' @param collector Collector environment from newCollector()
 #' @return The table with p-values added (or unchanged)
+#' @noRd
 pipeAddP <- function(
   table,
   varsCont,
@@ -141,6 +144,7 @@ pipeAddP <- function(
 #' @param options Jamovi options object
 #' @param collector Collector environment from newCollector()
 #' @return The table with q-values added (or unchanged)
+#' @noRd
 pipeAddQ <- function(table, hasPvalue, options, collector) {
   if (!optTrue(options$addQ) || !hasPvalue) {
     return(table)
@@ -167,6 +171,7 @@ pipeAddQ <- function(table, hasPvalue, options, collector) {
 #' @param options Jamovi options object
 #' @param collector Collector environment from newCollector()
 #' @return The table with difference estimates added (or unchanged)
+#' @noRd
 pipeAddDifference <- function(
   table,
   varsCont,
@@ -293,6 +298,7 @@ pipeAddDifference <- function(
 #' @param hasGroupVar Logical: TRUE when a grouping variable is present
 #' @param options Jamovi options object (must have diffCiMerge, addDifference)
 #' @return The table with merged columns (or unchanged on error)
+#' @noRd
 pipeCiMergeDiff <- function(table, hasGroupVar, options) {
   if (
     !options$diffCiMerge ||
@@ -351,6 +357,7 @@ pipeCiMergeDiff <- function(table, hasGroupVar, options) {
 #' @param themeStrings Theme strings from getThemeStrings()
 #' @param collector Collector environment from newCollector()
 #' @return The table with confidence intervals added (or unchanged)
+#' @noRd
 pipeAddCi <- function(
   table,
   varsCont,
@@ -479,6 +486,7 @@ pipeAddCi <- function(
 #' @param options Jamovi options object
 #' @param collector Collector environment from newCollector()
 #' @return The table with N column added (or unchanged)
+#' @noRd
 pipeAddN <- function(table, options, collector) {
   if (!options$addN) {
     return(table)
@@ -504,6 +512,7 @@ pipeAddN <- function(table, options, collector) {
 #' @param options Jamovi options object
 #' @param collector Collector environment from newCollector()
 #' @return The table with overall column added (or unchanged)
+#' @noRd
 pipeAddOverall <- function(table, hasGroupVar, options, collector) {
   if (!options$addOverall || !hasGroupVar) {
     return(table)

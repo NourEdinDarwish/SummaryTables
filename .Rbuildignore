@@ -16,3 +16,6 @@
 ^[.]?air[.]toml$
 ^\.vscode$
 ^\.lintr$
+^\.covrignore$
+^data$
+^\.cache$

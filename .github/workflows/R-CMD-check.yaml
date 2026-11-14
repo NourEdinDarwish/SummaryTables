@@ -1,0 +1,62 @@
+# Workflow derived from https://github.com/r-lib/actions/tree/v2/examples
+# Need help debugging build failures? Start at https://github.com/r-lib/actions#where-to-find-help
+# Adapted from usethis::use_github_action("check-standard").
+# Added: jamovi environment matrix, snapshot repositories,
+# jmvcore from GitHub, and manual runs.
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+name: R-CMD-check.yaml
+
+permissions: read-all
+
+jobs:
+  R-CMD-check:
+    runs-on: ${{ matrix.config.os }}
+
+    name: ${{ matrix.config.env }} / ${{ matrix.config.os }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          # jamovi 28 uses R 4.6.0 and the 2026-05-11 package snapshot.
+          # Use main for the current jamovi series; pin a commit for older series.
+          - {env: 'jamovi-28', os: windows-latest, r: '4.6.0', snapshot: '2026-05-11', jmvcore: 'main'}
+          - {env: 'jamovi-28', os: macos-latest, r: '4.6.0', snapshot: '2026-05-11', jmvcore: 'main'}
+          - {env: 'jamovi-28', os: ubuntu-latest, r: '4.6.0', snapshot: '2026-05-11', jmvcore: 'main'}
+
+          - {env: 'latest-cran', os: ubuntu-latest, r: 'release', snapshot: 'latest', jmvcore: 'main'}
+
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      R_KEEP_PKG_SOURCE: yes
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: r-lib/actions/setup-pandoc@v2
+
+      - uses: r-lib/actions/setup-r@v2
+        with:
+          r-version: ${{ matrix.config.r }}
+          # Disable the default Posit repository, which uses latest packages.
+          use-public-rspm: false
+          # Use Posit Public Package Manager for the selected CRAN snapshot.
+          cran: https://packagemanager.posit.co/cran/${{ matrix.config.snapshot }}
+
+      - uses: r-lib/actions/setup-r-dependencies@v2
+        with:
+          # Added: use the jmvcore revision selected in the matrix.
+          extra-packages: |
+            any::rcmdcheck
+            jmvcore=jamovi/jamovi/jmvcore@${{ matrix.config.jmvcore }}
+          needs: check
+
+      - uses: r-lib/actions/check-r-package@v2
+        with:
+          upload-snapshots: true
+          build_args: 'c("--no-manual","--compact-vignettes=gs+qpdf")'

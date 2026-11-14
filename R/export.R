@@ -11,6 +11,7 @@
 #'   [gtsummary::as_flex_table()].
 #' @return The same `flextable` object with blank header cells vertically
 #'   merged.
+#' @noRd
 fix_spanning_header <- function(x) {
   nrows <- nrow(x$header$dataset)
   if (nrows <= 1) {
@@ -53,6 +54,7 @@ fix_spanning_header <- function(x) {
 #' @param table A gtsummary object to save or open
 #' @param options The analysis options containing the Word actions
 #' @param filename The suggested Word filename, including the .docx extension
+#' @noRd
 exportDocx <- function(table, options, filename) {
   for (name in c("saveDocx", "openDocx")) {
     if (!options[[name]]) {

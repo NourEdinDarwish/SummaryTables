@@ -8,6 +8,7 @@
 #'
 #' @param data Data frame containing the variable
 #' @param event Character: column name of the event variable
+#' @noRd
 validateEventNumeric <- function(data, event) {
   unique_vals <- unique(data[[event]][!is.na(data[[event]])])
   valid_01 <- all(unique_vals %in% c(0, 1))
@@ -35,6 +36,7 @@ validateEventNumeric <- function(data, event) {
 #'
 #' @param text Character string, e.g. "12, 24, 60"
 #' @return Numeric vector of valid, non-negative time points
+#' @noRd
 parseCommaNumeric <- function(text) {
   tokens <- trimws(strsplit(text, ",")[[1]])
   values <- suppressWarnings(as.numeric(tokens))
@@ -74,6 +76,7 @@ parseCommaNumeric <- function(text) {
 #' @param strataB64 Character vector of B64-encoded stratifying variable names
 #' @param confInt Numeric: confidence level as a proportion (e.g. 0.95)
 #' @return A list of survfit objects (overall first, then one per stratum)
+#' @noRd
 buildSurvfitList <- function(data, elapsedB64, eventB64, strataB64, confInt) {
   survLHS <- sprintf("survival::Surv(%s, %s)", elapsedB64, eventB64)
 
@@ -121,6 +124,7 @@ buildSurvfitList <- function(data, elapsedB64, eventB64, strataB64, confInt) {
 #'   "-Year")
 #' @param nTimes Number of time points (used only when statistic == "times")
 #' @return A list with `label_header` and `spanning_header` (NULL if not needed)
+#' @noRd
 buildSurvfitHeader <- function(
   statistic,
   type,
@@ -182,6 +186,7 @@ buildSurvfitHeader <- function(
 #' @param options Jamovi options object
 #' @param collector Collector environment from newCollector()
 #' @return The table with p-values added (or unchanged)
+#' @noRd
 pipeAddPSurvfit <- function(table, strata, options, collector) {
   if (!options$addPvalue || length(strata) == 0) {
     return(table)

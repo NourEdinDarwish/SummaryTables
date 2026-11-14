@@ -54,7 +54,6 @@ build*/
 
 # other files / folders
 temp/
-man/
 .DS_Store
 npm-debug.log
 inst/doc

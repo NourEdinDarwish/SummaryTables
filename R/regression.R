@@ -5,6 +5,7 @@
 #' @param data Data frame containing the variables
 #' @param terms modelTerms list from self$options$modelTerms
 #' @return NULL (stops with an error if validation fails)
+#' @noRd
 validateFactorPolynomials <- function(data, terms) {
   for (term in terms) {
     counts <- table(term)
@@ -36,6 +37,7 @@ validateFactorPolynomials <- function(data, terms) {
 #' @param y Pre-formatted left-hand side string
 #' @param terms modelTerms list from self$options$modelTerms
 #' @return A formula object
+#' @noRd
 buildFormula <- function(y, terms) {
   stats::as.formula(
     paste(
@@ -59,6 +61,7 @@ buildFormula <- function(y, terms) {
 #' @param options Jamovi options object
 #' @param b64Map Named character vector from `buildB64Map()` (B64 → original)
 #' @return A tbl_regression object
+#' @noRd
 buildMultiRegTable <- function(model, options, b64Map) {
   args <- list(x = labelModelFrame(model, b64Map))
 
@@ -131,6 +134,7 @@ buildMultiRegTable <- function(model, options, b64Map) {
 #' @param data Data frame
 #' @param ... Extra arguments passed to lm
 #' @return An lm model object fitted on standardized complete cases
+#' @noRd
 lmStd <- function(formula, data, ...) {
   # Goal: produce the same standardized coefficients (betas) as
   # parameters::standardize_parameters(method = "refit").
@@ -192,6 +196,7 @@ lmStd <- function(formula, data, ...) {
 #'   tbl_uvregression's internal NSE works through `do.call()`.
 #' @param options Jamovi options object
 #' @return A tbl_uvregression object
+#' @noRd
 buildUniRegTable <- function(
   data,
   y,
@@ -240,6 +245,7 @@ buildUniRegTable <- function(
 #' @param table A tbl_regression or tbl_uvregression object
 #' @param options Jamovi options object
 #' @return The table with the updated header
+#' @noRd
 pipeOverrideEstimateHeader <- function(table, options) {
   coefHeader <- if (options$standardize) {
     "**Standardized Coefficient**"
@@ -268,6 +274,7 @@ pipeOverrideEstimateHeader <- function(table, options) {
 #' @param options Jamovi options object
 #' @param collector Collector environment from newCollector()
 #' @return The table with global p-values (or unchanged)
+#' @noRd
 pipeAddGlobalP <- function(table, options, collector) {
   if (!options$globalP || options$addStars || options$journal == "qjecon") {
     return(table)
@@ -292,6 +299,7 @@ pipeAddGlobalP <- function(table, options, collector) {
 #' @param options Jamovi options object
 #' @param collector Collector environment from newCollector()
 #' @return The table with VIF column added (or unchanged)
+#' @noRd
 pipeAddVif <- function(table, options, collector) {
   if (!options$addVif || length(options$modelTerms) < 2) {
     return(table)
@@ -311,6 +319,7 @@ pipeAddVif <- function(table, options, collector) {
 #' @param options Jamovi options object
 #' @param collector Collector environment from newCollector()
 #' @return The table with N column added (or unchanged)
+#' @noRd
 pipeAddNReg <- function(table, options, collector) {
   if (!options$addN) {
     return(table)
@@ -340,6 +349,7 @@ pipeAddNReg <- function(table, options, collector) {
 #' @param options Jamovi options object
 #' @param collector Collector environment from newCollector()
 #' @return The table with event N column added (or unchanged)
+#' @noRd
 pipeAddNEvent <- function(table, options, collector) {
   if (!options$addNEvent) {
     return(table)
@@ -373,6 +383,7 @@ pipeAddNEvent <- function(table, options, collector) {
 #'   Used to warn when exponentiated coefficients are shown with standard
 #'   errors from the unexponentiated model.
 #' @return The table with significance stars (or unchanged)
+#' @noRd
 pipeAddSignificanceStars <- function(
   table,
   options,
@@ -431,6 +442,7 @@ pipeAddSignificanceStars <- function(
 #' @param options Jamovi options object
 #' @param collector Collector environment from newCollector()
 #' @return The table with model statistics (or unchanged)
+#' @noRd
 pipeAddGlance <- function(table, options, collector) {
   if (options$modelFit == "none") {
     return(table)
@@ -458,6 +470,7 @@ pipeAddGlance <- function(table, options, collector) {
 #' @param table A tbl_regression or tbl_uvregression object
 #' @param options Jamovi options object (must have ciMerge, confInt)
 #' @return The table with merged columns (or unchanged on error)
+#' @noRd
 pipeCiMergeReg <- function(table, options) {
   if (
     !options$ciMerge ||

@@ -10,6 +10,7 @@
 #'   "es", "fr", "gu", "hi", "is", "ja", "kr", "mr", "nl", "no", "pt", "se",
 #'   "zh-cn", "zh-tw"
 #' @param compactOption Logical: Apply compact theme if TRUE
+#' @noRd
 applyTheme <- function(journalOption, languageOption, compactOption) {
   # Apply journal theme if specified (not "default")
   if (journalOption != "default") {
@@ -39,6 +40,7 @@ applyTheme <- function(journalOption, languageOption, compactOption) {
 #'
 #' @param journalOption Character: selected journal (e.g. "default", "jama")
 #' @return Named list of formatting strings
+#' @noRd
 getThemeStrings <- function(journalOption) {
   dashJournals <- c("jama", "nejm", "lancet")
   sep <- if (journalOption %in% dashJournals) " \U2013 " else ", "
