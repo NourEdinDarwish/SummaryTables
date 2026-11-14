@@ -48,18 +48,12 @@ jobs:
           # Use Posit Public Package Manager for the selected CRAN snapshot.
           cran: https://packagemanager.posit.co/cran/${{ matrix.config.snapshot }}
 
-      # jmvcore pulls in gdtools through its optional export dependency.
-      # gdtools failed to build on macOS because it could not find libintl.
-      # Install gettext to provide libintl and add its library path.
-      - name: Prepare gettext on macOS
+      # jmvcore pulls in gdtools and rvg through its optional export dependency.
+      # Their macOS builds failed because libintl and png.h were not found.
+      # Install the system libraries needed to build these R packages.
+      - name: Prepare macOS system dependencies
         if: runner.os == 'macOS'
-        run: |
-          system2("brew", c("install", "gettext"))
-          gettextPrefix <- system2("brew", c("--prefix", "gettext"), stdout = TRUE)
-          dir.create("~/.R", showWarnings = FALSE)
-          cat(paste0("\nLDFLAGS += -L", gettextPrefix, "/lib\n"),
-              file = "~/.R/Makevars", append = TRUE)
-        shell: Rscript {0}
+        uses: r-hub/actions/setup-r-sysreqs@v1
 
       - uses: r-lib/actions/setup-r-dependencies@v2
         with:
