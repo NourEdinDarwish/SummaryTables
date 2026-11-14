@@ -9,11 +9,10 @@ permissions:
   pages: write
   id-token: write
 jobs:
-  deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+  build:
     runs-on: ubuntu-latest
+    outputs:
+      artifact_name: github-pages-${{ github.run_attempt }}
     steps:
       - uses: actions/configure-pages@v6
       - uses: actions/checkout@v6
@@ -24,6 +23,21 @@ jobs:
       - run: zensical build --clean
       - uses: actions/upload-pages-artifact@v5
         with:
+          # Keep reruns from colliding with an earlier attempt's artifact.
+          name: github-pages-${{ github.run_attempt }}
           path: site
+
+  # Run deployment in a separate job to give GitHub time to find the upload.
+  # https://github.com/actions/deploy-pages/issues/451
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
       - uses: actions/deploy-pages@v5
         id: deployment
+        with:
+          # Reuse the build's name even when only deployment is rerun.
+          artifact_name: ${{ needs.build.outputs.artifact_name }}
