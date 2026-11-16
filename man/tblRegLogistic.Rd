@@ -45,7 +45,6 @@ tblRegLogistic(
   qMethod = "BH",
   boldQ = FALSE,
   boldQThreshold = 0.05,
-  saveDocx = FALSE,
   openDocx = FALSE
 )
 }
@@ -129,8 +128,6 @@ tblRegLogistic(
 \item{boldQ}{.}
 
 \item{boldQThreshold}{.}
-
-\item{saveDocx}{.}
 
 \item{openDocx}{.}
 }

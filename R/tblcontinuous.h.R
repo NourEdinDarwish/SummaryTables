@@ -35,7 +35,6 @@ tblContinuousOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
             qMethod = "BH",
             boldQ = FALSE,
             boldQThreshold = 0.05,
-            saveDocx = FALSE,
             openDocx = FALSE, ...) {
 
             super$initialize(
@@ -286,10 +285,6 @@ tblContinuousOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
                 min=0,
                 max=1,
                 default=0.05)
-            private$..saveDocx <- jmvcore::OptionAction$new(
-                "saveDocx",
-                saveDocx,
-                action="export")
             private$..openDocx <- jmvcore::OptionAction$new(
                 "openDocx",
                 openDocx,
@@ -324,7 +319,6 @@ tblContinuousOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
             self$.addOption(private$..qMethod)
             self$.addOption(private$..boldQ)
             self$.addOption(private$..boldQThreshold)
-            self$.addOption(private$..saveDocx)
             self$.addOption(private$..openDocx)
         }),
     active = list(
@@ -357,7 +351,6 @@ tblContinuousOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
         qMethod = function() private$..qMethod$value,
         boldQ = function() private$..boldQ$value,
         boldQThreshold = function() private$..boldQThreshold$value,
-        saveDocx = function() private$..saveDocx$value,
         openDocx = function() private$..openDocx$value),
     private = list(
         ..contVar = NA,
@@ -389,7 +382,6 @@ tblContinuousOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
         ..qMethod = NA,
         ..boldQ = NA,
         ..boldQThreshold = NA,
-        ..saveDocx = NA,
         ..openDocx = NA)
 )
 
@@ -410,7 +402,7 @@ tblContinuousResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
                 options=options,
                 name="status",
                 title="Generating Table\u2026",
-                visible="(manualRun == FALSE || run || saveDocx || openDocx)",
+                visible="(manualRun == FALSE || run || openDocx)",
                 columns=list()))
             self$add(jmvcore::Html$new(
                 options=options,
@@ -473,7 +465,6 @@ tblContinuousBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param qMethod .
 #' @param boldQ .
 #' @param boldQThreshold .
-#' @param saveDocx .
 #' @param openDocx .
 #' @return A results object containing:
 #' \tabular{llllll}{
@@ -519,7 +510,6 @@ tblContinuous <- function(
     qMethod = "BH",
     boldQ = FALSE,
     boldQThreshold = 0.05,
-    saveDocx = FALSE,
     openDocx = FALSE) {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
@@ -568,7 +558,6 @@ tblContinuous <- function(
         qMethod = qMethod,
         boldQ = boldQ,
         boldQThreshold = boldQThreshold,
-        saveDocx = saveDocx,
         openDocx = openDocx)
 
     analysis <- tblContinuousClass$new(

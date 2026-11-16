@@ -22,7 +22,6 @@ tblUniRegLinearClass <- R6::R6Class(
       if (
         self$options$manualRun &&
           !self$options$run &&
-          !self$options$saveDocx &&
           !self$options$openDocx
       ) {
         return()

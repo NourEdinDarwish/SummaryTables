@@ -6,7 +6,7 @@ items:
   - name: status
     type: Table
     title: Generating Table…
-    visible: (manualRun == FALSE || run || saveDocx || openDocx)
+    visible: (manualRun == FALSE || run || openDocx)
     columns: []
 
   - name: tbl

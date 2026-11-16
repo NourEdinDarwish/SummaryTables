@@ -46,7 +46,6 @@ tblRegCox(
   qMethod = "BH",
   boldQ = FALSE,
   boldQThreshold = 0.05,
-  saveDocx = FALSE,
   openDocx = FALSE
 )
 }
@@ -132,8 +131,6 @@ tblRegCox(
 \item{boldQ}{.}
 
 \item{boldQThreshold}{.}
-
-\item{saveDocx}{.}
 
 \item{openDocx}{.}
 }

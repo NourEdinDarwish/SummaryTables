@@ -72,7 +72,6 @@ tblSummary(
   ciCatDefault = "wilson",
   ciCatSpecific,
   ciDigitsCat = "auto",
-  saveDocx = FALSE,
   openDocx = FALSE
 )
 }
@@ -210,8 +209,6 @@ tblSummary(
 \item{ciCatSpecific}{.}
 
 \item{ciDigitsCat}{.}
-
-\item{saveDocx}{.}
 
 \item{openDocx}{.}
 }

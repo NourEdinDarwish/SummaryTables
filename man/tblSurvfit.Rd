@@ -37,7 +37,6 @@ tblSurvfit(
   boldLevels = FALSE,
   italicizeLabels = FALSE,
   italicizeLevels = FALSE,
-  saveDocx = FALSE,
   openDocx = FALSE
 )
 }
@@ -105,8 +104,6 @@ tblSurvfit(
 \item{italicizeLabels}{.}
 
 \item{italicizeLevels}{.}
-
-\item{saveDocx}{.}
 
 \item{openDocx}{.}
 }

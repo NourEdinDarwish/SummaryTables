@@ -46,30 +46,29 @@ fix_spanning_header <- function(x) {
   x
 }
 
-#' Save or open a gtsummary table as a Word document
+#' Open a gtsummary table as a Word document
 #'
-#' Handles the Save as Word File and Open in Word actions using the same
-#' flextable conversion. jamovi handles the save dialog, opening, or download.
+#' Handles the Open in Word action by converting the table to a flextable and
+#' saving it as a .docx file. jamovi handles opening the file on desktop or
+#' downloading it in jamovi Cloud.
 #'
-#' @param table A gtsummary object to save or open
-#' @param options The analysis options containing the Word actions
+#' @param table A gtsummary object to open
+#' @param options The analysis options containing the `openDocx` action
 #' @param filename The suggested Word filename, including the .docx extension
 #' @noRd
 exportDocx <- function(table, options, filename) {
-  for (name in c("saveDocx", "openDocx")) {
-    if (!options[[name]]) {
-      next
-    }
-
-    option <- options$option(name)
-    option$perform(function(action) {
-      # officer requires the output path to end in .docx.
-      path <- paste0(action$params$fullPath, ".docx")
-      flexTableObject <- gtsummary::as_flex_table(table) |>
-        fix_spanning_header()
-      flextable::save_as_docx(flexTableObject, path = path)
-
-      list(filename = filename, path = path)
-    })
+  if (!options$openDocx) {
+    return()
   }
+
+  option <- options$option("openDocx")
+  option$perform(function(action) {
+    # officer requires the output path to end in .docx.
+    path <- paste0(action$params$fullPath, ".docx")
+    flexTableObject <- gtsummary::as_flex_table(table) |>
+      fix_spanning_header()
+    flextable::save_as_docx(flexTableObject, path = path)
+
+    list(filename = filename, path = path)
+  })
 }

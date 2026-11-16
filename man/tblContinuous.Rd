@@ -35,7 +35,6 @@ tblContinuous(
   qMethod = "BH",
   boldQ = FALSE,
   boldQThreshold = 0.05,
-  saveDocx = FALSE,
   openDocx = FALSE
 )
 }
@@ -99,8 +98,6 @@ tblContinuous(
 \item{boldQ}{.}
 
 \item{boldQThreshold}{.}
-
-\item{saveDocx}{.}
 
 \item{openDocx}{.}
 }

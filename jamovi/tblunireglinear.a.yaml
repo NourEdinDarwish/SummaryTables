@@ -290,11 +290,6 @@ options:
     max: 1
     default: 0.05
 
-  - name: saveDocx
-    title: Save as Word File
-    type: Action
-    action: export
-
   - name: openDocx
     title: Open in Word
     type: Action

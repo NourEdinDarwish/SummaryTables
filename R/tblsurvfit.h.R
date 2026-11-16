@@ -37,7 +37,6 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             boldLevels = FALSE,
             italicizeLabels = FALSE,
             italicizeLevels = FALSE,
-            saveDocx = FALSE,
             openDocx = FALSE, ...) {
 
             super$initialize(
@@ -261,10 +260,6 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 "italicizeLevels",
                 italicizeLevels,
                 default=FALSE)
-            private$..saveDocx <- jmvcore::OptionAction$new(
-                "saveDocx",
-                saveDocx,
-                action="export")
             private$..openDocx <- jmvcore::OptionAction$new(
                 "openDocx",
                 openDocx,
@@ -301,7 +296,6 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..boldLevels)
             self$.addOption(private$..italicizeLabels)
             self$.addOption(private$..italicizeLevels)
-            self$.addOption(private$..saveDocx)
             self$.addOption(private$..openDocx)
         }),
     active = list(
@@ -336,7 +330,6 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         boldLevels = function() private$..boldLevels$value,
         italicizeLabels = function() private$..italicizeLabels$value,
         italicizeLevels = function() private$..italicizeLevels$value,
-        saveDocx = function() private$..saveDocx$value,
         openDocx = function() private$..openDocx$value),
     private = list(
         ..elapsed = NA,
@@ -370,7 +363,6 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..boldLevels = NA,
         ..italicizeLabels = NA,
         ..italicizeLevels = NA,
-        ..saveDocx = NA,
         ..openDocx = NA)
 )
 
@@ -391,7 +383,7 @@ tblSurvfitResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 options=options,
                 name="status",
                 title="Generating Table\u2026",
-                visible="(manualRun == FALSE || run || saveDocx || openDocx)",
+                visible="(manualRun == FALSE || run || openDocx)",
                 columns=list()))
             self$add(jmvcore::Html$new(
                 options=options,
@@ -456,7 +448,6 @@ tblSurvfitBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param boldLevels .
 #' @param italicizeLabels .
 #' @param italicizeLevels .
-#' @param saveDocx .
 #' @param openDocx .
 #' @return A results object containing:
 #' \tabular{llllll}{
@@ -504,7 +495,6 @@ tblSurvfit <- function(
     boldLevels = FALSE,
     italicizeLabels = FALSE,
     italicizeLevels = FALSE,
-    saveDocx = FALSE,
     openDocx = FALSE) {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
@@ -554,7 +544,6 @@ tblSurvfit <- function(
         boldLevels = boldLevels,
         italicizeLabels = italicizeLabels,
         italicizeLevels = italicizeLevels,
-        saveDocx = saveDocx,
         openDocx = openDocx)
 
     analysis <- tblSurvfitClass$new(

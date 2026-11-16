@@ -186,12 +186,4 @@ children:
     margin: large
     children:
       - type: ActionButton
-        name: saveDocx
-        cell:
-          row: 0
-          column: 0
-      - type: ActionButton
         name: openDocx
-        cell:
-          row: 0
-          column: 1

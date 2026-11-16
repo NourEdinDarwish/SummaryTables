@@ -41,7 +41,7 @@ setHtmlResult <- function(htmlContent, resultsHtml) {
   # require minApp: 28.8.0.
   # We keep our scoped max-content override so table-like output fits its
   # content, including shorter output without unused space, while
-  # preserving our minApp of 28.7.0.
+  # preserving our minApp of 28.4.0.
   #
   # Override to max-content: this sizes to the table's intrinsic width and,
   # critically, does NOT change when the iframe viewport is resized by the

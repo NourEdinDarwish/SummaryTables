@@ -40,7 +40,6 @@ tblUniRegLinear(
   qMethod = "BH",
   boldQ = FALSE,
   boldQThreshold = 0.05,
-  saveDocx = FALSE,
   openDocx = FALSE
 )
 }
@@ -114,8 +113,6 @@ tblUniRegLinear(
 \item{boldQ}{.}
 
 \item{boldQThreshold}{.}
-
-\item{saveDocx}{.}
 
 \item{openDocx}{.}
 }

@@ -308,11 +308,6 @@ options:
     type: Bool
     default: false
 
-  - name: saveDocx
-    title: Save as Word File
-    type: Action
-    action: export
-
   - name: openDocx
     title: Open in Word
     type: Action

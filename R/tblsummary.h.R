@@ -72,7 +72,6 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             ciCatDefault = "wilson",
             ciCatSpecific = NULL,
             ciDigitsCat = "auto",
-            saveDocx = FALSE,
             openDocx = FALSE, ...) {
 
             super$initialize(
@@ -681,10 +680,6 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                     "5",
                     "16"),
                 default="auto")
-            private$..saveDocx <- jmvcore::OptionAction$new(
-                "saveDocx",
-                saveDocx,
-                action="export")
             private$..openDocx <- jmvcore::OptionAction$new(
                 "openDocx",
                 openDocx,
@@ -756,7 +751,6 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..ciCatDefault)
             self$.addOption(private$..ciCatSpecific)
             self$.addOption(private$..ciDigitsCat)
-            self$.addOption(private$..saveDocx)
             self$.addOption(private$..openDocx)
         }),
     active = list(
@@ -826,7 +820,6 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ciCatDefault = function() private$..ciCatDefault$value,
         ciCatSpecific = function() private$..ciCatSpecific$value,
         ciDigitsCat = function() private$..ciDigitsCat$value,
-        saveDocx = function() private$..saveDocx$value,
         openDocx = function() private$..openDocx$value),
     private = list(
         ..varsCont = NA,
@@ -895,7 +888,6 @@ tblSummaryOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..ciCatDefault = NA,
         ..ciCatSpecific = NA,
         ..ciDigitsCat = NA,
-        ..saveDocx = NA,
         ..openDocx = NA)
 )
 
@@ -916,7 +908,7 @@ tblSummaryResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 options=options,
                 name="status",
                 title="Generating Table\u2026",
-                visible="(manualRun == FALSE || run || saveDocx || openDocx)",
+                visible="(manualRun == FALSE || run || openDocx)",
                 columns=list()))
             self$add(jmvcore::Html$new(
                 options=options,
@@ -1016,7 +1008,6 @@ tblSummaryBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param ciCatDefault .
 #' @param ciCatSpecific .
 #' @param ciDigitsCat .
-#' @param saveDocx .
 #' @param openDocx .
 #' @return A results object containing:
 #' \tabular{llllll}{
@@ -1099,7 +1090,6 @@ tblSummary <- function(
     ciCatDefault = "wilson",
     ciCatSpecific,
     ciDigitsCat = "auto",
-    saveDocx = FALSE,
     openDocx = FALSE) {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
@@ -1185,7 +1175,6 @@ tblSummary <- function(
         ciCatDefault = ciCatDefault,
         ciCatSpecific = ciCatSpecific,
         ciDigitsCat = ciDigitsCat,
-        saveDocx = saveDocx,
         openDocx = openDocx)
 
     analysis <- tblSummaryClass$new(

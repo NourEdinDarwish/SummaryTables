@@ -43,7 +43,6 @@ tblRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             qMethod = "BH",
             boldQ = FALSE,
             boldQThreshold = 0.05,
-            saveDocx = FALSE,
             openDocx = FALSE, ...) {
 
             super$initialize(
@@ -267,10 +266,6 @@ tblRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                 min=0,
                 max=1,
                 default=0.05)
-            private$..saveDocx <- jmvcore::OptionAction$new(
-                "saveDocx",
-                saveDocx,
-                action="export")
             private$..openDocx <- jmvcore::OptionAction$new(
                 "openDocx",
                 openDocx,
@@ -313,7 +308,6 @@ tblRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
             self$.addOption(private$..qMethod)
             self$.addOption(private$..boldQ)
             self$.addOption(private$..boldQThreshold)
-            self$.addOption(private$..saveDocx)
             self$.addOption(private$..openDocx)
         }),
     active = list(
@@ -354,7 +348,6 @@ tblRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
         qMethod = function() private$..qMethod$value,
         boldQ = function() private$..boldQ$value,
         boldQThreshold = function() private$..boldQThreshold$value,
-        saveDocx = function() private$..saveDocx$value,
         openDocx = function() private$..openDocx$value),
     private = list(
         ..dep = NA,
@@ -394,7 +387,6 @@ tblRegLinearOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
         ..qMethod = NA,
         ..boldQ = NA,
         ..boldQThreshold = NA,
-        ..saveDocx = NA,
         ..openDocx = NA)
 )
 
@@ -415,7 +407,7 @@ tblRegLinearResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Clas
                 options=options,
                 name="status",
                 title="Generating Table\u2026",
-                visible="(manualRun == FALSE || run || saveDocx || openDocx)",
+                visible="(manualRun == FALSE || run || openDocx)",
                 columns=list()))
             self$add(jmvcore::Html$new(
                 options=options,
@@ -486,7 +478,6 @@ tblRegLinearBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param qMethod .
 #' @param boldQ .
 #' @param boldQThreshold .
-#' @param saveDocx .
 #' @param openDocx .
 #' @return A results object containing:
 #' \tabular{llllll}{
@@ -540,7 +531,6 @@ tblRegLinear <- function(
     qMethod = "BH",
     boldQ = FALSE,
     boldQThreshold = 0.05,
-    saveDocx = FALSE,
     openDocx = FALSE) {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
@@ -597,7 +587,6 @@ tblRegLinear <- function(
         qMethod = qMethod,
         boldQ = boldQ,
         boldQThreshold = boldQThreshold,
-        saveDocx = saveDocx,
         openDocx = openDocx)
 
     analysis <- tblRegLinearClass$new(

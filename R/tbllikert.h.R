@@ -21,7 +21,6 @@ tblLikertOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             language = "en",
             boldLabels = FALSE,
             italicizeLabels = FALSE,
-            saveDocx = FALSE,
             openDocx = FALSE, ...) {
 
             super$initialize(
@@ -146,10 +145,6 @@ tblLikertOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 "italicizeLabels",
                 italicizeLabels,
                 default=FALSE)
-            private$..saveDocx <- jmvcore::OptionAction$new(
-                "saveDocx",
-                saveDocx,
-                action="export")
             private$..openDocx <- jmvcore::OptionAction$new(
                 "openDocx",
                 openDocx,
@@ -170,7 +165,6 @@ tblLikertOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..language)
             self$.addOption(private$..boldLabels)
             self$.addOption(private$..italicizeLabels)
-            self$.addOption(private$..saveDocx)
             self$.addOption(private$..openDocx)
         }),
     active = list(
@@ -189,7 +183,6 @@ tblLikertOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         language = function() private$..language$value,
         boldLabels = function() private$..boldLabels$value,
         italicizeLabels = function() private$..italicizeLabels$value,
-        saveDocx = function() private$..saveDocx$value,
         openDocx = function() private$..openDocx$value),
     private = list(
         ..vars = NA,
@@ -207,7 +200,6 @@ tblLikertOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..language = NA,
         ..boldLabels = NA,
         ..italicizeLabels = NA,
-        ..saveDocx = NA,
         ..openDocx = NA)
 )
 
@@ -228,7 +220,7 @@ tblLikertResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 options=options,
                 name="status",
                 title="Generating Table\u2026",
-                visible="(manualRun == FALSE || run || saveDocx || openDocx)",
+                visible="(manualRun == FALSE || run || openDocx)",
                 columns=list()))
             self$add(jmvcore::Html$new(
                 options=options,
@@ -277,7 +269,6 @@ tblLikertBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param language .
 #' @param boldLabels .
 #' @param italicizeLabels .
-#' @param saveDocx .
 #' @param openDocx .
 #' @return A results object containing:
 #' \tabular{llllll}{
@@ -309,7 +300,6 @@ tblLikert <- function(
     language = "en",
     boldLabels = FALSE,
     italicizeLabels = FALSE,
-    saveDocx = FALSE,
     openDocx = FALSE) {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
@@ -339,7 +329,6 @@ tblLikert <- function(
         language = language,
         boldLabels = boldLabels,
         italicizeLabels = italicizeLabels,
-        saveDocx = saveDocx,
         openDocx = openDocx)
 
     analysis <- tblLikertClass$new(

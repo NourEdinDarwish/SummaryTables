@@ -30,7 +30,6 @@ tblCrossOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             boldPvalue = FALSE,
             boldPvalueThreshold = 0.05,
             sourceNote = FALSE,
-            saveDocx = FALSE,
             openDocx = FALSE, ...) {
 
             super$initialize(
@@ -203,10 +202,6 @@ tblCrossOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 "sourceNote",
                 sourceNote,
                 default=FALSE)
-            private$..saveDocx <- jmvcore::OptionAction$new(
-                "saveDocx",
-                saveDocx,
-                action="export")
             private$..openDocx <- jmvcore::OptionAction$new(
                 "openDocx",
                 openDocx,
@@ -236,7 +231,6 @@ tblCrossOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             self$.addOption(private$..boldPvalue)
             self$.addOption(private$..boldPvalueThreshold)
             self$.addOption(private$..sourceNote)
-            self$.addOption(private$..saveDocx)
             self$.addOption(private$..openDocx)
         }),
     active = list(
@@ -264,7 +258,6 @@ tblCrossOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         boldPvalue = function() private$..boldPvalue$value,
         boldPvalueThreshold = function() private$..boldPvalueThreshold$value,
         sourceNote = function() private$..sourceNote$value,
-        saveDocx = function() private$..saveDocx$value,
         openDocx = function() private$..openDocx$value),
     private = list(
         ..row = NA,
@@ -291,7 +284,6 @@ tblCrossOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
         ..boldPvalue = NA,
         ..boldPvalueThreshold = NA,
         ..sourceNote = NA,
-        ..saveDocx = NA,
         ..openDocx = NA)
 )
 
@@ -312,7 +304,7 @@ tblCrossResults <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 options=options,
                 name="status",
                 title="Generating Table\u2026",
-                visible="(manualRun == FALSE || run || saveDocx || openDocx)",
+                visible="(manualRun == FALSE || run || openDocx)",
                 columns=list()))
             self$add(jmvcore::Html$new(
                 options=options,
@@ -370,7 +362,6 @@ tblCrossBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
 #' @param boldPvalue .
 #' @param boldPvalueThreshold .
 #' @param sourceNote .
-#' @param saveDocx .
 #' @param openDocx .
 #' @return A results object containing:
 #' \tabular{llllll}{
@@ -411,7 +402,6 @@ tblCross <- function(
     boldPvalue = FALSE,
     boldPvalueThreshold = 0.05,
     sourceNote = FALSE,
-    saveDocx = FALSE,
     openDocx = FALSE) {
 
     if ( ! requireNamespace("jmvcore", quietly=TRUE))
@@ -453,7 +443,6 @@ tblCross <- function(
         boldPvalue = boldPvalue,
         boldPvalueThreshold = boldPvalueThreshold,
         sourceNote = sourceNote,
-        saveDocx = saveDocx,
         openDocx = openDocx)
 
     analysis <- tblCrossClass$new(

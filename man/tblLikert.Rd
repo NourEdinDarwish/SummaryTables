@@ -21,7 +21,6 @@ tblLikert(
   language = "en",
   boldLabels = FALSE,
   italicizeLabels = FALSE,
-  saveDocx = FALSE,
   openDocx = FALSE
 )
 }
@@ -57,8 +56,6 @@ tblLikert(
 \item{boldLabels}{.}
 
 \item{italicizeLabels}{.}
-
-\item{saveDocx}{.}
 
 \item{openDocx}{.}
 }

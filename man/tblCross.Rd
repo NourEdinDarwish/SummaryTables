@@ -30,7 +30,6 @@ tblCross(
   boldPvalue = FALSE,
   boldPvalueThreshold = 0.05,
   sourceNote = FALSE,
-  saveDocx = FALSE,
   openDocx = FALSE
 )
 }
@@ -84,8 +83,6 @@ tblCross(
 \item{boldPvalueThreshold}{.}
 
 \item{sourceNote}{.}
-
-\item{saveDocx}{.}
 
 \item{openDocx}{.}
 }
