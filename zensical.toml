@@ -17,7 +17,7 @@ site_name = "SummaryTables"
 # meaningful description of the site content for use by search engines.
 #
 # Read more: https://zensical.org/docs/setup/basics/#site_description
-site_description = "Publication-Ready Summary Tables module for jamovi. Easily create comprehensive data summaries, cross-tabulations, survival analyses, and regression tables."
+site_description = "A jamovi module for creating publication-ready analytical and summary tables."
 
 # The site_author attribute. This is used in the HTML head element.
 #
@@ -365,5 +365,15 @@ combine_header_slug = true
 [project.markdown_extensions.pymdownx.tasklist]
 custom_checkbox = true
 [project.markdown_extensions.pymdownx.tilde]
-
 [project.markdown_extensions.pymdownx.snippets]
+
+# Enable automatic image lightbox
+[project.plugins.glightbox]
+
+# Generate preview cards for shared page links
+[project.plugins.social]
+
+[project.plugins.social.cards_layout_options]
+logo = "docs/assets/logo-social.svg"
+background_color = "#ffffff"
+color = "#1f2937"

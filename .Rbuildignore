@@ -12,7 +12,6 @@
 ^zensical\.toml$
 ^\.github$
 ^CITATION\.cff$
-^analysis-summarytables\.svg$
 ^[.]?air[.]toml$
 ^\.vscode$
 ^\.lintr$

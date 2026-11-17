@@ -1,4 +1,5 @@
 ---
+description: "Changelog of new features, improvements, and bug fixes across versions."
 hide:
   - navigation
 ---

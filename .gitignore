@@ -59,5 +59,6 @@ npm-debug.log
 inst/doc
 tests/testthat/Rplots.pdf
 .venv/
+.cache/
 site/
 *.code-workspace

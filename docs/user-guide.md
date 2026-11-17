@@ -1,4 +1,5 @@
 ---
+description: "Documentation on table selection, default behaviors, key options, and Word export."
 hide:
   - navigation
 ---
@@ -35,7 +36,7 @@ This creates a severe cumulative calculation overhead. Any individual action tri
 To prevent this snowballing delay, you can enable _Manual Run Mode_.
 
 <figure markdown="span">
-  ![Screenshot showing the Run manually option](assets/run-manually.png){ loading=lazy width="500" }
+  ![Screenshot showing the Run manually option](assets/run-manually.png){ loading=lazy width="500" height="417" }
 </figure>
 
 Checking the **Run manually** option disables the auto-run behavior and activates the **Run** button. This allows you to add all 10 variables at once and set all your options without triggering any calculations. Once everything is set up, click **Run** to calculate the final table exactly once—fitting just the _10 models_ you actually need. This saves a huge amount of time, especially for computationally heavy tables like regressions.
@@ -47,7 +48,7 @@ SummaryTables allows you to export any table directly as a `.docx` file for easy
 Click the **Open in Word** button below **Appearance** to open the table in Word (or your default app for Word files), where you can copy it into your manuscript, edit it, or save it.
 
 <figure markdown="span">
-  ![Screenshot showing the Open in Word button](assets/open-in-word.png){ loading=lazy width="500" }
+  ![Screenshot showing the Open in Word button](assets/open-in-word.png){ loading=lazy width="500" height="81" }
 </figure>
 
 !!! info "jamovi Cloud"
@@ -65,7 +66,7 @@ SummaryTables provides two distinct sets of rounding options: one for general st
 You can independently set the rounding rules for various elements in your tables (such as summary statistics, coefficients, and confidence intervals) using the **Decimal places** dropdowns.
 
 <figure markdown="span">
-  ![The Decimal places selection dropdown showing Auto and fixed numerical options](assets/stats-digits.png){ loading=lazy width="500" }
+  ![The Decimal places selection dropdown showing Auto and fixed numerical options](assets/stats-digits.png){ loading=lazy width="500" height="205" }
 </figure>
 
 - **Auto (Default):** Typically uses adaptive decimal places, though certain themes may affect this behavior.
@@ -76,7 +77,7 @@ You can independently set the rounding rules for various elements in your tables
 The p-value **Decimal places** dropdown controls the rounding of _large_ p-values, while precision automatically increases as p-values get smaller.
 
 <figure markdown="span">
-  ![The large p-value decimal places selection dropdown showing Auto and numerical precision options](assets/pvalue-digits.png){ loading=lazy width="500" }
+  ![The large p-value decimal places selection dropdown showing Auto and numerical precision options](assets/pvalue-digits.png){ loading=lazy width="500" height="164" }
 </figure>
 
 - **Auto (Default):** Depends on the theme (the default theme uses **"1"**).
@@ -91,7 +92,7 @@ The module automatically selects appropriate statistical tests based on your dat
 #### Continuous Variables
 
 <figure markdown="span">
-  ![Screenshot showing the default test dropdown for continuous variables with parametric and non-parametric options](assets/default-test-continuous.png){ loading=lazy width="500" }
+  ![Screenshot showing the default test dropdown for continuous variables with parametric and non-parametric options](assets/default-test-continuous.png){ loading=lazy width="500" height="254" }
 </figure>
 
 - **Parametric (Default):** Uses the independent t-test (not assuming equal variances) for 2 groups, or one-way ANOVA (not assuming equal variances) for >2 groups.
@@ -104,7 +105,7 @@ The module automatically selects appropriate statistical tests based on your dat
 #### Categorical Variables
 
 <figure markdown="span">
-  ![Screenshot showing the default test dropdown for categorical variables with auto, chi-square, and fisher's exact test options](assets/default-test-categorical.png){ loading=lazy width="500" }
+  ![Screenshot showing the default test dropdown for categorical variables with auto, chi-square, and fisher's exact test options](assets/default-test-categorical.png){ loading=lazy width="500" height="257" }
 </figure>
 
 - **Auto (Default):** Uses Pearson's Chi-square test (without continuity correction) if all expected cell counts are ≥ 5. It automatically falls back to Fisher's exact test if any expected cell count is < 5.
@@ -112,7 +113,7 @@ The module automatically selects appropriate statistical tests based on your dat
 #### Variable-Specific Tests
 
 <figure markdown="span">
-  ![Screenshot showing the per-variable test dropdown for selecting specific tests like Wilcoxon or ANOVA](assets/per-variable-tests.png){ loading=lazy width="500" }
+  ![Screenshot showing the per-variable test dropdown for selecting specific tests like Wilcoxon or ANOVA](assets/per-variable-tests.png){ loading=lazy width="500" height="258" }
 </figure>
 
 If you want specific tests for specific variables, you can manually select a different test for individual variables. For example, if your default is set to **Parametric (t-test / ANOVA)**, you can manually set a specific variable to use the **Wilcoxon rank-sum** test.
@@ -128,7 +129,7 @@ If you want specific tests for specific variables, you can manually select a dif
     When you select **SMD** as your **Difference** method, the values are calculated using the [`smd` R package](https://bsaul.github.io/smd/index.html).
 
     <figure markdown="span">
-      ![jamovi interface showing the SMD method selected under the Difference options](assets/difference-smd.png){ loading=lazy width="500" }
+      ![jamovi interface showing the SMD method selected under the Difference options](assets/difference-smd.png){ loading=lazy width="500" height="333" }
     </figure>
 
 !!! failure "Multiple P-Value Columns Error"
@@ -136,7 +137,7 @@ If you want specific tests for specific variables, you can manually select a dif
     If you select a **Difference** method that generates a p-value and you also check the **P-value** option under the general **P-value** section, an error will occur. The table cannot display multiple p-value columns simultaneously.
 
     <figure markdown="span">
-      ![Error message displayed in jamovi when attempting to add multiple p-value columns](assets/multiple-pvalues-error.png){ loading=lazy width="500" }
+      ![Error message displayed in jamovi when attempting to add multiple p-value columns](assets/multiple-pvalues-error.png){ loading=lazy width="500" height="44" }
     </figure>
 
 ### Regression Tables: Univariable vs. Multivariable
@@ -151,7 +152,7 @@ It is important to understand the fundamental difference in how **Univariable Re
 For linear regression models, SummaryTables allows you to report standardized coefficients.
 
 <figure markdown="span">
-  ![jamovi interface highlighting the Standardized Coefficients option in regression tables](assets/standardized-coefficients.png){ loading=lazy width="500" }
+  ![jamovi interface highlighting the Standardized Coefficients option in regression tables](assets/standardized-coefficients.png){ loading=lazy width="500" height="347" }
 </figure>
 
 !!! info "Difference from SPSS"
@@ -163,7 +164,7 @@ For linear regression models, SummaryTables allows you to report standardized co
 When using the **Survival Table** or **Cox Regression** analyses, the **Event** variable must be coded correctly:
 
 <figure markdown="span">
-  ![jamovi interface showing the Event variable assignment and Event level selection](assets/event-variable-options.png){ loading=lazy width="500" }
+  ![jamovi interface showing the Event variable assignment and Event level selection](assets/event-variable-options.png){ loading=lazy width="500" height="295" }
 </figure>
 
 - **If continuous:** You can use either `0` and `1` (0 = censored, 1 = event) OR `1` and `2` (1 = censored, 2 = event). Any other numeric values will cause an error.

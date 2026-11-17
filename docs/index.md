@@ -1,12 +1,15 @@
 ---
 title: Home
+social:
+  cards_layout_options:
+    title: "Overview"
 hide:
   - navigation
 ---
 
 <div align="center" markdown="1">
 
-<img src="assets/logo.svg" alt="SummaryTables" width="192" height="114">
+<img src="assets/logo.svg" class="off-glb" alt="SummaryTables logo" width="192" height="114">
 
 # SummaryTables
 
@@ -24,6 +27,10 @@ and regression tables, powered by
 [gtsummary](https://www.danieldsjoberg.com/gtsummary/).
 
 </div>
+
+<figure markdown="span">
+  ![Screenshot of the Summary Table analysis in jamovi](assets/summary-table.png){ width="750" height="560" }
+</figure>
 
 ## Analyses
 

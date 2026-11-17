@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="analysis-SummaryTables.svg" alt="SummaryTables" width="192" height="114">
+<img src="docs/assets/logo.svg" alt="SummaryTables logo" width="192" height="114">
 
 # SummaryTables
 
@@ -18,6 +18,10 @@ and regression tables, powered by
 [gtsummary](https://www.danieldsjoberg.com/gtsummary/).
 
 **[📖 Read the Documentation](https://nouredindarwish.github.io/SummaryTables/)**
+
+<br>
+
+<img src="docs/assets/summary-table.png" alt="Screenshot of the Summary Table analysis in jamovi" width="750" height="560">
 
 </div>
 
