@@ -80,9 +80,10 @@ renderHtml <- function(table, resultsHtml) {
   htmlContent <- table |>
     gtsummary::as_gt() |>
     gt::tab_options(table.background.color = "transparent") |>
+    # Keep long footnotes and source notes from widening the table.
     gt::tab_style(
       style = gt::css(width = "1px"),
-      locations = gt::cells_source_notes()
+      locations = list(gt::cells_source_notes(), gt::cells_footnotes())
     ) |>
     gt::as_raw_html()
 
