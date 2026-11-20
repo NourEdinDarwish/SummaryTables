@@ -53,6 +53,7 @@ children:
             name: marginText
             format: string
             width: large
+            enable: (!(margin:none))
       - type: Label
         label: Missing Values
         children:
