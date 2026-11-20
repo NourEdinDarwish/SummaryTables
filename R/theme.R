@@ -1,8 +1,8 @@
 #' Apply gtsummary theme(s) based on user options
 #'
-#' Applies one or more gtsummary themes in the correct order. ALWAYS resets
-#' first to prevent state leakage from previous runs. Themes stack on top of
-#' each other (e.g., JAMA + compact + Spanish).
+#' Applies journal, compact, and language themes in that order. Themes stack
+#' on top of each other (e.g., JAMA + compact + Spanish). Each analysis resets
+#' the theme on exit to prevent state leakage between runs.
 #'
 #' @param journalOption Character: Journal theme to apply. One of:
 #'   "default", "jama", "lancet", "nejm", "qjecon"
@@ -12,20 +12,22 @@
 #' @param compactOption Logical: Apply compact theme if TRUE
 #' @noRd
 applyTheme <- function(journalOption, languageOption, compactOption) {
-  # Apply journal theme if specified (not "default")
-  if (journalOption != "default") {
-    gtsummary::theme_gtsummary_journal(journal = journalOption)
-  }
+  suppressMessages({
+    # Apply journal theme if specified (not "default")
+    if (journalOption != "default") {
+      gtsummary::theme_gtsummary_journal(journal = journalOption)
+    }
 
-  # Apply compact theme if requested
-  if (compactOption) {
-    gtsummary::theme_gtsummary_compact()
-  }
+    # Apply compact theme if requested
+    if (compactOption) {
+      gtsummary::theme_gtsummary_compact()
+    }
 
-  # Apply language theme if not English
-  if (languageOption != "en") {
-    gtsummary::theme_gtsummary_language(language = languageOption)
-  }
+    # Apply language theme if not English
+    if (languageOption != "en") {
+      gtsummary::theme_gtsummary_language(language = languageOption)
+    }
+  })
 }
 
 #' Derive all theme-aware formatting strings from user options
