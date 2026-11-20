@@ -1,3 +1,15 @@
+## SummaryTables 1.5.0
+
+- Added an option under the Difference section of Summary Table to run the two-proportion z-test with or without continuity correction (without continuity correction is now the default).
+- Simplified Word export across all analyses to a single "Open in Word" button, expanding compatibility to jamovi 28.4 and later.
+- Confidence Intervals (CI) can now also be displayed for the Overall column in Summary Table.
+- Improved compatibility between the Overall column and Journal Themes in Summary Table.
+- Fixed an issue in Summary Table and Continuous Table where variable-specific statistical tests and Difference methods did not fully override the default test settings or formatting.
+- Fixed an issue in Multivariable Regression where adding a polynomial term could alter the labels of other variables or category levels sharing part of the same name.
+- Fixed an issue where long table footnotes could stretch table widths instead of wrapping.
+- Minor UI and label improvements.
+- General bug-fixes and improvements.
+
 ## SummaryTables 1.4.0
 
 - Improved Word export across all analyses with buttons to save tables to a chosen location or open them directly in Word, replacing manual file path entry.
