@@ -10,10 +10,10 @@
 #' @param event Character: column name of the event variable
 #' @noRd
 validateEventNumeric <- function(data, event) {
-  unique_vals <- unique(data[[event]][!is.na(data[[event]])])
-  valid_01 <- all(unique_vals %in% c(0, 1))
-  valid_12 <- all(unique_vals %in% c(1, 2))
-  if (!valid_01 && !valid_12) {
+  uniqueVals <- unique(data[[event]][!is.na(data[[event]])])
+  valid01 <- all(uniqueVals %in% c(0, 1))
+  valid12 <- all(uniqueVals %in% c(1, 2))
+  if (!valid01 && !valid12) {
     jmvcore::reject(
       paste(
         "Invalid values in the Event variable. It must be coded using",
@@ -22,7 +22,7 @@ validateEventNumeric <- function(data, event) {
         "Found values: {}"
       ),
       code = NULL,
-      paste(sort(unique_vals), collapse = ", ")
+      paste(sort(uniqueVals), collapse = ", ")
     )
   }
 }
@@ -45,7 +45,10 @@ parseCommaNumeric <- function(text) {
 
   if (length(values) == 0) {
     jmvcore::reject(
-      "Please enter one or more comma-separated numeric time points (e.g. 12 or 12, 24, 60)" # nolint
+      paste(
+        "Please enter one or more comma-separated",
+        "numeric time points (e.g. 12 or 12, 24, 60)"
+      )
     )
   }
 
@@ -114,8 +117,8 @@ buildSurvfitList <- function(data, elapsedB64, eventB64, strataB64, confInt) {
 
 #' Build descriptive label and spanning headers for tbl_survfit
 #'
-#' Returns a list with `label_header` (per-column glue template) and optionally
-#' `spanning_header` for multi-time-point tables. The CI portion uses the same
+#' Returns a list with `labelHeader` (per-column glue template) and optionally
+#' `spanningHeader` for multi-time-point tables. The CI portion uses the same
 #' dynamic formatting as the regression analysis.
 #'
 #' @param statistic `"times"` or `"median"`
@@ -124,7 +127,7 @@ buildSurvfitList <- function(data, elapsedB64, eventB64, strataB64, confInt) {
 #' @param timeSuffix Character label appended to time values (e.g. "-Month",
 #'   "-Year")
 #' @param nTimes Number of time points (used only when statistic == "times")
-#' @return A list with `label_header` and `spanning_header` (NULL if not needed)
+#' @return A list with `labelHeader` and `spanningHeader` (NULL if not needed)
 #' @noRd
 buildSurvfitHeader <- function(
   statistic,
@@ -152,21 +155,21 @@ buildSurvfitHeader <- function(
 
   if (statistic == "median") {
     return(list(
-      label_header = paste0("**Median Survival", ciPart, "**"),
-      spanning_header = NULL
+      labelHeader = paste0("**Median Survival", ciPart, "**"),
+      spanningHeader = NULL
     ))
   }
 
   # statistic == "times"
   if (nTimes >= 2) {
     list(
-      label_header = paste0("**", timeGlue, "**"),
-      spanning_header = paste0("**", typePart, ciPart, "**")
+      labelHeader = paste0("**", timeGlue, "**"),
+      spanningHeader = paste0("**", typePart, ciPart, "**")
     )
   } else {
     list(
-      label_header = paste0("**", timeGlue, " ", typePart, ciPart, "**"),
-      spanning_header = NULL
+      labelHeader = paste0("**", timeGlue, " ", typePart, ciPart, "**"),
+      spanningHeader = NULL
     )
   }
 }

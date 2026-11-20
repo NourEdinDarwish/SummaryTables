@@ -12,15 +12,15 @@ validateFactorPolynomials <- function(data, terms) {
     polys <- names(counts)[counts > 1]
 
     if (length(polys) > 0) {
-      for (poly_var in polys) {
-        if (is.factor(data[[poly_var]])) {
+      for (polyVar in polys) {
+        if (is.factor(data[[polyVar]])) {
           jmvcore::reject(
             paste(
               "Polynomial terms cannot be applied to Factors.",
               'Please remove the polynomial term for "{}".'
             ),
             code = NULL,
-            poly_var
+            polyVar
           )
         }
       }
@@ -73,7 +73,7 @@ buildMultiRegTable <- function(model, options, b64Map) {
   # default, R's lm/glm forces all interaction terms to the very bottom of the
   # output table, ignoring the order the user specified them in the jamovi UI.
   # To override this, we explicitly define the `include` argument for gtsummary
-  # using the exact order from the UI (`user_terms`).
+  # using the exact order from the UI (`userTerms`).
   #
   # Technical Hurdle: R reorders the variables *inside* an interaction term
   # based on the order the main effects first appeared in the formula (e.g., UI
@@ -84,22 +84,22 @@ buildMultiRegTable <- function(model, options, b64Map) {
   # equivalent, guaranteeing gtsummary finds the correct term and prints the row
   # in the user's requested order.
   termsB64 <- lapply(options$modelTerms, jmvcore::toB64)
-  user_terms <- jmvcore::composeTerms(termsB64)
-  model_terms <- labels(model$terms)
+  userTerms <- jmvcore::composeTerms(termsB64)
+  modelTerms <- labels(model$terms)
 
   args$include <- vapply(
-    user_terms,
+    userTerms,
     function(ut) {
-      if (ut %in% model_terms) {
+      if (ut %in% modelTerms) {
         return(ut)
       }
       # Interaction components may be in different order — match by sorted parts
-      ut_parts <- sort(strsplit(ut, ":")[[1]])
-      for (mt in model_terms) {
+      utParts <- sort(strsplit(ut, ":")[[1]])
+      for (mt in modelTerms) {
         if (!grepl(":", mt, fixed = TRUE)) {
           next
         }
-        if (identical(ut_parts, sort(strsplit(mt, ":")[[1]]))) return(mt)
+        if (identical(utParts, sort(strsplit(mt, ":")[[1]]))) return(mt)
       }
       ut
     },
@@ -154,7 +154,7 @@ lmStd <- function(formula, data, ...) {
   #
   # Previously we used:
   #   datawizard::standardize(
-  #     data, select = select_vars, remove_na = "selected"
+  #     data, select = selectVars, remove_na = "selected"
   #   )
   # This had a bug: with force = FALSE (default), datawizard internally
   # excludes factor columns from the "selected" set, so remove_na = "selected"
@@ -168,13 +168,13 @@ lmStd <- function(formula, data, ...) {
   # "all" checks EVERY column — including ones not in the formula. NAs in
   # unrelated columns would incorrectly drop rows.
   #
-  # Fix: subset to formula columns first (data[select_vars]), then use
+  # Fix: subset to formula columns first (data[selectVars]), then use
   # remove_na = "all". This performs listwise deletion on exactly the
   # variables the model uses, matching what lm() and
   # parameters::standardize_parameters(method = "refit") do.
-  select_vars <- all.vars(formula)
+  selectVars <- all.vars(formula)
   data <- datawizard::standardize(
-    data[select_vars],
+    data[selectVars],
     remove_na = "all"
   )
   stats::lm(formula, data = data, ...)
@@ -195,7 +195,7 @@ lmStd <- function(formula, data, ...) {
 #'   `str2lang("survival::Surv(time, event)")`.
 #' @param include Character vector of predictor variable names
 #' @param method Regression function (e.g. lm, glm, survival::coxph)
-#' @param method.args Named list of additional arguments passed to method
+#' @param methodArgs Named list of additional arguments passed to method
 #'   (e.g. `list(family = binomial)`). Captured via `substitute()` so that
 #'   tbl_uvregression's internal NSE works through `do.call()`.
 #' @param options Jamovi options object
@@ -206,7 +206,7 @@ buildUniRegTable <- function(
   y,
   include,
   method,
-  method.args = list(),
+  methodArgs = list(),
   options
 ) {
   args <- list(
@@ -214,7 +214,7 @@ buildUniRegTable <- function(
     method = method,
     y = y,
     include = include,
-    method.args = substitute(method.args),
+    method.args = substitute(methodArgs),
     hide_n = TRUE
   )
 
@@ -257,13 +257,13 @@ pipeOverrideEstimateHeader <- function(table, options) {
     "**Coefficient**"
   }
 
-  current_header <- table$table_styling$header$label[
+  currentHeader <- table$table_styling$header$label[
     table$table_styling$header$column == "estimate"
   ]
 
-  new_header <- sub("^\\*\\*.*?\\*\\*", coefHeader, current_header)
+  newHeader <- sub("^\\*\\*.*?\\*\\*", coefHeader, currentHeader)
   table |>
-    gtsummary::modify_header(estimate = new_header)
+    gtsummary::modify_header(estimate = newHeader)
 }
 
 
@@ -493,7 +493,7 @@ pipeCiMergeReg <- function(table, options) {
 
       hasStars <- "stars" %in% names(table$table_body)
 
-      new_header_text <- paste0(
+      newHeaderText <- paste0(
         table$table_styling$header |>
           dplyr::filter(.data$column == "estimate") |>
           dplyr::pull("label"),
@@ -521,7 +521,7 @@ pipeCiMergeReg <- function(table, options) {
           ),
           pattern = pattern
         ) |>
-        gtsummary::modify_header(estimate = new_header_text)
+        gtsummary::modify_header(estimate = newHeaderText)
     },
     error = function(e) table
   )

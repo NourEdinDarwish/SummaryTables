@@ -8,7 +8,10 @@ tblRegLogisticClass <- R6::R6Class(
 
       if (is.null(dep) || length(terms) == 0) {
         renderPlaceholder(
-          "Add a Dependent Variable and at least one Model Term to generate the table", #nolint
+          paste(
+            "Add a Dependent Variable and at least one Model Term",
+            "to generate the table"
+          ),
           self$results$tbl
         )
         self$results$status$setVisible(FALSE)

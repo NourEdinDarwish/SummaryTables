@@ -48,8 +48,12 @@ applyTextFormatting <- function(table, hasPvalue, options) {
   }
 
   # Bold p-values (regression — inherent p-values, no source toggle) --------
-  if (optTrue(options$boldPvalue) && hasPvalue &&
-        !optTrue(options$addPvalue) && !optTrue(options$addDifference)) {
+  if (
+    optTrue(options$boldPvalue) &&
+      hasPvalue &&
+      !optTrue(options$addPvalue) &&
+      !optTrue(options$addDifference)
+  ) {
     table <- gtsummary::bold_p(table, t = options$boldPvalueThreshold)
   }
 
@@ -63,8 +67,11 @@ applyTextFormatting <- function(table, hasPvalue, options) {
   }
 
   # Separate p-value footnotes (from add_p) ---------------------------------
-  if (optTrue(options$separatePvalueFootnotes) &&
-        optTrue(options$addPvalue) && hasPvalue) {
+  if (
+    optTrue(options$separatePvalueFootnotes) &&
+      optTrue(options$addPvalue) &&
+      hasPvalue
+  ) {
     table <- gtsummary::separate_p_footnotes(table)
   }
 

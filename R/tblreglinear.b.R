@@ -8,7 +8,10 @@ tblRegLinearClass <- R6::R6Class(
 
       if (is.null(dep) || length(terms) == 0) {
         renderPlaceholder(
-          "Add a Dependent Variable and at least one Model Term to generate the table", #nolint
+          paste(
+            "Add a Dependent Variable and at least one Model Term",
+            "to generate the table"
+          ),
           self$results$tbl
         )
         self$results$status$setVisible(FALSE)
@@ -95,13 +98,13 @@ tblRegLinearClass <- R6::R6Class(
             # because "all" checks EVERY column — including ones not in the
             # formula. NAs in unrelated columns would incorrectly drop rows.
             #
-            # Fix: subset to formula columns first (data[select_vars]), then
+            # Fix: subset to formula columns first (data[selectVars]), then
             # use remove_na = "all". This performs listwise deletion on exactly
             # the variables the model uses, matching what lm() and
             # parameters::standardize_parameters(method = "refit") do.
-            select_vars <- all.vars(formula)
+            selectVars <- all.vars(formula)
             data <- datawizard::standardize(
-              data[select_vars],
+              data[selectVars],
               remove_na = "all"
             )
           }

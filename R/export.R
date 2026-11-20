@@ -12,7 +12,7 @@
 #' @return The same `flextable` object with blank header cells vertically
 #'   merged.
 #' @noRd
-fix_spanning_header <- function(x) {
+fixSpanningHeader <- function(x) {
   nrows <- nrow(x$header$dataset)
   if (nrows <= 1) {
     return(x)
@@ -20,26 +20,26 @@ fix_spanning_header <- function(x) {
 
   ncols <- ncol(x$header$dataset)
   handled <- logical(ncols)
-  merge_ops <- list()
+  mergeOps <- list()
 
   for (i in seq_len(nrows - 1)) {
     for (j in seq_len(ncols)) {
       if (x$header$dataset[i, j] == " ") {
         x$header$spans$rows[i, j] <- 1
         if (!handled[j]) {
-          merge_ops <- c(merge_ops, list(list(rows = seq(i, nrows), col = j)))
+          mergeOps <- c(mergeOps, list(list(rows = seq(i, nrows), col = j)))
           handled[j] <- TRUE
         }
       }
     }
   }
 
-  for (op in merge_ops) {
-    anchor_r <- op$rows[1]
-    base_r <- op$rows[length(op$rows)]
+  for (op in mergeOps) {
+    anchorR <- op$rows[1]
+    baseR <- op$rows[length(op$rows)]
     col <- op$col
-    x$header$dataset[anchor_r, col] <- x$header$dataset[base_r, col]
-    x$header$content$data[anchor_r, col] <- x$header$content$data[base_r, col]
+    x$header$dataset[anchorR, col] <- x$header$dataset[baseR, col]
+    x$header$content$data[anchorR, col] <- x$header$content$data[baseR, col]
     x <- flextable::merge_at(x, i = op$rows, j = col, part = "header")
   }
 
@@ -66,7 +66,7 @@ exportDocx <- function(table, options, filename) {
     # officer requires the output path to end in .docx.
     path <- paste0(action$params$fullPath, ".docx")
     flexTableObject <- gtsummary::as_flex_table(table) |>
-      fix_spanning_header()
+      fixSpanningHeader()
     flextable::save_as_docx(flexTableObject, path = path)
 
     list(filename = filename, path = path)

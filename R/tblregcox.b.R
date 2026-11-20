@@ -9,7 +9,10 @@ tblRegCoxClass <- R6::R6Class(
 
       if (is.null(elapsed) || is.null(event) || length(terms) == 0) {
         renderPlaceholder(
-          "Add a Time variable, an Event variable, and at least one Model Term to generate the table", #nolint
+          paste(
+            "Add a Time variable, an Event variable,",
+            "and at least one Model Term to generate the table"
+          ),
           self$results$tbl
         )
         self$results$status$setVisible(FALSE)

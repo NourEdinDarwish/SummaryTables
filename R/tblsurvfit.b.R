@@ -147,7 +147,7 @@ tblSurvfitClass <- R6::R6Class(
             timeSuffix = self$options$timeSuffix,
             nTimes = length(timesVec)
           )
-          tblArgs$label_header <- headers$label_header
+          tblArgs$label_header <- headers$labelHeader
 
           # Core table ---------------------------------------------------------
           table <- runSafe(
@@ -156,11 +156,11 @@ tblSurvfitClass <- R6::R6Class(
           )
 
           # Spanning header for multiple time points
-          if (!is.null(headers$spanning_header)) {
+          if (!is.null(headers$spanningHeader)) {
             table <- runSafe(
               gtsummary::modify_spanning_header(
                 table,
-                gtsummary::all_stat_cols() ~ headers$spanning_header
+                gtsummary::all_stat_cols() ~ headers$spanningHeader
               ),
               collector
             )

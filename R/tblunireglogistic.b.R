@@ -9,7 +9,10 @@ tblUniRegLogisticClass <- R6::R6Class(
 
       if (is.null(dep) || (length(covs) == 0 && length(factors) == 0)) {
         renderPlaceholder(
-          "Add a Dependent Variable and at least one Covariate or Factor to generate the table", #nolint
+          paste(
+            "Add a Dependent Variable and at least one Covariate or Factor",
+            "to generate the table"
+          ),
           self$results$tbl
         )
         self$results$status$setVisible(FALSE)
@@ -87,7 +90,7 @@ tblUniRegLogisticClass <- R6::R6Class(
               y = depB64,
               include = jmvcore::toB64(varOrder),
               method = stats::glm,
-              method.args = list(family = stats::binomial),
+              methodArgs = list(family = stats::binomial),
               options = self$options
             ),
             collector

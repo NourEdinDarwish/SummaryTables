@@ -316,7 +316,7 @@ pipeCiMergeDiff <- function(table, hasGroupVar, options) {
         default = ", "
       )
 
-      new_header_text <- paste0(
+      newHeaderText <- paste0(
         table$table_styling$header |>
           dplyr::filter(.data$column == "estimate") |>
           dplyr::pull("label"),
@@ -336,7 +336,7 @@ pipeCiMergeDiff <- function(table, hasGroupVar, options) {
           ),
           pattern = paste0("{estimate} ({conf.low}", ciSep, "{conf.high})")
         ) |>
-        gtsummary::modify_header(estimate = new_header_text)
+        gtsummary::modify_header(estimate = newHeaderText)
     },
     error = function(e) table
   )

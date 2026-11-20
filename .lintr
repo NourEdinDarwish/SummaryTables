@@ -1,13 +1,8 @@
 linters: linters_with_defaults(
-    # Keep default naming styles first, then add SummaryTables' conventions.
-    object_name_linter = object_name_linter(
-      styles = c(
-        # lintr defaults
-        "snake_case", "symbols",
-        # SummaryTables additions
-        "camelCase", "dotted.case"
-      )
-    ),
+    # Use camelCase for module-defined names.
+    # YAML option values may preserve upstream identifiers to avoid extra mappings.
+    # Related choices may follow the same upstream naming style.
+    object_name_linter = object_name_linter(styles = "camelCase"),
     # Air and lintr disagree on valid indentation, causing style warnings.
     # Let Air control indentation.
     indentation_linter = NULL,

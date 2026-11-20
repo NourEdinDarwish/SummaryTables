@@ -14,7 +14,10 @@ tblUniRegCoxClass <- R6::R6Class(
           (length(covs) == 0 && length(factors) == 0)
       ) {
         renderPlaceholder(
-          "Add a Time variable, an Event variable, and at least one Covariate or Factor to generate the table", #nolint
+          paste(
+            "Add a Time variable, an Event variable,",
+            "and at least one Covariate or Factor to generate the table"
+          ),
           self$results$tbl
         )
         self$results$status$setVisible(FALSE)

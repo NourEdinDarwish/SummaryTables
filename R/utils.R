@@ -17,7 +17,7 @@
 #' @noRd
 optTrue <- function(expr) {
   expr <- substitute(expr)
-  obj  <- eval(expr[[2]], parent.frame())
+  obj <- eval(expr[[2]], parent.frame())
   name <- as.character(expr[[3]])
   obj$has(name) && isTRUE(obj$get(name))
 }
