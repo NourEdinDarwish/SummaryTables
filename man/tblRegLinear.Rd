@@ -7,8 +7,8 @@
 tblRegLinear(
   data,
   dep,
-  covs,
-  factors,
+  covs = NULL,
+  factors = NULL,
   manualRun = FALSE,
   run = FALSE,
   modelTerms,

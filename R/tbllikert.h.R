@@ -54,6 +54,7 @@ tblLikertOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             private$..statSpecific <- jmvcore::OptionArray$new(
                 "statSpecific",
                 statSpecific,
+                default=NULL,
                 template=jmvcore::OptionGroup$new(
                     "statSpecific",
                     NULL,
@@ -289,7 +290,7 @@ tblLikert <- function(
     manualRun = FALSE,
     run = FALSE,
     statistic = "nPercent",
-    statSpecific,
+    statSpecific = NULL,
     digits = "auto",
     levelOrder = "asFirst",
     addN = FALSE,

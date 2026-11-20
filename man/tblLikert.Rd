@@ -10,7 +10,7 @@ tblLikert(
   manualRun = FALSE,
   run = FALSE,
   statistic = "nPercent",
-  statSpecific,
+  statSpecific = NULL,
   digits = "auto",
   levelOrder = "asFirst",
   addN = FALSE,

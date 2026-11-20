@@ -66,7 +66,8 @@ tblRegLogisticOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 suggested=list(
                     "continuous"),
                 permitted=list(
-                    "numeric"))
+                    "numeric"),
+                default=NULL)
             private$..factors <- jmvcore::OptionVariables$new(
                 "factors",
                 factors,
@@ -74,7 +75,8 @@ tblRegLogisticOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
                 suggested=list(
                     "nominal"),
                 permitted=list(
-                    "factor"))
+                    "factor"),
+                default=NULL)
             private$..manualRun <- jmvcore::OptionBool$new(
                 "manualRun",
                 manualRun,
@@ -517,8 +519,8 @@ tblRegLogisticBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class
 tblRegLogistic <- function(
     data,
     dep,
-    covs,
-    factors,
+    covs = NULL,
+    factors = NULL,
     manualRun = FALSE,
     run = FALSE,
     modelTerms,

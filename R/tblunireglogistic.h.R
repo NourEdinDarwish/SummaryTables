@@ -63,7 +63,8 @@ tblUniRegLogisticOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                 suggested=list(
                     "continuous"),
                 permitted=list(
-                    "numeric"))
+                    "numeric"),
+                default=NULL)
             private$..factors <- jmvcore::OptionVariables$new(
                 "factors",
                 factors,
@@ -71,7 +72,8 @@ tblUniRegLogisticOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R
                 suggested=list(
                     "nominal"),
                 permitted=list(
-                    "factor"))
+                    "factor"),
+                default=NULL)
             private$..varOrder <- jmvcore::OptionArray$new(
                 "varOrder",
                 varOrder,
@@ -491,8 +493,8 @@ tblUniRegLogisticBase <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cl
 tblUniRegLogistic <- function(
     data,
     dep,
-    covs,
-    factors,
+    covs = NULL,
+    factors = NULL,
     varOrder = list(),
     manualRun = FALSE,
     run = FALSE,

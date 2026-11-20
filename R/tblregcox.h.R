@@ -80,7 +80,8 @@ tblRegCoxOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 suggested=list(
                     "continuous"),
                 permitted=list(
-                    "numeric"))
+                    "numeric"),
+                default=NULL)
             private$..factors <- jmvcore::OptionVariables$new(
                 "factors",
                 factors,
@@ -88,7 +89,8 @@ tblRegCoxOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 suggested=list(
                     "nominal"),
                 permitted=list(
-                    "factor"))
+                    "factor"),
+                default=NULL)
             private$..manualRun <- jmvcore::OptionBool$new(
                 "manualRun",
                 manualRun,
@@ -533,8 +535,8 @@ tblRegCox <- function(
     elapsed,
     event,
     eventLevel,
-    covs,
-    factors,
+    covs = NULL,
+    factors = NULL,
     manualRun = FALSE,
     run = FALSE,
     modelTerms,

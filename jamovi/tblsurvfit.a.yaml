@@ -39,6 +39,7 @@ options:
       - nominal
     permitted:
       - factor
+    default: null
 
   - name: manualRun
     title: Run manually
@@ -144,6 +145,7 @@ options:
   - name: testSpecific
     title: Specific tests
     type: Array
+    default: null
     template:
       type: Group
       elements:

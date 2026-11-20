@@ -71,7 +71,8 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
                 suggested=list(
                     "nominal"),
                 permitted=list(
-                    "factor"))
+                    "factor"),
+                default=NULL)
             private$..manualRun <- jmvcore::OptionBool$new(
                 "manualRun",
                 manualRun,
@@ -146,6 +147,7 @@ tblSurvfitOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Class(
             private$..testSpecific <- jmvcore::OptionArray$new(
                 "testSpecific",
                 testSpecific,
+                default=NULL,
                 template=jmvcore::OptionGroup$new(
                     "testSpecific",
                     NULL,
@@ -467,7 +469,7 @@ tblSurvfit <- function(
     elapsed,
     event,
     eventLevel,
-    strata,
+    strata = NULL,
     manualRun = FALSE,
     run = FALSE,
     statistic = "times",
@@ -480,7 +482,7 @@ tblSurvfit <- function(
     addNEvent = FALSE,
     addPvalue = FALSE,
     testDefault = "logrank",
-    testSpecific,
+    testSpecific = NULL,
     digitsPvalue = "auto",
     boldPvalue = FALSE,
     boldPvalueThreshold = 0.05,

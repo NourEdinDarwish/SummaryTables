@@ -26,6 +26,7 @@ options:
       - continuous
     permitted:
       - numeric
+    default: null
 
   - name: factors
     title: Factors
@@ -35,6 +36,7 @@ options:
       - nominal
     permitted:
       - factor
+    default: null
 
   - name: manualRun
     title: Run manually

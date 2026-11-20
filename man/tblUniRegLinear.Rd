@@ -7,8 +7,8 @@
 tblUniRegLinear(
   data,
   dep,
-  covs,
-  factors,
+  covs = NULL,
+  factors = NULL,
   varOrder = list(),
   manualRun = FALSE,
   run = FALSE,

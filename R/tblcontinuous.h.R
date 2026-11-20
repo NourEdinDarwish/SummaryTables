@@ -65,7 +65,8 @@ tblContinuousOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
                     "nominal",
                     "ordinal"),
                 permitted=list(
-                    "factor"))
+                    "factor"),
+                default=NULL)
             private$..manualRun <- jmvcore::OptionBool$new(
                 "manualRun",
                 manualRun,
@@ -142,6 +143,7 @@ tblContinuousOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
             private$..sortCatSpecific <- jmvcore::OptionArray$new(
                 "sortCatSpecific",
                 sortCatSpecific,
+                default=NULL,
                 template=jmvcore::OptionGroup$new(
                     "sortCatSpecific",
                     NULL,
@@ -170,6 +172,7 @@ tblContinuousOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
             private$..statSpecific <- jmvcore::OptionArray$new(
                 "statSpecific",
                 statSpecific,
+                default=NULL,
                 template=jmvcore::OptionGroup$new(
                     "statSpecific",
                     NULL,
@@ -221,6 +224,7 @@ tblContinuousOptions <- if (requireNamespace("jmvcore", quietly=TRUE)) R6::R6Cla
             private$..testSpecific <- jmvcore::OptionArray$new(
                 "testSpecific",
                 testSpecific,
+                default=NULL,
                 template=jmvcore::OptionGroup$new(
                     "testSpecific",
                     NULL,
@@ -483,7 +487,7 @@ tblContinuous <- function(
     data,
     contVar,
     varsCat,
-    groupVar,
+    groupVar = NULL,
     manualRun = FALSE,
     run = FALSE,
     addOverall = FALSE,
@@ -496,13 +500,13 @@ tblContinuous <- function(
     italicizeLabels = FALSE,
     italicizeLevels = FALSE,
     sortCatDefault = "default",
-    sortCatSpecific,
+    sortCatSpecific = NULL,
     statDefault = "meanSd",
-    statSpecific,
+    statSpecific = NULL,
     digitsCont = "auto",
     addPvalue = FALSE,
     testDefault = "parametric",
-    testSpecific,
+    testSpecific = NULL,
     digitsPvalue = "auto",
     boldPvalue = FALSE,
     boldPvalueThreshold = 0.05,
