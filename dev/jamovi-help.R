@@ -18,8 +18,8 @@ devtools::check()
 
 # Review, accept, or reject snapshot changes
 testthat::snapshot_review()
-testthat::snapshot_accept()
-testthat::snapshot_reject()
+# testthat::snapshot_accept()
+# testthat::snapshot_reject()
 
 # Tidy DESCRIPTION
 usethis::use_tidy_description()
