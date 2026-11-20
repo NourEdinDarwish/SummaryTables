@@ -57,10 +57,12 @@ tblUniRegLogisticClass <- R6::R6Class(
 
           if (length(levels(data[[dep]])) != 2) {
             jmvcore::reject(
-              jmvcore::format(
-                "The dependent variable '{}' must have exactly two levels for binomial logistic regression", # nolint
-                dep
-              )
+              paste(
+                'The dependent variable "{}" must have',
+                "exactly two levels for binomial logistic regression"
+              ),
+              code = NULL,
+              dep
             )
           }
 
@@ -72,13 +74,20 @@ tblUniRegLogisticClass <- R6::R6Class(
           depB64 <- jmvcore::toB64(dep)
 
           # Regression table ---------------------------------------------------
+          # The UI supplies varOrder. R calls without it list covariates first,
+          # then factors, preserving each selection's order.
+          varOrder <- self$options$varOrder
+          if (length(varOrder) == 0) {
+            varOrder <- c(covs, factors)
+          }
+
           table <- runSafe(
             buildUniRegTable(
               data = data,
               y = depB64,
-              include = jmvcore::toB64(self$options$varOrder),
-              method = glm,
-              method.args = list(family = binomial),
+              include = jmvcore::toB64(varOrder),
+              method = stats::glm,
+              method.args = list(family = stats::binomial),
               options = self$options
             ),
             collector

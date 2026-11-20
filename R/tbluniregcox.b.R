@@ -92,11 +92,18 @@ tblUniRegCoxClass <- R6::R6Class(
             eventB64
           ))
 
+          # The UI supplies varOrder. R calls without it list covariates first,
+          # then factors, preserving each selection's order.
+          varOrder <- self$options$varOrder
+          if (length(varOrder) == 0) {
+            varOrder <- c(covs, factors)
+          }
+
           table <- runSafe(
             buildUniRegTable(
               data = data,
               y = survY,
-              include = jmvcore::toB64(self$options$varOrder),
+              include = jmvcore::toB64(varOrder),
               method = survival::coxph,
               options = self$options
             ),

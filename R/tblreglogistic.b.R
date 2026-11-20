@@ -55,10 +55,12 @@ tblRegLogisticClass <- R6::R6Class(
 
           if (length(levels(data[[dep]])) != 2) {
             jmvcore::reject(
-              jmvcore::format(
-                "The dependent variable '{}' must have exactly two levels for binomial logistic regression", # nolint
-                dep
-              )
+              paste(
+                'The dependent variable "{}" must have',
+                "exactly two levels for binomial logistic regression"
+              ),
+              code = NULL,
+              dep
             )
           }
 
@@ -81,7 +83,7 @@ tblRegLogisticClass <- R6::R6Class(
           termsB64 <- lapply(terms, jmvcore::toB64)
           formula <- buildFormula(depB64, termsB64)
           model <- runSafe(
-            glm(formula, data = data, family = binomial),
+            stats::glm(formula, data = data, family = stats::binomial),
             collector
           )
 

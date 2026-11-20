@@ -14,10 +14,14 @@ validateFactorPolynomials <- function(data, terms) {
     if (length(polys) > 0) {
       for (poly_var in polys) {
         if (is.factor(data[[poly_var]])) {
-          stop(sprintf(
-            "Polynomial terms cannot be applied to Factors. Please remove the polynomial term for '%s'.", # nolint
+          jmvcore::reject(
+            paste(
+              "Polynomial terms cannot be applied to Factors.",
+              'Please remove the polynomial term for "{}".'
+            ),
+            code = NULL,
             poly_var
-          ))
+          )
         }
       }
     }

@@ -55,7 +55,12 @@ tblSummaryClass <- R6::R6Class(
       # Data prep -----------------------------------------------------------
       data <- self$data
 
+      # The UI supplies varOrder. R calls without it list continuous variables
+      # first, then categorical variables, preserving each selection's order.
       allVars <- self$options$varOrder
+      if (length(allVars) == 0) {
+        allVars <- c(varsCont, varsCat)
+      }
 
       groupVar <- self$options$groupVar
       hasGroupVar <- !is.null(groupVar)

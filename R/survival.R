@@ -15,13 +15,14 @@ validateEventNumeric <- function(data, event) {
   valid_12 <- all(unique_vals %in% c(1, 2))
   if (!valid_01 && !valid_12) {
     jmvcore::reject(
-      paste0(
-        "Invalid values in the Event variable. It must be coded using ",
-        "0/1 (0 = censored, 1 = event) or ",
-        "1/2 (1 = censored, 2 = event). ",
-        "Found values: ",
-        paste(sort(unique_vals), collapse = ", ")
-      )
+      paste(
+        "Invalid values in the Event variable. It must be coded using",
+        "0/1 (0 = censored, 1 = event) or",
+        "1/2 (1 = censored, 2 = event).",
+        "Found values: {}"
+      ),
+      code = NULL,
+      paste(sort(unique_vals), collapse = ", ")
     )
   }
 }

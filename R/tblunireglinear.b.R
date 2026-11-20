@@ -63,11 +63,18 @@ tblUniRegLinearClass <- R6::R6Class(
 
           # Regression table ---------------------------------------------------
           method <- if (self$options$standardize) lmStd else stats::lm
+          # The UI supplies varOrder. R calls without it list covariates first,
+          # then factors, preserving each selection's order.
+          varOrder <- self$options$varOrder
+          if (length(varOrder) == 0) {
+            varOrder <- c(covs, factors)
+          }
+
           table <- runSafe(
             buildUniRegTable(
               data = data,
               y = depB64,
-              include = jmvcore::toB64(self$options$varOrder),
+              include = jmvcore::toB64(varOrder),
               method = method,
               options = self$options
             ),
