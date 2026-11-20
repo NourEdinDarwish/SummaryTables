@@ -1,7 +1,11 @@
 # Detect text files and normalize their stored line endings.
 * text=auto
 
-# Keep files regenerated during installation consistent with the compiler's LF output.
-R/*.h.R text eol=lf
-R/00jmv.R text eol=lf
+# Keep files updated by the jamovi compiler using LF line endings.
+# Exclude generated R files from GitHub language stats and collapse their diffs.
+R/*.h.R text eol=lf linguist-generated=true
+R/00jmv.R text eol=lf linguist-generated=true
 jamovi/0000.yaml text eol=lf
+
+# Exclude test snapshots from GitHub language stats without collapsing their diffs.
+tests/testthat/_snaps/** linguist-detectable=false
