@@ -1,7 +1,8 @@
 ## SummaryTables 1.5.0
 
+- Now supports jamovi 28.4 and later (previously required 28.7).
 - Added an option under the Difference section of Summary Table to run the two-proportion z-test with or without continuity correction (without continuity correction is now the default).
-- Simplified Word export across all analyses to a single "Open in Word" button, expanding compatibility to jamovi 28.4 and later.
+- Simplified Word export across all analyses to a single "Open in Word" button.
 - Confidence Intervals (CI) can now also be displayed for the Overall column in Summary Table.
 - Improved compatibility between the Overall column and Journal Themes in Summary Table.
 - Fixed an issue in Summary Table and Continuous Table where variable-specific statistical tests and Difference methods did not fully override the default test settings or formatting.
@@ -12,6 +13,7 @@
 
 ## SummaryTables 1.4.0
 
+- Now requires jamovi 28.7 or later.
 - Improved Word export across all analyses with buttons to save tables to a chosen location or open them directly in Word, replacing manual file path entry.
 - SummaryTables is now available on jamovi Cloud.
 - Added a warning clarifying that Standard Errors (SE) are on the unexponentiated scale when displayed alongside Odds Ratios or Hazard Ratios.
@@ -58,7 +60,7 @@
 
 ## SummaryTables 1.1.1
 
-- General bug-fixes and improvements.
+- Now requires jamovi 2.7.12 or later.
 
 ## SummaryTables 1.1.0
 
