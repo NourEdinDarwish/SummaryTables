@@ -1,0 +1,13 @@
+/*
+ * Narrow the main content container because all pages hide the left
+ * navigation sidebar (12.1rem). Without it, Zensical's 61rem grid lets
+ * the article stretch well past its 80-100 character reading target.
+ * Subtracting the hidden sidebar directly gives 48.9rem (61rem - 12.1rem),
+ * so 52rem adds a little extra breathing room (~38rem / ~760px of content
+ * area), fitting the 750px homepage screenshot while keeping the article
+ * and "On this page" centered beneath the full-width header. Remove this
+ * rule if pages later enable the left navigation sidebar.
+ */
+.md-main__inner.md-grid {
+  max-width: 52rem;
+}
