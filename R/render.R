@@ -77,6 +77,12 @@ setHtmlResult <- function(htmlContent, resultsHtml) {
 #' @param resultsHtml A jmvcore::Html object with `$setContent()` method
 #' @noRd
 renderHtml <- function(table, resultsHtml) {
+  # jamovi Cloud mounts R user directories and tempdir() read-only; disabling
+  # sass's disk cache avoids write errors (and gt's random table IDs miss the
+  # cache on every render anyway).
+  old <- options(sass.cache = FALSE)
+  on.exit(options(old), add = TRUE)
+
   htmlContent <- table |>
     gtsummary::as_gt() |>
     gt::tab_options(table.background.color = "transparent") |>
@@ -101,6 +107,9 @@ renderHtml <- function(table, resultsHtml) {
 #' @param resultsHtml A jmvcore::Html object with `$setContent()` method
 #' @noRd
 renderPlaceholder <- function(message, resultsHtml) {
+  old <- options(sass.cache = FALSE)
+  on.exit(options(old), add = TRUE)
+
   htmlContent <- data.frame(message = message) |>
     gt::gt() |>
     gt::tab_options(
